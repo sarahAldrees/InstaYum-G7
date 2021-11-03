@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "81454507029",
+    "project_id": "instayum-f7a34",
+    "storage_bucket": "instayum-f7a34.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:81454507029:android:f50edf920a853b7d87da1c",
+        "android_client_info": {
+          "package_name": "com.example.instayum"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "81454507029-p7fp3f3ghukfd4e4efbqb6arlier73q5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAg21WtCmSTMESj0-NfxLL95gozocXSwQo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "81454507029-p7fp3f3ghukfd4e4efbqb6arlier73q5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
