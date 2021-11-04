@@ -118,15 +118,13 @@ class addRecipe extends State<addRecipePage> {
                       margin: EdgeInsets.only(top: 10),
                       child: Align(
                         alignment: Alignment.bottomCenter,
-                        child: Flexible(
-                            fit: FlexFit.loose,
-                            child: ElevatedButton(
-                              onPressed: () {},
-                              child: Text('Add more ingredient'),
-                              style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all(
-                                    Color(0xFFeb6d44)),
-                              ),
+
+                        child: ElevatedButton(
+                            onPressed: () {},
+                            child: Text('Add more ingredient'),
+                            style: ButtonStyle(
+                              backgroundColor:
+                                  MaterialStateProperty.all(Color(0xFFeb6d44)),
                             )),
                         // OutlinedButton(
                         //     onPressed: () {},
@@ -197,15 +195,13 @@ class addRecipe extends State<addRecipePage> {
                       margin: EdgeInsets.only(top: 10),
                       child: Align(
                         alignment: Alignment.bottomCenter,
-                        child: Flexible(
-                            fit: FlexFit.loose,
-                            child: ElevatedButton(
-                              onPressed: () {},
-                              child: Text('Add more direction'),
-                              style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all(
-                                    Color(0xFFeb6d44)),
-                              ),
+
+                        child: ElevatedButton(
+                            onPressed: () {},
+                            child: Text('Add more direction'),
+                            style: ButtonStyle(
+                              backgroundColor:
+                                  MaterialStateProperty.all(Color(0xFFeb6d44)),
                             )),
                         // OutlinedButton(
                         //     onPressed: () {},
