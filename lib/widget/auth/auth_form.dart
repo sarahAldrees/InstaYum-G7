@@ -51,11 +51,11 @@ class _AuthFormState extends State<AuthForm> {
         .collection('users')
         .where('username', isEqualTo: username)
         .get();
-
     return result.docs.isEmpty;
   }
 
   void _trySubmit() async {
+    _formKey.currentState.save();
     final valid = await usernameCheck(_userName);
     if (!valid) {
       Scaffold.of(context).showSnackBar(
@@ -65,7 +65,7 @@ class _AuthFormState extends State<AuthForm> {
         ),
       );
     } else {
-      final isValid = _formKey.currentState?.validate();
+      final isValid = _formKey.currentState.validate();
       FocusScope.of(context).unfocus();
 
       if (_userImageFile == null && _isSignUp) {
@@ -80,7 +80,6 @@ class _AuthFormState extends State<AuthForm> {
           _userImageFile,
           _isSignUp,
           _isDefaultImage,
-
           context,
         );
       }
@@ -156,6 +155,9 @@ class _AuthFormState extends State<AuthForm> {
                     if (_isSignUp)
                       TextFormField(
                         key: ValueKey("username"),
+                        onSaved: (value) {
+                          _userName = value;
+                        },
                         validator: (value) {
                           if (value.isEmpty) {
                             return "username should not be empty";
@@ -164,9 +166,6 @@ class _AuthFormState extends State<AuthForm> {
                             return "The username must contain at least 4 characters";
                           }
                           return null;
-                        },
-                        onSaved: (value) {
-                          _userName = value;
                         },
                         decoration: InputDecoration(labelText: "Username"),
                       ),

@@ -78,8 +78,7 @@ class _AuthScreenState extends State<AuthScreen> {
 
       if (err.message != null) {
         message = err.message.toString();
-        message =
-            "error "; // ******************************************************************************************************************* change ggg to error
+        message = "error ";
       }
       ScaffoldMessenger.of(ctx).showSnackBar(
         SnackBar(
