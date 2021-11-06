@@ -20,7 +20,7 @@ class AuthForm extends StatefulWidget {
     String password,
     File image,
     bool isSignUp,
-    bool isDefaultImage, // NEW
+    bool isDefaultImage,
     BuildContext ctx,
   ) submitFn;
   final bool isLoeading;
@@ -35,7 +35,7 @@ class _AuthFormState extends State<AuthForm> {
   final TextEditingController _confirmPass = TextEditingController();
 
   bool _isSignUp = true;
-  bool _isDefaultImage = false; // NEW
+  bool _isDefaultImage = false;
 
   var _userEmail = "";
   var _userName = "";
@@ -46,7 +46,8 @@ class _AuthFormState extends State<AuthForm> {
     _userImageFile = image;
   }
 
-  Future<bool> usernameCheck(String username) async {
+//_usernameCheck method: to check if the username is already taken
+  Future<bool> _usernameCheck(String username) async {
     final result = await FirebaseFirestore.instance
         .collection('users')
         .where('username', isEqualTo: username)
@@ -55,8 +56,9 @@ class _AuthFormState extends State<AuthForm> {
   }
 
   void _trySubmit() async {
-    _formKey.currentState.save();
-    final valid = await usernameCheck(_userName);
+    _formKey.currentState
+        .save(); //To save the data we took from the user in form in OnSaved method.
+    final valid = await _usernameCheck(_userName);
     if (!valid) {
       Scaffold.of(context).showSnackBar(
         SnackBar(
@@ -65,7 +67,8 @@ class _AuthFormState extends State<AuthForm> {
         ),
       );
     } else {
-      final isValid = _formKey.currentState.validate();
+      final isValid = _formKey.currentState
+          .validate(); // to check the Validitor in the form.
       FocusScope.of(context).unfocus();
 
       if (_userImageFile == null && _isSignUp) {
@@ -86,7 +89,7 @@ class _AuthFormState extends State<AuthForm> {
     }
   }
 
-  bool isValidEmail(String email) {
+  bool _isValidEmail(String email) {
     String pattern =
         r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
 
@@ -95,7 +98,7 @@ class _AuthFormState extends State<AuthForm> {
     return regExp.hasMatch(email);
   }
 
-  bool isValiedUsername(String username) {
+  bool _isValiedUsername(String username) {
     String pattern = r'^[A-Za-z0-9]+(?:[ _-][A-Za-z0-9]+)*$';
 
     RegExp regExp = new RegExp(pattern);
@@ -103,7 +106,7 @@ class _AuthFormState extends State<AuthForm> {
     return regExp.hasMatch(username);
   }
 
-  bool isValiedPassword(String password) {
+  bool _isValiedPassword(String password) {
     String pattern =
         r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
 
@@ -141,7 +144,7 @@ class _AuthFormState extends State<AuthForm> {
                       validator: (value) {
                         if (value.isEmpty) {
                           return "Email should not be empty";
-                        } else if (!isValidEmail(value)) {
+                        } else if (!_isValidEmail(value)) {
                           return "Please enter a valid email";
                         }
                         return null;
@@ -161,7 +164,7 @@ class _AuthFormState extends State<AuthForm> {
                         validator: (value) {
                           if (value.isEmpty) {
                             return "username should not be empty";
-                          } else if (!isValiedUsername(value) ||
+                          } else if (!_isValiedUsername(value) ||
                               value.length < 4) {
                             return "The username must contain at least 4 characters";
                           }
@@ -175,7 +178,7 @@ class _AuthFormState extends State<AuthForm> {
                       validator: (value) {
                         if (value.isEmpty) {
                           return "password should not be empty";
-                        } else if (!isValiedPassword(value)) {
+                        } else if (!_isValiedPassword(value)) {
                           return "The password must conatint at least \none upper case \none lower case \none digit \none special character \nand at least 8 characters in length";
                         }
                         return null;
@@ -194,7 +197,7 @@ class _AuthFormState extends State<AuthForm> {
                         validator: (value) {
                           if (value.isEmpty) {
                             return "password should not be empty";
-                          } else if (!isValiedPassword(value)) {
+                          } else if (!_isValiedPassword(value)) {
                             return "The password must conatint at least \none upper case \none lower case \none digit \none special character \nand at least 8 characters in length";
                           } else if (value != _pass.text) {
                             return "The passwords do not match, try again";
