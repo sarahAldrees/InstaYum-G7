@@ -8,7 +8,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
-//
 class AuthForm extends StatefulWidget {
   AuthForm(
     this.submitFn,
@@ -59,34 +58,35 @@ class _AuthFormState extends State<AuthForm> {
   void _trySubmit() async {
     _formKey.currentState
         .save(); //To save the data we took from the user in form in OnSaved method.
-    final valid = await _usernameCheck(_userName);
-    if (!valid) {
+
+    final isValidFormt =
+        _formKey.currentState.validate(); // to check the Validitor in the form.
+    FocusScope.of(context).unfocus();
+
+    if (_userImageFile == null && _isSignUp) {
+      _isDefaultImage = true;
+    }
+
+    final validUsername = await _usernameCheck(_userName);
+    if (!validUsername) {
       Scaffold.of(context).showSnackBar(
         SnackBar(
           content: Text("The username is already exist"),
           backgroundColor: Theme.of(context).errorColor,
         ),
       );
-    } else {
-      final isValid = _formKey.currentState
-          .validate(); // to check the Validitor in the form.
-      FocusScope.of(context).unfocus();
-
-      if (_userImageFile == null && _isSignUp) {
-        _isDefaultImage = true;
-      }
-      if (isValid) {
-        _formKey.currentState?.save();
-        widget.submitFn(
-          _userEmail.trim(), // trim here to delete any extar space at the end
-          _userName.trim(),
-          _userPassword.trim(),
-          _userImageFile,
-          _isSignUp,
-          _isDefaultImage,
-          context,
-        );
-      }
+    }
+    if (isValidFormt && validUsername) {
+      _formKey.currentState.save();
+      widget.submitFn(
+        _userEmail.trim(), // trim here to delete any extar space at the end
+        _userName.trim(),
+        _userPassword.trim(),
+        _userImageFile,
+        _isSignUp,
+        _isDefaultImage,
+        context,
+      );
     }
   }
 
@@ -169,6 +169,7 @@ class _AuthFormState extends State<AuthForm> {
                               value.length < 4) {
                             return "The username must contain at least 4 characters";
                           }
+
                           return null;
                         },
                         decoration: InputDecoration(labelText: "Username"),

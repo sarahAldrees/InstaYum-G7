@@ -73,8 +73,10 @@ class _AuthScreenState extends State<AuthScreen> {
       setState(() {
         _isLoading = false;
       });
+      print('catch #1');
+      print(err);
       //to handel the error of firebase in case of entring non-valid email or password
-      var message = "Threr is an error, please check your credentials!";
+      var message = "There is an error, please check your credentials!";
 
       if (err.message != null) {
         message = err.message.toString();
@@ -88,21 +90,45 @@ class _AuthScreenState extends State<AuthScreen> {
       setState(() {
         _isLoading = false;
       });
-      // to catch any other kind of errors
+      print('catch #2');
       print(err);
-      ScaffoldMessenger.of(ctx).showSnackBar(
-        SnackBar(
-            content: Text(
-                "The username or password is invalid, please try again!"), //ask ghaida
-            backgroundColor: Theme.of(ctx).errorColor),
-      );
+
+      switch (err.code) {
+        case 'wrong-password':
+          ScaffoldMessenger.of(ctx).showSnackBar(
+            SnackBar(
+                content: Text("The email or password is incorrect try again!"),
+                backgroundColor: Theme.of(ctx).errorColor),
+          );
+          break;
+        case 'user-not-found':
+          ScaffoldMessenger.of(ctx).showSnackBar(
+            SnackBar(
+                content: Text("The email not found please try again!"),
+                backgroundColor: Theme.of(ctx).errorColor),
+          );
+          break;
+        case 'email-already-in-use':
+          ScaffoldMessenger.of(ctx).showSnackBar(
+            SnackBar(
+                content: Text("The email address is taken"), //ask ghaida
+                backgroundColor: Theme.of(ctx).errorColor),
+          );
+          break;
+        default:
+          print(err.code);
+          ScaffoldMessenger.of(ctx).showSnackBar(
+            SnackBar(
+                content: Text("something went worrong please try again... "),
+                backgroundColor: Theme.of(ctx).errorColor),
+          );
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // backgroundColor: Colors.green, //Theme.of(context).backgroundColor,
       body: AuthForm(_submitAuthForm, _isLoading),
     );
   }
