@@ -104,7 +104,7 @@ class _AuthScreenState extends State<AuthScreen> {
         case 'user-not-found':
           ScaffoldMessenger.of(ctx).showSnackBar(
             SnackBar(
-                content: Text("The email not found please try again!"),
+                content: Text("The email or password is incorrect try again!"),
                 backgroundColor: Theme.of(ctx).errorColor),
           );
           break;
