@@ -30,9 +30,12 @@ class recipe_Item extends StatelessWidget {
           onTap: () {}, //what happend after clicking image
 
           child: ClipRRect(
-            child: Image.network(
-              image,
-              fit: BoxFit.fill,
+            child: Container(
+              height: 120,
+              child: Image.network(
+                image,
+                fit: BoxFit.fill,
+              ),
             ),
           ),
         ),

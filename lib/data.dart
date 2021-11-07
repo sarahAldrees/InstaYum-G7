@@ -34,7 +34,7 @@ const Recipes_Data = const [
     recipeName: 'Orange Mousse',
     category: 'c1',
     imageURL:
-        'https://amandascookin.com/wp-content/uploads/2021/03/Whipped-Jello-Mandarin-Orange-Mousse-FB.jpg',
+        'https://amandascookin.com/wp-content/uploads/2021/03/Whipped-Jello-Mandarin-Orange-Mousse-SQ.jpg',
     ingredients: [
       '4 Tomatoes',
       '1 Tablespoon of Olive Oil',
