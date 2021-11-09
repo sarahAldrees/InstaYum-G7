@@ -3,6 +3,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:instayum1/widget/auth/reset_password.dart';
 import 'package:instayum1/widget/pickers/user_image_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -222,6 +223,16 @@ class _AuthFormState extends State<AuthForm> {
                         child: Text(_isSignUp ? "Sign Up" : "Login"),
                         onPressed: _trySubmit,
                       ),
+                    if (!widget.isLoeading)
+                      if (!_isSignUp)
+                        FlatButton(
+                            textColor: Color(
+                                0xFFeb6d44), //Theme.of(context).primaryColor,
+                            child: Text("Forget password?"),
+                            onPressed: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => RestPassword()));
+                            }),
                     if (!widget.isLoeading)
                       FlatButton(
                           textColor: Color(
