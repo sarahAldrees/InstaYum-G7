@@ -228,7 +228,7 @@ class _AuthFormState extends State<AuthForm> {
                         FlatButton(
                             textColor: Color(
                                 0xFFeb6d44), //Theme.of(context).primaryColor,
-                            child: Text("Forget password?"),
+                            child: Text("Forgot password?"),
                             onPressed: () {
                               Navigator.of(context).push(MaterialPageRoute(
                                   builder: (context) => RestPassword()));
