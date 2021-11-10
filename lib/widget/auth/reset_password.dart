@@ -40,23 +40,11 @@ class _RestPasswordState extends State<RestPassword> {
         _switchToLogin = false;
         if (err.code == "user-not-found") {
           showAlertDialogUserNotFound(context);
-          // ScaffoldMessenger.of(context).showSnackBar(
-          //   SnackBar(
-          //       content: Text("The email is incorrect try again!"),
-          //       backgroundColor: Theme.of(context).errorColor),
-          // );
         }
       }
     }
     if (_switchToLogin) {
-      // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      //   content: Text("A reset request was sent to your email: " + _userEmail),
-      //   backgroundColor: Colors.green,
-      // ));
       showAlertDialogSentRequest(context);
-      // Navigator.of(context)
-      //     .push(MaterialPageRoute(builder: (context) => AuthScreen()));
-      // Navigator.of(context).pop();
     }
   }
 
@@ -141,8 +129,6 @@ class _RestPasswordState extends State<RestPassword> {
       backgroundColor: Theme.of(context).backgroundColor,
       body: Stack(
         children: <Widget>[
-          //   Card(),
-          // Padding(padding: EdgeInsets.only(top: 100)),
           Center(
             child: Card(
               margin: EdgeInsets.all(20),
@@ -182,8 +168,6 @@ class _RestPasswordState extends State<RestPassword> {
                         SizedBox(
                           height: 12,
                         ),
-                        // if (widget.isLoeading) CircularProgressIndicator(),
-                        //if (!widget.isLoeading)
                         RaisedButton(
                           child: Text("Send Request"),
                           onPressed: _trySendRequest,
