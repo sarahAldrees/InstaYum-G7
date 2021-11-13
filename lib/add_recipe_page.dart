@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
+import 'package:instayum1/widget/pickers/recipe_image_picker.dart';
 
 //import 'dynamic_fields.dart';
 class addRecipePage extends StatefulWidget {
@@ -59,7 +60,7 @@ class addRecipe extends State<addRecipePage> {
                   //the big container
                   width: double.infinity,
                   height: 80,
-                  margin: EdgeInsets.fromLTRB(10, 15, 30, 10),
+                  margin: EdgeInsets.fromLTRB(10, 25, 30, 10),
                   padding: EdgeInsets.only(bottom: 10, top: 15),
                   decoration: BoxDecoration(
                     border: Border.all(color: Color(0xFFeb6d44), width: 1),
@@ -79,7 +80,7 @@ class addRecipe extends State<addRecipePage> {
                 ),
                 Positioned(
                   left: 20,
-                  top: 5,
+                  top: 15,
                   child: Container(
                     //the container of the title text
                     padding: EdgeInsets.only(bottom: 0, left: 10, right: 10),
@@ -101,23 +102,10 @@ class addRecipe extends State<addRecipePage> {
             Container(
               //the big container
               width: 50,
-              height: 80,
+              height: 220,
               alignment: Alignment.center,
               //color: Colors.grey,
-              child: TextButton.icon(
-                onPressed: () {},
-                icon: Icon(Icons.add_a_photo, size: 30),
-                label: Text(
-                  "add recipe photo",
-                  style: TextStyle(
-                      fontSize: 17,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.grey[700]),
-                ),
-                style: ButtonStyle(
-                  foregroundColor: MaterialStateProperty.all(Color(0xFFeb6d44)),
-                ),
-              ),
+              child: RecipeImagePicker(),
             ),
             //---------------Ingredients-------------
             Stack(
