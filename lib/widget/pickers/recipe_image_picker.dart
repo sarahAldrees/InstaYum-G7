@@ -7,8 +7,6 @@ import 'package:image_picker/image_picker.dart'; // For Image Picker
 import 'package:path/path.dart' as Path;
 import 'package:uuid/uuid.dart';
 
-//test push
-//test push
 class RecipeImagePicker extends StatefulWidget {
   @override
   _RecipeImagePickerState createState() => _RecipeImagePickerState();
@@ -29,18 +27,6 @@ class _RecipeImagePickerState extends State<RecipeImagePicker> {
     });
     uploadFile();
   }
-
-//  Future uploadFile() async {
-//    final ref = FirebaseStorage.instance.ref().child('chats/${Path.basename(_image.path)}}');
-//    UploadTask uploadTask = storageReference.putFile(_image);
-//    await uploadTask.onComplete;
-//    print('File Uploaded');
-//    storageReference.getDownloadURL().then((fileURL) {
-//      setState(() {
-//        _uploadedFileURL = fileURL;
-//      });
-//    });
-//  }
 
   Future uploadFile() async {
     setState(() {
