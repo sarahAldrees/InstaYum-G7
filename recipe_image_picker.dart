@@ -7,8 +7,6 @@ import 'package:image_picker/image_picker.dart'; // For Image Picker
 import 'package:path/path.dart' as Path;
 import 'package:uuid/uuid.dart';
 
-//test push
-//test push
 class RecipeImagePicker extends StatefulWidget {
   @override
   _RecipeImagePickerState createState() => _RecipeImagePickerState();
