@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:instayum1/widget/add_recipe/add_recipe_page.dart';
 
-class IngredientsTextFields extends StatefulWidget {
+class DirectionsTextFields extends StatefulWidget {
   final int index;
-  IngredientsTextFields(this.index);
+  DirectionsTextFields(this.index);
 
   @override
-  _IngredientsTextFieldsState createState() => _IngredientsTextFieldsState();
+  _DirectionsTextFieldsState createState() => _DirectionsTextFieldsState();
 }
 
-class _IngredientsTextFieldsState extends State<IngredientsTextFields> {
-  TextEditingController _nameController;
+class _DirectionsTextFieldsState extends State<DirectionsTextFields> {
+  // TextEditingController _nameController;
 
   // @override
   // void initState() {
@@ -37,12 +37,12 @@ class _IngredientsTextFieldsState extends State<IngredientsTextFields> {
     return TextFormField(
       // controller: _nameController,
 
-      decoration: InputDecoration(hintText: 'Enter an ingredient'),
+      decoration: InputDecoration(hintText: 'Enter a direction'),
       // save text field data in friends list at index
       // whenever text field value changes
-      onChanged: (value) => addRecipe.userIngredients[widget.index] = value,
+      onChanged: (value) => addRecipe.userDirections[widget.index] = value,
       validator: (value) {
-        if (value.trim().isEmpty) return 'Please enter an ingredient';
+        if (value.trim().isEmpty) return 'Please enter a direction';
         return null;
       },
     );

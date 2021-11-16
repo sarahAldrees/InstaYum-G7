@@ -1,7 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
+import 'package:instayum1/widget/add_recipe/directions_text_fields.dart';
 import 'package:instayum1/widget/add_recipe/ingredients_text_fields.dart';
 import 'package:instayum1/widget/pickers/recipe_image_picker.dart';
+import 'package:uuid/uuid.dart';
 
 //import 'dynamic_fields.dart';
 class addRecipePage extends StatefulWidget {
@@ -18,9 +20,7 @@ class addRecipe extends State<addRecipePage> {
   // to meke _getIngredients() method create one empty feild
   // we will add the ingredients to database from this list
   static List<String> userIngredients = [null];
-
-  //List<String> _userIngredients = List<String>();
-  List<String> _userDirections = List<String>();
+  static List<String> userDirections = [null];
 
   var currentSelectedTypeOfMeal = "Breakfast";
   var currentSelectedCategory = "Appetizers";
@@ -31,35 +31,55 @@ class addRecipe extends State<addRecipePage> {
   // var currentSelectedTypeOfMeal = "Select the type of meal";
 
   bool isPublic = false;
+  var recipe_id = "";
 
-  void addRecipeButton() {
-    _formKey.currentState.save();
+  void addRecipeButton() async {
     final _isValidForm = _formKey.currentState.validate();
+    _formKey.currentState.save();
+    if (_isValidForm) {
+      print("Everything is in the database ");
+
+      List<String> userIngredientsDatabase = List.from(userIngredients);
+      List<String> userDirectionsDatabase = List.from(
+          userDirections); // we make a copy of the list to loop one and remove from one, because we can not loop and remove the same list at the same time
+
+      for (var ing in userIngredients) {
+        if (ing == "" || ing == null) {
+          userIngredientsDatabase.remove(ing);
+        }
+      }
+      for (var dir in userDirections) {
+        if (dir == "" || dir == null) {
+          userDirectionsDatabase.remove(dir);
+        }
+      }
+      //image -title -ingredient - direction -classification
+      final FirebaseAuth _auth = FirebaseAuth.instance;
+      final currentUser = await _auth.currentUser;
+      var uuid = Uuid();
+      recipe_id = uuid.v4();
+    }
+
+    // print("The ingridaint in addRecipebutton method are :  ");
+    // print("the length: ");
+    // print(userIngredientsDatabase.length);
+    // for (var ing in userIngredientsDatabase) {
+    //   print(ing);
+    // }
+    // print("The Directions in addRecipebutton method are :  ");
+    // print("the length: ");
+    // print(userDirectionsDatabase.length);
+    // for (var dir in userDirectionsDatabase) {
+    //   print(dir);
+    // }
+
     print("recpie title is: ");
     print(_recipeTitle);
+    print(" title is: ");
 
     print(currentSelectedTypeOfMeal);
     print(currentSelectedCategory);
     print(currentSelectedCuisine);
-
-    List<String> userIngredientsCopy = List.from(
-        userIngredients); // we make a copy of the list to loop one and remove from one, because we can not loop and remove the same list at the same time
-
-    for (var ing in userIngredients) {
-      if (ing == "" || ing == null) {
-        userIngredientsCopy.remove(ing);
-      }
-    }
-    print("The ingridaint in addRecipebutton method are :  ");
-    print("the length: ");
-    print(userIngredientsCopy.length);
-    for (var ing in userIngredientsCopy) {
-      print(ing);
-    }
-
-    if (_isValidForm) {
-      print("Everything is good");
-    }
   }
 
 //___________________________DATABASE_______________________________
@@ -67,42 +87,105 @@ class addRecipe extends State<addRecipePage> {
 //_______ The two methods below is used to create a dynamic TextFormFeild for Ingredients__________________
   // TextEditingController _nameController;
   List<Widget> _getIngredients() {
-    print("The ingridaint are: \n ");
-    for (var ing in userIngredients) print(ing);
+    // print("The ingridaint are: \n ");
+    // for (var ing in userIngredients) print(ing);
 //The line 29 and 30 will be deleted they are jsut for checking :) # delete
 
     List<Widget> ingredientsTextFieldsList = [];
     for (int i = 0; i < userIngredients.length; i++) {
-      ingredientsTextFieldsList.add(Padding(
-        padding: const EdgeInsets.symmetric(
-            vertical: 16.0), // that seprate each text form filed
-        child: Row(
-          children: [
-            Expanded(
-                child: IngredientsTextFields(
-                    i)), // we call the TextFormField widget
-            SizedBox(
-              width: 16,
-            ),
-            // we need add button at last friends row only
-            _addRemoveButton(i == userIngredients.length - 1, i),
-          ],
+      ingredientsTextFieldsList.add(
+        Padding(
+          padding: const EdgeInsets.symmetric(
+              vertical: 16.0), // that seprate each text form filed
+          child: Row(
+            children: [
+              Expanded(
+                  child: IngredientsTextFields(
+                      i)), // we call the TextFormField widget
+              SizedBox(
+                width: 16,
+              ),
+              // we need add button at last Ingredients row only
+              _addRemoveButtonInIngredient(i == userIngredients.length - 1, i),
+            ],
+          ),
         ),
-      ));
+      );
     }
     return ingredientsTextFieldsList;
   }
 
-  Widget _addRemoveButton(bool add, int index) {
+  Widget _addRemoveButtonInIngredient(bool add, int index) {
     return InkWell(
       onTap: () {
         if (add) {
           // add new text-fields at the top of all friends textfields
           userIngredients.insert(index + 1, null);
+
           // insert(the place of text from field , null mean to initialize the text form filed with empty text )
           // we can put (index + 1) = 0 to change it to let the user add at the top
-        } else
+        } else {
           userIngredients.removeAt(index);
+        }
+        setState(() {}); // to refresh the screen
+      },
+      child: Container(
+        // width: 25,
+        // height: 25,
+        decoration: BoxDecoration(
+          color: (add) ? Color(0xFFeb6d44) : Color(0xFFeb6d44),
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Icon(
+          (add) ? Icons.add : Icons.remove,
+          color: Colors.white,
+        ),
+      ),
+    );
+  }
+
+  //-------------------------------Direction fields----------------------------
+  List<Widget> _getDirections() {
+    // print("The directions are: \n ");
+    // for (var ing in userDirections) print(ing);
+//The line 29 and 30 will be deleted they are jsut for checking :) # delete
+
+    List<Widget> DirectionsTextFieldsList = [];
+    for (int i = 0; i < userDirections.length; i++) {
+      DirectionsTextFieldsList.add(
+        Padding(
+          padding: const EdgeInsets.symmetric(
+              vertical: 16.0), // that seprate each text form filed
+          child: Row(
+            children: [
+              Expanded(
+                  child: DirectionsTextFields(
+                      i)), // we call the TextFormField widget
+              SizedBox(
+                width: 16,
+              ),
+              // we need add button at last Ingredients row only
+              _addRemoveButtonInDirection(i == userDirections.length - 1, i),
+            ],
+          ),
+        ),
+      );
+    }
+    return DirectionsTextFieldsList;
+  }
+
+  Widget _addRemoveButtonInDirection(bool add, int index) {
+    return InkWell(
+      onTap: () {
+        if (add) {
+          // add new text-fields at the top of all friends textfields
+
+          userDirections.insert(index + 1, null);
+          // insert(the place of text from field , null mean to initialize the text form filed with empty text )
+          // we can put (index + 1) = 0 to change it to let the user add at the top
+        } else {
+          userDirections.removeAt(index);
+        }
         setState(() {}); // to refresh the screen
       },
       child: Container(
@@ -163,6 +246,16 @@ class addRecipe extends State<addRecipePage> {
         key: _formKey,
         child: ListView(
           children: [
+            //---------------add photo-------------
+            Container(
+              //the big container
+              width: 50,
+              height: 220,
+              alignment: Alignment.center,
+              //color: Colors.grey,
+              child: RecipeImagePicker(recipe_id),
+            ),
+            //----------------------title-------------------------
             Stack(
               children: [
                 Container(
@@ -178,6 +271,7 @@ class addRecipe extends State<addRecipePage> {
                   ),
                   child: Container(
                     margin: EdgeInsets.only(bottom: 15, left: 50, right: 50),
+                    padding: EdgeInsets.only(top: 15),
                     child: TextFormField(
                       key: ValueKey("recipe_title"),
                       validator: (value) {
@@ -198,6 +292,7 @@ class addRecipe extends State<addRecipePage> {
                   child: Container(
                     //the container of the title text
                     padding: EdgeInsets.only(bottom: 0, left: 10, right: 10),
+
                     child: Text(
                       "Recipe Title",
                       style: TextStyle(
@@ -211,16 +306,6 @@ class addRecipe extends State<addRecipePage> {
                 ),
               ],
             ),
-
-            //---------------add photo-------------
-            Container(
-              //the big container
-              width: 50,
-              height: 220,
-              alignment: Alignment.center,
-              //color: Colors.grey,
-              child: RecipeImagePicker(),
-            ),
             //---------------Ingredients-------------
             Stack(
               children: <Widget>[
@@ -228,7 +313,7 @@ class addRecipe extends State<addRecipePage> {
                   //the biggest border
                   width: double.infinity,
                   margin: EdgeInsets.fromLTRB(10, 15, 30, 10),
-                  padding: EdgeInsets.only(bottom: 10, top: 15),
+                  padding: EdgeInsets.only(bottom: 0, top: 15),
                   decoration: BoxDecoration(
                     border: Border.all(color: Color(0xFFeb6d44), width: 1),
                     borderRadius: BorderRadius.circular(5),
@@ -276,9 +361,8 @@ class addRecipe extends State<addRecipePage> {
               children: <Widget>[
                 Container(
                   width: double.infinity,
-                  height: 200,
                   margin: EdgeInsets.fromLTRB(10, 15, 30, 10),
-                  padding: EdgeInsets.only(bottom: 10, top: 15),
+                  padding: EdgeInsets.only(bottom: 0, top: 15),
                   decoration: BoxDecoration(
                     border: Border.all(color: Color(0xFFeb6d44), width: 1),
                     borderRadius: BorderRadius.circular(5),
@@ -319,6 +403,18 @@ class addRecipe extends State<addRecipePage> {
                   //     ],
                   //   ),
                   // ),
+                  child: Container(
+                    margin: EdgeInsets.only(bottom: 15, left: 50, right: 50),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ..._getDirections(),
+                        SizedBox(
+                          height: 40,
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
                 Positioned(
                   left: 20,
@@ -385,14 +481,14 @@ class addRecipe extends State<addRecipePage> {
                           },
                           style: const TextStyle(color: Color(0xFFeb6d44)),
                           //we can remove the the code from line 355 to line 362 just try # delete
-                          selectedItemBuilder: (BuildContext context) {
-                            return recipeType.map((String value) {
-                              return Text(
-                                currentSelectedTypeOfMeal,
-                                style: const TextStyle(color: Colors.black),
-                              );
-                            }).toList();
-                          },
+                          // selectedItemBuilder: (BuildContext context) {
+                          //   return recipeType.map((String value) {
+                          //     return Text(
+                          //       currentSelectedTypeOfMeal,
+                          //       style: const TextStyle(color: Colors.black),
+                          //     );
+                          //   }).toList();
+                          // },
                           items: recipeType
                               .map<DropdownMenuItem<String>>((String value) {
                             return DropdownMenuItem<String>(
@@ -431,14 +527,14 @@ class addRecipe extends State<addRecipePage> {
                             });
                           },
                           style: const TextStyle(color: Color(0xFFeb6d44)),
-                          selectedItemBuilder: (BuildContext context) {
-                            return recipeCategories.map((String value) {
-                              return Text(
-                                currentSelectedCategory,
-                                style: const TextStyle(color: Colors.black),
-                              );
-                            }).toList();
-                          },
+                          // selectedItemBuilder: (BuildContext context) {
+                          //   return recipeCategories.map((String value) {
+                          //     return Text(
+                          //       currentSelectedCategory,
+                          //       style: const TextStyle(color: Colors.black),
+                          //     );
+                          //   }).toList();
+                          // },
                           items: recipeCategories
                               .map<DropdownMenuItem<String>>((String value) {
                             return DropdownMenuItem<String>(
@@ -476,14 +572,14 @@ class addRecipe extends State<addRecipePage> {
                             });
                           },
                           style: const TextStyle(color: Color(0xFFeb6d44)),
-                          selectedItemBuilder: (BuildContext context) {
-                            return cuisine.map((String value) {
-                              return Text(
-                                currentSelectedCuisine,
-                                style: const TextStyle(color: Colors.black),
-                              );
-                            }).toList();
-                          },
+                          // selectedItemBuilder: (BuildContext context) {
+                          //   return cuisine.map((String value) {
+                          //     return Text(
+                          //       currentSelectedCuisine,
+                          //       style: const TextStyle(color: Colors.black),
+                          //     );
+                          //   }).toList();
+                          // },
                           items: cuisine
                               .map<DropdownMenuItem<String>>((String value) {
                             return DropdownMenuItem<String>(

@@ -8,6 +8,9 @@ import 'package:path/path.dart' as Path;
 import 'package:uuid/uuid.dart';
 
 class RecipeImagePicker extends StatefulWidget {
+  final recipe_id;
+  RecipeImagePicker(this.recipe_id);
+
   @override
   _RecipeImagePickerState createState() => _RecipeImagePickerState();
 }
@@ -17,7 +20,6 @@ class _RecipeImagePickerState extends State<RecipeImagePicker> {
   bool _isloading = false;
   File _image;
   String _uploadedFileURL;
-  var recipe_id = "";
 
   Future chooseFile() async {
     await ImagePicker.pickImage(source: ImageSource.gallery).then((image) {
@@ -54,14 +56,15 @@ class _RecipeImagePickerState extends State<RecipeImagePicker> {
         // to save the image in the database (in recpies collction inside users collectino)
         if (_isFirestPhoto) {
           _isFirestPhoto = false;
-          var uuid = Uuid();
-          recipe_id = uuid.v4();
+          // var uuid = Uuid();
+          // recipe_id = uuid.v4();
           await FirebaseFirestore.instance
               .collection("users")
               .doc(currentUser.uid)
               .collection(
                   "recpies") // create new collcetion of recpies inside user document to save all of the user's recpies
-              .doc(recipe_id) //uuid.v() is a library to create a random key
+              .doc(widget
+                  .recipe_id) //uuid.v() is a library to create a random key
               .set({
             "recipe_image_url":
                 _uploadedFileURL, // in the near future we will save all the recipe informaion here
@@ -75,7 +78,8 @@ class _RecipeImagePickerState extends State<RecipeImagePicker> {
               .doc(currentUser.uid)
               .collection(
                   "recpies") // create new collcetion of recpies inside user document to save all of the user's recpies
-              .doc(recipe_id) //uuid.v() is a library to create a random key
+              .doc(widget
+                  .recipe_id) //uuid.v() is a library to create a random key
               .update({
             "recipe_image_url":
                 _uploadedFileURL, // in the near future we will save all the recipe informaion here
