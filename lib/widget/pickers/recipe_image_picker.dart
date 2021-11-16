@@ -134,7 +134,7 @@ class RecipeImagePickerState extends State<RecipeImagePicker> {
                   )
                 : TextButton.icon(
                     onPressed: chooseFile,
-                    icon: Icon(Icons.image, size: 30),
+                    icon: Icon(Icons.image, size: 20),
                     label: Text(
                       "add recipe photo",
                       style: TextStyle(
