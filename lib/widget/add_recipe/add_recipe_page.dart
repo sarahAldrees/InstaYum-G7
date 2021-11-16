@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:instayum1/widget/add_recipe/directions_text_fields.dart';
@@ -31,17 +32,22 @@ class addRecipe extends State<addRecipePage> {
   // var currentSelectedTypeOfMeal = "Select the type of meal";
 
   bool isPublic = false;
-  var recipe_id = "";
+//final recipe_id = "";
+  // var uuid = Uuid();
+  var recipe_id = Uuid().v4();
 
   void addRecipeButton() async {
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+    final currentUser = await _auth.currentUser;
     final _isValidForm = _formKey.currentState.validate();
     _formKey.currentState.save();
+
     if (_isValidForm) {
       print("Everything is in the database ");
 
       List<String> userIngredientsDatabase = List.from(userIngredients);
-      List<String> userDirectionsDatabase = List.from(
-          userDirections); // we make a copy of the list to loop one and remove from one, because we can not loop and remove the same list at the same time
+      List<String> userDirectionsDatabase = List.from(userDirections);
+      // we make a copy of the list to loop one and remove from one, because we can not loop and remove the same list at the same time
 
       for (var ing in userIngredients) {
         if (ing == "" || ing == null) {
@@ -53,11 +59,62 @@ class addRecipe extends State<addRecipePage> {
           userDirectionsDatabase.remove(dir);
         }
       }
-      //image -title -ingredient - direction -classification
-      final FirebaseAuth _auth = FirebaseAuth.instance;
-      final currentUser = await _auth.currentUser;
-      var uuid = Uuid();
-      recipe_id = uuid.v4();
+      print('recipe name before the saving');
+      print(_recipeTitle);
+      await FirebaseFirestore.instance
+          .collection("users")
+          .doc(currentUser.uid)
+          .collection(
+              "recpies") // create new collcetion of recpies inside user document to save all of the user's recpies
+          .doc(recipe_id) //uuid.v() is a library to create a random key
+          .set({
+        "recipe_title": _recipeTitle,
+        // "recipe_image_url": RecipeImagePickerState.uploadedFileURL,
+        'length_of_ingredients': userIngredientsDatabase.length,
+        'length_of_directions': userDirectionsDatabase.length
+      });
+
+      int countItems = 0;
+      for (var ing in userIngredientsDatabase) {
+        countItems++;
+        await FirebaseFirestore.instance
+            .collection("users")
+            .doc(currentUser.uid)
+            .collection(
+                "recpies") // create new collcetion of recpies inside user document to save all of the user's recpies
+            .doc(recipe_id) //uuid.v() is a library to create a random key
+            .update({
+          'ing$countItems': ing,
+          // in the near future we will save all the recipe informaion here
+        });
+      }
+
+      countItems = 0;
+      for (var dir in userDirectionsDatabase) {
+        countItems++;
+        await FirebaseFirestore.instance
+            .collection("users")
+            .doc(currentUser.uid)
+            .collection(
+                "recpies") // create new collcetion of recpies inside user document to save all of the user's recpies
+            .doc(recipe_id) //uuid.v() is a library to create a random key
+            .update({
+          'dir$countItems': dir,
+          // in the near future we will save all the recipe informaion here
+        });
+      }
+      await FirebaseFirestore.instance
+          .collection("users")
+          .doc(currentUser.uid)
+          .collection(
+              "recpies") // create new collcetion of recpies inside user document to save all of the user's recpies
+          .doc(recipe_id) //uuid.v() is a library to create a random key
+          .update({
+        'type_of_meal': currentSelectedTypeOfMeal,
+        'category': currentSelectedCategory,
+        'cuisine': currentSelectedCuisine,
+        // in the near future we will save all the recipe informaion here
+      });
     }
 
     // print("The ingridaint in addRecipebutton method are :  ");
@@ -72,11 +129,12 @@ class addRecipe extends State<addRecipePage> {
     // for (var dir in userDirectionsDatabase) {
     //   print(dir);
     // }
-
+    print('the id in recipe class is  ');
+    print(recipe_id);
     print("recpie title is: ");
     print(_recipeTitle);
-    print(" title is: ");
-
+    print("url: ");
+    print(RecipeImagePickerState.uploadedFileURL);
     print(currentSelectedTypeOfMeal);
     print(currentSelectedCategory);
     print(currentSelectedCuisine);

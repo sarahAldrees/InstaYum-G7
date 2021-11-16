@@ -12,14 +12,14 @@ class RecipeImagePicker extends StatefulWidget {
   RecipeImagePicker(this.recipe_id);
 
   @override
-  _RecipeImagePickerState createState() => _RecipeImagePickerState();
+  RecipeImagePickerState createState() => RecipeImagePickerState();
 }
 
-class _RecipeImagePickerState extends State<RecipeImagePicker> {
+class RecipeImagePickerState extends State<RecipeImagePicker> {
   bool _isFirestPhoto = true;
   bool _isloading = false;
   File _image;
-  String _uploadedFileURL;
+  static String uploadedFileURL;
 
   Future chooseFile() async {
     await ImagePicker.pickImage(source: ImageSource.gallery).then((image) {
@@ -36,24 +36,34 @@ class _RecipeImagePickerState extends State<RecipeImagePicker> {
     });
     final FirebaseAuth _auth = FirebaseAuth.instance;
     final currentUser = await _auth.currentUser;
+    // print('the id in image');
+    // print(widget.recipe_id);
+    // print('the path');
+    // print(Path.basename(_image.path));
 
     FirebaseStorage storageReference = FirebaseStorage.instance;
     Reference ref = storageReference
         .ref()
         .child('recpie_image/${Path.basename(_image.path)}}');
+
     UploadTask uploadTask = ref.putFile(_image);
     uploadTask.then((res) {
       print('File Uploaded');
       res.ref.getDownloadURL().then((fileURL) {
+        uploadedFileURL = fileURL;
+        print('here in image class ');
+        print(fileURL);
+        print('the id in image class is  ');
+        print(widget.recipe_id);
         // to add https://
         setState(() {
-          _uploadedFileURL = fileURL;
-          // print("set state work now!");
+          uploadedFileURL = fileURL;
+          print("set state work now!");
         });
       }).then((nothing) async {
-        //nothing is mean null, but null cause an error
+        // nothing is mean null, but null cause an error
 
-        // to save the image in the database (in recpies collction inside users collectino)
+        //to save the image in the database (in recpies collction inside users collectino)
         if (_isFirestPhoto) {
           _isFirestPhoto = false;
           // var uuid = Uuid();
@@ -67,7 +77,7 @@ class _RecipeImagePickerState extends State<RecipeImagePicker> {
                   .recipe_id) //uuid.v() is a library to create a random key
               .set({
             "recipe_image_url":
-                _uploadedFileURL, // in the near future we will save all the recipe informaion here
+                uploadedFileURL, // in the near future we will save all the recipe informaion here
           });
           setState(() {
             _isloading = false;
@@ -82,7 +92,7 @@ class _RecipeImagePickerState extends State<RecipeImagePicker> {
                   .recipe_id) //uuid.v() is a library to create a random key
               .update({
             "recipe_image_url":
-                _uploadedFileURL, // in the near future we will save all the recipe informaion here
+                uploadedFileURL, // in the near future we will save all the recipe informaion here
           });
           setState(() {
             _isloading = false;
@@ -105,9 +115,9 @@ class _RecipeImagePickerState extends State<RecipeImagePicker> {
             //   color: Colors.cyan,
             // )
             // ,
-            _uploadedFileURL != null
+            uploadedFileURL != null
                 ? Image.network(
-                    _uploadedFileURL,
+                    uploadedFileURL,
                     height: 150,
                   )
                 : Image.asset(
