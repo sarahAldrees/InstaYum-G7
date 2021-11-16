@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:instayum1/add_recipe_page.dart';
+import 'package:instayum1/widget/add_recipe/add_recipe_page.dart';
 import 'package:instayum1/discover_page.dart';
 import 'package:instayum1/screen/profile_screen.dart';
 import 'package:instayum1/shopping_list_page.dart';
