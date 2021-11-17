@@ -40,7 +40,10 @@ class _DirectionsTextFieldsState extends State<DirectionsTextFields> {
       decoration: InputDecoration(hintText: 'Enter a direction'),
       // save text field data in friends list at index
       // whenever text field value changes
-      onChanged: (value) => addRecipe.userDirections[widget.index] = value,
+      onChanged: (value) {
+        addRecipe.userDirections[widget.index] = value;
+        addRecipe.formKey.currentState.validate();
+      },
       validator: (value) {
         if (value.trim().isEmpty) return 'Please enter a direction';
         return null;

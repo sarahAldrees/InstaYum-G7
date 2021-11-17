@@ -34,15 +34,25 @@ class _IngredientsTextFieldsState extends State<IngredientsTextFields> {
       // i think to delete this line
     });
 
+    String errorMessage = 'Please enter an ingredient';
+
     return TextFormField(
       controller: _ingredientController,
 
       decoration: InputDecoration(hintText: 'Enter an ingredient'),
       // save text field data in friends list at index
       // whenever text field value changes
-      onChanged: (value) => addRecipe.userIngredients[widget.index] = value,
+      onChanged: (value) {
+        // if (_ingredientController.text.isEmpty) {
+        //   return "ERROR";
+        // }
+        addRecipe.userIngredients[widget.index] = value;
+        addRecipe.formKey.currentState.validate();
+      },
       validator: (value) {
-        if (value.trim().isEmpty) return 'Please enter an ingredient';
+        if (value.trim().isEmpty) {
+          return 'Please enter an ingredient';
+        }
         return null;
       },
     );
