@@ -13,7 +13,7 @@ class addRecipePage extends StatefulWidget {
 }
 
 class addRecipe extends State<addRecipePage> {
-  final _formKey = GlobalKey<FormState>();
+  static var formKey = GlobalKey<FormState>();
 
 //___________________DATABASE_________________
   String _recipeTitle;
@@ -39,28 +39,53 @@ class addRecipe extends State<addRecipePage> {
   // List<String> userIngredientsDatabase = List.from(userIngredients);
   // List<String> userDirectionsDatabase = List.from(userDirections);
   // we make a copy of the list to loop one and remove from one, because we can not loop and remove the same list at the same time
-
   void addData() {
-    List<String> userIngredientsDatabase = List.from(userIngredients);
-    List<String> userDirectionsDatabase = List.from(userDirections);
-
-    for (var ing in userIngredientsDatabase) {
+    List<String> userIngredientsCopy = List.from(userIngredients);
+    // List<String> userDirectionsCopy = List.from(userDirections);
+    bool isNull = false;
+    for (var ing in userIngredientsCopy) {
       if (ing == "" || ing == null) {
-        userIngredients.remove(ing);
+        isNull = true;
       }
     }
-    for (var dir in userDirectionsDatabase) {
-      if (dir == "" || dir == null) {
-        userDirections.remove(dir);
-      }
+
+    if ((userIngredients[userIngredients.length - 1] == null ||
+            userIngredients[userIngredients.length - 1] == "") &&
+        userIngredients.length > 1) {
+      userIngredients.removeAt(userIngredients.length - 1);
+    }
+    if ((userDirections[userDirections.length - 1] == null ||
+            userDirections[userDirections.length - 1] == "") &&
+        userDirections.length > 1) {
+      userDirections.removeAt(userDirections.length - 1);
+    }
+
+    // for (var dir in userDirectionsCopy) {
+    //   if (dir == "" || dir == null) {
+    //     userDirections.remove(dir);
+    //   }
+    // }
+
+    print("Ingredients after clean");
+    for (var ing in userIngredients) {
+      print(ing);
+    }
+    print("Directions after clean");
+    for (var dir in userDirections) {
+      print(dir);
     }
 
     setState(() {});
 
-    _formKey.currentState.save();
-    if (_formKey.currentState.validate()) {
+    formKey.currentState.save();
+
+    // if (userIngredients.length > 1 && userDirections.length > 1) {
+    //   addRecipeButton();
+    // }
+
+    if (formKey.currentState.validate()) {
       addRecipeButton();
-    }
+    } else {}
   }
 
   void addRecipeButton() async {
@@ -153,6 +178,7 @@ class addRecipe extends State<addRecipePage> {
 
 //_______ The two methods below is used to create a dynamic TextFormFeild for Ingredients__________________
   TextEditingController _ingredientController;
+
   List<Widget> _getIngredients() {
     // print("The ingridaint are: \n ");
     // for (var ing in userIngredients) print(ing);
@@ -173,7 +199,8 @@ class addRecipe extends State<addRecipePage> {
                 width: 16,
               ),
               // we need add button at last Ingredients row only
-              _addRemoveButtonInIngredient(i == userIngredients.length - 1, i),
+              _addRemoveButtonInIngredient(i == userIngredients.length - 1, i,
+                  ingredientsTextFieldsList),
             ],
           ),
         ),
@@ -182,7 +209,7 @@ class addRecipe extends State<addRecipePage> {
     return ingredientsTextFieldsList;
   }
 
-  Widget _addRemoveButtonInIngredient(bool add, int index) {
+  Widget _addRemoveButtonInIngredient(bool add, int index, List<Widget> list2) {
     return InkWell(
       // key:Key("{$index}"),
       onTap: () {
@@ -193,6 +220,7 @@ class addRecipe extends State<addRecipePage> {
           // insert(the place of text from field , null mean to initialize the text form filed with empty text )
           // we can put (index + 1) = 0 to change it to let the user add at the top
         } else {
+          list2.removeAt(index);
           userIngredients.removeAt(index);
         }
         setState(() {}); // to refresh the screen
@@ -219,7 +247,6 @@ class addRecipe extends State<addRecipePage> {
     // print("The directions are: \n ");
     // for (var ing in userDirections) print(ing);
 //The line 29 and 30 will be deleted they are jsut for checking :) # delete
-
     List<Widget> DirectionsTextFieldsList = [];
     for (int i = 0; i < userDirections.length; i++) {
       DirectionsTextFieldsList.add(
@@ -249,7 +276,6 @@ class addRecipe extends State<addRecipePage> {
       onTap: () {
         if (add) {
           // add new text-fields at the top of all friends textfields
-
           userDirections.insert(index + 1, null);
           // insert(the place of text from field , null mean to initialize the text form filed with empty text )
           // we can put (index + 1) = 0 to change it to let the user add at the top
@@ -313,7 +339,7 @@ class addRecipe extends State<addRecipePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Form(
-        key: _formKey,
+        key: formKey,
         child: SingleChildScrollView(
           child: Column(
             children: [
