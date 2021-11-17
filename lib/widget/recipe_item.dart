@@ -1,16 +1,27 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:instayum1/widget/recipe_view/recipe_view_screen.dart';
 
 class recipe_Item extends StatelessWidget {
   final String id;
   final String recipeName;
   final String category;
   final String imageURL;
+  final String cuisine;
   final List<String> ingredients;
-  final List<String> steps;
-  final int duration;
-  const recipe_Item(Key key, this.id, this.recipeName, this.category,
-      this.imageURL, this.ingredients, this.steps, this.duration);
+  final List<String> dirctions;
+  final String typeOfMeal;
+  const recipe_Item(
+    Key key,
+    this.id,
+    this.recipeName,
+    this.imageURL,
+    this.typeOfMeal,
+    this.category,
+    this.cuisine,
+    this.ingredients,
+    this.dirctions,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +38,10 @@ class recipe_Item extends StatelessWidget {
 
         child: InkWell(
           // to make  clickable image
-          onTap: () {}, //what happend after clicking image
+          onTap: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => recipe_view()));
+          }, //what happend after clicking image
 
           child: ClipRRect(
             child: Container(

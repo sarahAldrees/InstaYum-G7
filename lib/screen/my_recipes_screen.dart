@@ -12,8 +12,17 @@ class my_recipes extends StatelessWidget {
 
       padding: EdgeInsets.all(25),
       // map all available cookbooks and list them in Gridviwe.
-      children: Recipes_Data.map((e) => recipe_Item(key, e.id, e.recipeName,
-          e.category, e.imageURL, e.ingredients, e.steps, e.duration)).toList(),
+      children: Recipes_Data.map((e) => recipe_Item(
+            key,
+            e.id,
+            e.recipeName,
+            e.imageURL,
+            e.typeOfMeal,
+            e.category,
+            e.cuisine,
+            e.ingredients,
+            e.dirctions,
+          )).toList(),
     );
   }
 }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:instayum1/checkboxState.dart';
+import 'package:instayum1/model/checkboxState.dart';
 
 class ShoppingListPage extends StatefulWidget {
   @override
