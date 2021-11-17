@@ -36,21 +36,26 @@ class addRecipe extends State<addRecipePage> {
   // var uuid = Uuid();
   var recipe_id = Uuid().v4();
 
-  List<String> userIngredientsDatabase = List.from(userIngredients);
-  List<String> userDirectionsDatabase = List.from(userDirections);
+  // List<String> userIngredientsDatabase = List.from(userIngredients);
+  // List<String> userDirectionsDatabase = List.from(userDirections);
   // we make a copy of the list to loop one and remove from one, because we can not loop and remove the same list at the same time
 
   void addData() {
-    for (var ing in userIngredients) {
+    List<String> userIngredientsDatabase = List.from(userIngredients);
+    List<String> userDirectionsDatabase = List.from(userDirections);
+
+    for (var ing in userIngredientsDatabase) {
       if (ing == "" || ing == null) {
-        userIngredientsDatabase.remove(ing);
+        userIngredients.remove(ing);
       }
     }
-    for (var dir in userDirections) {
+    for (var dir in userDirectionsDatabase) {
       if (dir == "" || dir == null) {
-        userDirectionsDatabase.remove(dir);
+        userDirections.remove(dir);
       }
     }
+
+    setState(() {});
 
     _formKey.currentState.save();
     if (_formKey.currentState.validate()) {
@@ -74,12 +79,12 @@ class addRecipe extends State<addRecipePage> {
         .set({
       "recipe_title": _recipeTitle,
       // "recipe_image_url": RecipeImagePickerState.uploadedFileURL,
-      'length_of_ingredients': userIngredientsDatabase.length,
-      'length_of_directions': userDirectionsDatabase.length
+      'length_of_ingredients': userIngredients.length,
+      'length_of_directions': userDirections.length
     });
 
     int countItems = 0;
-    for (var ing in userIngredientsDatabase) {
+    for (var ing in userIngredients) {
       countItems++;
       await FirebaseFirestore.instance
           .collection("users")
@@ -94,7 +99,7 @@ class addRecipe extends State<addRecipePage> {
     }
 
     countItems = 0;
-    for (var dir in userDirectionsDatabase) {
+    for (var dir in userDirections) {
       countItems++;
       await FirebaseFirestore.instance
           .collection("users")
@@ -107,6 +112,7 @@ class addRecipe extends State<addRecipePage> {
         // in the near future we will save all the recipe informaion here
       });
     }
+
     await FirebaseFirestore.instance
         .collection("users")
         .doc(currentUser.uid)
@@ -146,7 +152,7 @@ class addRecipe extends State<addRecipePage> {
 //___________________________DATABASE_______________________________
 
 //_______ The two methods below is used to create a dynamic TextFormFeild for Ingredients__________________
-  // TextEditingController _nameController;
+  TextEditingController _ingredientController;
   List<Widget> _getIngredients() {
     // print("The ingridaint are: \n ");
     // for (var ing in userIngredients) print(ing);
@@ -178,6 +184,7 @@ class addRecipe extends State<addRecipePage> {
 
   Widget _addRemoveButtonInIngredient(bool add, int index) {
     return InkWell(
+      // key:Key("{$index}"),
       onTap: () {
         if (add) {
           // add new text-fields at the top of all friends textfields
@@ -206,6 +213,8 @@ class addRecipe extends State<addRecipePage> {
   }
 
   //-------------------------------Direction fields----------------------------
+  TextEditingController _directionController;
+
   List<Widget> _getDirections() {
     // print("The directions are: \n ");
     // for (var ing in userDirections) print(ing);
@@ -311,7 +320,7 @@ class addRecipe extends State<addRecipePage> {
               //---------------add photo-------------
               Container(
                 //the big container
-                width: 100,
+                width: 300,
                 height: 250,
                 alignment: Alignment.center,
                 //color: Colors.grey,

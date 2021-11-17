@@ -118,11 +118,13 @@ class RecipeImagePickerState extends State<RecipeImagePicker> {
             uploadedFileURL != null
                 ? Image.network(
                     uploadedFileURL,
-                    height: 150,
+                    height: 180,
+                    width: 180,
                   )
                 : Image.asset(
                     "assets/images/defaultUser.png",
-                    height: 150,
+                    height: 180,
+                    width: 180,
                   ),
             _isloading
                 ? Padding(
@@ -134,7 +136,7 @@ class RecipeImagePickerState extends State<RecipeImagePicker> {
                   )
                 : TextButton.icon(
                     onPressed: chooseFile,
-                    icon: Icon(Icons.image, size: 20),
+                    icon: Icon(Icons.image, size: 28),
                     label: Text(
                       "add recipe photo",
                       style: TextStyle(

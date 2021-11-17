@@ -10,32 +10,32 @@ class DirectionsTextFields extends StatefulWidget {
 }
 
 class _DirectionsTextFieldsState extends State<DirectionsTextFields> {
-  // TextEditingController _nameController;
+  TextEditingController _directionController;
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   _nameController = TextEditingController();
-  // }
+  @override
+  void initState() {
+    super.initState();
+    _directionController = TextEditingController();
+  }
 
-  // @override
-  // void dispose() {
-  //   // release the memory allocated to variables when state object is removed.
-  //   _nameController.dispose();
-  //   super.dispose();
-  // }
+  @override
+  void dispose() {
+    // release the memory allocated to variables when state object is removed.
+    _directionController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     // run this method when the interface has been loaded
-    // WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-    //   // i think if we change timeStamp to _ it will work fine # delete
-    //   // _nameController.text = addRecipe.userIngredients[widget.index];
-    //   // i think to delete this line
-    // });
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      // i think if we change timeStamp to _ it will work fine # delete
+      _directionController.text = addRecipe.userDirections[widget.index];
+      // i think to delete this line
+    });
 
     return TextFormField(
-      // controller: _nameController,
+      controller: _directionController,
 
       decoration: InputDecoration(hintText: 'Enter a direction'),
       // save text field data in friends list at index

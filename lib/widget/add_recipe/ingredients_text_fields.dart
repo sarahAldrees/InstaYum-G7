@@ -10,32 +10,32 @@ class IngredientsTextFields extends StatefulWidget {
 }
 
 class _IngredientsTextFieldsState extends State<IngredientsTextFields> {
-  TextEditingController _nameController;
+  TextEditingController _ingredientController;
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   _nameController = TextEditingController();
-  // }
+  @override
+  void initState() {
+    super.initState();
+    _ingredientController = TextEditingController();
+  }
 
-  // @override
-  // void dispose() {
-  //   // release the memory allocated to variables when state object is removed.
-  //   _nameController.dispose();
-  //   super.dispose();
-  // }
+  @override
+  void dispose() {
+    // release the memory allocated to variables when state object is removed.
+    _ingredientController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    // run this method when the interface has been loaded
-    // WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-    //   // i think if we change timeStamp to _ it will work fine # delete
-    //   // _nameController.text = addRecipe.userIngredients[widget.index];
-    //   // i think to delete this line
-    // });
+    //  run this method when the interface has been loaded
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      // i think if we change timeStamp to _ it will work fine # delete
+      _ingredientController.text = addRecipe.userIngredients[widget.index];
+      // i think to delete this line
+    });
 
     return TextFormField(
-      // controller: _nameController,
+      controller: _ingredientController,
 
       decoration: InputDecoration(hintText: 'Enter an ingredient'),
       // save text field data in friends list at index
