@@ -17,9 +17,9 @@ class RecipeImagePicker extends StatefulWidget {
 
 class RecipeImagePickerState extends State<RecipeImagePicker> {
   bool _isFirestPhoto = true;
-  bool _isloading = false;
+  bool _isloading = false; // to show the progress circle
   File _image;
-  static String uploadedFileURL;
+  String _uploadedFileURL;
 
   Future chooseFile() async {
     await ImagePicker.pickImage(source: ImageSource.gallery).then((image) {
@@ -36,10 +36,6 @@ class RecipeImagePickerState extends State<RecipeImagePicker> {
     });
     final FirebaseAuth _auth = FirebaseAuth.instance;
     final currentUser = await _auth.currentUser;
-    // print('the id in image');
-    // print(widget.recipe_id);
-    // print('the path');
-    // print(Path.basename(_image.path));
 
     FirebaseStorage storageReference = FirebaseStorage.instance;
     Reference ref = storageReference
@@ -50,34 +46,31 @@ class RecipeImagePickerState extends State<RecipeImagePicker> {
     uploadTask.then((res) {
       print('File Uploaded');
       res.ref.getDownloadURL().then((fileURL) {
-        uploadedFileURL = fileURL;
+        _uploadedFileURL = fileURL;
         print('here in image class ');
         print(fileURL);
         print('the id in image class is  ');
         print(widget.recipe_id);
         // to add https://
         setState(() {
-          uploadedFileURL = fileURL;
+          _uploadedFileURL = fileURL;
           print("set state work now!");
         });
       }).then((nothing) async {
-        // nothing is mean null, but null cause an error
+        // nothing mean null, but null cause an error
 
         //to save the image in the database (in recpies collction inside users collectino)
         if (_isFirestPhoto) {
           _isFirestPhoto = false;
-          // var uuid = Uuid();
-          // recipe_id = uuid.v4();
+          // _isFirestPhoto will be false, to prevent the database from creating a new document if the user change the picture
           await FirebaseFirestore.instance
               .collection("users")
               .doc(currentUser.uid)
-              .collection(
-                  "recpies") // create new collcetion of recpies inside user document to save all of the user's recpies
+              .collection("recpies")
               .doc(widget
-                  .recipe_id) //uuid.v() is a library to create a random key
+                  .recipe_id) //we bring the same recpie id from the add_recipe_page
               .set({
-            "recipe_image_url":
-                uploadedFileURL, // in the near future we will save all the recipe informaion here
+            "recipe_image_url": _uploadedFileURL,
           });
           setState(() {
             _isloading = false;
@@ -86,13 +79,11 @@ class RecipeImagePickerState extends State<RecipeImagePicker> {
           FirebaseFirestore.instance
               .collection("users")
               .doc(currentUser.uid)
-              .collection(
-                  "recpies") // create new collcetion of recpies inside user document to save all of the user's recpies
+              .collection("recpies")
               .doc(widget
-                  .recipe_id) //uuid.v() is a library to create a random key
+                  .recipe_id) //we bring the same recpie id from the add_recipe_page
               .update({
-            "recipe_image_url":
-                uploadedFileURL, // in the near future we will save all the recipe informaion here
+            "recipe_image_url": _uploadedFileURL,
           });
           setState(() {
             _isloading = false;
@@ -109,22 +100,16 @@ class RecipeImagePickerState extends State<RecipeImagePicker> {
         child: Column(
           children: <Widget>[
             Padding(padding: EdgeInsets.only(top: 15)),
-            // RaisedButton(
-            //   child: Text('Choose File'),
-            //   onPressed: chooseFile,
-            //   color: Colors.cyan,
-            // )
-            // ,
-            uploadedFileURL != null
+            _uploadedFileURL != null
                 ? Image.network(
-                    uploadedFileURL,
+                    _uploadedFileURL,
                     height: 180,
                     width: 180,
                   )
                 : Image.asset(
-                    "assets/images/defaultUser.png",
-                    height: 180,
-                    width: 180,
+                    "assets/images/defaultRecipeImage.png",
+                    height: 200,
+                    width: 300,
                   ),
             _isloading
                 ? Padding(
@@ -155,215 +140,3 @@ class RecipeImagePickerState extends State<RecipeImagePicker> {
     );
   }
 }
-
-// FirebaseStorage storage = FirebaseStorage.instance;
-
-// // Select and image from the gallery or take a picture with the camera
-// // Then upload to Firebase Storage
-// Future<void> _upload() async {
-//   final picker = ImagePicker();
-//   PickedFile pickedImage;
-
-//   try {
-//     pickedImage = await picker.getImage(
-//         source: ImageSource.gallery,
-
-//         // inputSource == 'camera'
-//         //     ? ImageSource.camera
-//         //     : ImageSource.gallery,
-//         maxWidth: 1920);
-
-//     final String fileName = path.basename(pickedImage.path);
-//     File imageFile = File(pickedImage.path);
-
-//     try {
-//       // Uploading the selected image with some custom meta data
-//       await storage.ref(fileName).putFile(
-//           imageFile,
-//           SettableMetadata(customMetadata: {
-//             'recipe_id': '123',
-//             'description': 'Some description...'
-//           }));
-
-//       // Refresh the UI
-//       setState(() {});
-//     } on FirebaseException catch (error) {
-//       print(error);
-//     }
-//   } catch (err) {
-//     print(err);
-//   }
-// }
-
-// // Retriew the uploaded images
-// // This function is called when the app launches for the first time or when an image is uploaded or deleted
-// Future<List<Map<String, dynamic>>> _loadImages() async {
-//   List<Map<String, dynamic>> files = [];
-
-//   final ListResult result = await storage.ref().list();
-//   final List<Reference> allFiles = result.items;
-
-//   await Future.forEach<Reference>(allFiles, (file) async {
-//     final String fileUrl = await file.getDownloadURL();
-//     final FullMetadata fileMeta = await file.getMetadata();
-//     files.add({
-//       "url": fileUrl,
-//       "path": file.fullPath,
-//       "recipe_id": fileMeta.customMetadata['recipe_id'] ?? 'Nobody',
-//       "description":
-//           fileMeta.customMetadata['description'] ?? 'No description'
-//     });
-//   });
-
-//   return files;
-// }
-
-// // bool isDefaultImage = false; // should be shanged;
-// // File image;
-
-// // var url = ""; // NEW
-// // List<Map<String, dynamic>> files = [];
-// // if (isDefaultImage) {
-// //   url =
-// //       "noImage"; // to put the url part in the database with "noImage" if user does not choose an image
-// // } else {
-// //   // to put the url part in database with user's image url
-// //   // NEW
-// //   var counter = 0;
-// //   final ref = FirebaseStorage.instance.ref();
-
-// //   // .child("recipe_image").child(
-// //   //     authResult.user.uid +
-// //   //         "jpg"); //we put the user is + jpg to be the name of the image and to make it unqie we use user id
-
-// //   // we add onComplete to can add await
-// //   // await ref.putFile(image);
-
-// //   url = await ref.getDownloadURL();
-// //   final FullMetadata fileMeta = await ref.getMetadata();
-// //   files.add({
-// //     'url': url,
-// //     'path': ref.fullPath,
-// //     "recipe_id": fileMeta.customMetadata['uploaded_by'] ?? 'Nobody',
-// //     "description":
-// //         fileMeta.customMetadata['description'] ?? 'No description',
-// //   });
-// //   return files;
-// // }
-
-// @override
-// Widget build(BuildContext context) {
-//   return Column(
-//     children: [
-//       ElevatedButton.icon(
-//         onPressed: () => _upload(),
-//         icon: Icon(Icons.library_add),
-//         label: Text('Add recipe photo'),
-//       ),
-//       Expanded(
-//         child: FutureBuilder(
-//           future: _loadImages(),
-//           builder:
-//               (context, AsyncSnapshot<List<Map<String, dynamic>>> snapshot) {
-//             if (snapshot.connectionState == ConnectionState.done) {
-//               return ListView.builder(
-//                 itemCount: snapshot.data?.length ?? 0,
-//                 itemBuilder: (context, index) {
-//                   final Map<String, dynamic> image = snapshot.data[index];
-
-//                   return Card(
-//                     margin: EdgeInsets.symmetric(vertical: 10),
-//                     child: ListTile(
-//                       dense: false,
-//                       leading: Image.network(image['url']),
-//                       title: Text(image['uploaded_by']),
-//                       subtitle: Text(image['description']),
-//                     ),
-//                   );
-//                 },
-//               );
-//             }
-
-//             return Center(
-//               child: CircularProgressIndicator(),
-//             );
-//           },
-//         ),
-//       ),
-//     ],
-//   );
-// }
-//}
-// File _pickedImage;
-// void _pickImage() async {
-//   final pickedImageFile = await ImagePicker.pickImage(
-//     source: ImageSource.gallery,
-//     maxWidth: 150,
-//   ); //we can add imageQuality: 50 to reduce the qulaity if image to half so the size if it will reduce
-//   setState(() {
-//     _pickedImage = pickedImageFile;
-//   });
-//   widget.imagePickFn(pickedImageFile);
-// }
-
-// @override
-// Widget build(BuildContext context) {
-//   return Column(
-//     children: [
-//       // _pickedImage != null ? Image.file(_pickedImage) : null,
-//       TextButton.icon(
-//         onPressed: _pickImage,
-//         icon: Icon(Icons.add_a_photo, size: 30),
-//         label: Text(
-//           "add recipe photo",
-//           style: TextStyle(
-//               fontSize: 17,
-//               fontWeight: FontWeight.bold,
-//               color: Colors.grey[700]),
-//         ),
-//         style: ButtonStyle(
-//           foregroundColor: MaterialStateProperty.all(Color(0xFFeb6d44)),
-//         ),
-//       ),
-//     ],
-//   );
-
-// Column(
-//     children: [
-//       SizedBox(
-//         height: 16,
-//       ),
-//       CircleAvatar(
-//         radius: 37,
-//         backgroundColor: Theme.of(context).accentColor,
-//         backgroundImage:
-//             _pickedImage != null ? FileImage(_pickedImage) : null,
-//       ),
-//       FlatButton.icon(
-//           onPressed: _pickImage,
-//           textColor: Theme.of(context).accentColor,
-//           icon: Icon(Icons.image),
-//           label: Text("Add Image")),
-//     ],
-//   );
-
-// Column(
-//   children: [
-//     SizedBox(
-//       height: 16,
-//     ),
-//     CircleAvatar(
-//       radius: 37,
-//       backgroundColor: Theme.of(context).accentColor,
-//       backgroundImage:
-//           _pickedImage != null ? FileImage(_pickedImage) : null,
-//     ),
-//     FlatButton.icon(
-//         onPressed: _pickImage,
-//         textColor: Theme.of(context).accentColor,
-//         icon: Icon(Icons.image),
-//         label: Text("Add Image")),
-//   ],
-// );
-//   }
-// }

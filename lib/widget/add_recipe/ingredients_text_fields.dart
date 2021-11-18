@@ -29,25 +29,16 @@ class _IngredientsTextFieldsState extends State<IngredientsTextFields> {
   Widget build(BuildContext context) {
     //  run this method when the interface has been loaded
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      // i think if we change timeStamp to _ it will work fine # delete
       _ingredientController.text = addRecipe.userIngredients[widget.index];
-      // i think to delete this line
     });
-
-    String errorMessage = 'Please enter an ingredient';
 
     return TextFormField(
       controller: _ingredientController,
-
       decoration: InputDecoration(hintText: 'Enter an ingredient'),
-      // save text field data in friends list at index
-      // whenever text field value changes
       onChanged: (value) {
-        // if (_ingredientController.text.isEmpty) {
-        //   return "ERROR";
-        // }
         addRecipe.userIngredients[widget.index] = value;
-        addRecipe.formKey.currentState.validate();
+        addRecipe.formKey.currentState
+            .validate(); //to validate every cange made by the user
       },
       validator: (value) {
         if (value.trim().isEmpty) {

@@ -29,20 +29,16 @@ class _DirectionsTextFieldsState extends State<DirectionsTextFields> {
   Widget build(BuildContext context) {
     // run this method when the interface has been loaded
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      // i think if we change timeStamp to _ it will work fine # delete
       _directionController.text = addRecipe.userDirections[widget.index];
-      // i think to delete this line
     });
 
     return TextFormField(
       controller: _directionController,
-
       decoration: InputDecoration(hintText: 'Enter a direction'),
-      // save text field data in friends list at index
-      // whenever text field value changes
       onChanged: (value) {
         addRecipe.userDirections[widget.index] = value;
-        addRecipe.formKey.currentState.validate();
+        addRecipe.formKey.currentState
+            .validate(); //to validate every cange made by the user
       },
       validator: (value) {
         if (value.trim().isEmpty) return 'Please enter a direction';
