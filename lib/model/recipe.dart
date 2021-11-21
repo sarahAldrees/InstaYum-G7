@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 
 class Recipe {
-  final Key key;
-  final String id;
+  // final Key key; //??
+  final String id; //change to user id
   final String recipeName;
   final String imageURL;
   final String category;
@@ -12,7 +12,7 @@ class Recipe {
   final String cuisine;
 
   const Recipe({
-    @required this.key,
+    // @required this.key,
     @required this.id,
     @required this.recipeName,
     @required this.imageURL,

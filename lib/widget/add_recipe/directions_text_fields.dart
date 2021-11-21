@@ -25,6 +25,16 @@ class _DirectionsTextFieldsState extends State<DirectionsTextFields> {
     super.dispose();
   }
 
+  String get _errorText {
+    //this method will show error message on every change made by the user using errorText
+    final text = _directionController.value.text;
+    if (text.isEmpty) {
+      return 'Please enter a direction';
+    }
+    // return null if the text is valid
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     // run this method when the interface has been loaded
@@ -34,14 +44,15 @@ class _DirectionsTextFieldsState extends State<DirectionsTextFields> {
 
     return TextFormField(
       controller: _directionController,
-      decoration: InputDecoration(hintText: 'Enter a direction'),
+      decoration:
+          InputDecoration(hintText: 'Enter a direction', errorText: _errorText),
       onChanged: (value) {
         addRecipe.userDirections[widget.index] = value;
-        addRecipe.formKey.currentState
-            .validate(); //to validate every cange made by the user
+        setState(() {}); //used to refresh the screen
       },
       validator: (value) {
         if (value.trim().isEmpty) return 'Please enter a direction';
+
         return null;
       },
     );

@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:instayum1/mainpages.dart';
-
 import 'package:instayum1/widget/add_recipe/directions_text_fields.dart';
 import 'package:instayum1/widget/add_recipe/ingredients_text_fields.dart';
 import 'package:instayum1/widget/pickers/recipe_image_picker.dart';
@@ -15,8 +14,11 @@ class addRecipePage extends StatefulWidget {
 }
 
 class addRecipe extends State<addRecipePage> {
-  static var formKey = GlobalKey<FormState>();
+  //static var formKey = GlobalKey<FormState>();
+  // final List<GlobalObjectKey<FormState>> formKey =
+  //List.generate(10, (index) => GlobalObjectKey<FormState>(index));
 
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 //___________________Attributes_________________
 
   String _recipeTitle;
@@ -99,24 +101,36 @@ class addRecipe extends State<addRecipePage> {
     // print('recipe name before the saving');
     // print(_recipeTitle);
 // to save the title , length of ingredients and length of directions
+    // await FirebaseFirestore.instance
+    //     .collection("users")
+    //     .doc(currentUser.uid)
+    //     .collection(
+    //         "recpies") // create new collcetion of recpies inside user document to save all of the user's recpies
+    //     .doc(recipe_id)
+    //     .set({
+    //   "recipe_title": _recipeTitle,
+    //   'length_of_ingredients': userIngredients.length,
+    //   'length_of_directions': userDirections.length,
+    //   'user_id': currentUser.uid,
+    // });
+
     await FirebaseFirestore.instance
-        .collection("users")
-        .doc(currentUser.uid)
         .collection(
             "recpies") // create new collcetion of recpies inside user document to save all of the user's recpies
         .doc(recipe_id)
         .set({
       "recipe_title": _recipeTitle,
       'length_of_ingredients': userIngredients.length,
-      'length_of_directions': userDirections.length
+      'length_of_directions': userDirections.length,
+      'user_id': currentUser.uid,
     });
 // to save the ingredients
     int countItems = 0;
     for (var ing in userIngredients) {
       countItems++;
       await FirebaseFirestore.instance
-          .collection("users")
-          .doc(currentUser.uid)
+          // .collection("users")
+          // .doc(currentUser.uid)
           .collection("recpies")
           .doc(recipe_id)
           .update({
@@ -128,8 +142,8 @@ class addRecipe extends State<addRecipePage> {
     for (var dir in userDirections) {
       countItems++;
       await FirebaseFirestore.instance
-          .collection("users")
-          .doc(currentUser.uid)
+          // .collection("users")
+          // .doc(currentUser.uid)
           .collection("recpies")
           .doc(recipe_id)
           .update({
@@ -137,16 +151,23 @@ class addRecipe extends State<addRecipePage> {
       });
     }
 // to save the classification
+    String recipe_image_url = RecipeImagePickerState.uploadedFileURL;
+
+    if (recipe_image_url == null) recipe_image_url = 'noImageUrl';
+
     await FirebaseFirestore.instance
-        .collection("users")
-        .doc(currentUser.uid)
+        // .collection("users")
+        // .doc(currentUser.uid)
         .collection("recpies")
         .doc(recipe_id)
         .update({
       'type_of_meal': currentSelectedTypeOfMeal,
       'category': currentSelectedCategory,
       'cuisine': currentSelectedCuisine,
+      'recipe_image_url': recipe_image_url,
     });
+    formKey.currentState.reset();
+
     showAlertDialogREcipeAdedSuccessfully(context);
 
 //# delete

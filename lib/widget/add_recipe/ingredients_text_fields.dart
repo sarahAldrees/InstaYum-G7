@@ -25,6 +25,16 @@ class _IngredientsTextFieldsState extends State<IngredientsTextFields> {
     super.dispose();
   }
 
+  String get _errorText {
+    //this method will show error message on every change made by the user using errorText
+    final text = _ingredientController.value.text;
+    if (text.isEmpty) {
+      return 'Please enter a direction';
+    }
+    // return null if the text is valid
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     //  run this method when the interface has been loaded
@@ -34,11 +44,11 @@ class _IngredientsTextFieldsState extends State<IngredientsTextFields> {
 
     return TextFormField(
       controller: _ingredientController,
-      decoration: InputDecoration(hintText: 'Enter an ingredient'),
+      decoration: InputDecoration(
+          hintText: 'Enter an ingredient', errorText: _errorText),
       onChanged: (value) {
         addRecipe.userIngredients[widget.index] = value;
-        addRecipe.formKey.currentState
-            .validate(); //to validate every cange made by the user
+        setState(() {});
       },
       validator: (value) {
         if (value.trim().isEmpty) {
