@@ -27,12 +27,14 @@ class _RestPasswordState extends State<RestPassword> {
 
     final isValidForm = _formKey.currentState.validate();
 
-    bool _switchToLogin = false;
+    bool _switchToLogin =
+        false; // we will not switch the user to login page until he enterd a valid email
     if (isValidForm) {
       try {
         final _auth = await FirebaseAuth.instance
             .sendPasswordResetEmail(email: _userEmail);
-        _switchToLogin = true;
+        _switchToLogin =
+            true; // valid email so we will send him to the login page
       } on PlatformException catch (err) {
         print(err.code);
         _switchToLogin = false;
@@ -44,7 +46,10 @@ class _RestPasswordState extends State<RestPassword> {
       }
     }
     if (_switchToLogin) {
-      showAlertDialogSentRequest(context);
+      showAlertDialogSentRequest(
+          context); // show the user a message that indicates the operation was done successfully
+
+      // and when he click on ok he will be moved back to login page
     }
   }
 
@@ -53,7 +58,8 @@ class _RestPasswordState extends State<RestPassword> {
     Widget okButton = RaisedButton(
       child: Text("Ok"),
       onPressed: () {
-        Navigator.of(context).pop();
+        Navigator.of(context)
+            .pop(); // to pop the alert message and keep the user in the reset password page
       },
     );
 
