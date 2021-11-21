@@ -4,11 +4,6 @@ import 'package:instayum1/widget/recipe_view/view_reicpe_flotingbutton.dart';
 // import 'package:recipe_view/view_reicpe_flotingbutton.dart';
 
 class Rating_recipe extends StatefulWidget {
-  // final int maximumRating;
-  // final Function(int) onRatingSelected;
-
-  // Rating(this.onRatingSelected, [this.maximumRating = 5]);
-
   @override
   Rating createState() => Rating();
 }

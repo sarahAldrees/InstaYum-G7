@@ -10,12 +10,12 @@ import 'package:instayum1/widget/recipe_view/rating_recipe.dart';
 import 'package:instayum1/widget/recipe_view/view_reicpe_flotingbutton.dart';
 
 class recipe_view extends StatelessWidget {
-  //final commentRef = FirebaseFirestore.instance.collection("comments");
+  static final commentRef = FirebaseFirestore.instance.collection("comments");
 
   @override
   Widget build(BuildContext context) {
     Recipe a = new Recipe(
-      id: 'r1',
+      id: 'fae8c7a3-fbc5-46b6-bae7-b5251247d042',
       recipeName: 'Pancakes',
       imageURL:
           "https://www.eatthis.com/wp-content/uploads/sites/4/2019/11/whole-grain-pancake-stack.jpg?fit=1200%2C879&ssl=1",
@@ -65,10 +65,10 @@ class recipe_view extends StatelessWidget {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => Comment(
-                            recipeId: a.id,
+                      builder: (context) => Comments(
                             userId: a.recipeName,
-                            msg: a.imageURL,
+                            recipeId: a.id,
+                            comment: a.imageURL,
                           )));
             },
             icon: const Icon(Icons.comment_sharp),

@@ -1,41 +1,67 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:instayum1/widget/recipe_view/recipe_view_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-class Comment extends StatefulWidget {
-  final String recipeId;
+class Comments extends StatefulWidget {
   final String userId;
-  final String msg;
+  final String recipeId;
+  final String comment;
 
-  Comment({
-    this.recipeId,
+  Comments({
     this.userId,
-    this.msg,
+    this.recipeId,
+    this.comment,
   });
 
   @override
   CommentState createState() => CommentState(
         recipeId: this.recipeId,
         userId: this.userId,
-        msg: this.msg,
+        comment: this.comment,
       );
 }
 
-class CommentState extends State<Comment> {
+class CommentState extends State<Comments> {
   final String recipeId;
   final String userId;
-  final String msg;
+  final String comment;
   TextEditingController commentController = TextEditingController();
   CommentState({
     this.recipeId,
     this.userId,
-    this.msg,
+    this.comment,
   });
 
   _buildCommentList() {
-    return Text('Helllooo');
+    return StreamBuilder(
+        stream: recipe_view.commentRef
+            .doc(recipeId)
+            .collection('comments')
+            .orderBy('timestamp', descending: false)
+            .snapshots(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return CircularProgressIndicator();
+          }
+          List<Comment> comments = [];
+          snapshot.data.docs.forEach((doc) {
+            comments.add(Comment.fromDocument(doc));
+          });
+          return ListView(
+            children: comments,
+          );
+        });
   }
 
-  addComment() {
-    //commentRef;
+  addComment() async {
+    final FirebaseAuth userId = FirebaseAuth.instance;
+    final currentUser = await userId.currentUser;
+    recipe_view.commentRef.doc(recipeId).collection("comments").add({
+      "username": currentUser.uid,
+      "reciepeId": recipeId,
+      "comment": commentController.text,
+    });
   }
 
   @override
@@ -48,6 +74,7 @@ class CommentState extends State<Comment> {
       body: Column(
         children: <Widget>[
           Expanded(child: _buildCommentList()),
+          //------------------ build the TextField of comments screen ------------------
           Row(
             children: [
               Expanded(
@@ -85,10 +112,50 @@ class CommentState extends State<Comment> {
                   ),
                 ),
               ),
+              //---------------------------------------------------------------
             ],
           ),
         ],
       ),
     );
+  }
+}
+
+class Comment extends StatelessWidget {
+  final String username;
+  final String userId;
+  final String imageUrl;
+  final String comment;
+  final Timestamp timestamp;
+
+  Comment({
+    this.username,
+    this.userId,
+    this.imageUrl,
+    this.comment,
+    this.timestamp,
+  });
+
+  factory Comment.fromDocument(DocumentSnapshot doc) {
+    return Comment(
+      username: doc['username'],
+      userId: doc['userId'],
+      comment: doc['comment'],
+      timestamp: doc['timestamp'],
+      imageUrl: doc['imageUrl'],
+    );
+  }
+  @override
+  Widget build(BuildContext context) {
+    return Column(children: [
+      ListTile(
+        leading: CircleAvatar(
+          backgroundImage: NetworkImage(
+              'https://www.eatthis.com/wp-content/uploads/sites/4/2019/11/whole-grain-pancake-stack.jpg?fit=1200%2C879&ssl=1'),
+        ),
+        title: Text(comment),
+      ),
+      Divider(),
+    ]);
   }
 }
