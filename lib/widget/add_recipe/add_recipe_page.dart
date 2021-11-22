@@ -73,17 +73,18 @@ class addRecipe extends State<addRecipePage> {
     //   }
     // }
 
+//# delete
 //to remove the last field (both in ingredients and directions)if it was empty and there weremore than one field
-    if ((userIngredients[userIngredients.length - 1] == null ||
-            userIngredients[userIngredients.length - 1] == "") &&
-        userIngredients.length > 1) {
-      userIngredients.removeAt(userIngredients.length - 1);
-    }
-    if ((userDirections[userDirections.length - 1] == null ||
-            userDirections[userDirections.length - 1] == "") &&
-        userDirections.length > 1) {
-      userDirections.removeAt(userDirections.length - 1);
-    }
+    // if ((userIngredients[userIngredients.length - 1] == null ||
+    //         userIngredients[userIngredients.length - 1] == "") &&
+    //     userIngredients.length > 1) {
+    //   userIngredients.removeAt(userIngredients.length - 1);
+    // }
+    // if ((userDirections[userDirections.length - 1] == null ||
+    //         userDirections[userDirections.length - 1] == "") &&
+    //     userDirections.length > 1) {
+    //   userDirections.removeAt(userDirections.length - 1);
+    // }
 
     setState(() {}); //to refresh the page after delete any empty fields
 
@@ -115,6 +116,8 @@ class addRecipe extends State<addRecipePage> {
     // });
 
     await FirebaseFirestore.instance
+        .collection("users")
+        .doc(currentUser.uid)
         .collection(
             "recpies") // create new collcetion of recpies inside user document to save all of the user's recpies
         .doc(recipe_id)
@@ -129,8 +132,8 @@ class addRecipe extends State<addRecipePage> {
     for (var ing in userIngredients) {
       countItems++;
       await FirebaseFirestore.instance
-          // .collection("users")
-          // .doc(currentUser.uid)
+          .collection("users")
+          .doc(currentUser.uid)
           .collection("recpies")
           .doc(recipe_id)
           .update({
@@ -142,8 +145,8 @@ class addRecipe extends State<addRecipePage> {
     for (var dir in userDirections) {
       countItems++;
       await FirebaseFirestore.instance
-          // .collection("users")
-          // .doc(currentUser.uid)
+          .collection("users")
+          .doc(currentUser.uid)
           .collection("recpies")
           .doc(recipe_id)
           .update({
@@ -156,8 +159,8 @@ class addRecipe extends State<addRecipePage> {
     if (recipe_image_url == null) recipe_image_url = 'noImageUrl';
 
     await FirebaseFirestore.instance
-        // .collection("users")
-        // .doc(currentUser.uid)
+        .collection("users")
+        .doc(currentUser.uid)
         .collection("recpies")
         .doc(recipe_id)
         .update({

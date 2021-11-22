@@ -15,7 +15,7 @@ class recipe_Item extends StatelessWidget {
   final List<String> dirctions;
 
   const recipe_Item(
-    Key key,
+    // Key key,
     this.autherName,
     this.autherImage,
     this.id,
@@ -45,20 +45,22 @@ class recipe_Item extends StatelessWidget {
           // to make  clickable image
           onTap: () {
             Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => new recipe_view(
-                        //key,
-                        autherName,
-                        autherImage,
-                        id,
-                        recipeName,
-                        imageURL,
-                        typeOfMeal,
-                        category,
-                        cuisine,
-                        ingredients,
-                        dirctions)));
+              context,
+              MaterialPageRoute(
+                builder: (context) => new recipe_view(
+                    //key,
+                    autherName,
+                    autherImage,
+                    id,
+                    recipeName,
+                    imageURL,
+                    typeOfMeal,
+                    category,
+                    cuisine,
+                    ingredients,
+                    dirctions),
+              ),
+            );
           }, //what happend after clicking image
 
           child: ClipRRect(

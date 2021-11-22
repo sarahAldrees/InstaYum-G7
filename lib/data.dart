@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'model/recipe.dart';
 import 'model/cookbook.dart';
 
-class Data extends StatefulWidget {
+class RecipeData extends StatefulWidget {
   @override
-  DataState createState() => DataState();
+  RecipeDataState createState() => RecipeDataState();
 }
 
 var Cookbook_Data = [
@@ -17,79 +17,109 @@ var Cookbook_Data = [
         'https://lacuisinedegeraldine.fr/wp-content/uploads/2021/06/Pancakes-04483-2-scaled.jpg',
   ),
 ];
-var Recipes_Data = const [
-  Recipe(
-    // id: 'r1',
-    recipeName: 'Pancakes',
-    imageURL:
-        'https://lacuisinedegeraldine.fr/wp-content/uploads/2021/06/Pancakes-04483-2-scaled.jpg',
-    typeOfMeal: "breakfast",
-    category: 'c1',
-    cuisine: "indian",
-    ingredients: [
-      '4 Tomatoes',
-      '1 Tablespoon of Olive Oil',
-      '1 Onion',
-    ],
-    dirctions: [
-      'Tenderize the veal to about 2–4mm, and salt on both sides.',
-      'On a flat plate, stir the eggs briefly with a fork.',
-      'Lightly coat the cutlets in flour then dip into the egg, and finally, coat in breadcrumbs.',
-    ],
-  ),
-  Recipe(
-    // id: 'r1',
-    recipeName: 'Pancakes',
-    imageURL:
-        'https://lacuisinedegeraldine.fr/wp-content/uploads/2021/06/Pancakes-04483-2-scaled.jpg',
-    typeOfMeal: "breakfast",
-    category: 'c1',
-    cuisine: "indian",
-    ingredients: [
-      '4 Tomatoes',
-      '1 Tablespoon of Olive Oil',
-      '1 Onion',
-    ],
-    dirctions: [
-      'Tenderize the veal to about 2–4mm, and salt on both sides.',
-      'On a flat plate, stir the eggs briefly with a fork.',
-      'Lightly coat the cutlets in flour then dip into the egg, and finally, coat in breadcrumbs.',
-    ],
-  )
-];
+// var Recipes_Data = const [
+//   Recipe(
+//     // id: 'r1',
+//     recipeName: 'Pancakes',
+//     imageURL:
+//         'https://lacuisinedegeraldine.fr/wp-content/uploads/2021/06/Pancakes-04483-2-scaled.jpg',
+//     typeOfMeal: "breakfast",
+//     category: 'c1',
+//     cuisine: "indian",
+//     ingredients: [
+//       '4 Tomatoes',
+//       '1 Tablespoon of Olive Oil',
+//       '1 Onion',
+//     ],
+//     dirctions: [
+//       'Tenderize the veal to about 2–4mm, and salt on both sides.',
+//       'On a flat plate, stir the eggs briefly with a fork.',
+//       'Lightly coat the cutlets in flour then dip into the egg, and finally, coat in breadcrumbs.',
+//     ],
+//   ),
+//   Recipe(
+//     // id: 'r1',
+//     recipeName: 'Pancakes',
+//     imageURL:
+//         'https://lacuisinedegeraldine.fr/wp-content/uploads/2021/06/Pancakes-04483-2-scaled.jpg',
+//     typeOfMeal: "breakfast",
+//     category: 'c1',
+//     cuisine: "indian",
+//     ingredients: [
+//       '4 Tomatoes',
+//       '1 Tablespoon of Olive Oil',
+//       '1 Onion',
+//     ],
+//     dirctions: [
+//       'Tenderize the veal to about 2–4mm, and salt on both sides.',
+//       'On a flat plate, stir the eggs briefly with a fork.',
+//       'Lightly coat the cutlets in flour then dip into the egg, and finally, coat in breadcrumbs.',
+//     ],
+//   )
+// ];
+// List<Recipe> recpiesList = [];
 
-class DataState extends State<Data> {
-  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+class RecipeDataState extends State<RecipeData> {
+  // static final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
-//  db.collection("users").get().then((querySnapshot) => {
-//     querySnapshot.forEach((doc) => {
-//         console.log(`${doc.id} => ${doc.data()}`);
-//     });
+  // List<Recipe> recpiesList = [];
+  // List<String> ingredientsList = [];
+  // List<String> dirctionsList = [];
+  // int lengthOfIngredients = 0;
+  // int lengthOfDirections = 0;
 
-  List<Recipe> recpiesList = [];
-//getData() to get the data of users like username, image_url from database
-  void getData() async {
-    User user = _firebaseAuth.currentUser;
-    FirebaseFirestore.instance
-        .collection("users")
-        .doc(user.uid)
-        .collection("recpies")
-        .get()
-        .then((querySnapshot) {
-      querySnapshot.docs.forEach((doc) => {
-            recpiesList.add(Recipe(
-              id: doc.id,
-            ))
-          });
-    });
-    //     .snapshots()
-    //     .listen((userData) {
-    //   setState(() {
-    //     userUsername = userData.data()['username'];
-    //     imageURL = userData.data()['image_url'];
-    //   });
-    // });
-  }
+  // void getRecipeObjects() {
+  //   //userData.data()['username'];
+  //   User user = firebaseAuth.currentUser;
+  //   FirebaseFirestore.instance
+  //       .collection("users")
+  //       .doc(user.uid)
+  //       .collection("recpies")
+  //       .get()
+  //       .then((querySnapshot) {
+  //     querySnapshot.docs.forEach((doc) => {
+  //           lengthOfIngredients = doc.data()['length_of_ingredients'],
+  //           lengthOfDirections = doc.data()['length_of_directions'],
+  //           print(
+  //               'Ingredients*******************************************************>>>>>>>>>>>>>>>>>>>>'),
+  //           for (int i = 0; i < lengthOfIngredients; i++)
+  //             {
+  //               ingredientsList.add(
+  //                 doc.data()['ing${i + 1}'],
+  //               ),
+  //               print(i),
+  //             },
+  //           print(
+  //               'Directions*******************************************************>>>>>>>>>>>>>>>>>>>>'),
+  //           for (int i = 0; i < lengthOfDirections; i++)
+  //             {
+  //               dirctionsList.add(
+  //                 doc.data()['dir${i + 1}'],
+  //               ),
+  //               print(i),
+  //             },
+  //           print(
+  //               'Recipe list *******************************************************>>>>>>>>>>>>>>>>>>>>'),
+  //           print(doc.data()['recipe_image_url']),
+  //           print(doc.data()['recipe_title']),
+  //           print(doc.data()['type_of_meal']),
+  //           print(doc.data()['category']),
+  //           print(doc.data()['cuisine']),
+  //           recpiesList.add(
+  //             Recipe(
+  //               id: doc.id,
+  //               imageURL: doc.data()['recipe_image_url'],
+  //               recipeName: doc.data()['recipe_title'],
+  //               typeOfMeal: doc.data()['type_of_meal'],
+  //               category: doc.data()['category'],
+  //               cuisine: doc.data()['cuisine'],
+  //               dirctions: dirctionsList,
+  //               ingredients: ingredientsList,
+  //             ),
+  //           )
+  //         });
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {

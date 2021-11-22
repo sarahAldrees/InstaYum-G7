@@ -48,7 +48,6 @@ class _IngredientsTextFieldsState extends State<IngredientsTextFields> {
           hintText: 'Enter an ingredient'), //errorText: _errorText
       onChanged: (value) {
         addRecipe.userIngredients[widget.index] = value;
-        setState(() {});
       },
       validator: (value) {
         if (value.trim().isEmpty) {

@@ -111,7 +111,7 @@ class _AuthScreenState extends State<AuthScreen> {
         case 'email-already-in-use':
           ScaffoldMessenger.of(ctx).showSnackBar(
             SnackBar(
-                content: Text("The email address is taken"), //ask ghaida
+                content: Text("The email address is taken"),
                 backgroundColor: Theme.of(ctx).errorColor),
           );
           break;
