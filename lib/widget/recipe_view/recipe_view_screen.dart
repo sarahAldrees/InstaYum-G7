@@ -12,7 +12,7 @@ import 'package:instayum1/widget/recipe_view/view_reicpe_flotingbutton.dart';
 class recipe_view extends StatelessWidget {
   String id;
 
-  String recipeName = " ";
+  String recipeName;
   String imageURL;
 
   String typeOfMeal;
@@ -25,7 +25,7 @@ class recipe_view extends StatelessWidget {
 
   List<String> dirctions;
   static final commentRef = FirebaseFirestore.instance.collection("comments");
-  recipe_view(this.id, recipeName, this.imageURL, this.typeOfMeal,
+  recipe_view(this.id, this.recipeName, this.imageURL, this.typeOfMeal,
       this.category, this.cuisine, this.ingredients, this.dirctions);
   @override
   Widget build(BuildContext context) {
