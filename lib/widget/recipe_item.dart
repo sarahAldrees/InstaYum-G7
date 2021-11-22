@@ -4,12 +4,19 @@ import 'package:instayum1/widget/recipe_view/recipe_view_screen.dart';
 
 class recipe_Item extends StatelessWidget {
   final String id;
+
   final String recipeName;
+
   final String category;
+
   final String imageURL;
+
   final String cuisine;
+
   final List<String> ingredients;
+
   final List<String> dirctions;
+
   final String typeOfMeal;
   const recipe_Item(
     Key key,
@@ -39,8 +46,18 @@ class recipe_Item extends StatelessWidget {
         child: InkWell(
           // to make  clickable image
           onTap: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => recipe_view()));
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => recipe_view(
+                        id,
+                        recipeName,
+                        imageURL,
+                        typeOfMeal,
+                        category,
+                        cuisine,
+                        ingredients,
+                        dirctions)));
           }, //what happend after clicking image
 
           child: ClipRRect(

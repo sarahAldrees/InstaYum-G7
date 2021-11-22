@@ -10,22 +10,25 @@ import 'package:instayum1/widget/recipe_view/rating_recipe.dart';
 import 'package:instayum1/widget/recipe_view/view_reicpe_flotingbutton.dart';
 
 class recipe_view extends StatelessWidget {
-  static final commentRef = FirebaseFirestore.instance.collection("comments");
+  String id;
 
+  String recipeName = " ";
+  String imageURL;
+
+  String typeOfMeal;
+
+  String category;
+
+  String cuisine;
+
+  List<String> ingredients;
+
+  List<String> dirctions;
+  static final commentRef = FirebaseFirestore.instance.collection("comments");
+  recipe_view(this.id, recipeName, this.imageURL, this.typeOfMeal,
+      this.category, this.cuisine, this.ingredients, this.dirctions);
   @override
   Widget build(BuildContext context) {
-    Recipe a = new Recipe(
-      id: 'fae8c7a3-fbc5-46b6-bae7-b5251247d042',
-      recipeName: 'Pancakes',
-      imageURL:
-          "https://www.eatthis.com/wp-content/uploads/sites/4/2019/11/whole-grain-pancake-stack.jpg?fit=1200%2C879&ssl=1",
-      typeOfMeal: "breakfast",
-      category: 'Drinks',
-      cuisine: "indian",
-      ingredients: ["ggggg", "dsdsad", "asdasda", "ggggg", "dsdsad", "asdasda"],
-      dirctions: ["aaa", "dsdsad", "asdasda"],
-    );
-
     //---------
 
     const _actionTitles = [
@@ -49,7 +52,7 @@ class recipe_view extends StatelessWidget {
     //-------------
     return Scaffold(
       appBar: new AppBar(
-        title: Text(a.recipeName),
+        title: Text(recipeName),
         backgroundColor: Color(0xFFeb6d44),
       ),
       floatingActionButton: ExpandableFab(
@@ -66,9 +69,9 @@ class recipe_view extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                       builder: (context) => Comments(
-                            userId: a.recipeName,
-                            recipeId: a.id,
-                            comment: a.imageURL,
+                            userId: recipeName,
+                            recipeId: id,
+                            comment: imageURL,
                           )));
             },
             icon: const Icon(Icons.comment_sharp),
@@ -86,7 +89,7 @@ class recipe_view extends StatelessWidget {
                   width: double.infinity,
                   height: 200,
                   child: Image.network(
-                    a.imageURL,
+                    imageURL,
                     fit: BoxFit.fill,
                   ),
                 ),
@@ -177,7 +180,7 @@ class recipe_view extends StatelessWidget {
                       ),
                       Center(
                           child: Text(
-                        "  " + a.typeOfMeal,
+                        "  " + typeOfMeal,
                       ))
                     ],
                   ),
@@ -197,7 +200,7 @@ class recipe_view extends StatelessWidget {
                       //       color: Colors.grey[600],
                       //       fontWeight: FontWeight.w100),
                       // ),
-                      Center(child: Text("  " + a.cuisine))
+                      Center(child: Text("  " + cuisine))
                     ],
                   ),
                 ),
@@ -218,7 +221,7 @@ class recipe_view extends StatelessWidget {
                       //       color: Colors.grey[600],
                       //       fontWeight: FontWeight.w100),
                       // ),
-                      Center(child: Text("  " + a.category))
+                      Center(child: Text("  " + category))
                     ],
                   ),
                 ),
@@ -227,9 +230,9 @@ class recipe_view extends StatelessWidget {
           ),
 
           //--------------------------ingrediants--------------------------
-          convertTocheckBox(a.ingredients, "Ingrediants"),
+          convertTocheckBox(ingredients, "Ingrediants"),
 
-          convertTocheckBox(a.dirctions, "Dirctions")
+          convertTocheckBox(dirctions, "Dirctions")
           //-------------------------------------------
         ],
       ),
