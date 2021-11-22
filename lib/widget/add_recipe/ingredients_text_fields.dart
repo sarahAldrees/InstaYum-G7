@@ -18,22 +18,22 @@ class _IngredientsTextFieldsState extends State<IngredientsTextFields> {
     _ingredientController = TextEditingController();
   }
 
-  @override
-  void dispose() {
-    // release the memory allocated to variables when state object is removed.
-    _ingredientController.dispose();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   // release the memory allocated to variables when state object is removed.
+  //   _ingredientController.dispose();
+  //   super.dispose();
+  // }
 
-  String get _errorText {
-    //this method will show error message on every change made by the user using errorText
-    final text = _ingredientController.value.text;
-    if (text.isEmpty) {
-      return 'Please enter a direction';
-    }
-    // return null if the text is valid
-    return null;
-  }
+  // String get _errorText {
+  //   //this method will show error message on every change made by the user using errorText
+  //   final text = _ingredientController.value.text;
+  //   if (text.isEmpty) {
+  //     return 'Please enter a direction';
+  //   }
+  //   // return null if the text is valid
+  //   return null;
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +45,7 @@ class _IngredientsTextFieldsState extends State<IngredientsTextFields> {
     return TextFormField(
       controller: _ingredientController,
       decoration: InputDecoration(
-          hintText: 'Enter an ingredient', errorText: _errorText),
+          hintText: 'Enter an ingredient'), //errorText: _errorText
       onChanged: (value) {
         addRecipe.userIngredients[widget.index] = value;
         setState(() {});

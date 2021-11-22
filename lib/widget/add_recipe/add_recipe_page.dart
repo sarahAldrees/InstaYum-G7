@@ -248,9 +248,8 @@ class addRecipe extends State<addRecipePage> {
               SizedBox(
                 width: 16,
               ),
-              // i == userIngredients.length - 1 is used to add  "add" button at last Ingredients row only
-              _addRemoveButtonInIngredient(i == userIngredients.length - 1,
-                  i), //to return the button(wether it wass add or remove )
+              //always false to add a delete button next to each TextFormField, and we will make it true after _getIngredients() in the design section
+              _addRemoveButtonInIngredient(false, i),
             ],
           ),
         ),
@@ -260,13 +259,17 @@ class addRecipe extends State<addRecipePage> {
   }
 
   Widget _addRemoveButtonInIngredient(bool add, int index) {
+    //  print("Entered addRemoveButtonInDirection");
+    if (add) {
+      //  print("enterd add ");
+      //print("indes in add is ");
+      //  print(index);
+      userIngredients.insert(index, null); // add a new textFormField
+      setState(() {}); // to refresh the page
+    }
     return InkWell(
       onTap: () {
-        if (add) {
-          userIngredients.insert(index + 1, null);
-          // insert(the place of text from field , null mean to initialize the text form filed with empty text )
-          // (index + 1) to add the fields below each others
-        } else {
+        if (!add) {
           userIngredients.removeAt(index);
         }
         setState(() {}); // to refresh the screen
@@ -301,9 +304,8 @@ class addRecipe extends State<addRecipePage> {
               SizedBox(
                 width: 16,
               ),
-              // i == userIngredients.length - 1 is used to add  "add" button at last Ingredients row only
-              _addRemoveButtonInDirection(i == userDirections.length - 1, i),
-              //to return the button(wether it wass add or remove )
+              _addRemoveButtonInDirection(false,
+                  i), //always false to add a delete button next to each TextFormField, and we will make it true after _getDirections() in the design section
             ],
           ),
         ),
@@ -313,13 +315,17 @@ class addRecipe extends State<addRecipePage> {
   }
 
   Widget _addRemoveButtonInDirection(bool add, int index) {
+    //  print("Entered addRemoveButtonInDirection");
+    if (add) {
+      //  print("enterd add ");
+      //print("indes in add is ");
+      //  print(index);
+      userDirections.insert(index, null); // add a new textFormField
+      setState(() {}); // to refresh the page
+    }
     return InkWell(
       onTap: () {
-        if (add) {
-          userDirections.insert(index + 1, null);
-          // insert(the place of text from field , null mean to initialize the text form filed with empty text )
-          // (index + 1) to add the fields below each others
-        } else {
+        if (!add) {
           userDirections.removeAt(index);
         }
         setState(() {}); // to refresh the screen
@@ -426,6 +432,30 @@ class addRecipe extends State<addRecipePage> {
                         children: [
                           ..._getIngredients(), //the method will return a list of ingredints
                           //three dots used to seprate the list
+
+                          Align(
+                            alignment: Alignment.bottomCenter,
+                            child: Container(
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  // print("i am here **************************"); # delete
+                                  // print("lenght before insert");
+                                  // print(userIngredients.length);
+                                  _addRemoveButtonInIngredient(
+                                      true, userIngredients.length);
+                                  // userDirections.insert(
+                                  //     userDirections.length + 1, null);
+                                  // print("lenght after insert");
+                                  // print(userDirections.length);
+                                },
+                                child: Text('Add an ingredient'),
+                                style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all(
+                                      Color(0xFFeb6d44)),
+                                ),
+                              ),
+                            ),
+                          ),
                           SizedBox(
                             height: 40,
                           ),
@@ -469,8 +499,32 @@ class addRecipe extends State<addRecipePage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          ..._getDirections(), //the method will return a list of directions
+                          ..._getDirections(),
+                          //the method will return a list of directions
                           //three dots used to seprate the list
+                          Align(
+                            alignment: Alignment.bottomCenter,
+                            child: Container(
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  // print("i am here **************************"); # delete
+                                  // print("lenght before insert");
+                                  // print(userDirections.length);
+                                  _addRemoveButtonInDirection(
+                                      true, userDirections.length);
+                                  // userDirections.insert(
+                                  //     userDirections.length + 1, null);
+                                  // print("lenght after insert");
+                                  // print(userDirections.length);
+                                },
+                                child: Text('Add a direction'),
+                                style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all(
+                                      Color(0xFFeb6d44)),
+                                ),
+                              ),
+                            ),
+                          ),
                           SizedBox(
                             height: 40,
                           ),

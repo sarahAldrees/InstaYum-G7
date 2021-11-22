@@ -18,22 +18,22 @@ class _DirectionsTextFieldsState extends State<DirectionsTextFields> {
     _directionController = TextEditingController();
   }
 
-  @override
-  void dispose() {
-    // release the memory allocated to variables when state object is removed.
-    _directionController.dispose();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   // release the memory allocated to variables when state object is removed.
+  //   _directionController.dispose();
+  //   super.dispose();
+  // }
 
-  String get _errorText {
-    //this method will show error message on every change made by the user using errorText
-    final text = _directionController.value.text;
-    if (text.isEmpty) {
-      return 'Please enter a direction';
-    }
-    // return null if the text is valid
-    return null;
-  }
+  // String get _errorText {
+  //   //this method will show error message on every change made by the user using errorText
+  //   //final text = _directionController.value.text;
+  //   if (addRecipe.userDirections[widget.index] == null) {
+  //     return 'Please enter a direction';
+  //   }
+  //   // return null if the text is valid
+  //   return null;
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -44,11 +44,11 @@ class _DirectionsTextFieldsState extends State<DirectionsTextFields> {
 
     return TextFormField(
       controller: _directionController,
-      decoration:
-          InputDecoration(hintText: 'Enter a direction', errorText: _errorText),
+      decoration: InputDecoration(
+          hintText: 'Enter a direction'), // errorText: _errorText
       onChanged: (value) {
         addRecipe.userDirections[widget.index] = value;
-        setState(() {}); //used to refresh the screen
+        // setState(() {}); //used to refresh the screen
       },
       validator: (value) {
         if (value.trim().isEmpty) return 'Please enter a direction';
