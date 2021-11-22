@@ -48,7 +48,7 @@ class discover extends State<discoverPage> {
           ),
           Container(
             height: 600,
-            child: my_recipes(),
+            child: my_recipes("userUsername", "Aouther image"),
             padding: EdgeInsets.only(top: 20),
           ),
         ],

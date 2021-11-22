@@ -3,23 +3,21 @@ import 'package:flutter/material.dart';
 import 'package:instayum1/widget/recipe_view/recipe_view_screen.dart';
 
 class recipe_Item extends StatelessWidget {
+  final String autherName;
+  final String autherImage;
   final String id;
-
   final String recipeName;
-
+  final String typeOfMeal;
   final String category;
-
   final String imageURL;
-
   final String cuisine;
-
   final List<String> ingredients;
-
   final List<String> dirctions;
 
-  final String typeOfMeal;
   const recipe_Item(
     Key key,
+    this.autherName,
+    this.autherImage,
     this.id,
     this.recipeName,
     this.imageURL,
@@ -49,7 +47,10 @@ class recipe_Item extends StatelessWidget {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => recipe_view(
+                    builder: (context) => new recipe_view(
+                        //key,
+                        autherName,
+                        autherImage,
                         id,
                         recipeName,
                         imageURL,

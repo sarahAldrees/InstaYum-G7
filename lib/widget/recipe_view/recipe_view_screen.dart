@@ -10,23 +10,30 @@ import 'package:instayum1/widget/recipe_view/rating_recipe.dart';
 import 'package:instayum1/widget/recipe_view/view_reicpe_flotingbutton.dart';
 
 class recipe_view extends StatelessWidget {
+  String autherName;
+  String autherImage;
   String id;
-
   String recipeName;
   String imageURL;
-
   String typeOfMeal;
-
   String category;
-
   String cuisine;
-
   List<String> ingredients;
-
   List<String> dirctions;
+
   static final commentRef = FirebaseFirestore.instance.collection("comments");
-  recipe_view(this.id, this.recipeName, this.imageURL, this.typeOfMeal,
-      this.category, this.cuisine, this.ingredients, this.dirctions);
+  recipe_view(
+      //Key,
+      this.autherName,
+      this.autherImage,
+      this.id,
+      this.recipeName,
+      this.imageURL,
+      this.typeOfMeal,
+      this.category,
+      this.cuisine,
+      this.ingredients,
+      this.dirctions);
   @override
   Widget build(BuildContext context) {
     //---------
@@ -127,7 +134,7 @@ class recipe_view extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              userinfo(),
+              userinfo(autherName, autherImage),
 //------------------------ Rating of recipe -------------------------------------
 
               Padding(

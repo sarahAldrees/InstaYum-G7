@@ -112,7 +112,7 @@ class profile2 extends State<profile> {
                 children: [
                   //This list is the content of each tab.
                   // ------------ list item 1 tab view bookmarks screen.
-                  my_recipes(),
+                  my_recipes(userUsername, imageURL),
                   // ------------ list item 2 tab view bookmarks screen.
                   my_meal_plans(),
                   // ------------ list item 3 tab view bookmarks screen.

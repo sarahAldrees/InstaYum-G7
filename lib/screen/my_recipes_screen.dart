@@ -4,6 +4,9 @@ import 'package:instayum1/widget/recipe_item.dart';
 import '../data.dart';
 
 class my_recipes extends StatelessWidget {
+  String autherName;
+  String autherImage;
+  my_recipes(this.autherName, this.autherImage);
   @override
   Widget build(BuildContext context) {
     return GridView.count(
@@ -14,6 +17,8 @@ class my_recipes extends StatelessWidget {
       // map all available cookbooks and list them in Gridviwe.
       children: Recipes_Data.map((e) => recipe_Item(
             key,
+            autherName,
+            autherImage,
             e.id,
             e.recipeName,
             e.imageURL,
