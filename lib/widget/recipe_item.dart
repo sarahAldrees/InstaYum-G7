@@ -16,7 +16,7 @@ class recipe_Item extends StatelessWidget {
   final List<String> dirctions;
 
   const recipe_Item(
-    Key key,
+    // Key key,
     this.autherName,
     this.autherImage,
     this.autherId,

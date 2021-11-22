@@ -80,6 +80,7 @@ class _my_recipesState extends State<my_recipes> {
           print(doc.data()['cuisine']),
           recpiesList.add(
             Recipe(
+              //Key this.key,
               id: doc.id,
               imageURL: doc.data()['recipe_image_url'],
               recipeName: doc.data()['recipe_title'],
@@ -129,7 +130,7 @@ class _my_recipesState extends State<my_recipes> {
       // map all available cookbooks and list them in Gridviwe.
       children: recpiesList
           .map((e) => recipe_Item(
-                key,
+                //key,
                 widget.autherName,
                 widget.autherImage,
                 widget.autherId,
