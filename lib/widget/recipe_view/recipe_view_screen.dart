@@ -12,6 +12,7 @@ import 'package:instayum1/widget/recipe_view/view_reicpe_flotingbutton.dart';
 class recipe_view extends StatelessWidget {
   String autherName;
   String autherImage;
+  String autherId;
   String id;
   String recipeName;
   String imageURL;
@@ -21,11 +22,11 @@ class recipe_view extends StatelessWidget {
   List<String> ingredients;
   List<String> dirctions;
 
-  static final commentRef = FirebaseFirestore.instance.collection("comments");
   recipe_view(
       //Key,
       this.autherName,
       this.autherImage,
+      this.autherId,
       this.id,
       this.recipeName,
       this.imageURL,
@@ -78,6 +79,7 @@ class recipe_view extends StatelessWidget {
                       builder: (context) => Comments(
                             userId: recipeName,
                             recipeId: id,
+                            authorId: autherId,
                             comment: imageURL,
                           )));
             },

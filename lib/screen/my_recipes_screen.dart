@@ -9,7 +9,8 @@ import '../data.dart';
 class my_recipes extends StatefulWidget {
   String autherName;
   String autherImage;
-  my_recipes(this.autherName, this.autherImage);
+  String autherId;
+  my_recipes(this.autherName, this.autherImage, this.autherId);
 
   @override
   State<my_recipes> createState() => _my_recipesState();
@@ -128,9 +129,10 @@ class _my_recipesState extends State<my_recipes> {
       // map all available cookbooks and list them in Gridviwe.
       children: recpiesList
           .map((e) => recipe_Item(
-                // key,
+                key,
                 widget.autherName,
                 widget.autherImage,
+                widget.autherId,
                 e.id,
                 e.recipeName,
                 e.imageURL,

@@ -20,9 +20,9 @@ class profile2 extends State<profile> {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   String userUsername = "";
   String imageURL = "";
-  dynamic data;
+  String uId = "";
 //getData() to get the data of users like username, image_url from database
-  Future<void> getData() async {
+  void getData() async {
     User user = _firebaseAuth.currentUser;
     FirebaseFirestore.instance
         .collection("users")
@@ -30,30 +30,11 @@ class profile2 extends State<profile> {
         .snapshots()
         .listen((userData) {
       setState(() {
-        imageURL = userData.data()['image_url'];
         userUsername = userData.data()['username'];
+        imageURL = userData.data()['image_url'];
+        uId = user.uid;
       });
     });
-
-    //   final DocumentReference document =   Firestore.instance.collection("listofprods").document('ac1');
-
-    // await document.get().then<dynamic>(( DocumentSnapshot snapshot) async{
-    //  setState(() {
-    //    data =snapshot.data;
-    //  });
-    // });
-    // final DocumentReference document =
-    //     FirebaseFirestore.instance.collection("users").doc(user.uid);
-
-    // await document.get().then<dynamic>((DocumentSnapshot snapshot) async {
-    //   setState(() {
-    //     print('in profile the data are');
-    //     print(snapshot.data()['image_url']);
-    //     print(snapshot.data()['username']);
-    //     imageURL = snapshot.data()['image_url'];
-    //     userUsername = snapshot.data()['username'];
-    //   });
-    // });
   }
 
   void initState() {
@@ -117,6 +98,7 @@ class profile2 extends State<profile> {
                 ],
               ),
             ),
+            //
             TabBar(
               labelColor: Color(0xFFeb6d44),
               indicatorColor: Color(0xFFeb6d44),
@@ -131,7 +113,7 @@ class profile2 extends State<profile> {
                 children: [
                   //This list is the content of each tab.
                   // ------------ list item 1 tab view bookmarks screen.
-                  my_recipes(userUsername, imageURL),
+                  my_recipes(userUsername, imageURL, uId),
 
                   // ------------ list item 2 tab view bookmarks screen.
                   my_meal_plans(),

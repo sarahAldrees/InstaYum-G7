@@ -9,7 +9,7 @@ class Rating_recipe extends StatefulWidget {
 }
 
 double rating = 0.0;
-int numOfRates = 0;
+int numOfRevewis = 0;
 double total = 0.0;
 double avg = 0.0;
 
@@ -85,11 +85,11 @@ class Rating extends State<Rating_recipe> {
                         ),
                         onPressed: () {
                           Navigator.pop(context);
-                          numOfRates++;
-                          print(numOfRates);
+                          numOfRevewis++;
+                          print(numOfRevewis);
                           total += rating;
                           print('total $total');
-                          avg = total / numOfRates;
+                          avg = total / numOfRevewis;
                           print('Avg $avg');
                         }),
                   ),
