@@ -9,37 +9,38 @@ import 'package:instayum1/widget/recipe_view/view_reicpe_flotingbutton.dart';
 
 class Rating_recipe extends StatefulWidget {
   String recipeId;
-  Rating_recipe(this.recipeId);
+  String autherId;
+  Rating_recipe(this.recipeId, this.autherId);
   @override
   Rating createState() => Rating();
 }
 
 double rating;
-int numOfRevewis;
-double total;
-double avg;
+var numOfRevewis;
+var total;
+var avg;
 
 class Rating extends State<Rating_recipe> {
-  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  // final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
 //getData() to get the data of users like username, image_url from database
-  void getData() async {
-    User user = _firebaseAuth.currentUser;
+  getData() async {
     FirebaseFirestore.instance
         .collection("users")
-        .doc(user.uid)
-        .collection("users")
+        .doc(widget.autherId)
+        .collection("recpies")
         .doc(widget.recipeId)
         .snapshots()
         .listen((userData) {
       setState(() {
-        total = userData.data()['sum_of_all_rating'];
-        print(total);
         numOfRevewis = userData.data()['no_of_pepole '];
-        print(numOfRevewis);
+        // print(numOfRevewis + 1);
+        total = double.parse(userData.data()['sum_of_all_rating']);
 
-        avg = double.parse(userData.data()['average_rating']);
-        print(avg);
+        // print(numOfRevewis);
+
+        avg = userData.data()['average_rating'];
+        // print(avg);
       });
     });
   }
@@ -51,7 +52,7 @@ class Rating extends State<Rating_recipe> {
 
   @override
   Widget _buildRatinBar() {
-    print(total);
+    //print(++total);
     return RatingBar.builder(
       direction: Axis.horizontal,
       allowHalfRating: true,
