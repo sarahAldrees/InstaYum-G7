@@ -51,7 +51,7 @@ class addRecipe extends State<addRecipePage> {
   var currentSelectedCategory = "Appetizers";
   var currentSelectedCuisine = "American";
   bool isPublic = false; //to determin wehther the recipe is public or private
-  bool isloading = false; // to show the progress circle
+
   //-----------------------------------------------------------------------------------
 
   // we put one null value instaed of "List<String>()" to make the lenght of list 1 instaed of 0
@@ -73,18 +73,17 @@ class addRecipe extends State<addRecipePage> {
     //   }
     // }
 
-//# delete
 //to remove the last field (both in ingredients and directions)if it was empty and there weremore than one field
-    // if ((userIngredients[userIngredients.length - 1] == null ||
-    //         userIngredients[userIngredients.length - 1] == "") &&
-    //     userIngredients.length > 1) {
-    //   userIngredients.removeAt(userIngredients.length - 1);
-    // }
-    // if ((userDirections[userDirections.length - 1] == null ||
-    //         userDirections[userDirections.length - 1] == "") &&
-    //     userDirections.length > 1) {
-    //   userDirections.removeAt(userDirections.length - 1);
-    // }
+    if ((userIngredients[userIngredients.length - 1] == null ||
+            userIngredients[userIngredients.length - 1] == "") &&
+        userIngredients.length > 1) {
+      userIngredients.removeAt(userIngredients.length - 1);
+    }
+    if ((userDirections[userDirections.length - 1] == null ||
+            userDirections[userDirections.length - 1] == "") &&
+        userDirections.length > 1) {
+      userDirections.removeAt(userDirections.length - 1);
+    }
 
     setState(() {}); //to refresh the page after delete any empty fields
 
@@ -95,28 +94,25 @@ class addRecipe extends State<addRecipePage> {
   }
 
   void addRecipeToDatabase() async {
-    setState(() {
-      isloading = true;
-    });
     final FirebaseAuth _auth = FirebaseAuth.instance;
     final currentUser = await _auth.currentUser;
-//# delete
-    // print("Everything is in the database ");
-    // print('recipe name before the saving');
-    // print(_recipeTitle);
+// # delete
+//     print("Everything is in the database ");
+//     print('recipe name before the saving');
+//     print(_recipeTitle);
 // to save the title , length of ingredients and length of directions
-    // await FirebaseFirestore.instance
-    //     .collection("users")
-    //     .doc(currentUser.uid)
-    //     .collection(
-    //         "recpies") // create new collcetion of recpies inside user document to save all of the user's recpies
-    //     .doc(recipe_id)
-    //     .set({
-    //   "recipe_title": _recipeTitle,
-    //   'length_of_ingredients': userIngredients.length,
-    //   'length_of_directions': userDirections.length,
-    //   'user_id': currentUser.uid,
-    // });
+//     await FirebaseFirestore.instance
+//         .collection("users")
+//         .doc(currentUser.uid)
+//         .collection(
+//             "recpies") // create new collcetion of recpies inside user document to save all of the user's recpies
+//         .doc(recipe_id)
+//         .set({
+//       "recipe_title": _recipeTitle,
+//       'length_of_ingredients': userIngredients.length,
+//       'length_of_directions': userDirections.length,
+//       'user_id': currentUser.uid,
+//     });
 
     await FirebaseFirestore.instance
         .collection("users")
@@ -129,6 +125,9 @@ class addRecipe extends State<addRecipePage> {
       'length_of_ingredients': userIngredients.length,
       'length_of_directions': userDirections.length,
       'user_id': currentUser.uid,
+      "sum_of_all_rating": 0,
+      "no_of_pepole ": 0,
+      "average_rating": 0.0,
     });
 // to save the ingredients
     int countItems = 0;
@@ -160,9 +159,7 @@ class addRecipe extends State<addRecipePage> {
     String recipe_image_url = RecipeImagePickerState.uploadedFileURL;
 
     if (recipe_image_url == null) recipe_image_url = 'noImageUrl';
-    print(
-        'in  addRecipeToDatabase to check the public ££££££££££££££££££££££££');
-    print(isPublic);
+
     await FirebaseFirestore.instance
         .collection("users")
         .doc(currentUser.uid)
@@ -173,10 +170,6 @@ class addRecipe extends State<addRecipePage> {
       'category': currentSelectedCategory,
       'cuisine': currentSelectedCuisine,
       'recipe_image_url': recipe_image_url,
-      'is_public_recipe': isPublic,
-      "sum_of_all_rating": 0,
-      "no_of_pepole ": 0,
-      "average_rating": 0.0,
     });
     formKey.currentState.reset();
 
@@ -232,9 +225,7 @@ class addRecipe extends State<addRecipePage> {
         okButton,
       ],
     );
-    setState(() {
-      isloading = false;
-    });
+
     // show the dialog
     showDialog(
       context: context,
@@ -716,14 +707,9 @@ class addRecipe extends State<addRecipePage> {
                               Switch(
                                 value: isPublic,
                                 onChanged: (value) {
-                                  print(
-                                      'Switch button-----------------------------');
-                                  print(value);
                                   setState(() {
                                     isPublic = value;
-                                    print(
-                                        'in set state in switch button --------------------');
-                                    print(isPublic);
+                                    //print(isSwitched);
                                   });
                                 },
                                 activeTrackColor: Colors.orange[600],
@@ -754,27 +740,20 @@ class addRecipe extends State<addRecipePage> {
                   ),
                 ],
               ),
-              isloading
-                  ? Padding(
-                      padding: const EdgeInsets.only(top: 10),
-                      child: CircularProgressIndicator(
-                        backgroundColor: Color(0xFFeb6d44),
-                        color: Colors.white,
-                      ),
-                    )
-                  : Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Container(
-                        child: ElevatedButton(
-                          onPressed: addRecipeButton,
-                          child: Text('Add recipe'),
-                          style: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.all(Color(0xFFeb6d44)),
-                          ),
-                        ),
-                      ),
+
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Container(
+                  child: ElevatedButton(
+                    onPressed: addRecipeButton,
+                    child: Text('Add recipe'),
+                    style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all(Color(0xFFeb6d44)),
                     ),
+                  ),
+                ),
+              ),
             ],
           ),
         ),

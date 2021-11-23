@@ -8,13 +8,13 @@ import 'package:uuid/uuid.dart';
 
 class Comments extends StatefulWidget {
   final String userId;
-  final String recipeId = "2cf0fbeb-957a-4330-96b3-36bc2fbfe080";
+  final String recipeId;
   final String authorId;
   final String comment;
 
   Comments({
     this.userId,
-    recipeId,
+    this.recipeId,
     this.authorId,
     this.comment,
   });

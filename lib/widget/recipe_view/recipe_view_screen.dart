@@ -70,7 +70,7 @@ class recipe_view extends StatelessWidget {
             onPressed: () {},
             icon: const Icon(Icons.shopping_bag),
           ),
-          Rating_recipe(),
+          Rating_recipe(id),
           ActionButton(
             onPressed: () {
               Navigator.push(

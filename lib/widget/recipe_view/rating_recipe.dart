@@ -1,21 +1,57 @@
+import 'dart:ffi';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:instayum1/widget/recipe_view/view_reicpe_flotingbutton.dart';
 // import 'package:recipe_view/view_reicpe_flotingbutton.dart';
 
 class Rating_recipe extends StatefulWidget {
+  String recipeId;
+  Rating_recipe(this.recipeId);
   @override
   Rating createState() => Rating();
 }
 
-double rating = 0.0;
-int numOfRevewis = 0;
-double total = 0.0;
-double avg = 0.0;
+double rating;
+int numOfRevewis;
+double total;
+double avg;
 
 class Rating extends State<Rating_recipe> {
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+
+//getData() to get the data of users like username, image_url from database
+  void getData() async {
+    User user = _firebaseAuth.currentUser;
+    FirebaseFirestore.instance
+        .collection("users")
+        .doc(user.uid)
+        .collection("users")
+        .doc(widget.recipeId)
+        .snapshots()
+        .listen((userData) {
+      setState(() {
+        total = userData.data()['sum_of_all_rating'];
+        print(total);
+        numOfRevewis = userData.data()['no_of_pepole '];
+        print(numOfRevewis);
+
+        avg = double.parse(userData.data()['average_rating']);
+        print(avg);
+      });
+    });
+  }
+
+  void initState() {
+    super.initState();
+    getData(); //we call the method here to get the data immediately when init the page.
+  }
+
   @override
   Widget _buildRatinBar() {
+    print(total);
     return RatingBar.builder(
       direction: Axis.horizontal,
       allowHalfRating: true,
