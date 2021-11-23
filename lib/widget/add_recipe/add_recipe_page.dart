@@ -73,17 +73,18 @@ class addRecipe extends State<addRecipePage> {
     //   }
     // }
 
+//# delete
 //to remove the last field (both in ingredients and directions)if it was empty and there weremore than one field
-    if ((userIngredients[userIngredients.length - 1] == null ||
-            userIngredients[userIngredients.length - 1] == "") &&
-        userIngredients.length > 1) {
-      userIngredients.removeAt(userIngredients.length - 1);
-    }
-    if ((userDirections[userDirections.length - 1] == null ||
-            userDirections[userDirections.length - 1] == "") &&
-        userDirections.length > 1) {
-      userDirections.removeAt(userDirections.length - 1);
-    }
+    // if ((userIngredients[userIngredients.length - 1] == null ||
+    //         userIngredients[userIngredients.length - 1] == "") &&
+    //     userIngredients.length > 1) {
+    //   userIngredients.removeAt(userIngredients.length - 1);
+    // }
+    // if ((userDirections[userDirections.length - 1] == null ||
+    //         userDirections[userDirections.length - 1] == "") &&
+    //     userDirections.length > 1) {
+    //   userDirections.removeAt(userDirections.length - 1);
+    // }
 
     setState(() {}); //to refresh the page after delete any empty fields
 
@@ -96,23 +97,23 @@ class addRecipe extends State<addRecipePage> {
   void addRecipeToDatabase() async {
     final FirebaseAuth _auth = FirebaseAuth.instance;
     final currentUser = await _auth.currentUser;
-// # delete
-//     print("Everything is in the database ");
-//     print('recipe name before the saving');
-//     print(_recipeTitle);
+//# delete
+    // print("Everything is in the database ");
+    // print('recipe name before the saving');
+    // print(_recipeTitle);
 // to save the title , length of ingredients and length of directions
-//     await FirebaseFirestore.instance
-//         .collection("users")
-//         .doc(currentUser.uid)
-//         .collection(
-//             "recpies") // create new collcetion of recpies inside user document to save all of the user's recpies
-//         .doc(recipe_id)
-//         .set({
-//       "recipe_title": _recipeTitle,
-//       'length_of_ingredients': userIngredients.length,
-//       'length_of_directions': userDirections.length,
-//       'user_id': currentUser.uid,
-//     });
+    // await FirebaseFirestore.instance
+    //     .collection("users")
+    //     .doc(currentUser.uid)
+    //     .collection(
+    //         "recpies") // create new collcetion of recpies inside user document to save all of the user's recpies
+    //     .doc(recipe_id)
+    //     .set({
+    //   "recipe_title": _recipeTitle,
+    //   'length_of_ingredients': userIngredients.length,
+    //   'length_of_directions': userDirections.length,
+    //   'user_id': currentUser.uid,
+    // });
 
     await FirebaseFirestore.instance
         .collection("users")
@@ -125,9 +126,6 @@ class addRecipe extends State<addRecipePage> {
       'length_of_ingredients': userIngredients.length,
       'length_of_directions': userDirections.length,
       'user_id': currentUser.uid,
-      "sum_of_all_rating": 0,
-      "no_of_pepole ": 0,
-      "average_rating": 0.0,
     });
 // to save the ingredients
     int countItems = 0;
@@ -159,7 +157,9 @@ class addRecipe extends State<addRecipePage> {
     String recipe_image_url = RecipeImagePickerState.uploadedFileURL;
 
     if (recipe_image_url == null) recipe_image_url = 'noImageUrl';
-
+    print(
+        'in  addRecipeToDatabase to check the public ££££££££££££££££££££££££');
+    print(isPublic);
     await FirebaseFirestore.instance
         .collection("users")
         .doc(currentUser.uid)
@@ -170,6 +170,7 @@ class addRecipe extends State<addRecipePage> {
       'category': currentSelectedCategory,
       'cuisine': currentSelectedCuisine,
       'recipe_image_url': recipe_image_url,
+      'is_public_recipe': isPublic,
     });
     formKey.currentState.reset();
 
@@ -707,9 +708,14 @@ class addRecipe extends State<addRecipePage> {
                               Switch(
                                 value: isPublic,
                                 onChanged: (value) {
+                                  print(
+                                      'Switch button-----------------------------');
+                                  print(value);
                                   setState(() {
                                     isPublic = value;
-                                    //print(isSwitched);
+                                    print(
+                                        'in set state in switch button --------------------');
+                                    print(isPublic);
                                   });
                                 },
                                 activeTrackColor: Colors.orange[600],

@@ -6,7 +6,7 @@ class recipe_Item extends StatelessWidget {
   final String autherName;
   final String autherImage;
   final String autherId;
-  final String id;
+  final String RecipeId;
   final String recipeName;
   final String typeOfMeal;
   final String category;
@@ -20,7 +20,7 @@ class recipe_Item extends StatelessWidget {
     this.autherName,
     this.autherImage,
     this.autherId,
-    this.id,
+    this.RecipeId,
     this.recipeName,
     this.imageURL,
     this.typeOfMeal,
@@ -54,7 +54,7 @@ class recipe_Item extends StatelessWidget {
                         autherName,
                         autherImage,
                         autherId,
-                        id,
+                        RecipeId,
                         recipeName,
                         imageURL,
                         typeOfMeal,

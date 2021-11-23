@@ -36,6 +36,7 @@ class _my_recipesState extends State<my_recipes> {
   int lengthOfIngredients = 0;
 
   int lengthOfDirections = 0;
+  String recipe_image_url = '';
 
   void getRecipeObjects() {
     User user = firebaseAuth.currentUser;
@@ -78,11 +79,14 @@ class _my_recipesState extends State<my_recipes> {
           print(doc.data()['type_of_meal']),
           print(doc.data()['category']),
           print(doc.data()['cuisine']),
+          //AssetImage("assets/images/defaultUser.png")
+          recipe_image_url = doc.data()['recipe_image_url'],
+          if (recipe_image_url == 'noImageUrl')
+            recipe_image_url = "assets/images/defaultRecipeImage.png",
           recpiesList.add(
             Recipe(
-              //Key this.key,
               id: doc.id,
-              imageURL: doc.data()['recipe_image_url'],
+              imageURL: recipe_image_url,
               recipeName: doc.data()['recipe_title'],
               typeOfMeal: doc.data()['type_of_meal'],
               category: doc.data()['category'],
