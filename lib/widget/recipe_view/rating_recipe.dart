@@ -35,7 +35,7 @@ class Rating extends State<Rating_recipe> {
       setState(() {
         numOfRevewis = userData.data()['no_of_pepole '];
         // print(numOfRevewis + 1);
-        total = double.parse(userData.data()['sum_of_all_rating']);
+        total = userData.data()['sum_of_all_rating'];
 
         // print(numOfRevewis);
 

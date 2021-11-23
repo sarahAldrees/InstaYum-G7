@@ -42,8 +42,8 @@ class CommentState extends State<Comments> {
     this.comment,
   });
 // --------------------------------------------------
-  Widget _buildCommentList() {
-    //User user = firebaseAuth.currentUser;
+
+  List<Widget> _buildCommentList() {
     List<Widget> comments = [];
     FirebaseFirestore.instance
         .collection("users")
@@ -51,26 +51,31 @@ class CommentState extends State<Comments> {
         .collection("recpies")
         .doc(recipeId)
         .collection("comments")
-        .get()
-        .then((querySnapshot) {
-      querySnapshot.docs.forEach((doc) => {
-            comments.add(
-              Column(
-                children: [
-                  userinfo(
-                    doc.data()['username'],
-                    doc.data()['imageUrl'],
-                  ),
-                  Text(doc.data()['comment']),
-                  Divider(),
-                ],
-              ),
+        .snapshots()
+        .listen((data) {
+      bool enter = true;
+      data.docs.forEach((doc) {
+        if (enter) {
+          print(doc["username"]);
+          print(doc["imageUrl"]);
+          print(doc["comment"]);
+          comments.add(
+            Column(
+              children: [
+                userinfo(
+                  doc["username"],
+                  doc["imageUrl"],
+                ),
+                Text(doc["comment"]),
+                Divider(),
+              ],
             ),
-          });
+          );
+        }
+      });
+      enter = false;
     });
-    return ListView(
-      children: comments,
-    );
+    return comments;
   }
 
   String userUsername = "";
@@ -130,7 +135,10 @@ class CommentState extends State<Comments> {
       ),
       body: Column(
         children: <Widget>[
-          Expanded(child: _buildCommentList()),
+          Expanded(
+              child: ListView(
+                  //children: _buildCommentList().map().toList(),
+                  )),
           //------------------ build the TextField of comments screen ------------------
           Row(
             children: [
