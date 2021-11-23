@@ -36,6 +36,7 @@ class _my_recipesState extends State<my_recipes> {
   int lengthOfIngredients = 0;
 
   int lengthOfDirections = 0;
+
   String recipe_image_url = '';
 
   void getRecipeObjects() {

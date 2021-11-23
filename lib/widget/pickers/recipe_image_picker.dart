@@ -8,15 +8,15 @@ import 'package:path/path.dart' as Path;
 import 'package:uuid/uuid.dart';
 
 class RecipeImagePicker extends StatefulWidget {
-  final recipe_id;
-  RecipeImagePicker(this.recipe_id);
+  //final recipe_id; # delete
+  // RecipeImagePicker(this.recipe_id);
 
   @override
   RecipeImagePickerState createState() => RecipeImagePickerState();
 }
 
 class RecipeImagePickerState extends State<RecipeImagePicker> {
-  bool _isFirestPhoto = true;
+  // bool _isFirestPhoto = true; // # delete
   bool _isloading = false; // to show the progress circle
   File _image;
   static String uploadedFileURL;
@@ -26,8 +26,10 @@ class RecipeImagePickerState extends State<RecipeImagePicker> {
       setState(() {
         _image = image;
       });
+      if (image != null) {
+        uploadFile();
+      }
     });
-    uploadFile();
   }
 
   Future uploadFile() async {
@@ -35,7 +37,7 @@ class RecipeImagePickerState extends State<RecipeImagePicker> {
       _isloading = true;
     });
     final FirebaseAuth _auth = FirebaseAuth.instance;
-    final currentUser = await _auth.currentUser;
+    // final currentUser = await _auth.currentUser; // # delete
 
     FirebaseStorage storageReference = FirebaseStorage.instance;
     Reference ref = storageReference
@@ -50,7 +52,7 @@ class RecipeImagePickerState extends State<RecipeImagePicker> {
         print('here in image class ');
         print(fileURL);
         print('the id in image class is  ');
-        print(widget.recipe_id);
+        // print(widget.recipe_id);
         // to add https://
         setState(() {
           uploadedFileURL = fileURL;

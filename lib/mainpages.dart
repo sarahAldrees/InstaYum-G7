@@ -5,7 +5,7 @@ import 'package:instayum1/widget/add_recipe/add_recipe_page.dart';
 import 'package:instayum1/discover_page.dart';
 import 'package:instayum1/screen/profile_screen.dart';
 import 'package:instayum1/shopping_list_page.dart';
-
+import 'package:instayum1/widget/pickers/recipe_image_picker.dart';
 import 'meal_plans.dart';
 
 //*********************************************************************
@@ -20,9 +20,91 @@ class MainPages extends StatefulWidget {
 }
 
 class appPages extends State<MainPages> {
+//------------------------------Alert meesage for get out of add recipe page-------------------------------
+
+  showAlertDialogGetOutOfAddRecipePage(
+      BuildContext context, int indexOfNewPage) {
+    // set up the button
+    Widget okButton = RaisedButton(
+        color: Colors.white,
+        shape: RoundedRectangleBorder(
+          side: BorderSide(color: Theme.of(context).accentColor, width: 2),
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Text(
+          "Yes",
+          style: TextStyle(
+            color: Theme.of(context).accentColor,
+          ),
+        ),
+        onPressed: () {
+// we will first clear the form
+
+          if (addRecipe.recipeTitleController.value.text.isNotEmpty) {
+            addRecipe.recipeTitleController.clear();
+          }
+          addRecipe.userIngredients = [null];
+          addRecipe.userDirections = [null];
+          RecipeImagePickerState.uploadedFileURL = null;
+
+//then we will move the user to the required page
+          indexOfPages = indexOfNewPage;
+          if (indexOfNewPage == 0)
+            appBarTitel = "Discover Page";
+          else if (indexOfNewPage == 3)
+            appBarTitel = "Shopping List";
+          else if (indexOfNewPage == 2)
+            appBarTitel = "Add Recipe";
+          else if (indexOfNewPage == 1)
+            appBarTitel = "Meal Plan";
+          else
+            appBarTitel = "Profile";
+
+          setState(() {});
+          Navigator.of(context).pop(); // to close the alert dialog
+        });
+
+    Widget cancelButton = RaisedButton(
+        child: Text("Cancel"),
+        onPressed: () {
+          Navigator.of(context)
+              .pop(); //just close the alert dialog and stay in the same page
+        });
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Center(
+        child: Text(
+          "Warning",
+          style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Theme.of(context).accentColor),
+        ),
+      ),
+      content: Text(
+        "Are you sure you want to leave Add Recipe page? \nYou will lose all of your data!",
+        style: TextStyle(color: Color(0xFF444444)),
+      ),
+      actions: [
+        okButton,
+        cancelButton,
+      ],
+    );
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+//------------------------------------------------------------------------------
   var appBarTitel = "Profile";
-  int indexOfPages = 4;
-  List<Widget> _listOfPagesContent = [
+  static int indexOfPages = 4;
+  static int indexOfPreviousPage = 4;
+
+  static List<Widget> listOfPagesContent = [
     //---------discover page  0-------------
     discoverPage(),
     //--------- mealPlaner page 1------------
@@ -34,21 +116,52 @@ class appPages extends State<MainPages> {
     //----------profile page 4---------------
     profile(),
   ];
+
   void change(int index) {
     //this fun will change  app bar titel depend on sent
     // index and will change current page
     setState(() {
-      indexOfPages = index;
-      if (index == 0)
-        appBarTitel = "Discover Page";
-      else if (index == 3)
-        appBarTitel = "Shopping List";
-      else if (index == 2)
-        appBarTitel = "Add Recipe";
-      else if (index == 1)
-        appBarTitel = "Meal Plan";
-      else
-        appBarTitel = "Profile";
+      indexOfPreviousPage = indexOfPages;
+
+      if (indexOfPreviousPage == 2 && index != 2 && !addRecipe.isNullFields()) {
+        showAlertDialogGetOutOfAddRecipePage(context,
+            index); // if the user want to leave the addRecipe page (indexOfPreviousPage) and not cliking again on the AddRecipe Page (index)
+// we will show him a confirmation message
+
+// if the user not in the add recipe page and want to move to any another page it will do it directly without confirmation message
+        if (indexOfPreviousPage != 2) {
+          indexOfPages = index;
+
+          if (index == 0)
+            appBarTitel = "Discover Page";
+          else if (index == 3)
+            appBarTitel = "Shopping List";
+          else if (index == 2)
+            appBarTitel = "Add Recipe";
+          else if (index == 1)
+            appBarTitel = "Meal Plan";
+          else
+            appBarTitel = "Profile";
+        }
+      } else {
+        //
+
+        print("*****************************");
+        print("movingOutOfAddRecipePage");
+        //  if (indexOfPreviousPage != 2 || movingOutOfAddRecipePage) {
+        indexOfPages = index;
+
+        if (index == 0)
+          appBarTitel = "Discover Page";
+        else if (index == 3)
+          appBarTitel = "Shopping List";
+        else if (index == 2)
+          appBarTitel = "Add Recipe";
+        else if (index == 1)
+          appBarTitel = "Meal Plan";
+        else
+          appBarTitel = "Profile";
+      }
     });
   }
 
@@ -149,19 +262,19 @@ class appPages extends State<MainPages> {
         ),
         body: Scrollbar(
           isAlwaysShown: true,
-          child: _listOfPagesContent[indexOfPages],
+          child: listOfPagesContent[indexOfPages],
         ),
         bottomNavigationBar: BottomNavigationBar(
           selectedItemColor: Color(0xFFeb6d44),
           unselectedItemColor: Colors.grey[600],
           currentIndex: indexOfPages,
           onTap:
-              change, //it will call fun change and send index of clicked below button
+              change, //it will call change function and send index of clicked below button
           items: [
             BottomNavigationBarItem(
                 icon: Icon(Icons.saved_search_sharp), label: "Discover"),
             BottomNavigationBarItem(
-                icon: Icon(Icons.table_view), label: "Meal Planner"),
+                icon: Icon(Icons.table_view), label: "Meal Plan"),
             BottomNavigationBarItem(
                 icon: Icon(Icons.add_sharp), label: "Add Recipe"),
             BottomNavigationBarItem(

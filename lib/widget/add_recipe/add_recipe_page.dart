@@ -21,7 +21,9 @@ class addRecipe extends State<addRecipePage> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 //___________________Attributes_________________
 
-  String _recipeTitle;
+  static String recipeTitle;
+  static TextEditingController recipeTitleController = TextEditingController();
+
   //-----------------------dropdown list for classification-----------------
   var recipeType = ['Breakfast', 'Lunch', 'Dinner'];
 
@@ -38,14 +40,15 @@ class addRecipe extends State<addRecipePage> {
     'American',
     'Asian',
     'Brazilian',
-    'Egypt',
+    'Egyptian',
     'French',
     'Gulf',
     'Indian',
     'Italian',
     'Lebanese',
     'Mexican',
-    'Turki',
+    'Turkish',
+    'Other'
   ];
   var currentSelectedTypeOfMeal = "Breakfast";
   var currentSelectedCategory = "Appetizers";
@@ -64,6 +67,33 @@ class addRecipe extends State<addRecipePage> {
   // List<String> userIngredientsDatabase = List.from(userIngredients);
   // List<String> userDirectionsDatabase = List.from(userDirections);
   // we make a copy of the list to loop one and remove from one, because we can not loop and remove the same list at the same time
+
+  //--------------------------------------------------------------------------
+  // isNullFields() is used in mainpages.dart to check are the flied null ? if yes we will not show the user the confrimation message of lost data when moving out of add recipe page
+  static bool isNullFields() {
+    print("####################################################");
+    print("#####################################################");
+    print("check the data if they are null");
+    print(recipeTitle);
+    print(userIngredients[0]);
+    print(userDirections[0]);
+    print(RecipeImagePickerState.uploadedFileURL);
+
+    if ((recipeTitle == null || recipeTitle.isEmpty || recipeTitle == "") &&
+        (userIngredients[0] == null ||
+            userIngredients[0].isEmpty ||
+            userIngredients[0] == "") &&
+        (userDirections[0] == null ||
+            userDirections[0].isEmpty ||
+            userDirections[0] == "") &&
+        RecipeImagePickerState.uploadedFileURL == null) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  //----------------------------------------------------------------------------
   void addRecipeButton() {
     setState(() {
       //to show the progress bar
@@ -137,7 +167,7 @@ class addRecipe extends State<addRecipePage> {
             "recpies") // create new collcetion of recpies inside user document to save all of the user's recpies
         .doc(recipe_id)
         .set({
-      "recipe_title": _recipeTitle,
+      "recipe_title": recipeTitle,
       'length_of_ingredients': userIngredients.length,
       'length_of_directions': userDirections.length,
       'user_id': currentUser.uid,
@@ -191,10 +221,17 @@ class addRecipe extends State<addRecipePage> {
       "no_of_pepole": 0,
       "average_rating": 0.0,
     });
+
+    //-----------------Clear the form--------------------------------
     formKey.currentState.reset();
+    userIngredients = [null];
+    userDirections = [null];
+    RecipeImagePickerState.uploadedFileURL = null;
+
+//--------------------------------------------------------------------
     //to clean the fields ingredients and directions
     // _directionController.clear();
-    showAlertDialogREcipeAdedSuccessfully(context);
+    showAlertDialogRcipeAdedSuccessfully(context);
 
 //# delete
     // print("The ingridaint in addRecipebutton method are :  ");
@@ -220,7 +257,7 @@ class addRecipe extends State<addRecipePage> {
     // print(currentSelectedCuisine);
   }
 
-  showAlertDialogREcipeAdedSuccessfully(BuildContext context) {
+  showAlertDialogRcipeAdedSuccessfully(BuildContext context) {
     // set up the button
     Widget okButton = RaisedButton(
         child: Text("OK"),
@@ -392,7 +429,7 @@ class addRecipe extends State<addRecipePage> {
                 width: 300,
                 height: 270,
                 alignment: Alignment.center,
-                child: RecipeImagePicker(recipe_id),
+                child: RecipeImagePicker(), // recipe_id # delete
               ),
               //----------------------title-------------------------
               Stack(
@@ -412,6 +449,7 @@ class addRecipe extends State<addRecipePage> {
                       margin: EdgeInsets.only(bottom: 15, left: 50, right: 50),
                       padding: EdgeInsets.only(top: 15),
                       child: TextFormField(
+                        controller: recipeTitleController,
                         key: ValueKey("recipe_title"),
                         validator: (value) {
                           if (value.isEmpty || value == "") {
@@ -419,8 +457,11 @@ class addRecipe extends State<addRecipePage> {
                           }
                           return null;
                         },
+                        onChanged: (value) {
+                          recipeTitle = value;
+                        },
                         onSaved: (value) {
-                          _recipeTitle = value;
+                          recipeTitle = value;
                         },
                       ),
                     ),

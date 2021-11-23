@@ -12,10 +12,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class profile extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => profile2();
+  State<StatefulWidget> createState() => profileState();
 }
 
-class profile2 extends State<profile> {
+class profileState extends State<profile> {
   // ---------------- Database -------------------------
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   String userUsername = "";
