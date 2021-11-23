@@ -51,7 +51,7 @@ class addRecipe extends State<addRecipePage> {
   var currentSelectedCategory = "Appetizers";
   var currentSelectedCuisine = "American";
   bool isPublic = false; //to determin wehther the recipe is public or private
-
+  bool isloading = false; // to show the progress circle
   //-----------------------------------------------------------------------------------
 
   // we put one null value instaed of "List<String>()" to make the lenght of list 1 instaed of 0
@@ -95,6 +95,9 @@ class addRecipe extends State<addRecipePage> {
   }
 
   void addRecipeToDatabase() async {
+    setState(() {
+      isloading = true;
+    });
     final FirebaseAuth _auth = FirebaseAuth.instance;
     final currentUser = await _auth.currentUser;
 //# delete
@@ -171,6 +174,9 @@ class addRecipe extends State<addRecipePage> {
       'cuisine': currentSelectedCuisine,
       'recipe_image_url': recipe_image_url,
       'is_public_recipe': isPublic,
+      "sum_of_all_rating": 0,
+      "no_of_pepole ": 0,
+      "average_rating": 0.0,
     });
     formKey.currentState.reset();
 
@@ -226,7 +232,9 @@ class addRecipe extends State<addRecipePage> {
         okButton,
       ],
     );
-
+    setState(() {
+      isloading = false;
+    });
     // show the dialog
     showDialog(
       context: context,
@@ -746,20 +754,27 @@ class addRecipe extends State<addRecipePage> {
                   ),
                 ],
               ),
-
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: Container(
-                  child: ElevatedButton(
-                    onPressed: addRecipeButton,
-                    child: Text('Add recipe'),
-                    style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStateProperty.all(Color(0xFFeb6d44)),
+              isloading
+                  ? Padding(
+                      padding: const EdgeInsets.only(top: 10),
+                      child: CircularProgressIndicator(
+                        backgroundColor: Color(0xFFeb6d44),
+                        color: Colors.white,
+                      ),
+                    )
+                  : Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Container(
+                        child: ElevatedButton(
+                          onPressed: addRecipeButton,
+                          child: Text('Add recipe'),
+                          style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all(Color(0xFFeb6d44)),
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-              ),
             ],
           ),
         ),
