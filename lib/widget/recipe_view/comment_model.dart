@@ -43,7 +43,8 @@ class CommentState extends State<Comments> {
   });
 // --------------------------------------------------
 
-  List<Widget> _buildCommentList() {
+  Widget _buildCommentList() {
+    //User user = firebaseAuth.currentUser;
     List<Widget> comments = [];
     FirebaseFirestore.instance
         .collection("users")
@@ -55,27 +56,53 @@ class CommentState extends State<Comments> {
         .listen((data) {
       bool enter = true;
       data.docs.forEach((doc) {
+        //int s = 1;
+
         if (enter) {
           print(doc["username"]);
           print(doc["imageUrl"]);
           print(doc["comment"]);
           comments.add(
-            Column(
-              children: [
-                userinfo(
-                  doc["username"],
-                  doc["imageUrl"],
-                ),
-                Text(doc["comment"]),
-                Divider(),
-              ],
+            Container(
+              child: Column(
+                children: [
+                  userinfo(
+                    doc["username"],
+                    doc["imageUrl"],
+                  ),
+                  Text(doc["comment"]),
+                  Divider(),
+                ],
+              ),
             ),
           );
         }
       });
       enter = false;
+      //
     });
-    return comments;
+
+    //     .get()
+    //     .then((querySnapshot) {
+    //   querySnapshot.docs.forEach((doc) => {
+    //         comments.add(
+    //           Column(
+    //             children: [
+    //               userinfo(
+    //                 doc.data()['username'],
+    //                 doc.data()['imageUrl'],
+    //               ),
+    //               Text(doc.data()['comment']),
+    //               Divider(),
+    //             ],
+    //           ),
+    //         ),
+    //       });
+    // });
+
+    return ListView(
+      children: comments,
+    );
   }
 
   String userUsername = "";
@@ -100,6 +127,29 @@ class CommentState extends State<Comments> {
     print('Image Url');
     print(imageURL);
   }
+
+  // _buildCommentList() {
+  //   return StreamBuilder(
+  //       stream: recipe_view.commentRef
+  //           .doc(recipeId)
+  //           .collection('comments')
+  //           .orderBy('timestamp', descending: false)
+  //           .snapshots(),
+  //       builder: (context, snapshot) {
+  //         if (!snapshot.hasData) {
+  //           return CircularProgressIndicator();
+  //         }
+  //         List<Comment> comments = [];
+  //         snapshot.data.docs.forEach((doc) {
+  //           comments.add(Comment.fromDocument(doc));
+  //         });
+  //         return ListView(
+  //           children: comments,
+  //         );
+  //       });
+  // }
+
+// -------- add a comment to firebase
 
   addComment(String com) async {
     //User user = _firebaseAuth.currentUser;
@@ -133,12 +183,12 @@ class CommentState extends State<Comments> {
         title: Text('Comments'),
         backgroundColor: Color(0xFFeb6d44),
       ),
+
+      // shows the page of comments which consists of list of comments and the field text
       body: Column(
         children: <Widget>[
-          Expanded(
-              child: ListView(
-                  //children: _buildCommentList().map().toList(),
-                  )),
+          Expanded(child: _buildCommentList()),
+
           //------------------ build the TextField of comments screen ------------------
           Row(
             children: [
@@ -163,6 +213,10 @@ class CommentState extends State<Comments> {
                             Icons.send,
                             color: Color(0xFFeb6d44),
                           ),
+
+                          // ------- if there is no text in the textfield
+                          //don't add the empty comment to the comments list
+
                           onPressed: () {
                             if (commentController.text.trim() == '') {
                             } else {
@@ -183,5 +237,44 @@ class CommentState extends State<Comments> {
         ],
       ),
     );
+  }
+}
+
+// -------- class of a comment
+class Comment extends StatelessWidget {
+  final String username;
+  final String userId;
+  final String imageUrl;
+  final String comment;
+  final Timestamp timestamp;
+
+  Comment({
+    this.username,
+    this.userId,
+    this.imageUrl,
+    this.comment,
+    this.timestamp,
+  });
+
+  factory Comment.fromDocument(DocumentSnapshot doc) {
+    return Comment(
+      username: doc['username'],
+      userId: doc['userId'],
+      comment: doc['comment'],
+      timestamp: doc['timestamp'],
+      imageUrl: doc['imageUrl'],
+    );
+  }
+  @override
+  Widget build(BuildContext context) {
+    return Column(children: [
+      ListTile(
+        leading: CircleAvatar(
+          backgroundImage: NetworkImage(imageUrl),
+        ),
+        title: Text(comment),
+      ),
+      Divider(),
+    ]);
   }
 }
