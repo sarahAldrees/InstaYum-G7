@@ -51,6 +51,7 @@ class addRecipe extends State<addRecipePage> {
   var currentSelectedCategory = "Appetizers";
   var currentSelectedCuisine = "American";
   bool isPublic = false; //to determin wehther the recipe is public or private
+  bool isloading = false;
 
   //-----------------------------------------------------------------------------------
 
@@ -64,6 +65,10 @@ class addRecipe extends State<addRecipePage> {
   // List<String> userDirectionsDatabase = List.from(userDirections);
   // we make a copy of the list to loop one and remove from one, because we can not loop and remove the same list at the same time
   void addRecipeButton() {
+    setState(() {
+      //to show the progress bar
+      isloading = true;
+    });
     List<String> userIngredientsCopy = List.from(userIngredients);
     //# delete
     // List<String> userDirectionsCopy = List.from(userDirections);
@@ -74,22 +79,33 @@ class addRecipe extends State<addRecipePage> {
     // }
 
 //to remove the last field (both in ingredients and directions)if it was empty and there weremore than one field
-    if ((userIngredients[userIngredients.length - 1] == null ||
-            userIngredients[userIngredients.length - 1] == "") &&
-        userIngredients.length > 1) {
-      userIngredients.removeAt(userIngredients.length - 1);
-    }
-    if ((userDirections[userDirections.length - 1] == null ||
-            userDirections[userDirections.length - 1] == "") &&
-        userDirections.length > 1) {
-      userDirections.removeAt(userDirections.length - 1);
-    }
+    // if ((userIngredients[userIngredients.length - 1] == null ||
+    //         userIngredients[userIngredients.length - 1] == "") &&
+    //     userIngredients.length > 1) {
+    //   userIngredients.removeAt(userIngredients.length - 1);
+    // }
+    // if ((userDirections[userDirections.length - 1] == null ||
+    //         userDirections[userDirections.length - 1] == "") &&
+    //     userDirections.length > 1) {
+    //   userDirections.removeAt(userDirections.length - 1);
+    // }
+    // if (!(userIngredients.length == 1)) {
+    //   userIngredients.removeAt(userIngredients.length - 1);
+    // }
+    // if (!(userDirections.length == 1)) {
+    //   userDirections.removeAt(userDirections.length - 1);
+    // }
 
     setState(() {}); //to refresh the page after delete any empty fields
 
     if (formKey.currentState.validate()) {
       formKey.currentState.save();
+
       addRecipeToDatabase();
+    } else {
+      setState(() {
+        isloading = false;
+      });
     }
   }
 
@@ -126,7 +142,7 @@ class addRecipe extends State<addRecipePage> {
       'length_of_directions': userDirections.length,
       'user_id': currentUser.uid,
       "sum_of_all_rating": 0,
-      "no_of_pepole ": 0,
+      "no_of_pepole": 0,
       "average_rating": 0.0,
     });
 // to save the ingredients
@@ -170,9 +186,14 @@ class addRecipe extends State<addRecipePage> {
       'category': currentSelectedCategory,
       'cuisine': currentSelectedCuisine,
       'recipe_image_url': recipe_image_url,
+      'is_public_recipe': isPublic,
+      "sum_of_all_rating": 0,
+      "no_of_pepole": 0,
+      "average_rating": 0.0,
     });
     formKey.currentState.reset();
-
+    //to clean the fields ingredients and directions
+    // _directionController.clear();
     showAlertDialogREcipeAdedSuccessfully(context);
 
 //# delete
@@ -225,7 +246,10 @@ class addRecipe extends State<addRecipePage> {
         okButton,
       ],
     );
-
+    setState(() {
+      //to remove the progress bar
+      isloading = false;
+    });
     // show the dialog
     showDialog(
       context: context,
@@ -237,8 +261,9 @@ class addRecipe extends State<addRecipePage> {
 
 //_______ The two methods below is used to create a dynamic TextFormFeild for Ingredients__________________
   TextEditingController _ingredientController;
+  List<Widget> ingredientsTextFieldsList = [];
   List<Widget> _getIngredients() {
-    List<Widget> ingredientsTextFieldsList = [];
+    ingredientsTextFieldsList = [];
     for (int i = 0; i < userIngredients.length; i++) {
       ingredientsTextFieldsList.add(
         Padding(
@@ -274,7 +299,8 @@ class addRecipe extends State<addRecipePage> {
     }
     return InkWell(
       onTap: () {
-        if (!add) {
+        // userIngredients.length > 1 to prevent deleting the field if there is only one field
+        if (!add && userIngredients.length > 1) {
           userIngredients.removeAt(index);
         }
         setState(() {}); // to refresh the screen
@@ -294,8 +320,9 @@ class addRecipe extends State<addRecipePage> {
 
 //_______ The two methods below is used to create a dynamic TextFormFeild for directions__________________
   TextEditingController _directionController;
+  List<Widget> DirectionsTextFieldsList = [];
   List<Widget> _getDirections() {
-    List<Widget> DirectionsTextFieldsList = [];
+    DirectionsTextFieldsList = [];
     for (int i = 0; i < userDirections.length; i++) {
       DirectionsTextFieldsList.add(
         Padding(
@@ -330,7 +357,8 @@ class addRecipe extends State<addRecipePage> {
     }
     return InkWell(
       onTap: () {
-        if (!add) {
+        // userDirections.length > 1 to prevent deleting the field if there is only one field
+        if (!add && userDirections.length > 1) {
           userDirections.removeAt(index);
         }
         setState(() {}); // to refresh the screen
@@ -709,7 +737,6 @@ class addRecipe extends State<addRecipePage> {
                                 onChanged: (value) {
                                   setState(() {
                                     isPublic = value;
-                                    //print(isSwitched);
                                   });
                                 },
                                 activeTrackColor: Colors.orange[600],
@@ -741,19 +768,30 @@ class addRecipe extends State<addRecipePage> {
                 ],
               ),
 
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: Container(
-                  child: ElevatedButton(
-                    onPressed: addRecipeButton,
-                    child: Text('Add recipe'),
-                    style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStateProperty.all(Color(0xFFeb6d44)),
-                    ),
-                  ),
-                ),
-              ),
+              isloading
+                  ? Padding(
+                      padding: const EdgeInsets.only(top: 10, bottom: 10),
+                      child: CircularProgressIndicator(
+                        backgroundColor: Color(0xFFeb6d44),
+                        color: Colors.white,
+                      ),
+                    )
+                  : Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Padding(
+                        padding: const EdgeInsets.only(bottom: 10),
+                        child: Container(
+                          child: ElevatedButton(
+                            onPressed: addRecipeButton,
+                            child: Text('Add recipe'),
+                            style: ButtonStyle(
+                              backgroundColor:
+                                  MaterialStateProperty.all(Color(0xFFeb6d44)),
+                            ),
+                          ),
+                        ),
+                      ),
+                    )
             ],
           ),
         ),

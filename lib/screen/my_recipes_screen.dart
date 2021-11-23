@@ -81,8 +81,7 @@ class _my_recipesState extends State<my_recipes> {
           print(doc.data()['cuisine']),
           //AssetImage("assets/images/defaultUser.png")
           recipe_image_url = doc.data()['recipe_image_url'],
-          if (recipe_image_url == 'noImageUrl')
-            recipe_image_url = "assets/images/defaultRecipeImage.png",
+
           recpiesList.add(
             Recipe(
               id: doc.id,

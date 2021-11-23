@@ -32,15 +32,23 @@ class recipe_Item extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String image = imageURL;
-// this section will return one item of Grid Items that in bookmarked recipes page.
+    // to return the default image if user does not enter an image by puting "noImageUrl" in the database and converting here to an image
+    final image = imageURL == "noImageUrl" ||
+            imageURL.isEmpty ||
+            imageURL == null
+        ? AssetImage("assets/images/defaultRecipeImage.png")
+        : NetworkImage(
+            imageURL); // the image will be used in ClipRRect, specifically in  Ink.image under Material widget
+
+// this section will return one item of Grid Items that in bookmarked recipes page. (i do not think it is in bookmarked, it is in "my recipe" :) )
     return Column(children: [
       //ClipOval(
       Container(
         width: double.infinity,
         // height: 100,
         decoration: BoxDecoration(
-          color: Colors.grey.shade300,
+          color: Colors
+              .white, // to make the background of the photo white (it is the corners)
         ),
 
         child: InkWell(
@@ -65,13 +73,13 @@ class recipe_Item extends StatelessWidget {
           }, //what happend after clicking image
 
           child: ClipRRect(
-            child: Container(
-              height: 120,
-              child: Image.network(
-                image,
-                fit: BoxFit.fill,
-              ),
-            ),
+            borderRadius: BorderRadius.circular(15),
+            child: Material(
+                color: Colors.white,
+                child: Ink.image(image: image, height: 120, fit: BoxFit.fill)
+                //************************************8 very importatnt to check which attribute is the best with boxfit ? # delete */
+
+                ),
           ),
         ),
       ),
