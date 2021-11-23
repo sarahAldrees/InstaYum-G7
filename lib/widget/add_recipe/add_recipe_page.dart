@@ -125,6 +125,9 @@ class addRecipe extends State<addRecipePage> {
       'length_of_ingredients': userIngredients.length,
       'length_of_directions': userDirections.length,
       'user_id': currentUser.uid,
+      "sum_of_all_rating": 0,
+      "no_of_pepole ": 0,
+      "average_rating": 0.0,
     });
 // to save the ingredients
     int countItems = 0;
