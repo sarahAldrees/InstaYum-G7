@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:instayum1/model/checkboxState.dart';
 import 'package:instayum1/model/commentState.dart';
+import 'package:instayum1/widget/recipe_view/comment_model.dart';
 import 'package:instayum1/widget/recipe_view/image_and_username.dart';
 
 class CommentList extends StatefulWidget {
@@ -66,7 +67,10 @@ class CommentListState extends State<CommentList> {
         .doc(widget.recipeID)
         .collection("comments");
 
-    databaseRef.snapshots().listen((data) {
+    databaseRef
+        .orderBy('timestamp', descending: false)
+        .snapshots()
+        .listen((data) {
       setState(() {
         comments.clear();
         data.docs.forEach((doc) {
@@ -78,7 +82,8 @@ class CommentListState extends State<CommentList> {
           comments.add(commentState(
               username: doc["username"],
               commentImgUrl: doc["imageUrl"],
-              comment: doc["comment"]));
+              comment: doc["comment"],
+              timestamp: doc["timestamp"]));
 
           print('@@@@@@@@@@@@@@@@@@@@');
           print(comments[0].username);
@@ -100,6 +105,7 @@ class CommentListState extends State<CommentList> {
               comment.commentImgUrl,
             ),
             Text(comment.comment),
+            Text(comment.timestamp.toString()),
             Divider(),
           ],
         ),

@@ -5,9 +5,11 @@ class commentState {
   String username = "";
   String commentImgUrl = "";
   String comment = "";
-  // Timestamp timestamp;
-  commentState(
-      {@required this.username,
-      @required this.commentImgUrl,
-      @required this.comment});
+  Timestamp timestamp;
+  commentState({
+    @required this.username,
+    @required this.commentImgUrl,
+    @required this.comment,
+    @required this.timestamp,
+  });
 }

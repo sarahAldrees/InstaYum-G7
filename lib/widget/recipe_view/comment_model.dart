@@ -5,8 +5,12 @@ import 'package:instayum1/widget/recipe_view/image_and_username.dart';
 import 'package:instayum1/widget/recipe_view/recipe_view_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:uuid/uuid.dart';
-//import 'package:cloud_firestore_platform_interface/src/timestamp.dart';
+import 'package:cloud_firestore_platform_interface/src/timestamp.dart';
 
+Timestamp timestamp = Timestamp.now();
+// DateTime timestamp1 = timestamp1.toDate();
+
+// DateTime timestamp = DateFormat('dd/MM/yyyy, HH:mm').format(timestamp1);
 class Comments extends StatefulWidget {
   final String userId;
   final String recipeId;
@@ -138,7 +142,7 @@ class CommentState extends State<Comments> {
 
   addComment(String com) async {
     //User user = _firebaseAuth.currentUser;
-    //Timestamp timestamp;
+    // Timestamp timestamp;
     final commentRef = Uuid().v4();
     FirebaseFirestore.instance
         .collection("users")
@@ -151,7 +155,7 @@ class CommentState extends State<Comments> {
       "username": userUsername,
       "reciepeId": "2cf0fbeb-957a-4330-96b3-36bc2fbfe080",
       "imageUrl": imageURL,
-      //"timestamp": timestamp,
+      "timestamp": timestamp,
       "comment": com,
     });
   }
