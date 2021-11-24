@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:instayum1/widget/recipe_view/comments_sccreen.dart';
 import 'package:instayum1/widget/recipe_view/image_and_username.dart';
 import 'package:instayum1/widget/recipe_view/recipe_view_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -40,24 +41,27 @@ class CommentState extends State<Comments> {
     this.userId,
     this.authorId,
     this.comment,
+    this.databaseRef,
   });
 // --------------------------------------------------
-
+  CollectionReference databaseRef;
   Widget _buildCommentList() {
     //User user = firebaseAuth.currentUser;
     List<Widget> comments = [];
-    FirebaseFirestore.instance
+
+    databaseRef = FirebaseFirestore.instance
         .collection("users")
         .doc(authorId)
         .collection("recpies")
         .doc(recipeId)
-        .collection("comments")
-        .snapshots()
-        .listen((data) {
-      bool enter = true;
+        .collection("comments");
+
+    databaseRef.snapshots().listen((data) {
+      comments.clear();
+
       data.docs.forEach((doc) {
         //int s = 1;
-
+        bool enter = true;
         if (enter) {
           print(doc["username"]);
           print(doc["imageUrl"]);
@@ -77,28 +81,9 @@ class CommentState extends State<Comments> {
             ),
           );
         }
+        enter = false;
       });
-      enter = false;
-      //
     });
-
-    //     .get()
-    //     .then((querySnapshot) {
-    //   querySnapshot.docs.forEach((doc) => {
-    //         comments.add(
-    //           Column(
-    //             children: [
-    //               userinfo(
-    //                 doc.data()['username'],
-    //                 doc.data()['imageUrl'],
-    //               ),
-    //               Text(doc.data()['comment']),
-    //               Divider(),
-    //             ],
-    //           ),
-    //         ),
-    //       });
-    // });
 
     return ListView(
       children: comments,
@@ -187,94 +172,59 @@ class CommentState extends State<Comments> {
       // shows the page of comments which consists of list of comments and the field text
       body: Column(
         children: <Widget>[
-          Expanded(child: _buildCommentList()),
+          Expanded(
+              child: CommentList(
+            authorId: widget.authorId,
+            recipeID: widget.recipeId,
+          )),
 
           //------------------ build the TextField of comments screen ------------------
-          Row(
-            children: [
-              Expanded(
-                child: Container(
-                  margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                  child: TextField(
-                    controller: commentController,
-                    cursorColor: Colors.red,
-                    // keyboardType: TextInputType.multiline,
-                    maxLines: null,
-                    decoration: InputDecoration(
-                        fillColor: Colors.grey,
-                        focusedBorder: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Color(0xFFeb6d44), width: 2),
-                        ),
-                        border: new OutlineInputBorder(
-                            borderSide: new BorderSide(color: Colors.orange)),
-                        suffixIcon: IconButton(
-                          icon: Icon(
-                            Icons.send,
-                            color: Color(0xFFeb6d44),
-                          ),
+          // Row(
+          //   children: [
+          //     Expanded(
+          //       child: Container(
+          //         margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+          //         child: TextField(
+          //           controller: commentController,
+          //           cursorColor: Colors.red,
+          //           // keyboardType: TextInputType.multiline,
+          //           maxLines: null,
+          //           decoration: InputDecoration(
+          //               fillColor: Colors.grey,
+          //               focusedBorder: OutlineInputBorder(
+          //                 borderSide:
+          //                     BorderSide(color: Color(0xFFeb6d44), width: 2),
+          //               ),
+          //               border: new OutlineInputBorder(
+          //                   borderSide: new BorderSide(color: Colors.orange)),
+          //               suffixIcon: IconButton(
+          //                 icon: Icon(
+          //                   Icons.send,
+          //                   color: Color(0xFFeb6d44),
+          //                 ),
 
-                          // ------- if there is no text in the textfield
-                          //don't add the empty comment to the comments list
+          //                 // ------- if there is no text in the textfield
+          //                 //don't add the empty comment to the comments list
 
-                          onPressed: () {
-                            if (commentController.text.trim() == '') {
-                            } else {
-                              addComment(commentController.text);
-                              // _addComment(controller.text);
-                              commentController.clear();
-                            }
-                          },
-                        ),
-                        contentPadding: const EdgeInsets.all(10),
-                        hintText: "Add  a comment..."),
-                  ),
-                ),
-              ),
-              //---------------------------------------------------------------
-            ],
-          ),
+          //                 onPressed: () {
+          //                   if (commentController.text.trim() == '') {
+          //                   } else {
+          //                     addComment(commentController.text);
+          //                     // _addComment(controller.text);
+          //                     commentController.clear();
+          //                   }
+          //                 },
+          //               ),
+          //               contentPadding: const EdgeInsets.all(10),
+          //               hintText: "Add  a comment..."),
+          //         ),
+          //       ),
+          //     ),
+          //     //---------------------------------------------------------------
+          //   ],
+          // ),
         ],
       ),
     );
-  }
-}
-
-// -------- class of a comment
-class Comment extends StatelessWidget {
-  final String username;
-  final String userId;
-  final String imageUrl;
-  final String comment;
-  final Timestamp timestamp;
-
-  Comment({
-    this.username,
-    this.userId,
-    this.imageUrl,
-    this.comment,
-    this.timestamp,
-  });
-
-  factory Comment.fromDocument(DocumentSnapshot doc) {
-    return Comment(
-      username: doc['username'],
-      userId: doc['userId'],
-      comment: doc['comment'],
-      timestamp: doc['timestamp'],
-      imageUrl: doc['imageUrl'],
-    );
-  }
-  @override
-  Widget build(BuildContext context) {
-    return Column(children: [
-      ListTile(
-        leading: CircleAvatar(
-          backgroundImage: NetworkImage(imageUrl),
-        ),
-        title: Text(comment),
-      ),
-      Divider(),
-    ]);
   }
 }
