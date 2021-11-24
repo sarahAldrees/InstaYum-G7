@@ -137,40 +137,41 @@ class recipe_view extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               userinfo(autherName, autherImage),
-//------------------------ Rating of recipe -------------------------------------
 
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: Row(children: [
-                  Text(
-                    '4',
-                    style: TextStyle(
-                      fontSize: 26,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 6),
-                    child: Column(
-                      children: [
-                        RatingBarIndicator(
-                            rating: 4,
-                            itemBuilder: (context, index) => Icon(
-                                  Icons.star,
-                                  color: Colors.amber,
-                                ),
-                            itemCount: 5,
-                            itemSize: 17.0,
-                            direction: Axis.horizontal),
-                        Text(
-                          '3 Reviews',
-                          style: TextStyle(fontSize: 15),
-                        ),
-                      ],
-                    ),
-                  ),
-                ]),
-              ),
+//------------------------ Rating of recipe -------------------------------------
+              gitRating(id, autherId),
+              // Padding(
+              //   padding: const EdgeInsets.symmetric(horizontal: 10),
+              //   child: Row(children: [
+              //     Text(
+              //       '4',
+              //       style: TextStyle(
+              //         fontSize: 26,
+              //         fontWeight: FontWeight.w600,
+              //       ),
+              //     ),
+              //     Padding(
+              //       padding: const EdgeInsets.only(left: 6),
+              //       child: Column(
+              //         children: [
+              //           RatingBarIndicator(
+              //               rating: 4,
+              //               itemBuilder: (context, index) => Icon(
+              //                     Icons.star,
+              //                     color: Colors.amber,
+              //                   ),
+              //               itemCount: 5,
+              //               itemSize: 17.0,
+              //               direction: Axis.horizontal),
+              //           Text(
+              //             '3 Reviews',
+              //             style: TextStyle(fontSize: 15),
+              //           ),
+              //         ],
+              //       ),
+              //     ),
+              //   ]),
+              // ),
               //userinfo(),
             ],
           ),
@@ -251,3 +252,82 @@ class recipe_view extends StatelessWidget {
 }
 
 //-------------------
+
+class gitRating extends StatefulWidget {
+  String recipeId;
+  String autherId;
+  gitRating(this.recipeId, this.autherId);
+  @override
+  getRatingState createState() => getRatingState();
+}
+
+var numOfRevewis;
+var avg = 0.0;
+var rating;
+
+class getRatingState extends State<gitRating> {
+  getData() async {
+    FirebaseFirestore.instance
+        .collection("users")
+        .doc(widget.autherId)
+        .collection("recpies")
+        .doc(widget.recipeId)
+        .collection("rating")
+        .doc("recipeRating")
+        .snapshots()
+        .listen((userData) {
+      setState(() {
+        numOfRevewis = userData.data()['no_of_pepole'];
+        //print(numOfRevewis + 1);
+
+        // print(numOfRevewis);
+
+        avg = userData.data()['average_rating'];
+
+        // print(avg);
+      });
+    });
+  }
+
+  void initState() {
+    super.initState();
+    getData();
+    //we call the method here to get the data immediately when init the page.
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      child: Row(children: [
+        Text(
+          "$avg",
+          style: TextStyle(
+            fontSize: 26,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 6),
+          child: Column(
+            children: [
+              RatingBarIndicator(
+                  rating: avg,
+                  itemBuilder: (context, index) => Icon(
+                        Icons.star,
+                        color: Colors.amber,
+                      ),
+                  itemCount: 5,
+                  itemSize: 17.0,
+                  direction: Axis.horizontal),
+              Text(
+                '$numOfRevewis Reviews',
+                style: TextStyle(fontSize: 15),
+              ),
+            ],
+          ),
+        ),
+      ]),
+    );
+  }
+}

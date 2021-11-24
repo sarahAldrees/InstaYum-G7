@@ -217,9 +217,24 @@ class addRecipe extends State<addRecipePage> {
       'cuisine': currentSelectedCuisine,
       'recipe_image_url': recipe_image_url,
       'is_public_recipe': isPublic,
+      // "sum_of_all_rating": 0,
+      // "no_of_pepole": 0,
+      // "average_rating": 0.0,
+    });
+    //--------------------creat collection of reating with zeros----------
+    await FirebaseFirestore.instance
+        .collection("users")
+        .doc(currentUser.uid)
+        .collection(
+            "recpies") // create new collcetion of recpies inside user document to save all of the user's recpies
+        .doc(recipe_id)
+        .collection("rating")
+        .doc("recipeRating")
+        .set({
       "sum_of_all_rating": 0,
       "no_of_pepole": 0,
       "average_rating": 0.0,
+      //"user_alredy_reiw": FieldValue.arrayUnion(['data1', 'data2', 'data3']),
     });
 
     //-----------------Clear the form--------------------------------

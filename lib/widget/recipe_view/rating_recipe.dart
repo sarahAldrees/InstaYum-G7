@@ -1,4 +1,5 @@
 import 'dart:ffi';
+import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -30,17 +31,16 @@ class Rating extends State<Rating_recipe> {
         .doc(widget.autherId)
         .collection("recpies")
         .doc(widget.recipeId)
+        .collection("rating")
+        .doc("recipeRating")
         .snapshots()
         .listen((userData) {
       setState(() {
-        numOfRevewis = userData.data()['no_of_pepole '];
-        // print(numOfRevewis + 1);
-        total = userData.data()['sum_of_all_rating'];
+        numOfRevewis = userData.data()["no_of_pepole"];
 
-        // print(numOfRevewis);
+        total = userData.data()["sum_of_all_rating"];
 
-        avg = userData.data()['average_rating'];
-        // print(avg);
+        avg = userData.data()["average_rating"];
       });
     });
   }
@@ -52,10 +52,11 @@ class Rating extends State<Rating_recipe> {
 
   @override
   Widget _buildRatinBar() {
-    //print(++total);
+    print("numOfRevewis===============");
+    print(total);
     return RatingBar.builder(
       direction: Axis.horizontal,
-      allowHalfRating: true,
+      //allowHalfRating: true,
       itemCount: 5,
       itemSize: 30,
       itemBuilder: (context, _) => Icon(
@@ -68,6 +69,11 @@ class Rating extends State<Rating_recipe> {
         print(rating);
       }),
     );
+  }
+
+  double dp(double val, int places) {
+    num mod = pow(10.0, places);
+    return ((val * mod).round().toDouble() / mod);
   }
 
   Widget build(BuildContext context) {
@@ -124,10 +130,27 @@ class Rating extends State<Rating_recipe> {
                           Navigator.pop(context);
                           numOfRevewis++;
                           print(numOfRevewis);
-                          total += rating;
+                          total = total + rating;
                           print('total $total');
                           avg = total / numOfRevewis;
+                          avg = dp(avg, 2);
                           print('Avg $avg');
+                          //avg = pow(avg, 2);
+                          // print('Avg $avg');
+
+                          //----------uppdating data --------
+                          FirebaseFirestore.instance
+                              .collection("users")
+                              .doc(widget.autherId)
+                              .collection("recpies")
+                              .doc(widget.recipeId)
+                              .collection("rating")
+                              .doc("recipeRating")
+                              .update({
+                            'sum_of_all_rating': total,
+                            "no_of_pepole": numOfRevewis,
+                            "average_rating": avg,
+                          });
                         }),
                   ),
                 ),
