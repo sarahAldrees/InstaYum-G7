@@ -40,9 +40,12 @@ class appPages extends State<MainPages> {
         onPressed: () {
 // we will first clear the form
 
+          addRecipe.recipeTitle = '';
           if (addRecipe.recipeTitleController.value.text.isNotEmpty) {
+            //to avoid the null exception
             addRecipe.recipeTitleController.clear();
           }
+
           addRecipe.userIngredients = [null];
           addRecipe.userDirections = [null];
           RecipeImagePickerState.uploadedFileURL = null;

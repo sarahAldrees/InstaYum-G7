@@ -239,6 +239,8 @@ class addRecipe extends State<addRecipePage> {
 
     //-----------------Clear the form--------------------------------
     formKey.currentState.reset();
+    recipeTitleController.clear(); //to clean on the screen only
+    recipeTitle = ''; // to realy clean it
     userIngredients = [null];
     userDirections = [null];
     RecipeImagePickerState.uploadedFileURL = null;
