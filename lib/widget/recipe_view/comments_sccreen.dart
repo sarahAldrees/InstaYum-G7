@@ -53,7 +53,7 @@ class CommentListState extends State<CommentList> {
     // });
     // --------
 
-    return ListView(padding: EdgeInsets.all(12), children: [
+    return ListView(shrinkWrap: true, padding: EdgeInsets.all(12), children: [
       ...comments.map(comment).toList(),
     ]);
   }
@@ -68,6 +68,7 @@ class CommentListState extends State<CommentList> {
 
     databaseRef.snapshots().listen((data) {
       setState(() {
+        comments.clear();
         data.docs.forEach((doc) {
           //int s = 1;
 

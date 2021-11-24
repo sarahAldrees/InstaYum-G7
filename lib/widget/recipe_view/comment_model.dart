@@ -179,50 +179,50 @@ class CommentState extends State<Comments> {
           )),
 
           //------------------ build the TextField of comments screen ------------------
-          // Row(
-          //   children: [
-          //     Expanded(
-          //       child: Container(
-          //         margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-          //         child: TextField(
-          //           controller: commentController,
-          //           cursorColor: Colors.red,
-          //           // keyboardType: TextInputType.multiline,
-          //           maxLines: null,
-          //           decoration: InputDecoration(
-          //               fillColor: Colors.grey,
-          //               focusedBorder: OutlineInputBorder(
-          //                 borderSide:
-          //                     BorderSide(color: Color(0xFFeb6d44), width: 2),
-          //               ),
-          //               border: new OutlineInputBorder(
-          //                   borderSide: new BorderSide(color: Colors.orange)),
-          //               suffixIcon: IconButton(
-          //                 icon: Icon(
-          //                   Icons.send,
-          //                   color: Color(0xFFeb6d44),
-          //                 ),
+          Row(
+            children: [
+              Expanded(
+                child: Container(
+                  margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  child: TextField(
+                    controller: commentController,
+                    cursorColor: Colors.red,
+                    // keyboardType: TextInputType.multiline,
+                    maxLines: null,
+                    decoration: InputDecoration(
+                        fillColor: Colors.grey,
+                        focusedBorder: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Color(0xFFeb6d44), width: 2),
+                        ),
+                        border: new OutlineInputBorder(
+                            borderSide: new BorderSide(color: Colors.orange)),
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            Icons.send,
+                            color: Color(0xFFeb6d44),
+                          ),
 
-          //                 // ------- if there is no text in the textfield
-          //                 //don't add the empty comment to the comments list
+                          // ------- if there is no text in the textfield
+                          //don't add the empty comment to the comments list
 
-          //                 onPressed: () {
-          //                   if (commentController.text.trim() == '') {
-          //                   } else {
-          //                     addComment(commentController.text);
-          //                     // _addComment(controller.text);
-          //                     commentController.clear();
-          //                   }
-          //                 },
-          //               ),
-          //               contentPadding: const EdgeInsets.all(10),
-          //               hintText: "Add  a comment..."),
-          //         ),
-          //       ),
-          //     ),
-          //     //---------------------------------------------------------------
-          //   ],
-          // ),
+                          onPressed: () {
+                            if (commentController.text.trim() == '') {
+                            } else {
+                              addComment(commentController.text);
+                              // _addComment(controller.text);
+                              commentController.clear();
+                            }
+                          },
+                        ),
+                        contentPadding: const EdgeInsets.all(10),
+                        hintText: "Add  a comment..."),
+                  ),
+                ),
+              ),
+              //---------------------------------------------------------------
+            ],
+          ),
         ],
       ),
     );
