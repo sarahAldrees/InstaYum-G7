@@ -37,6 +37,11 @@ class recipe_view extends StatelessWidget {
       this.dirctions);
   @override
   Widget build(BuildContext context) {
+    // to return the default image if user does not enter an image by puting "noImageUrl" in the database and converting here to an image
+    final image =
+        imageURL == "noImageUrl" || imageURL.isEmpty || imageURL == null
+            ? AssetImage("assets/images/defaultRecipeImage.png")
+            : NetworkImage(imageURL);
     //---------
 
     const _actionTitles = [
@@ -94,13 +99,13 @@ class recipe_view extends StatelessWidget {
             padding: const EdgeInsets.only(bottom: 10),
             child: Stack(
               children: [
-                Container(
-                  width: double.infinity,
-                  height: 200,
-                  child: Image.network(
-                    imageURL,
-                    fit: BoxFit.fill,
-                  ),
+                ClipRRect(
+                  child: Material(
+                      color: Colors.white,
+                      child:
+                          Ink.image(image: image, height: 250, fit: BoxFit.fill)
+                      //************************************8 very importatnt to check which attribute is the best with boxfit ? # delete */
+                      ),
                 ),
                 Positioned(
                   left: 10,
