@@ -83,7 +83,7 @@ class CommentListState extends State<CommentList> {
               username: doc["username"],
               commentImgUrl: doc["imageUrl"],
               comment: doc["comment"],
-              timestamp: doc["timestamp"]));
+              date: doc["shownDate"]));
 
           print('@@@@@@@@@@@@@@@@@@@@');
           print(comments[0].username);
@@ -105,7 +105,7 @@ class CommentListState extends State<CommentList> {
               comment.commentImgUrl,
             ),
             Text(comment.comment),
-            Text(comment.timestamp.toString()),
+            Text(comment.date),
             Divider(),
           ],
         ),
