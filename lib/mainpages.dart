@@ -107,7 +107,7 @@ class appPages extends State<MainPages> {
   static int indexOfPages = 4;
   static int indexOfPreviousPage = 4;
 
-  static List<Widget> listOfPagesContent = [
+  List<Widget> listOfPagesContent = [
     //---------discover page  0-------------
     discoverPage(),
     //--------- mealPlaner page 1------------

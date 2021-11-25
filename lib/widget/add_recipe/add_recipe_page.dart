@@ -136,6 +136,11 @@ class addRecipe extends State<addRecipePage> {
       setState(() {
         isloading = false;
       });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+            content: Text("some fields missing check them please"),
+            backgroundColor: Theme.of(context).errorColor),
+      );
     }
   }
 
@@ -159,7 +164,7 @@ class addRecipe extends State<addRecipePage> {
 //       'length_of_directions': userDirections.length,
 //       'user_id': currentUser.uid,
 //     });
-
+    DateTime timestamp = DateTime.now();
     await FirebaseFirestore.instance
         .collection("users")
         .doc(currentUser.uid)
@@ -174,6 +179,7 @@ class addRecipe extends State<addRecipePage> {
       "sum_of_all_rating": 0,
       "no_of_pepole": 0,
       "average_rating": 0.0,
+      "timestamp": timestamp,
     });
 // to save the ingredients
     int countItems = 0;
@@ -198,7 +204,7 @@ class addRecipe extends State<addRecipePage> {
           .collection("recpies")
           .doc(recipe_id)
           .update({
-        'dir$countItems': dir,
+        'dir$countItems': '${countItems}- ' + dir,
       });
     }
 // to save the classification
@@ -279,10 +285,12 @@ class addRecipe extends State<addRecipePage> {
     Widget okButton = RaisedButton(
         child: Text("OK"),
         onPressed: () {
+          print("ok is clicked");
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => MainPages()),
           );
+          print("ok is clicked after navigaotr");
         });
 
     // set up the AlertDialog

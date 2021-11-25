@@ -31,7 +31,8 @@ dependencies:
     sdk: flutter
   rating_dialog: ^2.0.0
   intl: ^0.16.1
-  flutter_advanced_networkimage: any
+  
+ 
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -43,6 +44,8 @@ dependencies:
   firebase_storage: ^7.0.0
   uuid: ^2.2.2 #for generating random id
   flutter_rating_bar: ^4.0.0
+  cached_network_image: ^2.0.0
+
 
 
 dev_dependencies:

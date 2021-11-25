@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:instayum1/widget/recipe_view/recipe_view_screen.dart';
+import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class recipe_Item extends StatelessWidget {
   final String autherName;

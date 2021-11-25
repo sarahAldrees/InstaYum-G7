@@ -30,9 +30,17 @@ class profileState extends State<profile> {
         .snapshots()
         .listen((userData) {
       setState(() {
+        // try {
         userUsername = userData.data()['username'];
         imageURL = userData.data()['image_url'];
         uId = user.uid;
+        // } on Exception catch (e) {
+        //   print('error caught: $e');
+        // }
+        // atch(e) {
+        //   print("The second catch solove the problem");
+        // }
+        // }
       });
     });
   }

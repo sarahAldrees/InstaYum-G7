@@ -45,6 +45,7 @@ class _my_recipesState extends State<my_recipes> {
         .collection("users")
         .doc(user.uid)
         .collection("recpies")
+        .orderBy("timestamp", descending: true)
         .get()
         .then((querySnapshot) {
       querySnapshot.docs.forEach(
@@ -53,33 +54,33 @@ class _my_recipesState extends State<my_recipes> {
           dirctionsList = [],
           lengthOfIngredients = doc.data()['length_of_ingredients'],
           lengthOfDirections = doc.data()['length_of_directions'],
-          print(
-              'Ingredients*******************************************************>>>>>>>>>>>>>>>>>>>>'),
+          // print(
+          //     'Ingredients*******************************************************>>>>>>>>>>>>>>>>>>>>'),
           for (int i = 0; i < lengthOfIngredients; i++)
             {
               {
                 ingredientsList.add(
                   doc.data()['ing${i + 1}'],
                 ),
-                print(ingredientsList[i]),
+                //  print(ingredientsList[i]),
               }
             },
-          print(
-              'Directions*******************************************************>>>>>>>>>>>>>>>>>>>>'),
+          // print(
+          //     'Directions*******************************************************>>>>>>>>>>>>>>>>>>>>'),
           for (int i = 0; i < lengthOfDirections; i++)
             {
               dirctionsList.add(
                 doc.data()['dir${i + 1}'],
               ),
-              print(dirctionsList[i]),
+              // print(dirctionsList[i]),
             },
-          print(
-              'Recipe list *******************************************************>>>>>>>>>>>>>>>>>>>>'),
-          print(doc.data()['recipe_image_url']),
-          print(doc.data()['recipe_title']),
-          print(doc.data()['type_of_meal']),
-          print(doc.data()['category']),
-          print(doc.data()['cuisine']),
+          // print(
+          //     'Recipe list *******************************************************>>>>>>>>>>>>>>>>>>>>'),
+          // print(doc.data()['recipe_image_url']),
+          // print(doc.data()['recipe_title']),
+          // print(doc.data()['type_of_meal']),
+          // print(doc.data()['category']),
+          // print(doc.data()['cuisine']),
           //AssetImage("assets/images/defaultUser.png")
           recipe_image_url = doc.data()['recipe_image_url'],
 

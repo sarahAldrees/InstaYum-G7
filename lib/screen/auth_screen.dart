@@ -37,23 +37,34 @@ class _AuthScreenState extends State<AuthScreen> {
           email: email,
           password: password,
         );
+        FirebaseFirestore.instance //just to store the username in the database
+            .collection("users")
+            .doc(authResult.user.uid)
+            .set({
+          "username": "",
+          "email": email,
+          "image_url": "noImage",
+        }); // we put initail empty values to avoid the exception (username[] was call on null)
 
         var url = ""; // NEW
         if (isDefaultImage) {
-          url =
-              "noImage"; // to put the url part in the database with "noImage" if user does not choose an image
+          url = "noImage";
+          // to put the url part in the database with "noImage" if user does not choose an image
         } else {
           // to put the url part in database with user's image url
           // NEW
-          final ref = FirebaseStorage.instance.ref().child("user_image").child(
-              authResult.user.uid +
-                  "jpg"); //we put the user is + jpg to be the name of the image and to make it unqie we use user id
+          final ref = FirebaseStorage.instance
+              .ref()
+              .child("user_image")
+              .child(authResult.user.uid + "jpg");
+          //we put the user is + jpg to be the name of the image and to make it unqie we use user id
 
           // we add onComplete to can add await
           await ref.putFile(image);
 
           url = await ref.getDownloadURL();
         }
+        // here we put the real values
         await FirebaseFirestore
             .instance //just to store the username in the database
             .collection("users")
