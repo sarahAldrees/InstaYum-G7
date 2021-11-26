@@ -12,7 +12,8 @@ DateTime timestamp = new DateTime(DateTime.now().year, DateTime.now().month,
     DateTime.now().day, DateTime.now().hour, DateTime.now().minute);
 // DateTime timestamp1 = timestamp1.toDate();
 
-String date = DateFormat('yyyy-MM-dd – kk:mm').format(timestamp);
+//String date = DateFormat.yMMMd().format(timestamp);
+String date = DateFormat('yyyy-MM-dd – hh:mm:a').format(timestamp);
 
 class Comments extends StatefulWidget {
   final String recipeId;
