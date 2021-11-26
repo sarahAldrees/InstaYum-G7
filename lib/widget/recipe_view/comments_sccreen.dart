@@ -92,7 +92,7 @@ class CommentListState extends State<CommentList> {
               date: doc["shownDate"]));
 
           print('###');
-          print(comments[0].username);
+          // print(comments[0].username);
         });
       });
     });
