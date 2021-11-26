@@ -13,7 +13,7 @@ class recipe_view extends StatelessWidget {
   String autherName;
   String autherImage;
   String autherId;
-  String id;
+  String recipeid;
   String recipeName;
   String imageURL;
   String typeOfMeal;
@@ -23,18 +23,19 @@ class recipe_view extends StatelessWidget {
   List<String> dirctions;
 
   recipe_view(
-      //Key,
-      this.autherName,
-      this.autherImage,
-      this.autherId,
-      this.id,
-      this.recipeName,
-      this.imageURL,
-      this.typeOfMeal,
-      this.category,
-      this.cuisine,
-      this.ingredients,
-      this.dirctions);
+    //Key,
+    this.autherName,
+    this.autherImage,
+    this.autherId,
+    this.recipeid,
+    this.recipeName,
+    this.imageURL,
+    this.typeOfMeal,
+    this.category,
+    this.cuisine,
+    this.ingredients,
+    this.dirctions,
+  );
   @override
   Widget build(BuildContext context) {
     // to return the default image if user does not enter an image by puting "noImageUrl" in the database and converting here to an image
@@ -75,15 +76,14 @@ class recipe_view extends StatelessWidget {
             onPressed: () {},
             icon: const Icon(Icons.shopping_bag),
           ),
-          Rating_recipe(id, autherId),
+          Rating_recipe(recipeid, autherId),
           ActionButton(
             onPressed: () {
               Navigator.push(
                   context,
                   MaterialPageRoute(
                       builder: (context) => Comments(
-                            userId: recipeName,
-                            recipeId: id,
+                            recipeId: recipeid,
                             authorId: autherId,
                             comment: imageURL,
                           )));
@@ -144,7 +144,7 @@ class recipe_view extends StatelessWidget {
               userinfo(autherName, autherImage),
 
 //------------------------ Rating of recipe -------------------------------------
-              gitRating(id, autherId),
+              gitRating(recipeid, autherId),
               // Padding(
               //   padding: const EdgeInsets.symmetric(horizontal: 10),
               //   child: Row(children: [

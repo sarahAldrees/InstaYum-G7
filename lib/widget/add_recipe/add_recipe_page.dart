@@ -240,7 +240,7 @@ class addRecipe extends State<addRecipePage> {
       "sum_of_all_rating": 0,
       "no_of_pepole": 0,
       "average_rating": 0.0,
-      //"user_alredy_reiw": FieldValue.arrayUnion(['data1', 'data2', 'data3']),
+      "user_alredy_reiw": FieldValue.arrayUnion(null),
     });
 
     //-----------------Clear the form--------------------------------

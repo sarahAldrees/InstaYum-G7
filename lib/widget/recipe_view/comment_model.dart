@@ -14,13 +14,11 @@ DateTime timestamp = DateTime.now();
 String date = DateFormat.yMMMd().format(timestamp);
 
 class Comments extends StatefulWidget {
-  final String userId;
   final String recipeId;
   final String authorId;
   final String comment;
 
   Comments({
-    this.userId,
     this.recipeId,
     this.authorId,
     this.comment,
@@ -29,7 +27,6 @@ class Comments extends StatefulWidget {
   @override
   CommentState createState() => CommentState(
         recipeId: recipeId,
-        userId: this.userId,
         authorId: this.authorId,
         comment: this.comment,
       );
@@ -37,14 +34,13 @@ class Comments extends StatefulWidget {
 
 class CommentState extends State<Comments> {
   final String recipeId;
-  final String userId;
+
   final String authorId;
   final String comment;
   TextEditingController commentController = TextEditingController();
 
   CommentState({
     this.recipeId,
-    this.userId,
     this.authorId,
     this.comment,
     this.databaseRef,

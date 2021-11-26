@@ -11,21 +11,28 @@ import 'package:instayum1/widget/recipe_view/view_reicpe_flotingbutton.dart';
 class Rating_recipe extends StatefulWidget {
   String recipeId;
   String autherId;
+
   Rating_recipe(this.recipeId, this.autherId);
   @override
   Rating createState() => Rating();
 }
 
+String currentUserId;
+bool findUser = false;
 double rating;
 var numOfRevewis;
 var total;
 var avg;
+List<String> usersAlredyRate;
 
 class Rating extends State<Rating_recipe> {
   // final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
 //getData() to get the data of users like username, image_url from database
   getData() async {
+    final FirebaseAuth usId = FirebaseAuth.instance;
+    final currentUser = usId.currentUser;
+
     FirebaseFirestore.instance
         .collection("users")
         .doc(widget.autherId)
@@ -36,11 +43,15 @@ class Rating extends State<Rating_recipe> {
         .snapshots()
         .listen((userData) {
       setState(() {
+        //usersAlredyRate.clear();
         numOfRevewis = userData.data()["no_of_pepole"];
 
         total = userData.data()["sum_of_all_rating"];
 
         avg = userData.data()["average_rating"];
+
+        usersAlredyRate = List.from(userData.data()["user_alredy_reiw"]);
+        currentUserId = currentUser.uid;
       });
     });
   }
@@ -53,6 +64,7 @@ class Rating extends State<Rating_recipe> {
   @override
   Widget _buildRatinBar() {
     print("numOfRevewis===============");
+    print(usersAlredyRate[0]);
     print(total);
     return RatingBar.builder(
       direction: Axis.horizontal,
@@ -79,85 +91,137 @@ class Rating extends State<Rating_recipe> {
   Widget build(BuildContext context) {
     return ActionButton(
       onPressed: () {
-        showDialog<void>(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(15)),
-              ),
-              title: Row(
-                children: [
-                  Container(
-                    // margin: EdgeInsets.only(right: 20, left: 2),
-                    padding: EdgeInsets.only(right: 12),
-                    child: IconButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        icon: Icon(
-                          Icons.arrow_back,
-                          size: 20,
-                          color: Colors.orange[800],
-                        )),
-                  ),
-                  Text('Rate the recipe'),
-                ],
-              ),
-              content: Container(
-                height: 50,
-                child: Center(
-                  child: _buildRatinBar(),
-                ),
-              ),
-              actions: [
-                Container(
-                  width: double.infinity,
-                  margin: EdgeInsets.all(0),
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                        top: 15, right: 0, left: 0, bottom: 0),
-                    child: ElevatedButton(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 10),
-                          child: Text("Rate"),
-                        ),
-                        style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all(Color(0xFFeb6d44)),
-                        ),
-                        onPressed: () {
-                          Navigator.pop(context);
-                          numOfRevewis++;
-                          print(numOfRevewis);
-                          total = total + rating;
-                          print('total $total');
-                          avg = total / numOfRevewis;
-                          avg = dp(avg, 2);
-                          print('Avg $avg');
-                          //avg = pow(avg, 2);
-                          // print('Avg $avg');
+        for (int i = 0; i < usersAlredyRate.length; i++) {
+          if (usersAlredyRate[i] == currentUserId) {
+            findUser = true;
+            break;
+          }
+        }
+        ;
 
-                          //----------uppdating data --------
-                          FirebaseFirestore.instance
-                              .collection("users")
-                              .doc(widget.autherId)
-                              .collection("recpies")
-                              .doc(widget.recipeId)
-                              .collection("rating")
-                              .doc("recipeRating")
-                              .update({
-                            'sum_of_all_rating': total,
-                            "no_of_pepole": numOfRevewis,
-                            "average_rating": avg,
-                          });
-                        }),
+        if (!findUser) {
+          showDialog<void>(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(15)),
+                ),
+                title: Row(
+                  children: [
+                    Container(
+                      // margin: EdgeInsets.only(right: 20, left: 2),
+                      padding: EdgeInsets.only(right: 12),
+                      child: IconButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          icon: Icon(
+                            Icons.arrow_back,
+                            size: 20,
+                            color: Colors.orange[800],
+                          )),
+                    ),
+                    Text('Rate the recipe'),
+                  ],
+                ),
+                content: Container(
+                  height: 50,
+                  child: Center(
+                    child: _buildRatinBar(),
                   ),
                 ),
-              ],
-            );
-          },
-        );
+                actions: [
+                  Container(
+                    width: double.infinity,
+                    margin: EdgeInsets.all(0),
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                          top: 15, right: 0, left: 0, bottom: 0),
+                      child: ElevatedButton(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 10),
+                            child: Text("Rate"),
+                          ),
+                          style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all(Color(0xFFeb6d44)),
+                          ),
+                          onPressed: () {
+                            Navigator.pop(context);
+                            numOfRevewis++;
+                            print(numOfRevewis);
+                            total = total + rating;
+                            print('total $total');
+                            avg = total / numOfRevewis;
+                            avg = dp(avg, 2);
+                            print('Avg $avg');
+
+                            usersAlredyRate.add(currentUserId);
+                            for (int i = 0; i < usersAlredyRate.length; i++) {
+                              print("-------");
+                              print(usersAlredyRate[i]);
+                            }
+                            ;
+
+                            //----------uppdating data --------
+                            FirebaseFirestore.instance
+                                .collection("users")
+                                .doc(widget.autherId)
+                                .collection("recpies")
+                                .doc(widget.recipeId)
+                                .collection("rating")
+                                .doc("recipeRating")
+                                .update({
+                              'sum_of_all_rating': total,
+                              "no_of_pepole": numOfRevewis,
+                              "average_rating": avg,
+                              "user_alredy_reiw":
+                                  FieldValue.arrayUnion(usersAlredyRate)
+                            });
+                          }),
+                    ),
+                  ),
+                ],
+              );
+            },
+          );
+        } else {
+          showDialog<void>(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(15)),
+                ),
+                title: Text(' Thank you '),
+                content: Text(' You have already rated it'),
+                actions: [
+                  Container(
+                    width: double.infinity,
+                    margin: EdgeInsets.all(0),
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                          top: 15, right: 0, left: 0, bottom: 0),
+                      child: ElevatedButton(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 10),
+                            child: Text("close"),
+                          ),
+                          style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all(Color(0xFFeb6d44)),
+                          ),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          }),
+                    ),
+                  ),
+                ],
+              );
+            },
+          );
+        }
       },
       icon: const Icon(Icons.star),
     );
