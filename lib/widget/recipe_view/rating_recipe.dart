@@ -23,7 +23,7 @@ double rating;
 var numOfRevewis;
 var total;
 var avg;
-List<String> usersAlredyRate;
+List<String> usersAlredyRate = [];
 
 class Rating extends State<Rating_recipe> {
   // final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
@@ -64,7 +64,7 @@ class Rating extends State<Rating_recipe> {
   @override
   Widget _buildRatinBar() {
     print("numOfRevewis===============");
-    print(usersAlredyRate[0]);
+    //print(usersAlredyRate[0]);
     print(total);
     return RatingBar.builder(
       direction: Axis.horizontal,

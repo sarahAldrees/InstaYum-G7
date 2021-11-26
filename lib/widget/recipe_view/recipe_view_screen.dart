@@ -283,9 +283,6 @@ class getRatingState extends State<gitRating> {
         .listen((userData) {
       setState(() {
         numOfRevewis = userData.data()['no_of_pepole'];
-        //print(numOfRevewis + 1);
-
-        // print(numOfRevewis);
 
         avg = userData.data()['average_rating'];
 
