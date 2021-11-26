@@ -1,11 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:instayum1/mainpages.dart';
 import 'package:instayum1/widget/add_recipe/directions_text_fields.dart';
 import 'package:instayum1/widget/add_recipe/ingredients_text_fields.dart';
 import 'package:instayum1/widget/pickers/recipe_image_picker.dart';
 import 'package:uuid/uuid.dart';
+
+import '../../mainpages.dart';
 
 //import 'dynamic_fields.dart';
 class addRecipePage extends StatefulWidget {
@@ -54,7 +55,7 @@ class addRecipe extends State<addRecipePage> {
   var currentSelectedCategory = "Appetizers";
   var currentSelectedCuisine = "American";
   bool isPublic = false; //to determin wehther the recipe is public or private
-  bool isloading = false;
+  static bool isloading = false;
 
   //-----------------------------------------------------------------------------------
 
@@ -254,7 +255,9 @@ class addRecipe extends State<addRecipePage> {
 //--------------------------------------------------------------------
     //to clean the fields ingredients and directions
     // _directionController.clear();
-    showAlertDialogRcipeAdedSuccessfully(context);
+
+    // we put it in mainpages because navigitor,push not work
+    appPages.showAlertDialogRcipeAdedSuccessfully(context);
 
 //# delete
     // print("The ingridaint in addRecipebutton method are :  ");
@@ -278,47 +281,6 @@ class addRecipe extends State<addRecipePage> {
     // print(currentSelectedTypeOfMeal);
     // print(currentSelectedCategory);
     // print(currentSelectedCuisine);
-  }
-
-  showAlertDialogRcipeAdedSuccessfully(BuildContext context) {
-    // set up the button
-    Widget okButton = RaisedButton(
-        child: Text("OK"),
-        onPressed: () {
-          print("ok is clicked");
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => MainPages()),
-          );
-          print("ok is clicked after navigaotr");
-        });
-
-    // set up the AlertDialog
-    AlertDialog alert = AlertDialog(
-      title: Text(
-        "Added successfully",
-        style: TextStyle(
-            fontWeight: FontWeight.bold, color: Theme.of(context).accentColor),
-      ),
-      content: Text(
-        "The add operation was done successfully... ",
-        style: TextStyle(color: Color(0xFF444444)),
-      ),
-      actions: [
-        okButton,
-      ],
-    );
-    setState(() {
-      //to remove the progress bar
-      isloading = false;
-    });
-    // show the dialog
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
   }
 
 //_______ The two methods below is used to create a dynamic TextFormFeild for Ingredients__________________
@@ -540,8 +502,17 @@ class addRecipe extends State<addRecipePage> {
                                   // print("i am here **************************"); # delete
                                   // print("lenght before insert");
                                   // print(userIngredients.length);
-                                  _addRemoveButtonInIngredient(
-                                      true, userIngredients.length);
+                                  print("add navigitor work");
+                                  // Navigator.push(
+                                  //   context,
+                                  //   MaterialPageRoute(
+                                  //       builder: (context) => ()),
+                                  // );
+//---------------------------------------------------------------------
+                                  // _addRemoveButtonInIngredient(
+                                  //     true, userIngredients.length);
+//----------------------------------------------------------------------
+
                                   // userDirections.insert(
                                   //     userDirections.length + 1, null);
                                   // print("lenght after insert");

@@ -102,8 +102,57 @@ class appPages extends State<MainPages> {
     );
   }
 
+  //----------------------------------------------------------------------------
+// this message appear after added a seccfull recipe, and we put in this class because navigator.push not work
+  static showAlertDialogRcipeAdedSuccessfully(BuildContext context) {
+    // set up the button
+    Widget okButton = RaisedButton(
+        child: Text("OK"),
+        onPressed: () {
+          print("ok is clicked");
+
+          // print("Set state in ok button work");
+          //to remove the progress bar
+          addRecipe.isloading = false;
+          indexOfPages = 4;
+          appBarTitel = "Profile";
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => MainPages()),
+          );
+          print("ok is clicked after navigaotr");
+        });
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text(
+        "Added successfully",
+        style: TextStyle(
+            fontWeight: FontWeight.bold, color: Theme.of(context).accentColor),
+      ),
+      content: Text(
+        "The add operation was done successfully... ",
+        style: TextStyle(color: Color(0xFF444444)),
+      ),
+      actions: [
+        okButton,
+      ],
+    );
+    // setState(() {
+    //   //to remove the progress bar
+    //   isloading = false;
+    // });
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
 //------------------------------------------------------------------------------
-  var appBarTitel = "Profile";
+  static var appBarTitel = "Profile";
   static int indexOfPages = 4;
   static int indexOfPreviousPage = 4;
 
