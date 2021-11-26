@@ -8,17 +8,20 @@ import 'package:uuid/uuid.dart';
 import 'package:cloud_firestore_platform_interface/src/timestamp.dart';
 import 'package:intl/intl.dart';
 
-DateTime timestamp = DateTime.now();
+// DateTime timestamp = new DateTime.now();
+var timestamp = new DateTime.now();
 // DateTime timestamp1 = timestamp1.toDate();
 
 String date = DateFormat.yMMMd().format(timestamp);
 
 class Comments extends StatefulWidget {
+  final String userId;
   final String recipeId;
   final String authorId;
   final String comment;
 
   Comments({
+    this.userId,
     this.recipeId,
     this.authorId,
     this.comment,
@@ -27,6 +30,7 @@ class Comments extends StatefulWidget {
   @override
   CommentState createState() => CommentState(
         recipeId: recipeId,
+        userId: this.userId,
         authorId: this.authorId,
         comment: this.comment,
       );
@@ -34,13 +38,14 @@ class Comments extends StatefulWidget {
 
 class CommentState extends State<Comments> {
   final String recipeId;
-
+  final String userId;
   final String authorId;
   final String comment;
   TextEditingController commentController = TextEditingController();
 
   CommentState({
     this.recipeId,
+    this.userId,
     this.authorId,
     this.comment,
     this.databaseRef,
@@ -174,60 +179,65 @@ class CommentState extends State<Comments> {
       ),
 
       // shows the page of comments which consists of list of comments and the field text
-      body: Column(
-        children: <Widget>[
-          Expanded(
-              child: CommentList(
-            authorId: widget.authorId,
-            recipeID: widget.recipeId,
-          )),
+      body: new GestureDetector(
+        onTap: () {
+          FocusScope.of(context).requestFocus(new FocusNode());
+        },
+        child: Column(
+          children: <Widget>[
+            Expanded(
+                child: CommentList(
+              authorId: widget.authorId,
+              recipeID: widget.recipeId,
+            )),
 
-          //------------------ build the TextField of comments screen ------------------
-          Row(
-            children: [
-              Expanded(
-                child: Container(
-                  margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                  child: TextField(
-                    controller: commentController,
-                    cursorColor: Colors.red,
-                    // keyboardType: TextInputType.multiline,
-                    maxLines: null,
-                    decoration: InputDecoration(
-                        fillColor: Colors.grey,
-                        focusedBorder: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Color(0xFFeb6d44), width: 2),
-                        ),
-                        border: new OutlineInputBorder(
-                            borderSide: new BorderSide(color: Colors.orange)),
-                        suffixIcon: IconButton(
-                          icon: Icon(
-                            Icons.send,
-                            color: Color(0xFFeb6d44),
+            //------------------ build the TextField of comments screen ------------------
+            Row(
+              children: [
+                Expanded(
+                  child: Container(
+                    margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    child: TextField(
+                      controller: commentController,
+                      cursorColor: Colors.red,
+                      // keyboardType: TextInputType.multiline,
+                      maxLines: null,
+                      decoration: InputDecoration(
+                          fillColor: Colors.grey,
+                          focusedBorder: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: Color(0xFFeb6d44), width: 2),
                           ),
+                          border: new OutlineInputBorder(
+                              borderSide: new BorderSide(color: Colors.orange)),
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              Icons.send,
+                              color: Color(0xFFeb6d44),
+                            ),
 
-                          // ------- if there is no text in the textfield
-                          //don't add the empty comment to the comments list
+                            // ------- if there is no text in the textfield
+                            //don't add the empty comment to the comments list
 
-                          onPressed: () {
-                            if (commentController.text.trim() == '') {
-                            } else {
-                              addComment(commentController.text);
-                              // _addComment(controller.text);
-                              commentController.clear();
-                            }
-                          },
-                        ),
-                        contentPadding: const EdgeInsets.all(10),
-                        hintText: "Add  a comment..."),
+                            onPressed: () {
+                              if (commentController.text.trim() == '') {
+                              } else {
+                                addComment(commentController.text);
+                                // _addComment(controller.text);
+                                commentController.clear();
+                              }
+                            },
+                          ),
+                          contentPadding: const EdgeInsets.all(10),
+                          hintText: "Add  a comment..."),
+                    ),
                   ),
                 ),
-              ),
-              //---------------------------------------------------------------
-            ],
-          ),
-        ],
+                //---------------------------------------------------------------
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

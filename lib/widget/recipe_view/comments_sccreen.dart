@@ -54,12 +54,17 @@ class CommentListState extends State<CommentList> {
     // });
     // --------
 
-    return ListView(shrinkWrap: true, padding: EdgeInsets.all(12), children: [
-      ...comments.map(comment).toList(),
-    ]);
+    return ListView(
+        shrinkWrap: true,
+        reverse: true,
+        padding: EdgeInsets.all(12),
+        children: [
+          ...comments.map(designComment).toList(),
+        ].reversed.toList());
   }
 
   getData() {
+    // get data from database
     databaseRef = FirebaseFirestore.instance
         .collection("users")
         .doc(widget.authorId)
@@ -72,20 +77,21 @@ class CommentListState extends State<CommentList> {
         .snapshots()
         .listen((data) {
       setState(() {
-        comments.clear();
+        comments.clear(); // clear duplicate comments.
         data.docs.forEach((doc) {
           //int s = 1;
 
           print(doc["username"]);
           print(doc["imageUrl"]);
           print(doc["comment"]);
+          // add each comment doc in database to the list to show them in the screen
           comments.add(commentState(
               username: doc["username"],
               commentImgUrl: doc["imageUrl"],
               comment: doc["comment"],
               date: doc["shownDate"]));
 
-          print('@@@@@@@@@@@@@@@@@@@@');
+          print('###');
           print(comments[0].username);
         });
       });
@@ -94,19 +100,38 @@ class CommentListState extends State<CommentList> {
 
   void initState() {
     super.initState();
-    getData(); //we call the method here to get the data immediately when init the page.
+    getData(); // get the data immediately when init the page.
   }
 
-  Widget comment(commentState comment) => Container(
+// ------------------- Design of each comment -----------------
+  Widget designComment(commentState comment) => Container(
         child: Column(
           children: [
-            userinfo(
-              comment.username,
-              comment.commentImgUrl,
+            Row(
+              children: [
+                userinfo(
+                  comment.username,
+                  comment.commentImgUrl,
+                ),
+                Padding(
+                    padding: const EdgeInsets.only(left: 10),
+                    child: Text(comment.date,
+                        style: TextStyle(color: Colors.grey))),
+              ],
             ),
-            Text(comment.comment),
-            Text(comment.date),
-            Divider(),
+            Align(
+                alignment: Alignment.bottomLeft,
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                      left: 40.0, bottom: 10, right: 30, top: 10),
+                  child: Text(comment.comment),
+                )),
+            Divider(
+              height: 20,
+              thickness: 1,
+              indent: 20,
+              endIndent: 20,
+            ),
           ],
         ),
 
