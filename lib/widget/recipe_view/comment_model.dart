@@ -8,8 +8,7 @@ import 'package:uuid/uuid.dart';
 import 'package:cloud_firestore_platform_interface/src/timestamp.dart';
 import 'package:intl/intl.dart';
 
-DateTime timestamp = new DateTime(DateTime.now().year, DateTime.now().month,
-    DateTime.now().day, DateTime.now().hour, DateTime.now().minute);
+DateTime timestamp = new DateTime.now();
 // DateTime timestamp1 = timestamp1.toDate();
 
 //String date = DateFormat.yMMMd().format(timestamp);
