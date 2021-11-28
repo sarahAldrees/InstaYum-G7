@@ -5,7 +5,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:instayum1/widget/recipe_view/view_reicpe_flotingbutton.dart';
+
+import 'view_reicpe_flotingbutton.dart';
 // import 'package:recipe_view/view_reicpe_flotingbutton.dart';
 
 class Rating_recipe extends StatefulWidget {
@@ -43,15 +44,11 @@ class Rating extends State<Rating_recipe> {
         .snapshots()
         .listen((userData) {
       setState(() {
-        usersAlredyRate.clear();
         numOfRevewis = userData.data()["no_of_pepole"];
 
         total = userData.data()["sum_of_all_rating"];
 
         avg = userData.data()["average_rating"];
-
-        usersAlredyRate = List.from(userData.data()["user_alredy_reiw"]);
-        currentUserId = currentUser.uid;
       });
     });
   }

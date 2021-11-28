@@ -281,16 +281,21 @@ class getRatingState extends State<gitRating> {
         .snapshots()
         .listen((userData) {
       setState(() {
-        numOfRevewis = userData.data()['no_of_pepole'];
+        numOfRevewis = userData.data()["no_of_pepole"];
 
-        avg = userData.data()['average_rating'];
-
-        // print(avg);
+        avg = userData.data()["average_rating"];
       });
     });
   }
 
   void initState() {
+    print("00000---------------------------------------");
+
+    print(numOfRevewis);
+    setState(() {
+      numOfRevewis;
+      avg;
+    });
     super.initState();
     getData();
     //we call the method here to get the data immediately when init the page.
@@ -298,6 +303,10 @@ class getRatingState extends State<gitRating> {
 
   @override
   Widget build(BuildContext context) {
+    // setState(() {
+    //   numOfRevewis;
+    //   avg;
+    // });
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: Row(children: [
