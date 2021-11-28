@@ -22,6 +22,7 @@ class CommentListState extends State<CommentList> {
   bool outvalue = false; //outvalue is change the state of check list
   var checkedstyle = TextDecoration.none;
   List<commentState> comments = [];
+
   CollectionReference databaseRef;
   @override
   Widget build(BuildContext context) {
@@ -71,36 +72,45 @@ class CommentListState extends State<CommentList> {
         .collection("recpies")
         .doc(widget.recipeID)
         .collection("comments");
-
+    setState(() {});
     databaseRef
         .orderBy('timestamp', descending: false)
         .snapshots()
         .listen((data) {
-      setState(() {
-        comments.clear(); // clear duplicate comments.
-        data.docs.forEach((doc) {
-          //int s = 1;
+      comments.clear();
+      //setState(() {
+      // clear duplicate comments.
+      data.docs.forEach((doc) {
+        //int s = 1;
 
-          // print(doc["username"]);
-          // print(doc["imageUrl"]);
-          // print(doc["comment"]);
-          // add each comment doc in database to the list to show them in the screen
-          comments.add(commentState(
-              username: doc["username"],
-              commentImgUrl: doc["imageUrl"],
-              comment: doc["comment"],
-              date: doc["shownDate"]));
+        // print(doc["username"]);
+        // print(doc["imageUrl"]);
+        // print(doc["comment"]);
+        // add each comment doc in database to the list to show them in the screen
 
-          //print('###');
-          // print(comments[0].username);
-        });
+        comments.add(commentState(
+            username: doc["username"],
+            commentImgUrl: doc["imageUrl"],
+            comment: doc["comment"],
+            date: doc["shownDate"]));
       });
+      if (this.mounted) {
+        setState(() {
+          comments;
+        });
+      }
+
+      // print('###');
+      // print(comments[0].username);
+      //});
     });
   }
 
   void initState() {
     super.initState();
-    getData(); // get the data immediately when init the page.
+    getData();
+
+    // get the data immediately when init the page.
   }
 
 // ------------------- Design of each comment -----------------

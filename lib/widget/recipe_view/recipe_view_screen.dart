@@ -85,7 +85,7 @@ class recipe_view extends StatelessWidget {
                       builder: (context) => Comments(
                             recipeId: recipeid,
                             authorId: autherId,
-                            // comment: imageURL,
+                            //comment: imageURL,
                           )));
             },
             icon: const Icon(Icons.comment_sharp),

@@ -8,11 +8,12 @@ import 'package:uuid/uuid.dart';
 import 'package:cloud_firestore_platform_interface/src/timestamp.dart';
 import 'package:intl/intl.dart';
 
-DateTime timestamp = new DateTime.now();
+FieldValue timestamp = FieldValue.serverTimestamp();
+
+DateTime timestamp1 = DateTime.now();
 // DateTime timestamp1 = timestamp1.toDate();
 
-//String date = DateFormat.yMMMd().format(timestamp);
-String date = DateFormat('yyyy-MM-dd – hh:mm:a').format(timestamp);
+String date = DateFormat('yyyy-MM-dd – kk:mm:a').format(timestamp1);
 
 class Comments extends StatefulWidget {
   final String recipeId;

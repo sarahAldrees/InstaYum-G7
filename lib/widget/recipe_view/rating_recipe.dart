@@ -43,7 +43,7 @@ class Rating extends State<Rating_recipe> {
         .snapshots()
         .listen((userData) {
       setState(() {
-        //usersAlredyRate.clear();
+        usersAlredyRate.clear();
         numOfRevewis = userData.data()["no_of_pepole"];
 
         total = userData.data()["sum_of_all_rating"];
