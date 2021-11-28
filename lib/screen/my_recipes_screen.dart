@@ -7,10 +7,10 @@ import 'package:instayum1/widget/recipe_item.dart';
 import '../data.dart';
 
 class my_recipes extends StatefulWidget {
-  String autherName;
-  String autherImage;
+  // String autherName;
+  // String autherImage;
   String autherId;
-  my_recipes(this.autherName, this.autherImage, this.autherId);
+  // my_recipes(this.autherName, this.autherImage, this.autherId);
 
   @override
   State<my_recipes> createState() => _my_recipesState();
@@ -83,7 +83,7 @@ class _my_recipesState extends State<my_recipes> {
           // print(doc.data()['cuisine']),
           //AssetImage("assets/images/defaultUser.png")
           recipe_image_url = doc.data()['recipe_image_url'],
-
+          widget.autherId = doc.data()['user_id'],
           recpiesList.add(
             Recipe(
               id: doc.id,
@@ -136,8 +136,8 @@ class _my_recipesState extends State<my_recipes> {
       children: recpiesList
           .map((e) => recipe_Item(
                 //key,
-                widget.autherName,
-                widget.autherImage,
+                // widget.autherName,
+                // widget.autherImage,
                 widget.autherId,
                 e.id,
                 e.recipeName,

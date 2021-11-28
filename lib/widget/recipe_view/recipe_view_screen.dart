@@ -24,8 +24,8 @@ class recipe_view extends StatelessWidget {
 
   recipe_view(
     //Key,
-    this.autherName,
-    this.autherImage,
+    // this.autherName,
+    // this.autherImage,
     this.autherId,
     this.recipeid,
     this.recipeName,
@@ -85,7 +85,7 @@ class recipe_view extends StatelessWidget {
                       builder: (context) => Comments(
                             recipeId: recipeid,
                             authorId: autherId,
-                            comment: imageURL,
+                            // comment: imageURL,
                           )));
             },
             icon: const Icon(Icons.comment_sharp),
@@ -141,8 +141,7 @@ class recipe_view extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              userinfo(autherName, autherImage),
-
+              getuserinfo(autherId),
 //------------------------ Rating of recipe -------------------------------------
               gitRating(recipeid, autherId),
               // Padding(
@@ -331,5 +330,45 @@ class getRatingState extends State<gitRating> {
         ),
       ]),
     );
+  }
+}
+
+class getuserinfo extends StatefulWidget {
+  String autherId;
+
+  getuserinfo(this.autherId);
+  @override
+  getuserinfoState createState() => getuserinfoState();
+}
+
+class getuserinfoState extends State<getuserinfo> {
+  String autherName = "";
+  String autherimage = "";
+  getData() async {
+    String id = widget.autherId; //solve empty exeption
+    FirebaseFirestore.instance
+        .collection("users")
+        .doc("$id")
+        .snapshots()
+        .listen((userData) {
+      setState(() {
+        autherName = userData.data()['username'];
+
+        autherimage = userData.data()['image_url'];
+
+        // print(avg);
+      });
+    });
+  }
+
+  void initState() {
+    super.initState();
+    getData();
+    //we call the method here to get the data immediately when init the page.
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return userinfo(autherName, autherimage);
   }
 }

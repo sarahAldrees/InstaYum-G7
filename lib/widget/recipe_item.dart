@@ -5,9 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class recipe_Item extends StatelessWidget {
-  final String autherName;
-  final String autherImage;
+  // final String autherName;
+  // final String autherImage;
   final String autherId;
+
   final String RecipeId;
   final String recipeName;
   final String typeOfMeal;
@@ -19,8 +20,8 @@ class recipe_Item extends StatelessWidget {
 
   const recipe_Item(
     // Key key,
-    this.autherName,
-    this.autherImage,
+    // this.autherName,
+    // this.autherImage,
     this.autherId,
     this.RecipeId,
     this.recipeName,
@@ -61,8 +62,8 @@ class recipe_Item extends StatelessWidget {
                 MaterialPageRoute(
                     builder: (context) => new recipe_view(
                         //key,
-                        autherName,
-                        autherImage,
+                        // autherName,
+                        // autherImage,
                         autherId,
                         RecipeId,
                         recipeName,

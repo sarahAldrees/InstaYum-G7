@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:instayum1/model/user.dart';
 import 'package:instayum1/utils/user_preferences.dart';
 import 'package:instayum1/widget/followers_numbers.dart';
 import 'package:instayum1/widget/profile_widget.dart';
@@ -121,7 +120,7 @@ class profileState extends State<profile> {
                 children: [
                   //This list is the content of each tab.
                   // ------------ list item 1 tab view bookmarks screen.
-                  my_recipes(userUsername, imageURL, uId),
+                  my_recipes(),
 
                   // ------------ list item 2 tab view bookmarks screen.
                   my_meal_plans(),

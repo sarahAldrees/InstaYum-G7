@@ -81,9 +81,9 @@ class CommentListState extends State<CommentList> {
         data.docs.forEach((doc) {
           //int s = 1;
 
-          print(doc["username"]);
-          print(doc["imageUrl"]);
-          print(doc["comment"]);
+          // print(doc["username"]);
+          // print(doc["imageUrl"]);
+          // print(doc["comment"]);
           // add each comment doc in database to the list to show them in the screen
           comments.add(commentState(
               username: doc["username"],
@@ -91,7 +91,7 @@ class CommentListState extends State<CommentList> {
               comment: doc["comment"],
               date: doc["shownDate"]));
 
-          print('###');
+          //print('###');
           // print(comments[0].username);
         });
       });
