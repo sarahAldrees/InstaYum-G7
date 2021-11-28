@@ -64,7 +64,7 @@ class Rating extends State<Rating_recipe> {
   @override
   Widget _buildRatinBar() {
     print("numOfRevewis===============");
-    //print(usersAlredyRate[0]);
+    print(numOfRevewis);
     print(total);
     return RatingBar.builder(
       direction: Axis.horizontal,

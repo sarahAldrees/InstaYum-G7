@@ -73,10 +73,7 @@ class CommentListState extends State<CommentList> {
         .doc(widget.recipeID)
         .collection("comments");
     setState(() {});
-    databaseRef
-        .orderBy('timestamp', descending: false)
-        .snapshots()
-        .listen((data) {
+    databaseRef.orderBy('timestamp').snapshots().listen((data) {
       comments.clear();
       //setState(() {
       // clear duplicate comments.
