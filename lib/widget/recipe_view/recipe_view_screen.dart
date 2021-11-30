@@ -259,17 +259,15 @@ class getRatingState extends State<gitRating> {
         numOfRevewis = userData.data()["num_of_reviews"];
 
         avg = userData.data()["average_rating"];
+        print("00000---------------------------------------");
+        print(avg);
+        print("00000---------------------------------------");
+        print(numOfRevewis);
       });
     });
   }
 
   void initState() {
-    print("00000---------------------------------------");
-    print(numOfRevewis);
-    setState(() {
-      numOfRevewis;
-      avg;
-    });
     super.initState();
     getData();
     //we call the method here to get the data immediately when init the page.
