@@ -43,25 +43,13 @@ class recipe_view extends StatelessWidget {
         imageURL == "noImageUrl" || imageURL.isEmpty || imageURL == null
             ? AssetImage("assets/images/defaultRecipeImage.png")
             : NetworkImage(imageURL);
-    //---------
+    //----titles of buttons that inside floting button-----
 
     const _actionTitles = [
       'Add ingrediants To Shopoing List',
       'Reating',
       'Add Comment'
     ];
-    // void _showAction(BuildContext context, int index) {
-    //   showDialog<void>(
-    //     context: context,
-    //     builder: (context) {
-    //       return AlertDialog(
-    //         content: Text(_actionTitles[index]),
-    //       );
-    //     },
-    //   );
-    // }
-
-    //--------------
 
     //-------------
     return Scaffold(
@@ -69,6 +57,7 @@ class recipe_view extends StatelessWidget {
         title: Text(recipeName),
         backgroundColor: Color(0xFFeb6d44),
       ),
+      //--------------------floating button that contain comment and rating button -------------------------
       floatingActionButton: ExpandableFab(
         distance: 100.0,
         children: [
@@ -76,7 +65,9 @@ class recipe_view extends StatelessWidget {
             onPressed: () {},
             icon: const Icon(Icons.shopping_bag),
           ),
+          //---------------to view action button rating and open smale windo to get the rate ---------------------
           Rating_recipe(recipeid, autherId),
+          //-------------comments button to open comment page -------------
           ActionButton(
             onPressed: () {
               Navigator.push(
@@ -85,16 +76,16 @@ class recipe_view extends StatelessWidget {
                       builder: (context) => Comments(
                             recipeId: recipeid,
                             authorId: autherId,
-                            //comment: imageURL,
                           )));
             },
             icon: const Icon(Icons.comment_sharp),
           ),
+          //-------------------------------------------------------
         ],
       ),
       body: ListView(
         children: <Widget>[
-          //---------------------image and bookmarked and shear button---------------
+          //---------------------image with bookmarked and shear button---------------
           Padding(
             padding: const EdgeInsets.only(bottom: 10),
             child: Stack(
@@ -104,7 +95,7 @@ class recipe_view extends StatelessWidget {
                       color: Colors.white,
                       child:
                           Ink.image(image: image, height: 250, fit: BoxFit.fill)
-                      //************************************8 very importatnt to check which attribute is the best with boxfit ? # delete */
+//-----------very importatnt to check which attribute is the best with boxfit ? # delete */
                       ),
                 ),
                 Positioned(
@@ -119,7 +110,7 @@ class recipe_view extends StatelessWidget {
                             // color: Color(0xFFeb6d44),
                           ),
                           onPressed: () {
-                            //setstat :change the kind of ici=on and add it to bookmark list
+                            //setstat :change the kind of icon and add it to bookmark list
                           }),
                       IconButton(
                           icon: Icon(
@@ -128,7 +119,7 @@ class recipe_view extends StatelessWidget {
                             size: 26,
                           ),
                           onPressed: () {
-                            //setstat :change the kind of ici=on and add it to bookmark list
+                            // to share to other
                           }),
                     ],
                   ),
@@ -185,6 +176,7 @@ class recipe_view extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
+                //-------------type of meal )-----------
                 Container(
                   child: Row(
                     children: [
@@ -199,7 +191,7 @@ class recipe_view extends StatelessWidget {
                     ],
                   ),
                 ),
-                //--------------------------------
+                //-----------------cuisine---------------
                 Container(
                   child: Row(
                     children: [
@@ -207,20 +199,11 @@ class recipe_view extends StatelessWidget {
                         Icons.public,
                         color: Colors.grey[600],
                       ),
-                      // Text(
-                      //   "|",
-                      //   style: TextStyle(
-                      //       fontSize: 30,
-                      //       color: Colors.grey[600],
-                      //       fontWeight: FontWeight.w100),
-                      // ),
                       Center(child: Text("  " + cuisine))
                     ],
                   ),
                 ),
-                // Text(a.category),
-                // Text(a.cuisine),
-                // Text(a.typeOfMeal),
+                //----------------category---------------
                 Container(
                   child: Row(
                     children: [
@@ -228,13 +211,6 @@ class recipe_view extends StatelessWidget {
                         Icons.format_list_bulleted,
                         color: Colors.grey[600],
                       ),
-                      // Text(
-                      //   "|",
-                      //   style: TextStyle(
-                      //       fontSize: 30,
-                      //       color: Colors.grey[600],
-                      //       fontWeight: FontWeight.w100),
-                      // ),
                       Center(child: Text("  " + category))
                     ],
                   ),
@@ -243,19 +219,18 @@ class recipe_view extends StatelessWidget {
             ),
           ),
 
-          //--------------------------ingrediants--------------------------
+          //--------------------------ingrediants and dirctions--------------------------
           convertTocheckBox(ingredients, "Ingrediants"),
 
           convertTocheckBox(dirctions, "Dirctions")
           //-------------------------------------------
         ],
       ),
-    ); //Row(
-    //   children: [ingrediants(a.ingredients), ingrediants(a.dirctions)],
-  } //outvalue is change the state of check list
+    );
+  }
 }
 
-//-------------------
+//-------this clas to get rating from data base and display it ------------
 
 class gitRating extends StatefulWidget {
   String recipeId;
@@ -281,7 +256,7 @@ class getRatingState extends State<gitRating> {
         .snapshots()
         .listen((userData) {
       setState(() {
-        numOfRevewis = userData.data()["no_of_pepole"];
+        numOfRevewis = userData.data()["num_of_reviews"];
 
         avg = userData.data()["average_rating"];
       });
@@ -290,7 +265,6 @@ class getRatingState extends State<gitRating> {
 
   void initState() {
     print("00000---------------------------------------");
-
     print(numOfRevewis);
     setState(() {
       numOfRevewis;
@@ -341,6 +315,9 @@ class getRatingState extends State<gitRating> {
     );
   }
 }
+//-------------------------------------------------------------------
+
+//----------this class to show user image and name who is adding the recipe -------------
 
 class getuserinfo extends StatefulWidget {
   String autherId;
@@ -378,6 +355,7 @@ class getuserinfoState extends State<getuserinfo> {
 
   @override
   Widget build(BuildContext context) {
-    return userinfo(autherName, autherimage);
+    return userinfo(autherName,
+        autherimage); // calling this class to design image and user name after get them from database
   }
 }

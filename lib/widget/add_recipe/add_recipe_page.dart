@@ -236,7 +236,7 @@ class addRecipe extends State<addRecipePage> {
         .doc("recipeRating")
         .set({
       "sum_of_all_rating": 0,
-      "no_of_pepole": 0,
+      "num_of_reviews": 0,
       "average_rating": 0.0,
       "user_alredy_reiw": FieldValue.arrayUnion([]),
     });

@@ -58,13 +58,14 @@ class Rating extends State<Rating_recipe> {
 
   void initState() {
     super.initState();
-    getData(); //we call the method here to get the data immediately when init the page.
+    getData();
+    //we call the method here to get the data immediately when init the page.
   }
 
   @override
   Widget _buildRatinBar() {
     print("numOfRevewis===============");
-    print(usersAlredyRate[0]);
+    print(numOfReviews);
     print(total);
     return RatingBar.builder(
       direction: Axis.horizontal,
