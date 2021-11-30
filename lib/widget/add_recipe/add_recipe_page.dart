@@ -26,9 +26,9 @@ class addRecipe extends State<addRecipePage> {
   static TextEditingController recipeTitleController = TextEditingController();
 
   //-----------------------dropdown list for classification-----------------
-  var recipeType = ['Breakfast', 'Lunch', 'Dinner'];
+  final _recipeType = ['Breakfast', 'Lunch', 'Dinner'];
 
-  var recipeCategories = [
+  final _recipeCategories = [
     'Appetizers',
     'Main course',
     'Desserts',
@@ -37,7 +37,7 @@ class addRecipe extends State<addRecipePage> {
     'Soups',
   ];
 
-  var cuisine = [
+  final _cuisine = [
     'American',
     'Asian',
     'Brazilian',
@@ -51,10 +51,10 @@ class addRecipe extends State<addRecipePage> {
     'Turkish',
     'Other'
   ];
-  var currentSelectedTypeOfMeal = "Breakfast";
-  var currentSelectedCategory = "Appetizers";
-  var currentSelectedCuisine = "American";
-  bool isPublic = false; //to determin wehther the recipe is public or private
+  var _currentSelectedTypeOfMeal = "Breakfast";
+  var _currentSelectedCategory = "Appetizers";
+  var _currentSelectedCuisine = "American";
+  bool _isPublic = false; //to determin wehther the recipe is public or private
   static bool isloading = false;
 
   //-----------------------------------------------------------------------------------
@@ -219,11 +219,11 @@ class addRecipe extends State<addRecipePage> {
         .collection("recpies")
         .doc(recipe_id)
         .update({
-      'type_of_meal': currentSelectedTypeOfMeal,
-      'category': currentSelectedCategory,
-      'cuisine': currentSelectedCuisine,
+      'type_of_meal': _currentSelectedTypeOfMeal,
+      'category': _currentSelectedCategory,
+      'cuisine': _currentSelectedCuisine,
       'recipe_image_url': recipe_image_url,
-      'is_public_recipe': isPublic,
+      'is_public_recipe': _isPublic,
       // "sum_of_all_rating": 0,
       // "no_of_pepole": 0,
       // "average_rating": 0.0,
@@ -650,7 +650,7 @@ class addRecipe extends State<addRecipePage> {
                           child: DropdownButton<String>(
                             isExpanded: true,
                             isDense: true,
-                            value: currentSelectedTypeOfMeal,
+                            value: _currentSelectedTypeOfMeal,
                             icon: Icon(
                               Icons.arrow_drop_down,
                               color: Colors.grey[700],
@@ -662,13 +662,13 @@ class addRecipe extends State<addRecipePage> {
                             ),
                             onChanged: (String newValue) {
                               setState(() {
-                                currentSelectedTypeOfMeal = newValue;
+                                _currentSelectedTypeOfMeal = newValue;
                               });
                             },
                             style: const TextStyle(
                               color: Color(0xFF616161),
                             ),
-                            items: recipeType
+                            items: _recipeType
                                 .map<DropdownMenuItem<String>>((String value) {
                               return DropdownMenuItem<String>(
                                 value: value,
@@ -696,7 +696,7 @@ class addRecipe extends State<addRecipePage> {
                           child: DropdownButton<String>(
                             isExpanded: true,
                             isDense: true,
-                            value: currentSelectedCategory,
+                            value: _currentSelectedCategory,
                             icon: Icon(
                               Icons.arrow_drop_down,
                               color: Colors.grey[700],
@@ -708,11 +708,11 @@ class addRecipe extends State<addRecipePage> {
                             ),
                             onChanged: (String newValue) {
                               setState(() {
-                                currentSelectedCategory = newValue;
+                                _currentSelectedCategory = newValue;
                               });
                             },
                             style: const TextStyle(color: Color(0xFF616161)),
-                            items: recipeCategories
+                            items: _recipeCategories
                                 .map<DropdownMenuItem<String>>((String value) {
                               return DropdownMenuItem<String>(
                                 value: value,
@@ -739,7 +739,7 @@ class addRecipe extends State<addRecipePage> {
                           child: DropdownButton<String>(
                             isExpanded: true,
                             isDense: true,
-                            value: currentSelectedCuisine,
+                            value: _currentSelectedCuisine,
                             icon: Icon(
                               Icons.arrow_drop_down,
                               color: Colors.grey[700],
@@ -751,11 +751,11 @@ class addRecipe extends State<addRecipePage> {
                             ),
                             onChanged: (String newValue) {
                               setState(() {
-                                currentSelectedCuisine = newValue;
+                                _currentSelectedCuisine = newValue;
                               });
                             },
                             style: const TextStyle(color: Color(0xFF616161)),
-                            items: cuisine
+                            items: _cuisine
                                 .map<DropdownMenuItem<String>>((String value) {
                               return DropdownMenuItem<String>(
                                 value: value,
@@ -770,10 +770,10 @@ class addRecipe extends State<addRecipePage> {
                             children: [
                               Text("      Praivet"),
                               Switch(
-                                value: isPublic,
+                                value: _isPublic,
                                 onChanged: (value) {
                                   setState(() {
-                                    isPublic = value;
+                                    _isPublic = value;
                                   });
                                 },
                                 activeTrackColor: Colors.orange[600],
