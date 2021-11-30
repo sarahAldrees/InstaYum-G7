@@ -20,7 +20,7 @@ class Rating_recipe extends StatefulWidget {
 String currentUserId;
 bool findUser = false;
 double rating;
-var numOfRevewis;
+var numOfReviews;
 var total;
 var avg;
 List<String> usersAlredyRate;
@@ -44,7 +44,7 @@ class Rating extends State<Rating_recipe> {
         .listen((userData) {
       setState(() {
         //usersAlredyRate.clear();
-        numOfRevewis = userData.data()["no_of_pepole"];
+        numOfReviews = userData.data()["num_of_reviews"];
 
         total = userData.data()["sum_of_all_rating"];
 
@@ -149,11 +149,11 @@ class Rating extends State<Rating_recipe> {
                           ),
                           onPressed: () {
                             Navigator.pop(context);
-                            numOfRevewis++;
-                            print(numOfRevewis);
+                            numOfReviews++;
+                            print(numOfReviews);
                             total = total + rating;
                             print('total $total');
-                            avg = total / numOfRevewis;
+                            avg = total / numOfReviews;
                             avg = dp(avg, 2);
                             print('Avg $avg');
 
@@ -173,7 +173,7 @@ class Rating extends State<Rating_recipe> {
                                 .doc("recipeRating")
                                 .update({
                               'sum_of_all_rating': total,
-                              "no_of_pepole": numOfRevewis,
+                              "num_of_reviews": numOfReviews,
                               "average_rating": avg,
                               "user_alredy_reiw":
                                   FieldValue.arrayUnion(usersAlredyRate)
