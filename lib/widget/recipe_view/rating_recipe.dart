@@ -84,7 +84,7 @@ class Rating extends State<Rating_recipe> {
     );
   }
 
-  double dp(double val, int places) {
+  double doubleWithTwoDigits(double val, int places) {
     num mod = pow(10.0, places);
     return ((val * mod).round().toDouble() / mod);
   }
@@ -155,7 +155,7 @@ class Rating extends State<Rating_recipe> {
                             total = total + rating;
                             print('total $total');
                             avg = total / numOfReviews;
-                            avg = dp(avg, 2);
+                            avg = doubleWithTwoDigits(avg, 2);
                             print('Avg $avg');
 
                             usersAlredyRate.add(currentUserId);

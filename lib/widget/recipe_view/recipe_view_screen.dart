@@ -10,8 +10,6 @@ import 'package:instayum1/widget/recipe_view/rating_recipe.dart';
 import 'package:instayum1/widget/recipe_view/view_reicpe_flotingbutton.dart';
 
 class recipe_view extends StatelessWidget {
-  String autherName;
-  String autherImage;
   String autherId;
   String recipeid;
   String recipeName;
@@ -24,8 +22,7 @@ class recipe_view extends StatelessWidget {
 
   recipe_view(
     //Key,
-    // this.autherName,
-    // this.autherImage,
+
     this.autherId,
     this.recipeid,
     this.recipeName,
@@ -135,39 +132,6 @@ class recipe_view extends StatelessWidget {
               getuserinfo(autherId),
 //------------------------ Rating of recipe -------------------------------------
               gitRating(recipeid, autherId),
-              // Padding(
-              //   padding: const EdgeInsets.symmetric(horizontal: 10),
-              //   child: Row(children: [
-              //     Text(
-              //       '4',
-              //       style: TextStyle(
-              //         fontSize: 26,
-              //         fontWeight: FontWeight.w600,
-              //       ),
-              //     ),
-              //     Padding(
-              //       padding: const EdgeInsets.only(left: 6),
-              //       child: Column(
-              //         children: [
-              //           RatingBarIndicator(
-              //               rating: 4,
-              //               itemBuilder: (context, index) => Icon(
-              //                     Icons.star,
-              //                     color: Colors.amber,
-              //                   ),
-              //               itemCount: 5,
-              //               itemSize: 17.0,
-              //               direction: Axis.horizontal),
-              //           Text(
-              //             '3 Reviews',
-              //             style: TextStyle(fontSize: 15),
-              //           ),
-              //         ],
-              //       ),
-              //     ),
-              //   ]),
-              // ),
-              //userinfo(),
             ],
           ),
           //-------------------------ginral discription ------------------------------------
@@ -275,10 +239,6 @@ class getRatingState extends State<gitRating> {
 
   @override
   Widget build(BuildContext context) {
-    // setState(() {
-    //   numOfRevewis;
-    //   avg;
-    // });
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: Row(children: [
@@ -313,7 +273,6 @@ class getRatingState extends State<gitRating> {
     );
   }
 }
-//-------------------------------------------------------------------
 
 //----------this class to show user image and name who is adding the recipe -------------
 

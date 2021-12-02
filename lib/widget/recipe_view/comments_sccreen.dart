@@ -19,9 +19,7 @@ class CommentList extends StatefulWidget {
 }
 
 class CommentListState extends State<CommentList> {
-  bool outvalue = false; //outvalue is change the state of check list
-  var checkedstyle = TextDecoration.none;
-  List<commentState> comments = [];
+  List<commentObj> comments = [];
 
   CollectionReference databaseRef;
   @override
@@ -85,7 +83,7 @@ class CommentListState extends State<CommentList> {
         // print(doc["comment"]);
         // add each comment doc in database to the list to show them in the screen
 
-        comments.add(commentState(
+        comments.add(commentObj(
             username: doc["username"],
             commentImgUrl: doc["imageUrl"],
             comment: doc["comment"],
@@ -111,7 +109,7 @@ class CommentListState extends State<CommentList> {
   }
 
 // ------------------- Design of each comment -----------------
-  Widget designComment(commentState comment) => Container(
+  Widget designComment(commentObj comment) => Container(
         child: Column(
           children: [
             Row(
