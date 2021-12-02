@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:instayum1/widget/recipe_view/view_reicpe_flotingbutton.dart';
@@ -150,6 +151,16 @@ class Rating extends State<Rating_recipe> {
                           ),
                           onPressed: () {
                             Navigator.pop(context);
+
+                            Flushbar(
+                                icon: Icon(Icons.check_circle_outline_outlined,
+                                    color: Colors.white),
+                                backgroundColor: Colors.green.shade100,
+                                title: " Thank you",
+                                messageText: Text(
+                                  "You rated the recipe successfully",
+                                  style: TextStyle(color: Colors.white),
+                                )).show(context);
                             numOfReviews++;
                             print(numOfReviews);
                             total = total + rating;
