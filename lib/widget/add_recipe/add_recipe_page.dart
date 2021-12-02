@@ -95,7 +95,7 @@ class addRecipe extends State<addRecipePage> {
   }
 
   //----------------------------------------------------------------------------
-  void addRecipeButton() {
+  void _addRecipeButton() {
     setState(() {
       //to show the progress bar
       isloading = true;
@@ -132,7 +132,7 @@ class addRecipe extends State<addRecipePage> {
     if (formKey.currentState.validate()) {
       formKey.currentState.save();
 
-      addRecipeToDatabase();
+      _addRecipeToDatabase();
     } else {
       setState(() {
         isloading = false;
@@ -145,7 +145,7 @@ class addRecipe extends State<addRecipePage> {
     }
   }
 
-  void addRecipeToDatabase() async {
+  void _addRecipeToDatabase() async {
     final FirebaseAuth _auth = FirebaseAuth.instance;
     final currentUser = await _auth.currentUser;
 // # delete
@@ -816,7 +816,7 @@ class addRecipe extends State<addRecipePage> {
                         padding: const EdgeInsets.only(bottom: 10),
                         child: Container(
                           child: ElevatedButton(
-                            onPressed: addRecipeButton,
+                            onPressed: _addRecipeButton,
                             child: Text('Add recipe'),
                             style: ButtonStyle(
                               backgroundColor:
