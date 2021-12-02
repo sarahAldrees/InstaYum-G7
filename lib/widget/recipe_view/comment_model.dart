@@ -10,11 +10,6 @@ import 'package:intl/intl.dart';
 
 FieldValue timestamp = FieldValue.serverTimestamp();
 
-DateTime timestamp1 = DateTime.now();
-// DateTime timestamp1 = timestamp1.toDate();
-
-String date = DateFormat('yyyy-MM-dd – kk:mm:a').format(timestamp1);
-
 class Comments extends StatefulWidget {
   final String recipeId;
   final String authorId;
@@ -117,33 +112,9 @@ class CommentState extends State<Comments> {
     print(imageURL);
   }
 
-  // _buildCommentList() {
-  //   return StreamBuilder(
-  //       stream: recipe_view.commentRef
-  //           .doc(recipeId)
-  //           .collection('comments')
-  //           .orderBy('timestamp', descending: false)
-  //           .snapshots(),
-  //       builder: (context, snapshot) {
-  //         if (!snapshot.hasData) {
-  //           return CircularProgressIndicator();
-  //         }
-  //         List<Comment> comments = [];
-  //         snapshot.data.docs.forEach((doc) {
-  //           comments.add(Comment.fromDocument(doc));
-  //         });
-  //         return ListView(
-  //           children: comments,
-  //         );
-  //       });
-  // }
-
 // -------- add a comment to firebase
 
   addComment(String com) async {
-    //User user = _firebaseAuth.currentUser;
-    // Timestamp timestamp;
-    print(date);
     final commentRef = Uuid().v4();
     FirebaseFirestore.instance
         .collection("users")
@@ -157,7 +128,7 @@ class CommentState extends State<Comments> {
       "reciepeId": "2cf0fbeb-957a-4330-96b3-36bc2fbfe080",
       "imageUrl": imageURL,
       "timestamp": timestamp,
-      "shownDate": date,
+      "shownDate": DateFormat('yyyy-MM-dd – hh:mm:a').format(DateTime.now()),
       "comment": com,
     });
   }
@@ -193,7 +164,6 @@ class CommentState extends State<Comments> {
                   child: TextField(
                     controller: commentController,
                     cursorColor: Colors.red,
-                    // keyboardType: TextInputType.multiline,
                     maxLines: null,
                     decoration: InputDecoration(
                         fillColor: Colors.grey,

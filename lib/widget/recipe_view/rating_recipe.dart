@@ -1,4 +1,4 @@
-import 'dart:ffi';
+//import 'dart:ffi';
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -153,14 +153,24 @@ class Rating extends State<Rating_recipe> {
                             Navigator.pop(context);
 
                             Flushbar(
-                                icon: Icon(Icons.check_circle_outline_outlined,
-                                    color: Colors.white),
-                                backgroundColor: Colors.green.shade100,
-                                title: " Thank you",
-                                messageText: Text(
-                                  "You rated the recipe successfully",
-                                  style: TextStyle(color: Colors.white),
-                                )).show(context);
+                              // There is also a messageText property for when you want to
+                              // use a Text widget and not just a simple String
+                              message: 'Hello from a Flushbar',
+                              // Even the button can be styled to your heart's content
+                              mainButton: FlatButton(
+                                child: Text(
+                                  'Click Me',
+                                  style: TextStyle(
+                                      color: Theme.of(context).accentColor),
+                                ),
+                                onPressed: () {
+                                  print("Simple snackbar example");
+                                },
+                              ),
+                              duration: Duration(seconds: 3),
+                              // Show it with a cascading operator
+                            )..show(context);
+
                             numOfReviews++;
                             print(numOfReviews);
                             total = total + rating;
