@@ -494,27 +494,9 @@ class addRecipe extends State<addRecipePage> {
                           Align(
                             alignment: Alignment.bottomCenter,
                             child: Container(
+                              constraints: BoxConstraints.tightFor(width: 155),
                               child: ElevatedButton(
-                                onPressed: () {
-                                  // print("i am here **************************"); # delete
-                                  // print("lenght before insert");
-                                  // print(userIngredients.length);
-                                  print("add navigitor work");
-                                  // Navigator.push(
-                                  //   context,
-                                  //   MaterialPageRoute(
-                                  //       builder: (context) => ()),
-                                  // );
-//---------------------------------------------------------------------
-                                  // _addRemoveButtonInIngredient(
-                                  //     true, userIngredients.length);
-//----------------------------------------------------------------------
-
-                                  // userDirections.insert(
-                                  //     userDirections.length + 1, null);
-                                  // print("lenght after insert");
-                                  // print(userDirections.length);
-                                },
+                                onPressed: () {},
                                 child: Text('Add an ingredient'),
                                 style: ButtonStyle(
                                   backgroundColor: MaterialStateProperty.all(
@@ -534,6 +516,7 @@ class addRecipe extends State<addRecipePage> {
                     left: 20,
                     top: 5,
                     child: Container(
+                      // to add a width for the button
                       //the container of the ingredients text
                       padding: EdgeInsets.only(bottom: 10, left: 10, right: 10),
                       child: Text(
@@ -572,7 +555,9 @@ class addRecipe extends State<addRecipePage> {
                           Align(
                             alignment: Alignment.bottomCenter,
                             child: Container(
-                              child: ElevatedButton(
+                              constraints: BoxConstraints.tightFor(
+                                  width: 155), // to add a width for the button
+                              child: ElevatedButton.icon(
                                 onPressed: () {
                                   // print("i am here **************************"); # delete
                                   // print("lenght before insert");
@@ -584,7 +569,8 @@ class addRecipe extends State<addRecipePage> {
                                   // print("lenght after insert");
                                   // print(userDirections.length);
                                 },
-                                child: Text('Add a direction'),
+                                icon: Icon(Icons.add),
+                                label: Text("Add a direction"),
                                 style: ButtonStyle(
                                   backgroundColor: MaterialStateProperty.all(
                                       Color(0xFFeb6d44)),
