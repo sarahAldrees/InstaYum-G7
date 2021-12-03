@@ -151,26 +151,12 @@ class Rating extends State<Rating_recipe> {
                           ),
                           onPressed: () {
                             Navigator.pop(context);
-
-                            Flushbar(
-                              // There is also a messageText property for when you want to
-                              // use a Text widget and not just a simple String
-                              message: 'Hello from a Flushbar',
-                              // Even the button can be styled to your heart's content
-                              mainButton: FlatButton(
-                                child: Text(
-                                  'Click Me',
-                                  style: TextStyle(
-                                      color: Theme.of(context).accentColor),
-                                ),
-                                onPressed: () {
-                                  print("Simple snackbar example");
-                                },
-                              ),
-                              duration: Duration(seconds: 3),
-                              // Show it with a cascading operator
-                            )..show(context);
-
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                  content: Text(
+                                      "Thank you , you rated the recipe sucessfully"),
+                                  backgroundColor: Colors.green.shade400),
+                            );
                             numOfReviews++;
                             print(numOfReviews);
                             total = total + rating;
