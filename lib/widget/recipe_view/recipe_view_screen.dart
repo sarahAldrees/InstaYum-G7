@@ -213,7 +213,7 @@ class getRatingState extends State<gitRating> {
     FirebaseFirestore.instance
         .collection("users")
         .doc(widget.autherId)
-        .collection("recpies")
+        .collection("recipes")
         .doc(widget.recipeId)
         .collection("rating")
         .doc("recipeRating")
@@ -298,8 +298,6 @@ class getuserinfoState extends State<getuserinfo> {
         autherName = userData.data()['username'];
 
         autherimage = userData.data()['image_url'];
-
-        // print(avg);
       });
     });
   }

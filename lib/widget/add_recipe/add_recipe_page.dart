@@ -15,10 +15,6 @@ class addRecipePage extends StatefulWidget {
 }
 
 class addRecipe extends State<addRecipePage> {
-  //static var formKey = GlobalKey<FormState>();
-  // final List<GlobalObjectKey<FormState>> formKey =
-  //List.generate(10, (index) => GlobalObjectKey<FormState>(index));
-
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 //___________________Attributes_________________
 
@@ -65,9 +61,6 @@ class addRecipe extends State<addRecipePage> {
   static List<String> userIngredients = [null];
   static List<String> userDirections = [null];
   var recipe_id = Uuid().v4(); //uuid.v() is a library to create a random key
-  // List<String> userIngredientsDatabase = List.from(userIngredients);
-  // List<String> userDirectionsDatabase = List.from(userDirections);
-  // we make a copy of the list to loop one and remove from one, because we can not loop and remove the same list at the same time
 
   //--------------------------------------------------------------------------
   // isNullFields() is used in mainpages.dart to check are the flied null ? if yes we will not show the user the confrimation message of lost data when moving out of add recipe page
@@ -101,31 +94,6 @@ class addRecipe extends State<addRecipePage> {
       isloading = true;
     });
     List<String> userIngredientsCopy = List.from(userIngredients);
-    //# delete
-    // List<String> userDirectionsCopy = List.from(userDirections);
-    // for (var dir in userDirectionsCopy) {
-    //   if (dir == "" || dir == null) {
-    //     userDirections.remove(dir);
-    //   }
-    // }
-
-//to remove the last field (both in ingredients and directions)if it was empty and there weremore than one field
-    // if ((userIngredients[userIngredients.length - 1] == null ||
-    //         userIngredients[userIngredients.length - 1] == "") &&
-    //     userIngredients.length > 1) {
-    //   userIngredients.removeAt(userIngredients.length - 1);
-    // }
-    // if ((userDirections[userDirections.length - 1] == null ||
-    //         userDirections[userDirections.length - 1] == "") &&
-    //     userDirections.length > 1) {
-    //   userDirections.removeAt(userDirections.length - 1);
-    // }
-    // if (!(userIngredients.length == 1)) {
-    //   userIngredients.removeAt(userIngredients.length - 1);
-    // }
-    // if (!(userDirections.length == 1)) {
-    //   userDirections.removeAt(userDirections.length - 1);
-    // }
 
     setState(() {}); //to refresh the page after delete any empty fields
 
@@ -148,29 +116,13 @@ class addRecipe extends State<addRecipePage> {
   void _addRecipeToDatabase() async {
     final FirebaseAuth _auth = FirebaseAuth.instance;
     final currentUser = await _auth.currentUser;
-// # delete
-//     print("Everything is in the database ");
-//     print('recipe name before the saving');
-//     print(_recipeTitle);
-// to save the title , length of ingredients and length of directions
-//     await FirebaseFirestore.instance
-//         .collection("users")
-//         .doc(currentUser.uid)
-//         .collection(
-//             "recpies") // create new collcetion of recpies inside user document to save all of the user's recpies
-//         .doc(recipe_id)
-//         .set({
-//       "recipe_title": _recipeTitle,
-//       'length_of_ingredients': userIngredients.length,
-//       'length_of_directions': userDirections.length,
-//       'user_id': currentUser.uid,
-//     });
+
     DateTime timestamp = DateTime.now();
     await FirebaseFirestore.instance
         .collection("users")
         .doc(currentUser.uid)
         .collection(
-            "recpies") // create new collcetion of recpies inside user document to save all of the user's recpies
+            "recipes") // create new collcetion of recipes inside user document to save all of the user's recipes
         .doc(recipe_id)
         .set({
       "recipe_title": recipeTitle,
@@ -189,7 +141,7 @@ class addRecipe extends State<addRecipePage> {
       await FirebaseFirestore.instance
           .collection("users")
           .doc(currentUser.uid)
-          .collection("recpies")
+          .collection("recipes")
           .doc(recipe_id)
           .update({
         'ing$countItems': ing,
@@ -202,7 +154,7 @@ class addRecipe extends State<addRecipePage> {
       await FirebaseFirestore.instance
           .collection("users")
           .doc(currentUser.uid)
-          .collection("recpies")
+          .collection("recipes")
           .doc(recipe_id)
           .update({
         'dir$countItems': '${countItems}- ' + dir,
@@ -216,7 +168,7 @@ class addRecipe extends State<addRecipePage> {
     await FirebaseFirestore.instance
         .collection("users")
         .doc(currentUser.uid)
-        .collection("recpies")
+        .collection("recipes")
         .doc(recipe_id)
         .update({
       'type_of_meal': _currentSelectedTypeOfMeal,
@@ -230,7 +182,7 @@ class addRecipe extends State<addRecipePage> {
         .collection("users")
         .doc(currentUser.uid)
         .collection(
-            "recpies") // create new collcetion of recpies inside user document to save all of the user's recpies
+            "recipes") // create new collcetion of recipes inside user document to save all of the user's recipes
         .doc(recipe_id)
         .collection("rating")
         .doc("recipeRating")
@@ -238,7 +190,7 @@ class addRecipe extends State<addRecipePage> {
       "sum_of_all_rating": 0,
       "num_of_reviews": 0,
       "average_rating": 0.0,
-      "user_alredy_reiw": FieldValue.arrayUnion([]),
+      "user_already_review": FieldValue.arrayUnion([]),
     });
 
     //-----------------Clear the form--------------------------------
@@ -251,33 +203,12 @@ class addRecipe extends State<addRecipePage> {
 
 //--------------------------------------------------------------------
     //to clean the fields ingredients and directions
-    // _directionController.clear();
 
+    setState(() {
+      isloading = false;
+    });
     // we put it in mainpages because navigitor,push not work
     appPages.showAlertDialogRcipeAdedSuccessfully(context);
-
-//# delete
-    // print("The ingridaint in addRecipebutton method are :  ");
-    // print("the length: ");
-    // print(userIngredientsDatabase.length);
-    // for (var ing in userIngredientsDatabase) {
-    //   print(ing);
-    // }
-    // print("The Directions in addRecipebutton method are :  ");
-    // print("the length: ");
-    // print(userDirectionsDatabase.length);
-    // for (var dir in userDirectionsDatabase) {
-    //   print(dir);
-    // }
-    // print('the id in recipe class is  ');
-    // print(recipe_id);
-    // print("recpie title is: ");
-    // print(_recipeTitle);
-    // print("url: ");
-    // print(RecipeImagePickerState.uploadedFileURL);
-    // print(currentSelectedTypeOfMeal);
-    // print(currentSelectedCategory);
-    // print(currentSelectedCuisine);
   }
 
 //_______ The two methods below is used to create a dynamic TextFormFeild for Ingredients__________________
@@ -310,11 +241,7 @@ class addRecipe extends State<addRecipePage> {
   }
 
   Widget _addRemoveButtonInIngredient(bool add, int index) {
-    //  print("Entered addRemoveButtonInDirection");
     if (add) {
-      //  print("enterd add ");
-      //print("indes in add is ");
-      //  print(index);
       userIngredients.insert(index, null); // add a new textFormField
       setState(() {}); // to refresh the page
     }
@@ -494,10 +421,14 @@ class addRecipe extends State<addRecipePage> {
                           Align(
                             alignment: Alignment.bottomCenter,
                             child: Container(
-                              constraints: BoxConstraints.tightFor(width: 155),
-                              child: ElevatedButton(
-                                onPressed: () {},
-                                child: Text('Add an ingredient'),
+                              constraints: BoxConstraints.tightFor(width: 163),
+                              child: ElevatedButton.icon(
+                                onPressed: () {
+                                  _addRemoveButtonInIngredient(
+                                      true, userIngredients.length);
+                                },
+                                icon: Icon(Icons.add),
+                                label: Text("Add a ingredient"),
                                 style: ButtonStyle(
                                   backgroundColor: MaterialStateProperty.all(
                                       Color(0xFFeb6d44)),
@@ -556,18 +487,11 @@ class addRecipe extends State<addRecipePage> {
                             alignment: Alignment.bottomCenter,
                             child: Container(
                               constraints: BoxConstraints.tightFor(
-                                  width: 155), // to add a width for the button
+                                  width: 160), // to add a width for the button
                               child: ElevatedButton.icon(
                                 onPressed: () {
-                                  // print("i am here **************************"); # delete
-                                  // print("lenght before insert");
-                                  // print(userDirections.length);
                                   _addRemoveButtonInDirection(
                                       true, userDirections.length);
-                                  // userDirections.insert(
-                                  //     userDirections.length + 1, null);
-                                  // print("lenght after insert");
-                                  // print(userDirections.length);
                                 },
                                 icon: Icon(Icons.add),
                                 label: Text("Add a direction"),

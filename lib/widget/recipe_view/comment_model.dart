@@ -51,7 +51,7 @@ class CommentState extends State<Comments> {
     databaseRef = FirebaseFirestore.instance
         .collection("users")
         .doc(authorId)
-        .collection("recpies")
+        .collection("recipes")
         .doc(recipeId)
         .collection("comments");
 
@@ -119,7 +119,7 @@ class CommentState extends State<Comments> {
     FirebaseFirestore.instance
         .collection("users")
         .doc(authorId)
-        .collection("recpies")
+        .collection("recipes")
         .doc(recipeId)
         .collection("comments")
         .doc(commentRef)

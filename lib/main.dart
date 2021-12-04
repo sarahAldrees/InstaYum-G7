@@ -38,12 +38,13 @@ class MyApp extends StatelessWidget {
             // the onAuthStateChanged such as change when the user creat new account or login
             home: StreamBuilder(
                 stream: FirebaseAuth.instance.authStateChanges(),
-                builder: (ctx, userSnapshot) {
+                builder: (context, userSnapshot) {
                   if (userSnapshot.hasData) {
                     // it mean he is authintecated
                     return MainPages();
-                  }
-                  return AuthScreen(); //otherwise he does not have an accoun and return him to authScreen
+                  } else {
+                    return AuthScreen();
+                  } //otherwise he does not have an accoun and return him to authScreen
                 }),
           );
         });

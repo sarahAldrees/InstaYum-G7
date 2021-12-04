@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:instayum1/utils/user_preferences.dart';
 import 'package:instayum1/widget/followers_numbers.dart';
-import 'package:instayum1/widget/profile_widget.dart';
 import 'my_mealplans_screen.dart';
 import 'my_recipes_screen.dart';
 import 'bookmarks_recipes_screen.dart';
@@ -29,17 +28,9 @@ class profileState extends State<profile> {
         .snapshots()
         .listen((userData) {
       setState(() {
-        // try {
         userUsername = userData.data()['username'];
         imageURL = userData.data()['image_url'];
         uId = user.uid;
-        // } on Exception catch (e) {
-        //   print('error caught: $e');
-        // }
-        // atch(e) {
-        //   print("The second catch solove the problem");
-        // }
-        // }
       });
     });
   }
@@ -54,9 +45,6 @@ class profileState extends State<profile> {
     final image = imageURL == "noImage" || imageURL.isEmpty || imageURL == null
         ? AssetImage("assets/images/defaultUser.png") // NEW
         : NetworkImage(imageURL);
-    // : imageURL.isNotEmpty
-    //     ? NetworkImage(imageURL)
-    //     : NetworkImage(imageURL);
 
     // build a circular user image
     return Padding(
