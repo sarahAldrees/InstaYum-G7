@@ -149,13 +149,13 @@ class Rating extends State<Rating_recipe> {
                                 MaterialStateProperty.all(Color(0xFFeb6d44)),
                           ),
                           onPressed: () {
-                            Navigator.pop(context);
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                   content: Text(
                                       "Thank you , you rated the recipe sucessfully"),
                                   backgroundColor: Colors.green.shade400),
                             );
+                            Navigator.pop(context);
                             numOfReviews++;
                             print(numOfReviews);
                             total = total + rating;
