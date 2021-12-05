@@ -70,7 +70,7 @@ class _AuthScreenState extends State<AuthScreen> {
             .instance //just to store the username in the database
             .collection("users")
             .doc(authResult.user.uid)
-            .set({
+            .update({
           "username": username,
           "email": email,
           "image_url": url,
