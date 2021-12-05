@@ -75,6 +75,7 @@ class _AuthScreenState extends State<AuthScreen> {
           "email": email,
           "image_url": url,
         });
+        //to move the user to the profile page (Mainpages) after he signup successfully
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
             builder: (context) => MainPages(),
@@ -85,6 +86,7 @@ class _AuthScreenState extends State<AuthScreen> {
           email: email,
           password: password,
         );
+        // to move the user to the profile page (Mainpages) after he login successfully
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
             builder: (context) => MainPages(),

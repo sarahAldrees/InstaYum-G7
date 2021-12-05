@@ -70,6 +70,7 @@ class _AuthFormState extends State<AuthForm> {
 
     final validUsername = await _usernameCheck(_userName);
     if (!validUsername && _isSignUp) {
+      //we use _isSignUp to avoid check the username in login case
       // print("user name in authform ***********");
       // print(validUsername);
       // print(_userName);
