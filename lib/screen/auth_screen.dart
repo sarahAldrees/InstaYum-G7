@@ -97,8 +97,8 @@ class _AuthScreenState extends State<AuthScreen> {
       setState(() {
         _isLoading = false;
       });
-      print('catch #1');
-      print(err);
+      // print('catch #1');
+      // print(err);
       //to handel the error of firebase in case of entring non-valid email or password
       var message = "There is an error, please check your credentials!";
 
@@ -114,8 +114,9 @@ class _AuthScreenState extends State<AuthScreen> {
       setState(() {
         _isLoading = false;
       });
-      print('catch #2');
-      print(err);
+
+      // print('catch #2');
+      // print(err);
 
       switch (err.code) {
         case 'wrong-password':
@@ -140,10 +141,10 @@ class _AuthScreenState extends State<AuthScreen> {
           );
           break;
         default:
-          print(err.code);
+          // print(err.code);
           ScaffoldMessenger.of(ctx).showSnackBar(
             SnackBar(
-                content: Text("something went worrong please try again... "),
+                content: Text("The email or password is invalid try again!"),
                 backgroundColor: Theme.of(ctx).errorColor),
           );
       }
