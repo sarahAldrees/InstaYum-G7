@@ -105,7 +105,9 @@ class profileState extends State<profile> {
               labelColor: Color(0xFFeb6d44),
               indicatorColor: Color(0xFFeb6d44),
               tabs: [
-                Tab(icon: Icon(Icons.assessment_rounded), text: ("My recipes")),
+                Tab(
+                    icon: Icon(Icons.assignment_outlined),
+                    text: ("My recipes")),
                 Tab(icon: Icon(Icons.table_view), text: ("My meal plans")),
                 Tab(icon: Icon(Icons.bookmark), text: ("Bookmarks")),
               ],
