@@ -93,7 +93,8 @@ class _my_recipesState extends State<my_recipes> {
     return GridView.count(
       crossAxisCount: 2, // 2 items in each row
       crossAxisSpacing: 20,
-      padding: EdgeInsets.all(25),
+      padding: EdgeInsets.all(20),
+      mainAxisSpacing: 10,
       // map all available cookbooks and list them in Gridviwe.
       children: recpiesList
           .map((e) => recipe_Item(

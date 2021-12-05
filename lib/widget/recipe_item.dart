@@ -44,59 +44,71 @@ class recipe_Item extends StatelessWidget {
             imageURL); // the image will be used in ClipRRect, specifically in  Ink.image under Material widget
 
 // this section will return one item of Grid Items that in bookmarked recipes page. (i do not think it is in bookmarked, it is in "my recipe" :) )
-    return Column(children: [
-      //ClipOval(
-      Container(
-        width: double.infinity,
-        // height: 100,
-        decoration: BoxDecoration(
-          color: Colors
-              .white, // to make the background of the photo white (it is the corners)
-        ),
+    return Container(
+      margin: EdgeInsets.only(bottom: 2),
+      child: Column(children: [
+        //ClipOval(
+        Container(
+          width: double.infinity,
+          // height: 100,
+          decoration: BoxDecoration(
+            color: Colors
+                .white, // to make the background of the photo white (it is the corners)
+          ),
 
-        child: InkWell(
-          // to make  clickable image
-          onTap: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => new recipe_view(
-                        //key,
-                        // autherName,
-                        // autherImage,
-                        autherId,
-                        RecipeId,
-                        recipeName,
-                        imageURL,
-                        typeOfMeal,
-                        category,
-                        cuisine,
-                        ingredients,
-                        dirctions)));
-          }, //what happend after clicking image
+          child: Container(
+            height: 110,
+            child: InkWell(
+              // to make  clickable image
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => new recipe_view(
+                            //key,
+                            // autherName,
+                            // autherImage,
+                            autherId,
+                            RecipeId,
+                            recipeName,
+                            imageURL,
+                            typeOfMeal,
+                            category,
+                            cuisine,
+                            ingredients,
+                            dirctions)));
+              }, //what happend after clicking image
 
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(15),
-            child: Material(
-                color: Colors.white,
-                child: Ink.image(image: image, height: 120, fit: BoxFit.fill)
-                //************************************8 very importatnt to check which attribute is the best with boxfit ? # delete */
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(15),
+                child: Material(
+                    color: Colors.white,
+                    child:
+                        Ink.image(image: image, height: 120, fit: BoxFit.fill)
+                    //************************************8 very importatnt to check which attribute is the best with boxfit ? # delete */
 
-                ),
+                    ),
+              ),
+            ),
           ),
         ),
-      ),
 
-      Container(
-          // this is for text
-          width: double.infinity,
-          padding: EdgeInsets.only(top: 5),
-          child: Center(
-            child: Text(
-              recipeName,
-              style: TextStyle(fontSize: 13),
-            ),
-          )),
-    ]);
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.only(top: 3.0),
+            child: Container(
+                // this is for text
+                width: double.infinity,
+                child: Align(
+                  alignment: Alignment.topCenter,
+                  child: Text(
+                    recipeName,
+                    style: TextStyle(fontSize: 14),
+                  ),
+                )),
+          ),
+        ),
+      ]),
+    );
   }
 }
