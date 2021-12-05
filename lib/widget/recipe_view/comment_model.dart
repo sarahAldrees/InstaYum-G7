@@ -176,13 +176,19 @@ class CommentState extends State<Comments> {
                         ),
                         border: new OutlineInputBorder(
                             borderSide: new BorderSide(color: Colors.orange)),
-                        suffixIcon: commentController.text.isNotEmpty
+                        suffixIcon: commentController.text.isEmpty ||
+                                commentController.text.trim() == ''
                             ? IconButton(
+                                icon: Icon(
+                                  Icons.send,
+                                  color: Colors.grey.shade300,
+                                ),
+                              )
+                            : IconButton(
                                 icon: Icon(
                                   Icons.send,
                                   color: Color(0xFFeb6d44),
                                 ),
-
                                 // ------- if there is no text in the textfield
                                 //don't add the empty comment to the comments list
 
@@ -194,12 +200,6 @@ class CommentState extends State<Comments> {
                                     commentController.clear();
                                   }
                                 },
-                              )
-                            : IconButton(
-                                icon: Icon(
-                                  Icons.send,
-                                  color: Colors.grey.shade300,
-                                ),
                               ),
                         contentPadding: const EdgeInsets.all(10),
                         hintText: "Add  a comment..."),

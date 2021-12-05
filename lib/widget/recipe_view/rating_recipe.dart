@@ -78,7 +78,6 @@ class Rating extends State<Rating_recipe> {
       ),
       onRatingUpdate: (val) => setState(() {
         rating = val;
-
         print(rating);
       }),
     );
@@ -159,12 +158,11 @@ class Rating extends State<Rating_recipe> {
                             Navigator.pop(context);
                             numOfReviews++;
                             print(numOfReviews);
-                            total = total + rating;
+                            if (!(rating == null)) total = total + rating;
                             print('total $total');
                             avg = total / numOfReviews;
                             avg = doubleWithTwoDigits(avg, 2);
                             print('Avg $avg');
-
                             usersAlredyRate.add(currentUserId);
                             for (int i = 0; i < usersAlredyRate.length; i++) {
                               print("-------");

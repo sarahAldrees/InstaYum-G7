@@ -36,6 +36,7 @@ class profileState extends State<profile> {
     });
   }
 
+  @override
   void initState() {
     super.initState();
     getData(); //we call the method here to get the data immediately when init the page.
@@ -63,9 +64,10 @@ class profileState extends State<profile> {
       ),
     );
   }
+
   // Children with random heights - You can build your widgets of unknown heights here
   // I'm just passing the context in case if any widgets built here needs  access to context based data like Theme or MediaQuery
-
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: DefaultTabController(
@@ -103,7 +105,9 @@ class profileState extends State<profile> {
               labelColor: Color(0xFFeb6d44),
               indicatorColor: Color(0xFFeb6d44),
               tabs: [
-                Tab(icon: Icon(Icons.assessment_rounded), text: ("My recipes")),
+                Tab(
+                    icon: Icon(Icons.assignment_outlined),
+                    text: ("My recipes")),
                 Tab(icon: Icon(Icons.table_view), text: ("My meal plans")),
                 Tab(icon: Icon(Icons.bookmark), text: ("Bookmarks")),
               ],

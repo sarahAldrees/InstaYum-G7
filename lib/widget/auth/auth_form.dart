@@ -114,13 +114,19 @@ class _AuthFormState extends State<AuthForm> {
     return regExp.hasMatch(username);
   }
 
-  bool _isValiedPassword(String password) {
-    String pattern =
-        r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
+  bool _isValiedPassword(String password, bool isSignup) {
+    //if in signup check the password
+    if (isSignup) {
+      String pattern =
+          r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
 
-    RegExp regExp = new RegExp(pattern);
+      RegExp regExp = new RegExp(pattern);
 
-    return regExp.hasMatch(password);
+      return regExp.hasMatch(password);
+    } else {
+      // return true when in login page
+      return true;
+    }
   }
 
   @override
@@ -187,7 +193,7 @@ class _AuthFormState extends State<AuthForm> {
                       validator: (value) {
                         if (value.isEmpty) {
                           return "password should not be empty";
-                        } else if (!_isValiedPassword(value)) {
+                        } else if (!_isValiedPassword(value, _isSignUp)) {
                           return "The password must conatint at least \none upper case \none lower case \none digit \none special character \nand at least 8 characters in length";
                         }
                         return null;
@@ -206,7 +212,7 @@ class _AuthFormState extends State<AuthForm> {
                         validator: (value) {
                           if (value.isEmpty) {
                             return "password should not be empty";
-                          } else if (!_isValiedPassword(value)) {
+                          } else if (!_isValiedPassword(value, _isSignUp)) {
                             return "The password must conatint at least \none upper case \none lower case \none digit \none special character \nand at least 8 characters in length";
                           } else if (value != _pass.text) {
                             return "The passwords do not match, try again";
