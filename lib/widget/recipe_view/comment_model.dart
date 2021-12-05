@@ -135,7 +135,10 @@ class CommentState extends State<Comments> {
 
   void initState() {
     super.initState();
-    getData(); //we call the method here to get the data immediately when init the page.
+    getData();
+    commentController.addListener(() {
+      setState(() {});
+    }); //we call the method here to get the data immediately when init the page.
   }
 
   @override
@@ -173,24 +176,31 @@ class CommentState extends State<Comments> {
                         ),
                         border: new OutlineInputBorder(
                             borderSide: new BorderSide(color: Colors.orange)),
-                        suffixIcon: IconButton(
-                          icon: Icon(
-                            Icons.send,
-                            color: Color(0xFFeb6d44),
-                          ),
+                        suffixIcon: commentController.text.isNotEmpty
+                            ? IconButton(
+                                icon: Icon(
+                                  Icons.send,
+                                  color: Color(0xFFeb6d44),
+                                ),
 
-                          // ------- if there is no text in the textfield
-                          //don't add the empty comment to the comments list
+                                // ------- if there is no text in the textfield
+                                //don't add the empty comment to the comments list
 
-                          onPressed: () {
-                            if (commentController.text.trim() == '') {
-                            } else {
-                              addComment(commentController.text);
-                              // _addComment(controller.text);
-                              commentController.clear();
-                            }
-                          },
-                        ),
+                                onPressed: () {
+                                  if (commentController.text.trim() == '') {
+                                  } else {
+                                    addComment(commentController.text);
+                                    // _addComment(controller.text);
+                                    commentController.clear();
+                                  }
+                                },
+                              )
+                            : IconButton(
+                                icon: Icon(
+                                  Icons.send,
+                                  color: Colors.grey.shade300,
+                                ),
+                              ),
                         contentPadding: const EdgeInsets.all(10),
                         hintText: "Add  a comment..."),
                   ),
