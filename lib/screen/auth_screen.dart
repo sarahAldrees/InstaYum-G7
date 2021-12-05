@@ -75,6 +75,11 @@ class _AuthScreenState extends State<AuthScreen> {
           "email": email,
           "image_url": url,
         });
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => MainPages(),
+          ),
+        );
       } else {
         authResult = await _auth.signInWithEmailAndPassword(
           email: email,
