@@ -36,6 +36,7 @@ class profileState extends State<profile> {
     });
   }
 
+  @override
   void initState() {
     super.initState();
     getData(); //we call the method here to get the data immediately when init the page.
@@ -63,9 +64,10 @@ class profileState extends State<profile> {
       ),
     );
   }
+
   // Children with random heights - You can build your widgets of unknown heights here
   // I'm just passing the context in case if any widgets built here needs  access to context based data like Theme or MediaQuery
-
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: DefaultTabController(
