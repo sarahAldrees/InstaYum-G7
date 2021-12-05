@@ -103,6 +103,7 @@ class Rating extends State<Rating_recipe> {
         if (!findUser) {
           showDialog<void>(
             context: context,
+            barrierDismissible: false,
             builder: (context) {
               return AlertDialog(
                 shape: RoundedRectangleBorder(
@@ -195,6 +196,7 @@ class Rating extends State<Rating_recipe> {
         } else {
           showDialog<void>(
             context: context,
+            barrierDismissible: false,
             builder: (context) {
               return AlertDialog(
                 shape: RoundedRectangleBorder(

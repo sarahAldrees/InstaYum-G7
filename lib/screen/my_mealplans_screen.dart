@@ -6,7 +6,7 @@ class my_meal_plans extends StatelessWidget {
     return Scaffold(
       // build and return the container which is the Tap veiw of meal Plans
       body: Container(
-          margin: EdgeInsets.all(15),
+          margin: EdgeInsets.symmetric(vertical: 0, horizontal: 4),
           child:
               // build card of the meal plan name and the button .
               Card(
@@ -16,9 +16,12 @@ class my_meal_plans extends StatelessWidget {
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    Text(
-                      "Keto diet plan",
-                      style: TextStyle(fontSize: 17, color: Colors.white),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 2.0),
+                      child: Text(
+                        "Keto diet plan",
+                        style: TextStyle(fontSize: 17, color: Colors.white),
+                      ),
                     ),
                     ElevatedButton(
                       child: Text("Make it my current plan"),

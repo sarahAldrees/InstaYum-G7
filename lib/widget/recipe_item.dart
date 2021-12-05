@@ -90,11 +90,11 @@ class recipe_Item extends StatelessWidget {
       Container(
           // this is for text
           width: double.infinity,
-          padding: EdgeInsets.only(top: 10),
+          padding: EdgeInsets.only(top: 5),
           child: Center(
             child: Text(
               recipeName,
-              style: TextStyle(fontSize: 14),
+              style: TextStyle(fontSize: 13),
             ),
           )),
     ]);

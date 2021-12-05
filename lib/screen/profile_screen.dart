@@ -48,15 +48,15 @@ class profileState extends State<profile> {
 
     // build a circular user image
     return Padding(
-      padding: EdgeInsets.all(8.0),
+      padding: EdgeInsets.all(10.0),
       child: ClipOval(
         child: Material(
           color: Colors.grey.shade400,
           child: Ink.image(
             image: image,
             fit: BoxFit.cover,
-            width: 100,
-            height: 100,
+            width: 90,
+            height: 90,
           ),
         ),
       ),
@@ -83,7 +83,11 @@ class profileState extends State<profile> {
                       buildImage(),
                       Padding(
                         padding: EdgeInsets.all(5),
-                        child: Text(userUsername),
+                        child: Text(
+                          userUsername,
+                          style: TextStyle(
+                              fontSize: 15, fontWeight: FontWeight.bold),
+                        ),
                       ),
                     ],
                   ),
