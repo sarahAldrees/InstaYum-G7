@@ -97,7 +97,7 @@ class _AuthScreenState extends State<AuthScreen> {
       setState(() {
         _isLoading = false;
       });
-      // print('catch #1');
+      print('catch #1');
       // print(err);
       //to handel the error of firebase in case of entring non-valid email or password
       var message = "There is an error, please check your credentials!";
@@ -111,12 +111,14 @@ class _AuthScreenState extends State<AuthScreen> {
             content: Text(message), backgroundColor: Theme.of(ctx).errorColor),
       );
     } catch (err) {
-      setState(() {
-        _isLoading = false;
-      });
+      // setState(() {
+      //   _isLoading = false;
+      // });
 
-      // print('catch #2');
-      // print(err);
+      print('catch #2');
+      print("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+      print(err.code);
+      print("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
 
       switch (err.code) {
         case 'wrong-password':
