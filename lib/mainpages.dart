@@ -1,10 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:instayum1/screen/auth_screen.dart';
 import 'package:instayum1/widget/add_recipe/add_recipe_page.dart';
 import 'package:instayum1/discover_page.dart';
 import 'package:instayum1/screen/profile_screen.dart';
 import 'package:instayum1/shopping_list_page.dart';
+import 'package:instayum1/widget/auth/auth_form.dart';
 import 'package:instayum1/widget/pickers/recipe_image_picker.dart';
 import 'meal_plans.dart';
 
@@ -138,10 +140,7 @@ class appPages extends State<MainPages> {
         okButton,
       ],
     );
-    // setState(() {
-    //   //to remove the progress bar
-    //   isloading = false;
-    // });
+
     // show the dialog
     showDialog(
       context: context,
@@ -243,6 +242,13 @@ class appPages extends State<MainPages> {
       onPressed: () {
         FirebaseAuth.instance.signOut();
         Navigator.of(context).pop();
+        print('sign out^^^^^^^^^^^^^^^^^^^^^^^^^^');
+        print('Before moving the user to the sign up page ***********');
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => AuthScreen(),
+          ),
+        );
       },
     );
     // set up the AlertDialog
@@ -301,6 +307,7 @@ class appPages extends State<MainPages> {
               ],
               onChanged: (itemIdentifier) {
                 if (itemIdentifier == "logout") {
+                  print("cliked in logout");
                   showAlertDialog(context);
                 }
               },

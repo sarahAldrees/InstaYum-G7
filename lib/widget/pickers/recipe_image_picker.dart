@@ -8,15 +8,11 @@ import 'package:path/path.dart' as Path;
 import 'package:uuid/uuid.dart';
 
 class RecipeImagePicker extends StatefulWidget {
-  //final recipe_id; # delete
-  // RecipeImagePicker(this.recipe_id);
-
   @override
   RecipeImagePickerState createState() => RecipeImagePickerState();
 }
 
 class RecipeImagePickerState extends State<RecipeImagePicker> {
-  // bool _isFirestPhoto = true; // # delete
   bool _isloading = false; // to show the progress circle
   File _image;
   static String uploadedFileURL;
@@ -37,7 +33,6 @@ class RecipeImagePickerState extends State<RecipeImagePicker> {
       _isloading = true;
     });
     final FirebaseAuth _auth = FirebaseAuth.instance;
-    // final currentUser = await _auth.currentUser; // # delete
 
     FirebaseStorage storageReference = FirebaseStorage.instance;
     Reference ref = storageReference
@@ -52,7 +47,6 @@ class RecipeImagePickerState extends State<RecipeImagePicker> {
         print('here in image class ');
         print(fileURL);
         print('the id in image class is  ');
-        // print(widget.recipe_id);
         // to add https://
         setState(() {
           uploadedFileURL = fileURL;
@@ -63,36 +57,6 @@ class RecipeImagePickerState extends State<RecipeImagePicker> {
         setState(() {
           _isloading = false;
         });
-        // //to save the image in the database (in recpies collction inside users collectino)
-        // if (_isFirestPhoto) {
-        //   _isFirestPhoto = false;
-        //   // _isFirestPhoto will be false, to prevent the database from creating a new document if the user change the picture
-        //   await FirebaseFirestore.instance
-        //       .collection("users")
-        //       .doc(currentUser.uid)
-        //       .collection("recpies")
-        //       .doc(widget
-        //           .recipe_id) //we bring the same recpie id from the add_recipe_page
-        //       .set({
-        //     "recipe_image_url": uploadedFileURL,
-        //   });
-        //   setState(() {
-        //     _isloading = false;
-        //   });
-        // } else {
-        //   FirebaseFirestore.instance
-        //       .collection("users")
-        //       .doc(currentUser.uid)
-        //       .collection("recpies")
-        //       .doc(widget
-        //           .recipe_id) //we bring the same recpie id from the add_recipe_page
-        //       .update({
-        //     "recipe_image_url": uploadedFileURL,
-        //   });
-        //   setState(() {
-        //     _isloading = false;
-        //   });
-        // }
       });
     });
   }

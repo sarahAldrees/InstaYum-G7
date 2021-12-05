@@ -36,7 +36,7 @@ class Rating extends State<Rating_recipe> {
     FirebaseFirestore.instance
         .collection("users")
         .doc(widget.autherId)
-        .collection("recpies")
+        .collection("recipes")
         .doc(widget.recipeId)
         .collection("rating")
         .doc("recipeRating")
@@ -50,7 +50,7 @@ class Rating extends State<Rating_recipe> {
 
         avg = userData.data()["average_rating"];
 
-        usersAlredyRate = List.from(userData.data()["user_alredy_reiw"]);
+        usersAlredyRate = List.from(userData.data()["user_already_review"]);
         currentUserId = currentUser.uid;
       });
     });
@@ -103,6 +103,7 @@ class Rating extends State<Rating_recipe> {
         if (!findUser) {
           showDialog<void>(
             context: context,
+            barrierDismissible: false,
             builder: (context) {
               return AlertDialog(
                 shape: RoundedRectangleBorder(
@@ -174,7 +175,7 @@ class Rating extends State<Rating_recipe> {
                             FirebaseFirestore.instance
                                 .collection("users")
                                 .doc(widget.autherId)
-                                .collection("recpies")
+                                .collection("recipes")
                                 .doc(widget.recipeId)
                                 .collection("rating")
                                 .doc("recipeRating")
@@ -182,7 +183,7 @@ class Rating extends State<Rating_recipe> {
                               'sum_of_all_rating': total,
                               "num_of_reviews": numOfReviews,
                               "average_rating": avg,
-                              "user_alredy_reiw":
+                              "user_already_review":
                                   FieldValue.arrayUnion(usersAlredyRate)
                             });
                           }),
@@ -195,6 +196,7 @@ class Rating extends State<Rating_recipe> {
         } else {
           showDialog<void>(
             context: context,
+            barrierDismissible: false,
             builder: (context) {
               return AlertDialog(
                 shape: RoundedRectangleBorder(

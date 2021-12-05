@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:instayum1/mainpages.dart';
 import 'package:instayum1/screen/profile_screen.dart';
 import 'package:instayum1/widget/auth/auth_form.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -74,10 +75,22 @@ class _AuthScreenState extends State<AuthScreen> {
           "email": email,
           "image_url": url,
         });
+        //to move the user to the profile page (Mainpages) after he signup successfully
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => MainPages(),
+          ),
+        );
       } else {
         authResult = await _auth.signInWithEmailAndPassword(
           email: email,
           password: password,
+        );
+        // to move the user to the profile page (Mainpages) after he login successfully
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => MainPages(),
+          ),
         );
       }
     } on PlatformException catch (err) {

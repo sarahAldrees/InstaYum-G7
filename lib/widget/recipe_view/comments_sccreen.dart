@@ -67,7 +67,7 @@ class CommentListState extends State<CommentList> {
     databaseRef = FirebaseFirestore.instance
         .collection("users")
         .doc(widget.authorId)
-        .collection("recpies")
+        .collection("recipes")
         .doc(widget.recipeID)
         .collection("comments");
     setState(() {});

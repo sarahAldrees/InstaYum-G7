@@ -18,23 +18,6 @@ class _DirectionsTextFieldsState extends State<DirectionsTextFields> {
     _directionController = TextEditingController();
   }
 
-  // @override
-  // void dispose() {
-  //   // release the memory allocated to variables when state object is removed.
-  //   _directionController.dispose();
-  //   super.dispose();
-  // }
-
-  // String get _errorText {
-  //   //this method will show error message on every change made by the user using errorText
-  //   //final text = _directionController.value.text;
-  //   if (addRecipe.userDirections[widget.index] == null) {
-  //     return 'Please enter a direction';
-  //   }
-  //   // return null if the text is valid
-  //   return null;
-  // }
-
   @override
   Widget build(BuildContext context) {
     // run this method when the interface has been loaded

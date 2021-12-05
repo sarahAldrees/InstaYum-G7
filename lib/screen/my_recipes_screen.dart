@@ -44,7 +44,7 @@ class _my_recipesState extends State<my_recipes> {
     FirebaseFirestore.instance
         .collection("users")
         .doc(user.uid)
-        .collection("recpies")
+        .collection("recipes")
         .orderBy("timestamp", descending: true)
         .get()
         .then((querySnapshot) {
@@ -54,34 +54,20 @@ class _my_recipesState extends State<my_recipes> {
           dirctionsList = [],
           lengthOfIngredients = doc.data()['length_of_ingredients'],
           lengthOfDirections = doc.data()['length_of_directions'],
-          // print(
-          //     'Ingredients*******************************************************>>>>>>>>>>>>>>>>>>>>'),
           for (int i = 0; i < lengthOfIngredients; i++)
             {
               {
                 ingredientsList.add(
                   doc.data()['ing${i + 1}'],
                 ),
-                //  print(ingredientsList[i]),
               }
             },
-          // print(
-          //     'Directions*******************************************************>>>>>>>>>>>>>>>>>>>>'),
           for (int i = 0; i < lengthOfDirections; i++)
             {
               dirctionsList.add(
                 doc.data()['dir${i + 1}'],
               ),
-              // print(dirctionsList[i]),
             },
-          // print(
-          //     'Recipe list *******************************************************>>>>>>>>>>>>>>>>>>>>'),
-          // print(doc.data()['recipe_image_url']),
-          // print(doc.data()['recipe_title']),
-          // print(doc.data()['type_of_meal']),
-          // print(doc.data()['category']),
-          // print(doc.data()['cuisine']),
-          //AssetImage("assets/images/defaultUser.png")
           recipe_image_url = doc.data()['recipe_image_url'],
           widget.autherId = doc.data()['user_id'],
           recpiesList.add(
@@ -102,36 +88,13 @@ class _my_recipesState extends State<my_recipes> {
     });
   }
 
-  // Widget returnGride() {
-  //   return GridView.count(
-  //     crossAxisCount: 2, // 2 items in each row
-  //     crossAxisSpacing: 20,
-  //     padding: EdgeInsets.all(25),
-  //     // map all available cookbooks and list them in Gridviwe.
-  //     children: recpiesList
-  //         .map((e) => recipe_Item(
-  //               // key,
-  //               widget.autherName,
-  //               widget.autherImage,
-  //               e.id,
-  //               e.recipeName,
-  //               e.imageURL,
-  //               e.typeOfMeal,
-  //               e.category,
-  //               e.cuisine,
-  //               e.ingredients,
-  //               e.dirctions,
-  //             ))
-  //         .toList(),
-  //   );
-  // }
-
   @override
   Widget build(BuildContext context) {
     return GridView.count(
       crossAxisCount: 2, // 2 items in each row
       crossAxisSpacing: 20,
-      padding: EdgeInsets.all(25),
+      padding: EdgeInsets.all(20),
+      mainAxisSpacing: 10,
       // map all available cookbooks and list them in Gridviwe.
       children: recpiesList
           .map((e) => recipe_Item(

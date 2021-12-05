@@ -69,7 +69,11 @@ class _AuthFormState extends State<AuthForm> {
     }
 
     final validUsername = await _usernameCheck(_userName);
-    if (!validUsername) {
+    if (!validUsername && _isSignUp) {
+      //we use _isSignUp to avoid check the username in login case
+      // print("user name in authform ***********");
+      // print(validUsername);
+      // print(_userName);
       Scaffold.of(context).showSnackBar(
         SnackBar(
           content: Text("The username is already exist"),
@@ -77,7 +81,9 @@ class _AuthFormState extends State<AuthForm> {
         ),
       );
     }
-    if (isValidFormt && validUsername) {
+    if (isValidFormt && validUsername || !_isSignUp) {
+      //print('in checking if ____________________');
+
       _formKey.currentState.save();
       widget.submitFn(
         _userEmail.trim(), // trim here to delete any extar space at the end
