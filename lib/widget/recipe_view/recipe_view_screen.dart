@@ -95,32 +95,6 @@ class recipe_view extends StatelessWidget {
 //-----------very importatnt to check which attribute is the best with boxfit ? # delete */
                       ),
                 ),
-                Positioned(
-                  left: 10,
-                  top: 10,
-                  child: Row(
-                    children: [
-                      IconButton(
-                          icon: Icon(
-                            Icons.bookmark_add_outlined,
-                            size: 26,
-                            // color: Color(0xFFeb6d44),
-                          ),
-                          onPressed: () {
-                            //setstat :change the kind of icon and add it to bookmark list
-                          }),
-                      IconButton(
-                          icon: Icon(
-                            Icons.ios_share_outlined,
-                            //  Icons.ios_share,
-                            size: 26,
-                          ),
-                          onPressed: () {
-                            // to share to other
-                          }),
-                    ],
-                  ),
-                ),
               ],
             ),
           ),
