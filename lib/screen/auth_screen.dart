@@ -114,6 +114,7 @@ class _AuthScreenState extends State<AuthScreen> {
       setState(() {
         _isLoading = false;
       });
+
       print('catch #2');
       print(err);
 
@@ -143,7 +144,7 @@ class _AuthScreenState extends State<AuthScreen> {
           print(err.code);
           ScaffoldMessenger.of(ctx).showSnackBar(
             SnackBar(
-                content: Text("something went worrong please try again... "),
+                content: Text("The email or password is invalid try again!"),
                 backgroundColor: Theme.of(ctx).errorColor),
           );
       }
