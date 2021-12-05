@@ -111,14 +111,14 @@ class _AuthScreenState extends State<AuthScreen> {
             content: Text(message), backgroundColor: Theme.of(ctx).errorColor),
       );
     } catch (err) {
-      // setState(() {
-      //   _isLoading = false;
-      // });
-
+      if (this.mounted) {
+        // check whether the state object is in tree
+        setState(() {
+          _isLoading = false;
+        });
+      }
       print('catch #2');
-      print("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
-      print(err.code);
-      print("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+      //print(err.code);
 
       switch (err.code) {
         case 'wrong-password':
