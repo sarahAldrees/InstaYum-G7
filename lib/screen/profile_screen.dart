@@ -19,6 +19,7 @@ class profileState extends State<profile> {
   String userUsername = "";
   String imageURL = "";
   String uId = "";
+
 //getData() to get the data of users like username, image_url from database
   void getData() async {
     User user = _firebaseAuth.currentUser;

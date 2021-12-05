@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:instayum1/widget/add_recipe/directions_text_fields.dart';
 import 'package:instayum1/widget/add_recipe/ingredients_text_fields.dart';
 import 'package:instayum1/widget/pickers/recipe_image_picker.dart';
@@ -356,10 +357,15 @@ class addRecipe extends State<addRecipePage> {
                       borderRadius: BorderRadius.circular(5),
                       shape: BoxShape.rectangle,
                     ),
+
                     child: Container(
                       margin: EdgeInsets.only(bottom: 15, left: 50, right: 50),
                       padding: EdgeInsets.only(top: 15),
                       child: TextFormField(
+                        decoration: InputDecoration(
+                            isDense: true,
+                            contentPadding:
+                                EdgeInsets.fromLTRB(5.0, 1.0, 5.0, 1.0)),
                         controller: recipeTitleController,
                         key: ValueKey("recipe_title"),
                         validator: (value) {
@@ -421,14 +427,14 @@ class addRecipe extends State<addRecipePage> {
                           Align(
                             alignment: Alignment.bottomCenter,
                             child: Container(
-                              constraints: BoxConstraints.tightFor(width: 163),
+                              constraints: BoxConstraints.tightFor(width: 171),
                               child: ElevatedButton.icon(
                                 onPressed: () {
                                   _addRemoveButtonInIngredient(
                                       true, userIngredients.length);
                                 },
                                 icon: Icon(Icons.add),
-                                label: Text("Add a ingredient"),
+                                label: Text("Add an ingredient"),
                                 style: ButtonStyle(
                                   backgroundColor: MaterialStateProperty.all(
                                       Color(0xFFeb6d44)),
@@ -487,14 +493,14 @@ class addRecipe extends State<addRecipePage> {
                             alignment: Alignment.bottomCenter,
                             child: Container(
                               constraints: BoxConstraints.tightFor(
-                                  width: 160), // to add a width for the button
+                                  width: 171), // to add a width for the button
                               child: ElevatedButton.icon(
                                 onPressed: () {
                                   _addRemoveButtonInDirection(
                                       true, userDirections.length);
                                 },
                                 icon: Icon(Icons.add),
-                                label: Text("Add a direction"),
+                                label: Text(" Add a direction "),
                                 style: ButtonStyle(
                                   backgroundColor: MaterialStateProperty.all(
                                       Color(0xFFeb6d44)),

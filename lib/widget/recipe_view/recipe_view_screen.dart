@@ -90,8 +90,8 @@ class recipe_view extends StatelessWidget {
                 ClipRRect(
                   child: Material(
                       color: Colors.white,
-                      child:
-                          Ink.image(image: image, height: 250, fit: BoxFit.fill)
+                      child: Ink.image(
+                          image: image, height: 250, fit: BoxFit.cover)
 //-----------very importatnt to check which attribute is the best with boxfit ? # delete */
                       ),
                 ),
