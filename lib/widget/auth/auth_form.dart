@@ -249,7 +249,7 @@ class _AuthFormState extends State<AuthForm> {
                           textColor: Color(
                               0xFFeb6d44), //Theme.of(context).primaryColor,
                           child: Text(_isSignUp
-                              ? "I Already have an account"
+                              ? "Already have an account"
                               : "Create a new account"),
                           onPressed: () {
                             setState(() {
