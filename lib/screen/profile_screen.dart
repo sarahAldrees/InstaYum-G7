@@ -102,6 +102,7 @@ class profileState extends State<profile> {
             ),
             //
             TabBar(
+              labelStyle: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
               labelColor: Color(0xFFeb6d44),
               indicatorColor: Color(0xFFeb6d44),
               tabs: [

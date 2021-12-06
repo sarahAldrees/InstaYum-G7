@@ -4,10 +4,15 @@ import 'package:instayum1/screen/auth_screen.dart';
 import 'package:instayum1/screen/profile_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:instayum1/mainpages.dart';
+import 'package:flutter/services.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+
+  await SystemChrome.setPreferredOrientations(
+    [DeviceOrientation.portraitUp],
+  ); // To turn off landscape mode
   runApp(MyApp());
 }
 
