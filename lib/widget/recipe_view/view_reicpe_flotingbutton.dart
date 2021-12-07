@@ -5,11 +5,10 @@ import 'package:flutter/material.dart';
 @immutable
 class ExpandableFab extends StatefulWidget {
   const ExpandableFab({
-    Key key,
     this.initialOpen,
     this.distance,
     this.children,
-  }) : super(key: key);
+  });
 
   final bool initialOpen;
   final double distance;
@@ -127,7 +126,7 @@ class _ExpandableFabState extends State<ExpandableFab>
           _open ? 0.7 : 1.0,
           1.0,
         ),
-        //-------------------------------------------------
+        //--------------------------------------------------------
         duration: const Duration(milliseconds: 250),
         curve: const Interval(0.0, 0.5, curve: Curves.easeOut),
         child: AnimatedOpacity(
@@ -140,7 +139,7 @@ class _ExpandableFabState extends State<ExpandableFab>
             child: const Icon(
               Icons.add,
             ),
-            //-------------------------------------------
+            //---------------------------------------------------
           ),
         ),
       ),

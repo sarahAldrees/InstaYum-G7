@@ -3,43 +3,43 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:instayum1/model/recipe.dart';
-import 'package:instayum1/widget/recipe_view/comment_model.dart';
+import 'package:instayum1/widget/recipe_view/comment_screen.dart';
 import 'package:instayum1/widget/recipe_view/convert_to_checkboxList.dart';
 import 'package:instayum1/widget/recipe_view/image_and_username.dart';
 import 'package:instayum1/widget/recipe_view/rating_recipe.dart';
 import 'package:instayum1/widget/recipe_view/view_reicpe_flotingbutton.dart';
 
 class recipe_view extends StatelessWidget {
-  String autherId;
-  String recipeid;
-  String recipeName;
-  String imageURL;
-  String typeOfMeal;
-  String category;
-  String cuisine;
-  List<String> ingredients;
-  List<String> dirctions;
+  String _autherId;
+  String _recipeid;
+  String _recipeName;
+  String _imageURL;
+  String _typeOfMeal;
+  String _category;
+  String _cuisine;
+  List<String> _ingredients;
+  List<String> _dirctions;
 
   recipe_view(
     //Key,
 
-    this.autherId,
-    this.recipeid,
-    this.recipeName,
-    this.imageURL,
-    this.typeOfMeal,
-    this.category,
-    this.cuisine,
-    this.ingredients,
-    this.dirctions,
+    this._autherId,
+    this._recipeid,
+    this._recipeName,
+    this._imageURL,
+    this._typeOfMeal,
+    this._category,
+    this._cuisine,
+    this._ingredients,
+    this._dirctions,
   );
   @override
   Widget build(BuildContext context) {
     // to return the default image if user does not enter an image by puting "noImageUrl" in the database and converting here to an image
     final image =
-        imageURL == "noImageUrl" || imageURL.isEmpty || imageURL == null
+        _imageURL == "noImageUrl" || _imageURL.isEmpty || _imageURL == null
             ? AssetImage("assets/images/defaultRecipeImage.png")
-            : NetworkImage(imageURL);
+            : NetworkImage(_imageURL);
     //----titles of buttons that inside floting button-----
 
     const _actionTitles = [
@@ -51,7 +51,7 @@ class recipe_view extends StatelessWidget {
     //-------------
     return Scaffold(
       appBar: new AppBar(
-        title: Text(recipeName),
+        title: Text(_recipeName),
         backgroundColor: Color(0xFFeb6d44),
       ),
       //--------------------floating button that contain comment and rating button -------------------------
@@ -63,17 +63,14 @@ class recipe_view extends StatelessWidget {
             icon: const Icon(Icons.shopping_bag),
           ),
           //---------------to view action button rating and open smale windo to get the rate ---------------------
-          Rating_recipe(recipeid, autherId),
+          Rating_recipe(_recipeid, _autherId),
           //-------------comments button to open comment page -------------
           ActionButton(
             onPressed: () {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => Comments(
-                            recipeId: recipeid,
-                            authorId: autherId,
-                          )));
+                      builder: (context) => Comments(_recipeid, _autherId)));
             },
             icon: const Icon(Icons.comment_sharp),
           ),
@@ -103,9 +100,9 @@ class recipe_view extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              getuserinfo(autherId),
+              getuserinfo(_autherId),
 //------------------------ Rating of recipe -------------------------------------
-              gitRating(recipeid, autherId),
+              getRating(_recipeid, _autherId),
             ],
           ),
           //-------------------------ginral discription ------------------------------------
@@ -124,7 +121,7 @@ class recipe_view extends StatelessWidget {
                       ),
                       Center(
                           child: Text(
-                        "  " + typeOfMeal,
+                        "  " + _typeOfMeal,
                       ))
                     ],
                   ),
@@ -137,7 +134,7 @@ class recipe_view extends StatelessWidget {
                         Icons.public,
                         color: Colors.grey[600],
                       ),
-                      Center(child: Text("  " + cuisine))
+                      Center(child: Text("  " + _cuisine))
                     ],
                   ),
                 ),
@@ -149,7 +146,7 @@ class recipe_view extends StatelessWidget {
                         Icons.format_list_bulleted,
                         color: Colors.grey[600],
                       ),
-                      Center(child: Text("  " + category))
+                      Center(child: Text("  " + _category))
                     ],
                   ),
                 ),
@@ -158,9 +155,9 @@ class recipe_view extends StatelessWidget {
           ),
 
           //--------------------------ingrediants and dirctions--------------------------
-          convertTocheckBox(ingredients, "Ingrediants"),
+          convertTocheckBox(_ingredients, "Ingrediants"),
 
-          convertTocheckBox(dirctions, "Dirctions")
+          convertTocheckBox(_dirctions, "Dirctions")
           //-------------------------------------------
         ],
       ),
@@ -170,25 +167,26 @@ class recipe_view extends StatelessWidget {
 
 //-------this clas to get rating from data base and display it ------------
 
-class gitRating extends StatefulWidget {
-  String recipeId;
-  String autherId;
-  gitRating(this.recipeId, this.autherId);
+class getRating extends StatefulWidget {
+  String _recipeId;
+  String _autherId;
+  getRating(this._recipeId, this._autherId);
   @override
   getRatingState createState() => getRatingState();
 }
 
-var numOfRevewis;
-var avg = 0.0;
-var rating;
+class getRatingState extends State<getRating> {
+  var numOfRevewis;
+  var avg = 0.0;
+  var rating;
 
-class getRatingState extends State<gitRating> {
   getData() async {
+    //to get previous rating info from firestor
     FirebaseFirestore.instance
         .collection("users")
-        .doc(widget.autherId)
+        .doc(widget._autherId)
         .collection("recipes")
-        .doc(widget.recipeId)
+        .doc(widget._recipeId)
         .collection("rating")
         .doc("recipeRating")
         .snapshots()
@@ -251,27 +249,27 @@ class getRatingState extends State<gitRating> {
 //----------this class to show user image and name who is adding the recipe -------------
 
 class getuserinfo extends StatefulWidget {
-  String autherId;
+  String _autherId;
 
-  getuserinfo(this.autherId);
+  getuserinfo(this._autherId);
   @override
   getuserinfoState createState() => getuserinfoState();
 }
 
 class getuserinfoState extends State<getuserinfo> {
-  String autherName = "";
-  String autherimage = "";
+  String _autherName = "";
+  String _autherimage = "";
   getData() async {
-    String id = widget.autherId; //solve empty exeption
+    String _id = widget._autherId; //solve empty exeption
     FirebaseFirestore.instance
         .collection("users")
-        .doc("$id")
+        .doc("$_id")
         .snapshots()
         .listen((userData) {
       setState(() {
-        autherName = userData.data()['username'];
+        _autherName = userData.data()['username'];
 
-        autherimage = userData.data()['image_url'];
+        _autherimage = userData.data()['image_url'];
       });
     });
   }
@@ -284,7 +282,7 @@ class getuserinfoState extends State<getuserinfo> {
 
   @override
   Widget build(BuildContext context) {
-    return userinfo(autherName,
-        autherimage); // calling this class to design image and user name after get them from database
+    return userinfo(_autherName,
+        _autherimage); // calling this class to design image and user name after get them from database
   }
 }

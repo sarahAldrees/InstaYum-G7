@@ -9,23 +9,22 @@ import 'package:instayum1/widget/recipe_view/view_reicpe_flotingbutton.dart';
 // import 'package:recipe_view/view_reicpe_flotingbutton.dart';
 
 class Rating_recipe extends StatefulWidget {
-  String recipeId;
-  String autherId;
+  String _recipeId;
+  String _autherId;
 
-  Rating_recipe(this.recipeId, this.autherId);
+  Rating_recipe(this._recipeId, this._autherId);
   @override
   Rating createState() => Rating();
 }
 
-String currentUserId;
-bool findUser = false;
-double rating;
-var numOfReviews;
-var total;
-var avg;
-List<String> usersAlredyRate;
-
 class Rating extends State<Rating_recipe> {
+  String _currentUserId;
+  bool _findUser = false;
+  double rating;
+  var numOfReviews;
+  var total;
+  var avg;
+  List<String> _usersAlredyRate;
   // final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
 //getData() to get the data of users like username, image_url from database
@@ -35,9 +34,9 @@ class Rating extends State<Rating_recipe> {
 
     FirebaseFirestore.instance
         .collection("users")
-        .doc(widget.autherId)
+        .doc(widget._autherId)
         .collection("recipes")
-        .doc(widget.recipeId)
+        .doc(widget._recipeId)
         .collection("rating")
         .doc("recipeRating")
         .snapshots()
@@ -50,8 +49,8 @@ class Rating extends State<Rating_recipe> {
 
         avg = userData.data()["average_rating"];
 
-        usersAlredyRate = List.from(userData.data()["user_already_review"]);
-        currentUserId = currentUser.uid;
+        _usersAlredyRate = List.from(userData.data()["user_already_review"]);
+        _currentUserId = currentUser.uid;
       });
     });
   }
@@ -91,15 +90,15 @@ class Rating extends State<Rating_recipe> {
   Widget build(BuildContext context) {
     return ActionButton(
       onPressed: () {
-        for (int i = 0; i < usersAlredyRate.length; i++) {
-          if (usersAlredyRate[i] == currentUserId) {
-            findUser = true;
+        for (int i = 0; i < _usersAlredyRate.length; i++) {
+          if (_usersAlredyRate[i] == _currentUserId) {
+            _findUser = true;
             break;
           }
         }
         ;
 
-        if (!findUser) {
+        if (!_findUser) {
           showDialog<void>(
             context: context,
             barrierDismissible: false,
@@ -164,18 +163,18 @@ class Rating extends State<Rating_recipe> {
                             avg = total / numOfReviews;
                             avg = doubleWithTwoDigits(avg, 2);
                             print('Avg $avg');
-                            usersAlredyRate.add(currentUserId);
-                            for (int i = 0; i < usersAlredyRate.length; i++) {
+                            _usersAlredyRate.add(_currentUserId);
+                            for (int i = 0; i < _usersAlredyRate.length; i++) {
                               print("-------");
-                              print(usersAlredyRate[i]);
+                              print(_usersAlredyRate[i]);
                             }
 
                             //----------uppdating data --------
                             FirebaseFirestore.instance
                                 .collection("users")
-                                .doc(widget.autherId)
+                                .doc(widget._autherId)
                                 .collection("recipes")
-                                .doc(widget.recipeId)
+                                .doc(widget._recipeId)
                                 .collection("rating")
                                 .doc("recipeRating")
                                 .update({
@@ -183,7 +182,7 @@ class Rating extends State<Rating_recipe> {
                               "num_of_reviews": numOfReviews,
                               "average_rating": avg,
                               "user_already_review":
-                                  FieldValue.arrayUnion(usersAlredyRate)
+                                  FieldValue.arrayUnion(_usersAlredyRate)
                             });
                           }),
                     ),

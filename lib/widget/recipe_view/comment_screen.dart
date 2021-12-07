@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:instayum1/widget/recipe_view/comments_sccreen.dart';
+import 'package:instayum1/model/commentObj.dart';
+// import 'package:instayum1/widget/recipe_view/comments_sccreen.dart';
 import 'package:instayum1/widget/recipe_view/image_and_username.dart';
 import 'package:instayum1/widget/recipe_view/recipe_view_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -11,37 +12,37 @@ import 'package:intl/intl.dart';
 FieldValue timestamp = FieldValue.serverTimestamp();
 
 class Comments extends StatefulWidget {
-  final String recipeId;
-  final String authorId;
-  final String comment;
+  final String _recipeId;
+  final String _authorId;
+  String comment;
 
-  Comments({
-    this.recipeId,
-    this.authorId,
-    this.comment,
-  });
+  Comments(
+    this._recipeId,
+    this._authorId,
+    // this.comment,
+  );
 
   @override
   CommentState createState() => CommentState(
-        recipeId: recipeId,
-        authorId: this.authorId,
-        comment: this.comment,
+        this._recipeId,
+        this._authorId,
+        this.comment,
       );
 }
 
 class CommentState extends State<Comments> {
-  final String recipeId;
+  final String _recipeId;
 
-  final String authorId;
+  final String _authorId;
   final String comment;
-  TextEditingController commentController = TextEditingController();
+  TextEditingController _commentController = TextEditingController();
 
-  CommentState({
-    this.recipeId,
-    this.authorId,
+  CommentState(
+    this._recipeId,
+    this._authorId,
     this.comment,
-    this.databaseRef,
-  });
+    // this.databaseRef,
+  );
 // --------------------------------------------------
   CollectionReference databaseRef;
   Widget _buildCommentList() {
@@ -50,9 +51,9 @@ class CommentState extends State<Comments> {
 
     databaseRef = FirebaseFirestore.instance
         .collection("users")
-        .doc(authorId)
+        .doc(_authorId)
         .collection("recipes")
-        .doc(recipeId)
+        .doc(_recipeId)
         .collection("comments");
 
     databaseRef.snapshots().listen((data) {
@@ -94,11 +95,11 @@ class CommentState extends State<Comments> {
 
   getData() {
     final FirebaseAuth usId = FirebaseAuth.instance;
-    final currentUser = usId.currentUser;
+    final _currentUser = usId.currentUser;
     // final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
     FirebaseFirestore.instance
         .collection("users")
-        .doc(currentUser.uid)
+        .doc(_currentUser.uid)
         .snapshots()
         .listen((userData) {
       setState(() {
@@ -115,14 +116,14 @@ class CommentState extends State<Comments> {
 // -------- add a comment to firebase
 
   addComment(String com) async {
-    final commentRef = Uuid().v4();
+    final _commentRef = Uuid().v4();
     FirebaseFirestore.instance
         .collection("users")
-        .doc(authorId)
+        .doc(_authorId)
         .collection("recipes")
-        .doc(recipeId)
+        .doc(_recipeId)
         .collection("comments")
-        .doc(commentRef)
+        .doc(_commentRef)
         .set({
       "username": userUsername,
       "reciepeId": "2cf0fbeb-957a-4330-96b3-36bc2fbfe080",
@@ -136,7 +137,7 @@ class CommentState extends State<Comments> {
   void initState() {
     super.initState();
     getData();
-    commentController.addListener(() {
+    _commentController.addListener(() {
       setState(() {});
     }); //we call the method here to get the data immediately when init the page.
   }
@@ -154,8 +155,8 @@ class CommentState extends State<Comments> {
         children: <Widget>[
           Expanded(
               child: CommentList(
-            authorId: widget.authorId,
-            recipeID: widget.recipeId,
+            widget._authorId,
+            widget._recipeId,
           )),
 
           //------------------ build the TextField of comments screen ------------------
@@ -165,7 +166,7 @@ class CommentState extends State<Comments> {
                 child: Container(
                   margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                   child: TextField(
-                    controller: commentController,
+                    controller: _commentController,
                     cursorColor: Colors.red,
                     maxLines: null,
                     decoration: InputDecoration(
@@ -176,8 +177,8 @@ class CommentState extends State<Comments> {
                         ),
                         border: new OutlineInputBorder(
                             borderSide: new BorderSide(color: Colors.orange)),
-                        suffixIcon: commentController.text.isEmpty ||
-                                commentController.text.trim() == ''
+                        suffixIcon: _commentController.text.isEmpty ||
+                                _commentController.text.trim() == ''
                             ? IconButton(
                                 icon: Icon(
                                   Icons.send,
@@ -193,11 +194,11 @@ class CommentState extends State<Comments> {
                                 //don't add the empty comment to the comments list
 
                                 onPressed: () {
-                                  if (commentController.text.trim() == '') {
+                                  if (_commentController.text.trim() == '') {
                                   } else {
-                                    addComment(commentController.text);
+                                    addComment(_commentController.text);
                                     // _addComment(controller.text);
-                                    commentController.clear();
+                                    _commentController.clear();
                                   }
                                 },
                               ),
@@ -213,4 +214,137 @@ class CommentState extends State<Comments> {
       ),
     );
   }
+}
+
+class CommentList extends StatefulWidget {
+  final String _authorId;
+  final String _recipeID;
+
+  CommentList(
+    this._authorId,
+    this._recipeID,
+  );
+  @override
+  State<StatefulWidget> createState() => CommentListState();
+}
+
+class CommentListState extends State<CommentList> {
+  List<commentObj> comments = [];
+
+  CollectionReference databaseRef;
+  @override
+  Widget build(BuildContext context) {
+    // ----------------------------------
+    // databaseRef = FirebaseFirestore.instance
+    //     .collection("users")
+    //     .doc(widget.authorId)
+    //     .collection("recpies")
+    //     .doc(widget.recipeID)
+    //     .collection("comments");
+
+    // databaseRef.snapshots().listen((data) {
+    //   data.docs.forEach((doc) {
+    //     //int s = 1;
+
+    //     bool enter = true;
+    //     if (enter) {
+    //       print(doc["username"]);
+    //       print(doc["imageUrl"]);
+    //       print(doc["comment"]);
+    //       comments.add(commentState(
+    //           username: doc["username"],
+    //           commentImgUrl: doc["imageUrl"],
+    //           comment: doc["comment"]));
+    //     }
+    //     print('@@@@@@@@@@@@@@@@@@@@');
+    //     print(comments[0].username);
+    //     enter = false;
+    //   });
+    // });
+    // --------
+
+    return ListView(
+        shrinkWrap: true,
+        reverse: true,
+        padding: EdgeInsets.all(12),
+        children: [
+          ...comments.map(designComment).toList(),
+        ].reversed.toList());
+  }
+
+  getData() {
+    // get data from database
+    databaseRef = FirebaseFirestore.instance
+        .collection("users")
+        .doc(widget._authorId)
+        .collection("recipes")
+        .doc(widget._recipeID)
+        .collection("comments");
+    setState(() {});
+    databaseRef.orderBy('timestamp').snapshots().listen((data) {
+      comments.clear();
+      //setState(() {
+      // clear duplicate comments.
+      data.docs.forEach((doc) {
+        //int s = 1;
+
+        // print(doc["username"]);
+        // print(doc["imageUrl"]);
+        // print(doc["comment"]);
+        // add each comment doc in database to the list to show them in the screen
+
+        comments.add(commentObj(
+            username: doc["username"],
+            commentImgUrl: doc["imageUrl"],
+            comment: doc["comment"],
+            date: doc["shownDate"]));
+      });
+      if (this.mounted) {
+        setState(() {
+          comments;
+        });
+      }
+      // print('###');
+      // print(comments[0].username);
+      //});
+    });
+  }
+
+  void initState() {
+    super.initState();
+    getData();
+  }
+
+// ------------------- Design of each comment -----------------
+  Widget designComment(commentObj comment) => Container(
+        child: Column(
+          children: [
+            Row(
+              children: [
+                userinfo(
+                  comment.username,
+                  comment.commentImgUrl,
+                ),
+                Padding(
+                    padding: const EdgeInsets.only(left: 10),
+                    child: Text(comment.date,
+                        style: TextStyle(color: Colors.grey))),
+              ],
+            ),
+            Align(
+                alignment: Alignment.bottomLeft,
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                      left: 40.0, bottom: 10, right: 30, top: 10),
+                  child: Text(comment.comment),
+                )),
+            Divider(
+              height: 20,
+              thickness: 1,
+              indent: 20,
+              endIndent: 20,
+            ),
+          ],
+        ),
+      );
 }

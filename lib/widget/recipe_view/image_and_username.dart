@@ -2,15 +2,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class userinfo extends StatelessWidget {
-  String name;
-  String uImage;
+  String userName;
+  String userImage;
 
-  userinfo(this.name, this.uImage);
+  userinfo(this.userName, this.userImage);
 
   Widget buildImage() {
-    final image = uImage == "noImage" || uImage.isEmpty || uImage == null
-        ? AssetImage("assets/images/defaultUser.png") // NEW
-        : NetworkImage(uImage);
+    final image =
+        userImage == "noImage" || userImage.isEmpty || userImage == null
+            ? AssetImage("assets/images/defaultUser.png") // NEW
+            : NetworkImage(userImage);
 
     return InkResponse(
         child: Container(
@@ -33,7 +34,7 @@ class userinfo extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(left: 10),
             child: Text(
-              name,
+              userName,
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
             ),
           ),
