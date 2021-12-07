@@ -1,9 +1,7 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:instayum1/mainpages.dart';
-import 'package:instayum1/screen/profile_screen.dart';
 import 'package:instayum1/widget/auth/auth_form.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -110,17 +108,14 @@ class _AuthScreenState extends State<AuthScreen> {
         SnackBar(
             content: Text(message), backgroundColor: Theme.of(ctx).errorColor),
       );
-    } catch (err) {
-      if (this.mounted) {
-        // check whether the state object is in tree
-        setState(() {
-          _isLoading = false;
-        });
-      }
-      print('catch #2');
-      print(err.code);
+    } on FirebaseAuthException catch (error) {
+      setState(() {
+        _isLoading = false;
+      });
 
-      switch (err.code) {
+      print('catch #2');
+      print(error.code);
+      switch (error.code) {
         case 'wrong-password':
           ScaffoldMessenger.of(ctx).showSnackBar(
             SnackBar(
@@ -150,9 +145,18 @@ class _AuthScreenState extends State<AuthScreen> {
                 backgroundColor: Theme.of(ctx).errorColor),
           );
       }
-    } on FirebaseAuthException catch (error) {
+    } catch (error) {
+      if (this.mounted) {
+        // check whether the state object is in tree
+        setState(() {
+          _isLoading = false;
+        });
+      }
+      if (!(error is FirebaseAuthException)) {
+        print('message in catch3:');
+        print(error.message); // this is the actual error that you are getting
+      }
       print('catch #3');
-      print(error.code);
     }
   }
 
