@@ -118,7 +118,7 @@ class _AuthScreenState extends State<AuthScreen> {
         });
       }
       print('catch #2');
-      //print(err.code);
+      print(err.code);
 
       switch (err.code) {
         case 'wrong-password':
@@ -150,6 +150,9 @@ class _AuthScreenState extends State<AuthScreen> {
                 backgroundColor: Theme.of(ctx).errorColor),
           );
       }
+    } on FirebaseAuthException catch (error) {
+      print('catch #3');
+      print(error.code);
     }
   }
 
