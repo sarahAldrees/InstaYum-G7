@@ -681,7 +681,7 @@ class addRecipe extends State<addRecipePage> {
                         Container(
                           child: Row(
                             children: [
-                              Text("      Praivet"),
+                              Text("      Private"),
                               Switch(
                                 value: _isPublic,
                                 onChanged: (value) {

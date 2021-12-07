@@ -117,8 +117,7 @@ class _AuthFormState extends State<AuthForm> {
   bool _isValiedPassword(String password, bool isSignup) {
     //if in signup check the password
     if (isSignup) {
-      String pattern =
-          r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
+      String pattern = r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{6,}$';
 
       RegExp regExp = new RegExp(pattern);
 
@@ -194,7 +193,7 @@ class _AuthFormState extends State<AuthForm> {
                         if (value.isEmpty) {
                           return "password should not be empty";
                         } else if (!_isValiedPassword(value, _isSignUp)) {
-                          return "The password must conatint at least \none upper case \none lower case \none digit \none special character \nand at least 8 characters in length";
+                          return "The password must conatint at least \none upper case \none lower case \none digit \nand at least 6 characters in length";
                         }
                         return null;
                       },
@@ -213,7 +212,7 @@ class _AuthFormState extends State<AuthForm> {
                           if (value.isEmpty) {
                             return "password should not be empty";
                           } else if (!_isValiedPassword(value, _isSignUp)) {
-                            return "The password must conatint at least \none upper case \none lower case \none digit \none special character \nand at least 8 characters in length";
+                            return "The password must conatint at least \none upper case \none lower case \none digit \nand at least 6 characters in length";
                           } else if (value != _pass.text) {
                             return "The passwords do not match, try again";
                           }
@@ -250,7 +249,7 @@ class _AuthFormState extends State<AuthForm> {
                           textColor: Color(
                               0xFFeb6d44), //Theme.of(context).primaryColor,
                           child: Text(_isSignUp
-                              ? "Already I have an account"
+                              ? "Already have an account"
                               : "Create a new account"),
                           onPressed: () {
                             setState(() {
