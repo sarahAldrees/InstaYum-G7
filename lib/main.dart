@@ -13,10 +13,10 @@ void main() async {
   await SystemChrome.setPreferredOrientations(
     [DeviceOrientation.portraitUp],
   ); // To turn off landscape mode
-  runApp(MyApp());
+  runApp(Main());
 }
 
-class MyApp extends StatelessWidget {
+class Main extends StatelessWidget {
   final Future<FirebaseApp> _initialization = Firebase.initializeApp();
 
   @override
