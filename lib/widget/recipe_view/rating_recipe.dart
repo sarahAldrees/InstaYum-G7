@@ -158,7 +158,8 @@ class Rating extends State<Rating_recipe> {
                             );
                             numOfReviews++;
                             print(numOfReviews);
-                            if (!(rating == null)) total = total + rating;
+                            if (!(rating == null || rating == 0))
+                              total = total + rating;
                             print('total $total');
                             avg = total / numOfReviews;
                             avg = doubleWithTwoDigits(avg, 2);
