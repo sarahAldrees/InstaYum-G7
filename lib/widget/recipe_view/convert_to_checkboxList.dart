@@ -6,7 +6,7 @@ import 'package:instayum1/model/checkboxState.dart';
 class convertTocheckBox extends StatefulWidget {
   List<String> listOfin;
   String title;
-  bool s = true;
+  bool needConvert = true;
   List<checkboxState> listOfIngrediant = [];
   convertTocheckBox(this.listOfin, this.title);
 
@@ -22,13 +22,13 @@ class convert extends State<convertTocheckBox> {
   Widget build(BuildContext context) {
     //-----------------to conviert String list to checkbox state---------------
     for (int i = 0; i < widget.listOfin.length; i++) {
-      if (widget.s)
+      if (widget.needConvert)
         widget.listOfIngrediant.add(checkboxState(title: widget.listOfin[i]));
       else
         break;
     }
     //--------------------------------------------
-    widget.s = false;
+    widget.needConvert = false;
     return Column(
       children: [
         Container(
