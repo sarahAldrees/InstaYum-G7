@@ -182,7 +182,7 @@ class getRatingState extends State<getRating> {
 
   getData() async {
     //to get previous rating info from firestor
-    FirebaseFirestore.instance
+    await FirebaseFirestore.instance
         .collection("users")
         .doc(widget._autherId)
         .collection("recipes")

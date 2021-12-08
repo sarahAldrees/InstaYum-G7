@@ -17,22 +17,24 @@ class Rating_recipe extends StatefulWidget {
   Rating createState() => Rating();
 }
 
+String _currentUserId;
+double rating;
+var numOfReviews;
+var total;
+var avg;
+
+List<String> _usersAlredyRate;
+
 class Rating extends State<Rating_recipe> {
-  String _currentUserId;
   bool _findUser = false;
-  double rating;
-  var numOfReviews;
-  var total;
-  var avg;
-  List<String> _usersAlredyRate;
   // final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
 //getData() to get the data of users like username, image_url from database
   getData() async {
     final FirebaseAuth usId = FirebaseAuth.instance;
-    final currentUser = usId.currentUser;
+    final _currentUser = usId.currentUser;
 
-    FirebaseFirestore.instance
+    await FirebaseFirestore.instance
         .collection("users")
         .doc(widget._autherId)
         .collection("recipes")
@@ -50,7 +52,9 @@ class Rating extends State<Rating_recipe> {
         avg = userData.data()["average_rating"];
 
         _usersAlredyRate = List.from(userData.data()["user_already_review"]);
-        _currentUserId = currentUser.uid;
+        _currentUserId = _currentUser.uid;
+        print("numOfRevewis===============");
+        print(numOfReviews);
       });
     });
   }
@@ -63,9 +67,6 @@ class Rating extends State<Rating_recipe> {
 
   @override
   Widget _buildRatinBar() {
-    print("numOfRevewis===============");
-    print(numOfReviews);
-    print(total);
     return RatingBar.builder(
       direction: Axis.horizontal,
       //allowHalfRating: true,
@@ -147,7 +148,7 @@ class Rating extends State<Rating_recipe> {
                             backgroundColor:
                                 MaterialStateProperty.all(Color(0xFFeb6d44)),
                           ),
-                          onPressed: () {
+                          onPressed: () async {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                   content: Text(
@@ -170,7 +171,7 @@ class Rating extends State<Rating_recipe> {
                             }
 
                             //----------uppdating data --------
-                            FirebaseFirestore.instance
+                            await FirebaseFirestore.instance
                                 .collection("users")
                                 .doc(widget._autherId)
                                 .collection("recipes")
