@@ -4,9 +4,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:instayum1/model/recipe.dart';
 import 'package:instayum1/widget/recipe_view/comment.dart';
-import 'package:instayum1/widget/recipe_view/ConvertTocheckBox.dart';
-import 'package:instayum1/widget/recipe_view/RatingRecipe.dart';
-import 'package:instayum1/widget/recipe_view/UserInformationDesign.dart';
+import 'package:instayum1/widget/recipe_view/convert_to_check_box.dart';
+import 'package:instayum1/widget/recipe_view/rating_recipe.dart';
+import 'package:instayum1/widget/recipe_view/user_information_design.dart';
 import 'package:instayum1/widget/recipe_view/view_reicpe_flotingbutton.dart';
 
 class RecipeView extends StatelessWidget {

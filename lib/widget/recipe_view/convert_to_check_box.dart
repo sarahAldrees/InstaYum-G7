@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:instayum1/model/CheckBoxState.dart';
+import 'package:instayum1/model/checkbox_state.dart';
 
 //import 'checkboxState.dart';
 

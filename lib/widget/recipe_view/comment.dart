@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:instayum1/model/CommentObj.dart';
+import 'package:instayum1/model/comment_obj.dart';
 // import 'package:instayum1/widget/recipe_view/comments_sccreen.dart';
-import 'package:instayum1/widget/recipe_view/RecipeView.dart';
+import 'package:instayum1/widget/recipe_view/recipe_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:instayum1/widget/recipe_view/UserInformationDesign.dart';
+import 'package:instayum1/widget/recipe_view/user_information_design.dart';
 import 'package:uuid/uuid.dart';
 import 'package:cloud_firestore_platform_interface/src/timestamp.dart';
 import 'package:intl/intl.dart';

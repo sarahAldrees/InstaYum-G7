@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:instayum1/widget/followers_numbers.dart';
 import 'my_mealplans_screen.dart';
-import 'MyRecipesScreen.dart';
+import 'my_recipes_screen.dart';
 import 'bookmarks_recipes_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';

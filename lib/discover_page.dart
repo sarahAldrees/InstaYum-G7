@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:instayum1/screen/MyRecipesScreen.dart';
+import 'package:instayum1/screen/my_recipes_screen.dart';
 import 'package:flutter/cupertino.dart';
-import 'screen/MyRecipesScreen.dart';
+import 'screen/my_recipes_screen.dart';
 
 //import 'package:flutter/material.dart';
 

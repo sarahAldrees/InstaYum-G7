@@ -2,12 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:instayum1/widget/add_recipe/DirectionsTextFields.dart';
-import 'package:instayum1/widget/add_recipe/IngredientsTextFields.dart';
-import 'package:instayum1/widget/pickers/RecipeImagePicker.dart';
+import 'package:instayum1/widget/add_recipe/directions_text_fields.dart';
+import 'package:instayum1/widget/add_recipe/ingredients_text_Fields.dart';
+import 'package:instayum1/widget/pickers/recipe_image_picker.dart';
 import 'package:uuid/uuid.dart';
 
-import '../../mainpages.dart';
+import '../../main_pages.dart';
 
 //import 'dynamic_fields.dart';
 class AddRecipePage extends StatefulWidget {
