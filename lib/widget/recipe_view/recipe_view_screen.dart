@@ -282,7 +282,7 @@ class getuserinfoState extends State<getuserinfo> {
 
   @override
   Widget build(BuildContext context) {
-    return userinfo(_autherName,
+    return UserInformationDesign(_autherName,
         _autherimage); // calling this class to design image and user name after get them from database
   }
 }

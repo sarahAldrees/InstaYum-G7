@@ -70,7 +70,7 @@ class CommentState extends State<Comments> {
             Container(
               child: Column(
                 children: [
-                  userinfo(
+                  UserInformationDesign(
                     doc["username"],
                     doc["imageUrl"],
                   ),
@@ -321,7 +321,7 @@ class CommentListState extends State<CommentList> {
           children: [
             Row(
               children: [
-                userinfo(
+                UserInformationDesign(
                   comment.username,
                   comment.commentImgUrl,
                 ),

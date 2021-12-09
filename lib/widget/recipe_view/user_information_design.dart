@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class userinfo extends StatelessWidget {
+class UserInformationDesign extends StatelessWidget {
   String userName;
   String userImage;
 
-  userinfo(this.userName, this.userImage);
+  UserInformationDesign(this.userName, this.userImage);
 
   Widget buildImage() {
     final image =
