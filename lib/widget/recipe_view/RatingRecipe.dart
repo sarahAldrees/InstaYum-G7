@@ -8,11 +8,11 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:instayum1/widget/recipe_view/view_reicpe_flotingbutton.dart';
 // import 'package:recipe_view/view_reicpe_flotingbutton.dart';
 
-class Rating_recipe extends StatefulWidget {
+class RatingRecipe extends StatefulWidget {
   String _recipeId;
   String _autherId;
 
-  Rating_recipe(this._recipeId, this._autherId);
+  RatingRecipe(this._recipeId, this._autherId);
   @override
   Rating createState() => Rating();
 }
@@ -25,7 +25,7 @@ var avg;
 
 List<String> _usersAlredyRate;
 
-class Rating extends State<Rating_recipe> {
+class Rating extends State<RatingRecipe> {
   bool _findUser = false;
   // final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 

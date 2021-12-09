@@ -1,19 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:instayum1/utils/user_preferences.dart';
 import 'package:instayum1/widget/followers_numbers.dart';
 import 'my_mealplans_screen.dart';
-import 'my_recipes_screen.dart';
+import 'MyRecipesScreen.dart';
 import 'bookmarks_recipes_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class profile extends StatefulWidget {
+class Profile extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => profileState();
+  State<StatefulWidget> createState() => ProfileState();
 }
 
-class profileState extends State<profile> {
+class ProfileState extends State<Profile> {
   // ---------------- Database -------------------------
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   String userUsername = "";
@@ -118,7 +117,7 @@ class profileState extends State<profile> {
                 children: [
                   //This list is the content of each tab.
                   // ------------ list item 1 tab view bookmarks screen.
-                  my_recipes(),
+                  MyRecipesScreen(),
 
                   // ------------ list item 2 tab view bookmarks screen.
                   my_meal_plans(),

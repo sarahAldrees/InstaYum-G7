@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:instayum1/widget/recipe_view/recipe_view_screen.dart';
+import 'package:instayum1/widget/recipe_view/RecipeView.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
-class recipe_Item extends StatelessWidget {
+class RecipeItem extends StatelessWidget {
   // final String autherName;
   // final String autherImage;
   final String autherId;
@@ -18,7 +18,7 @@ class recipe_Item extends StatelessWidget {
   final List<String> ingredients;
   final List<String> dirctions;
 
-  const recipe_Item(
+  const RecipeItem(
     // Key key,
     // this.autherName,
     // this.autherImage,
@@ -64,7 +64,7 @@ class recipe_Item extends StatelessWidget {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => new recipe_view(
+                        builder: (context) => new RecipeView(
                             //key,
                             // autherName,
                             // autherImage,

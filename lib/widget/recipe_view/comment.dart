@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:instayum1/model/commentObj.dart';
+import 'package:instayum1/model/CommentObj.dart';
 // import 'package:instayum1/widget/recipe_view/comments_sccreen.dart';
-import 'package:instayum1/widget/recipe_view/image_and_username.dart';
-import 'package:instayum1/widget/recipe_view/recipe_view_screen.dart';
+import 'package:instayum1/widget/recipe_view/RecipeView.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:instayum1/widget/recipe_view/UserInformationDesign.dart';
 import 'package:uuid/uuid.dart';
 import 'package:cloud_firestore_platform_interface/src/timestamp.dart';
 import 'package:intl/intl.dart';
@@ -229,7 +229,7 @@ class CommentList extends StatefulWidget {
 }
 
 class CommentListState extends State<CommentList> {
-  List<commentObj> comments = [];
+  List<CommentObj> comments = [];
 
   CollectionReference databaseRef;
   @override
@@ -293,7 +293,7 @@ class CommentListState extends State<CommentList> {
         // print(doc["comment"]);
         // add each comment doc in database to the list to show them in the screen
 
-        comments.add(commentObj(
+        comments.add(CommentObj(
             username: doc["username"],
             commentImgUrl: doc["imageUrl"],
             comment: doc["comment"],
@@ -316,7 +316,7 @@ class CommentListState extends State<CommentList> {
   }
 
 // ------------------- Design of each comment -----------------
-  Widget designComment(commentObj comment) => Container(
+  Widget designComment(CommentObj comment) => Container(
         child: Column(
           children: [
             Row(

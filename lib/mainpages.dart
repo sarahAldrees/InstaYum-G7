@@ -1,13 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:instayum1/screen/auth_screen.dart';
+import 'package:instayum1/screen/AuthScreen.dart';
 import 'package:instayum1/widget/add_recipe/add_recipe_page.dart';
 import 'package:instayum1/discover_page.dart';
-import 'package:instayum1/screen/profile_screen.dart';
+import 'package:instayum1/screen/Profile.dart';
 import 'package:instayum1/shopping_list_page.dart';
 import 'package:instayum1/widget/auth/auth_form.dart';
-import 'package:instayum1/widget/pickers/recipe_image_picker.dart';
+import 'package:instayum1/widget/pickers/RecipeImagePicker.dart';
 import 'meal_plans.dart';
 
 //*********************************************************************
@@ -161,11 +161,11 @@ class appPages extends State<MainPages> {
     //--------- mealPlaner page 1------------
     MealPlans(),
     //----------add recipe page 2------------
-    addRecipePage(),
+    AddRecipePage(),
     //----------shopping list page 3---------
     ShoppingListPage(),
     //----------profile page 4---------------
-    profile(),
+    Profile(),
   ];
 
   void change(int index) {

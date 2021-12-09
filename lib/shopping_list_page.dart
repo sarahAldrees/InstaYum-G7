@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:instayum1/model/checkboxState.dart';
+import 'package:instayum1/model/CheckBoxState.dart';
 
 class ShoppingListPage extends StatefulWidget {
   @override
@@ -10,10 +10,10 @@ class ShoppingListState extends State<ShoppingListPage> {
   bool outvalue = false; //outvalue is change the state of check list
   var checkedstyle = TextDecoration.none;
   var listOfIngrediant = [
-    checkboxState(title: "Milk"),
-    checkboxState(title: "Eggs"),
-    checkboxState(title: "Cream"),
-    checkboxState(title: "Sugar"),
+    CheckBoxState(title: "Milk"),
+    CheckBoxState(title: "Eggs"),
+    CheckBoxState(title: "Cream"),
+    CheckBoxState(title: "Sugar"),
   ];
   @override
   Widget build(BuildContext context) {
@@ -24,7 +24,7 @@ class ShoppingListState extends State<ShoppingListPage> {
     );
   }
 
-  Widget creatCheckbox(checkboxState checkbox) => CheckboxListTile(
+  Widget creatCheckbox(CheckBoxState checkbox) => CheckboxListTile(
       controlAffinity: ListTileControlAffinity.leading,
       activeColor: Color(0xFFeb6d44),
       value: checkbox.outvalue,

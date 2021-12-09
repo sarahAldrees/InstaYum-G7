@@ -4,10 +4,10 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:instayum1/widget/auth/reset_password.dart';
-import 'package:instayum1/widget/pickers/user_image_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:instayum1/widget/pickers/UserImagePicker.dart';
 
 class AuthForm extends StatefulWidget {
   AuthForm(

@@ -1,12 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-class commentObj {
+class CommentObj {
   String username = "";
   String commentImgUrl = "";
   String comment = "";
   String date;
-  commentObj({
+  CommentObj({
     @required this.username,
     @required this.commentImgUrl,
     @required this.comment,

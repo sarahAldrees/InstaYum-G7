@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:instayum1/model/checkboxState.dart';
+import 'package:instayum1/model/CheckBoxState.dart';
 
 //import 'checkboxState.dart';
 
-class convertTocheckBox extends StatefulWidget {
+class ConvertTocheckBox extends StatefulWidget {
   List<String> listOfin;
   String title;
   bool needConvert = true;
-  List<checkboxState> listOfIngrediant = [];
-  convertTocheckBox(this.listOfin, this.title);
+  List<CheckBoxState> listOfIngrediant = [];
+  ConvertTocheckBox(this.listOfin, this.title);
 
   @override
   State<StatefulWidget> createState() => convert();
@@ -17,13 +17,13 @@ class convertTocheckBox extends StatefulWidget {
 bool outvalue = false; //outvalue is change the state of check list
 var checkedstyle = TextDecoration.none;
 
-class convert extends State<convertTocheckBox> {
+class convert extends State<ConvertTocheckBox> {
   @override
   Widget build(BuildContext context) {
     //-----------------to conviert String list to checkbox state---------------
     for (int i = 0; i < widget.listOfin.length; i++) {
       if (widget.needConvert)
-        widget.listOfIngrediant.add(checkboxState(title: widget.listOfin[i]));
+        widget.listOfIngrediant.add(CheckBoxState(title: widget.listOfin[i]));
       else
         break;
     }
@@ -57,7 +57,7 @@ class convert extends State<convertTocheckBox> {
   }
 
 //---------------------to creat checkbox list---------------
-  Widget creatCheckbox(checkboxState checkbox) => CheckboxListTile(
+  Widget creatCheckbox(CheckBoxState checkbox) => CheckboxListTile(
       controlAffinity: ListTileControlAffinity.leading,
       activeColor: Color(0xFFeb6d44),
       value: checkbox.outvalue,

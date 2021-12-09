@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-class checkboxState {
+class CheckBoxState {
   String title = "";
   bool outvalue = false;
   TextDecoration checkedstyle = TextDecoration.none;
-  checkboxState({@required this.title, outvalue = false});
+  CheckBoxState({@required this.title, outvalue = false});
 }

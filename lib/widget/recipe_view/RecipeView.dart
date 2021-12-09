@@ -3,13 +3,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:instayum1/model/recipe.dart';
-import 'package:instayum1/widget/recipe_view/comment_screen.dart';
-import 'package:instayum1/widget/recipe_view/convert_to_checkboxList.dart';
-import 'package:instayum1/widget/recipe_view/image_and_username.dart';
-import 'package:instayum1/widget/recipe_view/rating_recipe.dart';
+import 'package:instayum1/widget/recipe_view/comment.dart';
+import 'package:instayum1/widget/recipe_view/ConvertTocheckBox.dart';
+import 'package:instayum1/widget/recipe_view/RatingRecipe.dart';
+import 'package:instayum1/widget/recipe_view/UserInformationDesign.dart';
 import 'package:instayum1/widget/recipe_view/view_reicpe_flotingbutton.dart';
 
-class recipe_view extends StatelessWidget {
+class RecipeView extends StatelessWidget {
   String _autherId;
   String _recipeid;
   String _recipeName;
@@ -20,7 +20,7 @@ class recipe_view extends StatelessWidget {
   List<String> _ingredients;
   List<String> _dirctions;
 
-  recipe_view(
+  RecipeView(
     //Key,
 
     this._autherId,
@@ -63,7 +63,7 @@ class recipe_view extends StatelessWidget {
             icon: const Icon(Icons.shopping_bag),
           ),
           //---------------to view action button rating and open smale windo to get the rate ---------------------
-          Rating_recipe(_recipeid, _autherId),
+          RatingRecipe(_recipeid, _autherId),
           //-------------comments button to open comment page -------------
           ActionButton(
             onPressed: () {
@@ -155,9 +155,9 @@ class recipe_view extends StatelessWidget {
           ),
 
           //--------------------------ingrediants and dirctions--------------------------
-          convertTocheckBox(_ingredients, "Ingrediants"),
+          ConvertTocheckBox(_ingredients, "Ingrediants"),
 
-          convertTocheckBox(_dirctions, "Dirctions")
+          ConvertTocheckBox(_dirctions, "Dirctions")
           //-------------------------------------------
         ],
       ),

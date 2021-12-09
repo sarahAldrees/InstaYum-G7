@@ -2,21 +2,21 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:instayum1/model/recipe.dart';
-import 'package:instayum1/widget/recipe_item.dart';
+import 'package:instayum1/widget/RecipeItem.dart';
 
 import '../data.dart';
 
-class my_recipes extends StatefulWidget {
+class MyRecipesScreen extends StatefulWidget {
   // String autherName;
   // String autherImage;
   String autherId;
   // my_recipes(this.autherName, this.autherImage, this.autherId);
 
   @override
-  State<my_recipes> createState() => _my_recipesState();
+  State<MyRecipesScreen> createState() => _MyRecipesScreenState();
 }
 
-class _my_recipesState extends State<my_recipes> {
+class _MyRecipesScreenState extends State<MyRecipesScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) => getRecipeObjects());
@@ -97,7 +97,7 @@ class _my_recipesState extends State<my_recipes> {
       mainAxisSpacing: 10,
       // map all available cookbooks and list them in Gridviwe.
       children: recpiesList
-          .map((e) => recipe_Item(
+          .map((e) => RecipeItem(
                 //key,
                 // widget.autherName,
                 // widget.autherImage,
