@@ -88,7 +88,7 @@ class RecipeView extends StatelessWidget {
                   child: Material(
                       color: Colors.white,
                       child: Ink.image(
-                          image: image, height: 250, fit: BoxFit.cover)
+                          image: image, height: 250, fit: BoxFit.fill)
 //-----------very importatnt to check which attribute is the best with boxfit ? # delete */
                       ),
                 ),
