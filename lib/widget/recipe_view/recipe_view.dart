@@ -13,33 +13,35 @@ class RecipeView extends StatelessWidget {
   String _autherId;
   String _recipeid;
   String _recipeName;
-  String _imageURL;
+  String _mainImageUrl;
   String _typeOfMeal;
   String _category;
   String _cuisine;
   List<String> _ingredients;
   List<String> _dirctions;
+  List<String> _imageUrlsList;
 
   RecipeView(
     //Key,
-
     this._autherId,
     this._recipeid,
     this._recipeName,
-    this._imageURL,
+    this._mainImageUrl,
     this._typeOfMeal,
     this._category,
     this._cuisine,
     this._ingredients,
     this._dirctions,
+    this._imageUrlsList,
   );
   @override
   Widget build(BuildContext context) {
     // to return the default image if user does not enter an image by puting "noImageUrl" in the database and converting here to an image
-    final image =
-        _imageURL == "noImageUrl" || _imageURL.isEmpty || _imageURL == null
-            ? AssetImage("assets/images/defaultRecipeImage.png")
-            : NetworkImage(_imageURL);
+    final image = _mainImageUrl == "noImageUrl" ||
+            _mainImageUrl.isEmpty ||
+            _mainImageUrl == null
+        ? AssetImage("assets/images/defaultRecipeImage.png")
+        : NetworkImage(_mainImageUrl);
     //----titles of buttons that inside floting button-----
 
     const _actionTitles = [
@@ -88,7 +90,7 @@ class RecipeView extends StatelessWidget {
                   child: Material(
                       color: Colors.white,
                       child: Ink.image(
-                          image: image, height: 250, fit: BoxFit.fill)
+                          image: image, height: 250, fit: BoxFit.cover)
 //-----------very importatnt to check which attribute is the best with boxfit ? # delete */
                       ),
                 ),

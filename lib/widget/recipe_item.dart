@@ -13,10 +13,11 @@ class RecipeItem extends StatelessWidget {
   final String recipeName;
   final String typeOfMeal;
   final String category;
-  final String imageURL;
+  final String mainImageURL;
   final String cuisine;
   final List<String> ingredients;
   final List<String> dirctions;
+  final List<String> imageUrlsList;
 
   const RecipeItem(
     // Key key,
@@ -25,23 +26,24 @@ class RecipeItem extends StatelessWidget {
     this.autherId,
     this.RecipeId,
     this.recipeName,
-    this.imageURL,
+    this.mainImageURL,
     this.typeOfMeal,
     this.category,
     this.cuisine,
     this.ingredients,
     this.dirctions,
+    this.imageUrlsList,
   );
 
   @override
   Widget build(BuildContext context) {
     // to return the default image if user does not enter an image by puting "noImageUrl" in the database and converting here to an image
-    final image = imageURL == "noImageUrl" ||
-            imageURL.isEmpty ||
-            imageURL == null
+    final image = mainImageURL == "noImageUrl" ||
+            mainImageURL.isEmpty ||
+            mainImageURL == null
         ? AssetImage("assets/images/defaultRecipeImage.png")
         : NetworkImage(
-            imageURL); // the image will be used in ClipRRect, specifically in  Ink.image under Material widget
+            mainImageURL); // the image will be used in ClipRRect, specifically in  Ink.image under Material widget
 
 // this section will return one item of Grid Items that in bookmarked recipes page. (i do not think it is in bookmarked, it is in "my recipe" :) )
     return Container(
@@ -71,12 +73,13 @@ class RecipeItem extends StatelessWidget {
                             autherId,
                             RecipeId,
                             recipeName,
-                            imageURL,
+                            mainImageURL,
                             typeOfMeal,
                             category,
                             cuisine,
                             ingredients,
-                            dirctions)));
+                            dirctions,
+                            imageUrlsList)));
               }, //what happend after clicking image
 
               child: ClipRRect(
@@ -84,7 +87,7 @@ class RecipeItem extends StatelessWidget {
                 child: Material(
                     color: Colors.grey.shade100,
                     child:
-                        Ink.image(image: image, height: 120, fit: BoxFit.fill)
+                        Ink.image(image: image, height: 120, fit: BoxFit.cover)
                     //************************************8 very importatnt to check which attribute is the best with boxfit ? # delete */
 
                     ),

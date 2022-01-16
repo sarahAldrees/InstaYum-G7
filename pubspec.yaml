@@ -45,6 +45,8 @@ dependencies:
   uuid: ^2.2.2 #for generating random id
   flutter_rating_bar: ^4.0.0
   cached_network_image: ^2.0.0
+  multi_image_picker: ^4.8.1
+
 
 
 

@@ -6,6 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart'; // For Image Picker
 import 'package:path/path.dart' as Path;
 import 'package:uuid/uuid.dart';
+import 'package:flutter/material.dart';
+import 'package:multi_image_picker/multi_image_picker.dart';
+import 'dart:async';
+import 'package:path_provider/path_provider.dart';
 
 class RecipeImagePicker extends StatefulWidget {
   @override
@@ -16,50 +20,226 @@ class RecipeImagePickerState extends State<RecipeImagePicker> {
   bool _isloading = false; // to show the progress circle
   File _image;
   static String uploadedFileURL;
+  List<Asset> images = List<Asset>();
+  static List<String> imagesURLs = List<String>();
 
-  Future chooseFile() async {
-    await ImagePicker.pickImage(source: ImageSource.gallery).then((image) {
-      setState(() {
-        _image = image;
-      });
-      if (image != null) {
-        uploadFile();
+  String _error = 'No Error Dectected';
+  var width;
+  var height;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  Widget buildGridView() {
+    return GridView.count(
+      shrinkWrap: true,
+      crossAxisCount: 3,
+      children: List.generate(images.length, (index) {
+        Asset asset = images[index];
+        return AssetThumb(
+          asset: asset,
+          width: 300,
+          height: 300,
+        );
+      }),
+    );
+  }
+
+  Future<void> loadAssets() async {
+    List<Asset> resultList = List<Asset>();
+
+    List<File> fikles = List<File>();
+    String error = 'No Error Detected';
+    try {
+      resultList = await MultiImagePicker.pickImages(
+        maxImages: 6, // 4 or 6?
+        enableCamera: true,
+        selectedAssets: images,
+        cupertinoOptions: CupertinoOptions(takePhotoIcon: "chat"),
+        materialOptions: MaterialOptions(
+          actionBarTitle: "Recipe images",
+        ),
+        // materialOptions: MaterialOptions(
+        //   actionBarColor: "#abcdef",
+        //   actionBarTitle: "Example App",
+        //   allViewTitle: "All Photos",
+        //   useDetailsView: false,
+        //   selectCircleStrokeColor: "#000000",
+        // ),
+      );
+
+      for (Asset i in resultList) {
+        print("IMAGE");
+        print(i.name + " " + i.getByteData().toString());
+        print("END OF NAME");
+
+        setState(() {
+          _isloading = true;
+        });
+        final FirebaseAuth _auth = FirebaseAuth.instance;
+
+        FirebaseStorage storageReference = FirebaseStorage.instance;
+//-------------------To covert to file--------------------------------
+
+        final byteData = await i.getByteData();
+        final tempFile =
+            File("${(await getTemporaryDirectory()).path}/${i.name}");
+        final imageFile = await tempFile.writeAsBytes(
+          byteData.buffer
+              .asUint8List(byteData.offsetInBytes, byteData.lengthInBytes),
+        );
+//----------------------------------------------------
+        Reference ref = storageReference
+            .ref()
+            .child('recpie_image/${Path.basename(imageFile.path)}}');
+
+        UploadTask uploadTask = ref.putFile(imageFile);
+        uploadTask.then((res) {
+          print('File Uploaded');
+          res.ref.getDownloadURL().then((fileURL) {
+            // imagesURLs.add(fileURL);
+            print('here in image class ');
+            print(fileURL);
+            print('the id in image class is  ');
+            // to add https://
+            setState(() {
+              imagesURLs.add(fileURL);
+              print("set state work now!");
+            });
+          }).then((nothing) async {
+            // nothing mean null, but null cause an error
+            setState(() {
+              _isloading = false;
+            });
+          });
+        });
       }
-    });
-  }
+    } on Exception catch (e) {
+      error = e.toString();
+    }
 
-  Future uploadFile() async {
+    // If the widget was removed from the tree while the asynchronous platform
+    // message was in flight, we want to discard the reply rather than calling
+    // setState to update our non-existent appearance.
+    if (!mounted) return;
+
     setState(() {
-      _isloading = true;
-    });
-    final FirebaseAuth _auth = FirebaseAuth.instance;
-
-    FirebaseStorage storageReference = FirebaseStorage.instance;
-    Reference ref = storageReference
-        .ref()
-        .child('recpie_image/${Path.basename(_image.path)}}');
-
-    UploadTask uploadTask = ref.putFile(_image);
-    uploadTask.then((res) {
-      print('File Uploaded');
-      res.ref.getDownloadURL().then((fileURL) {
-        uploadedFileURL = fileURL;
-        print('here in image class ');
-        print(fileURL);
-        print('the id in image class is  ');
-        // to add https://
-        setState(() {
-          uploadedFileURL = fileURL;
-          print("set state work now!");
-        });
-      }).then((nothing) async {
-        // nothing mean null, but null cause an error
-        setState(() {
-          _isloading = false;
-        });
-      });
+      images = resultList;
+      _error = error;
     });
   }
+
+  // Future chooseFile() async {
+  //   List<Asset> resultList = List<Asset>();
+  //   resultList = await MultiImagePicker.pickImages(
+  //     maxImages: 300,
+  //     enableCamera: true,
+  //     selectedAssets: images,
+  //     materialOptions: MaterialOptions(
+  //       actionBarTitle: "FlutterCorner.com",
+  //     ),
+  //   ).then((resultList1) {
+  //     setState(() {
+  //       images = resultList;
+  //     });
+
+  //     if (resultList1 != null) {
+  //       uploadFile();
+  //     }
+  //   });
+
+  //   .then((image)   {
+  //   setState(() {
+  //     images = image;
+  //   });
+  //   if (image != null) {
+  //     uploadFile();
+  //   }
+  // });
+  //await ImagePicker.pickImage(source: ImageSource.gallery).then((image)
+  // {
+  //   setState(() {
+  //     _image = image;
+  //   });
+  //   if (image != null) {
+  //     uploadFile();
+  //   }
+  // });
+  //}
+
+  // Future uploadFile() async {
+  //   setState(() {
+  //     _isloading = true;
+  //   });
+  //   final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  //   FirebaseStorage storageReference = FirebaseStorage.instance;
+
+  //   for (var image in images) {
+  //     _image = getImageFileFromAssets(image);
+
+  //     Reference ref = storageReference
+  //         .ref()
+  //         .child('recpie_image/${Path.basename(_image.path)}}');
+
+  //     UploadTask uploadTask = ref.putFile(_image);
+  //     uploadTask.then((res) {
+  //       print('File Uploaded');
+  //       res.ref.getDownloadURL().then((fileURL) {
+  //         uploadedFileURL = fileURL;
+  //         print('here in image class ');
+  //         print(fileURL);
+  //         print('the id in image class is  ');
+  //         // to add https://
+  //         setState(() {
+  //           uploadedFileURL = fileURL;
+  //           print("set state work now!");
+  //         });
+  //       }).then((nothing) async {
+  //         // nothing mean null, but null cause an error
+  //         setState(() {
+  //           _isloading = false;
+  //         });
+  //       });
+  //     });
+  //   }
+  // }
+
+  // FileSystemCreateEvent getImageFileFromAssets(Asset asset) async {
+  //   final byteData = await asset.getByteData();
+  //   final tempFile =
+  //       File("${(await getTemporaryDirectory()).path}/${asset.name}");
+  //   final file = await tempFile.writeAsBytes(
+  //     byteData.buffer
+  //         .asUint8List(byteData.offsetInBytes, byteData.lengthInBytes),
+  //   );
+  //   return file;
+  // }
+
+  // @override
+  // Widget build(BuildContext context) {
+  //   return new MaterialApp(
+  //     home: new Scaffold(
+  //       appBar: new AppBar(
+  //         title: const Text('Plugin example app'),
+  //       ),
+  //       body: Column(
+  //         children: <Widget>[
+  //           Center(child: Text('Error: $_error')),
+  //           RaisedButton(
+  //             child: Text("Pick images"),
+  //             onPressed: loadAssets,
+  //           ),
+  //           Expanded(
+  //             child: buildGridView(),
+  //           )
+  //         ],
+  //       ),
+  //     ),
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -67,13 +247,15 @@ class RecipeImagePickerState extends State<RecipeImagePicker> {
       body: Center(
         child: Column(
           children: <Widget>[
+            // Center(child: Text('Error: $_error')),
             Padding(padding: EdgeInsets.only(top: 15)),
-            uploadedFileURL != null
-                ? Image.network(
-                    uploadedFileURL,
-                    height: 180,
-                    width: 180,
-                  )
+            images.isNotEmpty
+                ? buildGridView()
+                // ? Image.network(
+                //     uploadedFileURL,
+                //     height: 180,
+                //     width: 180,
+                //   )
                 : Image.asset(
                     "assets/images/defaultRecipeImage.png",
                     height: 200,
@@ -88,7 +270,8 @@ class RecipeImagePickerState extends State<RecipeImagePicker> {
                     ),
                   )
                 : TextButton.icon(
-                    onPressed: chooseFile,
+                    onPressed: loadAssets,
+                    //chooseFile,
                     icon: Icon(Icons.image, size: 28),
                     label: Text(
                       "add recipe photo",

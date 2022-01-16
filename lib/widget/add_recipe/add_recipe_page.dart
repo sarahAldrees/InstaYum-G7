@@ -159,10 +159,35 @@ class addRecipe extends State<AddRecipePage> {
       });
     }
 // to save the classification
-    String recipe_image_url = RecipeImagePickerState.uploadedFileURL;
+    // String recipe_image_url = RecipeImagePickerState.uploadedFileURL;
 
-    if (recipe_image_url == null) recipe_image_url = 'noImageUrl';
+    //if (recipe_image_url == null) recipe_image_url = 'noImageUrl';
 
+    if (RecipeImagePickerState.imagesURLs.isEmpty) {
+      await FirebaseFirestore.instance
+          .collection("users")
+          .doc(currentUser.uid)
+          .collection("recipes")
+          .doc(recipe_id)
+          .update({
+        'img1': "noImageUrl",
+        'image_count': 0,
+      });
+    } else {
+      int countImage = 0;
+      for (var url in RecipeImagePickerState.imagesURLs) {
+        countImage++;
+        await FirebaseFirestore.instance
+            .collection("users")
+            .doc(currentUser.uid)
+            .collection("recipes")
+            .doc(recipe_id)
+            .update({
+          'img$countImage': url,
+          'image_count': countImage,
+        });
+      }
+    }
     await FirebaseFirestore.instance
         .collection("users")
         .doc(currentUser.uid)
@@ -172,7 +197,7 @@ class addRecipe extends State<AddRecipePage> {
       'type_of_meal': _currentSelectedTypeOfMeal,
       'category': _currentSelectedCategory,
       'cuisine': _currentSelectedCuisine,
-      'recipe_image_url': recipe_image_url,
+      //'recipe_image_url': recipe_image_url,
       'is_public_recipe': _isPublic,
     });
     //--------------------creat collection of reating with zeros----------

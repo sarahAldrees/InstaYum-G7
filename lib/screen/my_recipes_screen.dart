@@ -33,11 +33,15 @@ class _MyRecipesScreenState extends State<MyRecipesScreen> {
 
   List<String> dirctionsList = [];
 
+  List<String> imageUrlsList = [];
+
   int lengthOfIngredients = 0;
 
   int lengthOfDirections = 0;
 
-  String recipe_image_url = '';
+  int lengthOfImages = 0;
+
+  //String recipe_image_url = '';
 
   void getRecipeObjects() {
     User user = firebaseAuth.currentUser;
@@ -54,6 +58,8 @@ class _MyRecipesScreenState extends State<MyRecipesScreen> {
           dirctionsList = [],
           lengthOfIngredients = doc.data()['length_of_ingredients'],
           lengthOfDirections = doc.data()['length_of_directions'],
+          lengthOfImages = doc.data()['image_count'],
+
           for (int i = 0; i < lengthOfIngredients; i++)
             {
               {
@@ -68,18 +74,26 @@ class _MyRecipesScreenState extends State<MyRecipesScreen> {
                 doc.data()['dir${i + 1}'],
               ),
             },
-          recipe_image_url = doc.data()['recipe_image_url'],
+          for (int i = 0; i < lengthOfImages; i++)
+            {
+              imageUrlsList.add(
+                doc.data()['img${i + 1}'],
+              ),
+            },
+          // recipe_image_url = doc.data()['recipe_image_url'],
           widget.autherId = doc.data()['user_id'],
           recpiesList.add(
             Recipe(
               id: doc.id,
-              imageURL: recipe_image_url,
+              //imageURL: recipe_image_url,
               recipeName: doc.data()['recipe_title'],
               typeOfMeal: doc.data()['type_of_meal'],
               category: doc.data()['category'],
               cuisine: doc.data()['cuisine'],
+              mainImageURL: doc.data()["img1"],
               dirctions: dirctionsList,
               ingredients: ingredientsList,
+              imageUrlsList: imageUrlsList,
             ),
           ),
         },
@@ -98,19 +112,19 @@ class _MyRecipesScreenState extends State<MyRecipesScreen> {
       // map all available cookbooks and list them in Gridviwe.
       children: recpiesList
           .map((e) => RecipeItem(
-                //key,
-                // widget.autherName,
-                // widget.autherImage,
-                widget.autherId,
-                e.id,
-                e.recipeName,
-                e.imageURL,
-                e.typeOfMeal,
-                e.category,
-                e.cuisine,
-                e.ingredients,
-                e.dirctions,
-              ))
+              //key,
+              // widget.autherName,
+              // widget.autherImage,
+              widget.autherId,
+              e.id,
+              e.recipeName,
+              e.mainImageURL,
+              e.typeOfMeal,
+              e.category,
+              e.cuisine,
+              e.ingredients,
+              e.dirctions,
+              e.imageUrlsList))
           .toList(),
     );
   }
