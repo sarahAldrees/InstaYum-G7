@@ -107,7 +107,7 @@ class _AuthFormState extends State<AuthForm> {
   }
 
   bool _isValiedUsername(String username) {
-    String pattern = r'^[A-Za-z0-9]+(?:[ _-][A-Za-z0-9]+)*$';
+    String pattern = r'^[A-Za-z0-9]+(?:[_-][A-Za-z0-9]+)*$';
 
     RegExp regExp = new RegExp(pattern);
 
@@ -179,7 +179,7 @@ class _AuthFormState extends State<AuthForm> {
                             return "username should not be empty";
                           } else if (!_isValiedUsername(value) ||
                               value.length < 4) {
-                            return "The username must contain at least 4 characters";
+                            return "The username must contain at least 4 characters\nand only letters, digits, dash(-) and underscore(_).";
                           }
 
                           return null;
