@@ -49,6 +49,7 @@ class RecipeImagePickerState extends State<RecipeImagePicker> {
   }
 
   Future<void> loadAssets() async {
+    // we added the default image in the begining of process to avoid an exception
     imagesURLs = [
       "https://firebasestorage.googleapis.com/v0/b/instayum-f7a34.appspot.com/o/recpie_image%2FdefaultRecipeImage.png?alt=media&token=f12725db-646b-4692-9ccf-131a99667e43"
     ];
@@ -65,15 +66,8 @@ class RecipeImagePickerState extends State<RecipeImagePicker> {
         materialOptions: MaterialOptions(
           actionBarTitle: "Recipe images",
         ),
-        // materialOptions: MaterialOptions(
-        //   actionBarColor: "#abcdef",
-        //   actionBarTitle: "Example App",
-        //   allViewTitle: "All Photos",
-        //   useDetailsView: false,
-        //   selectCircleStrokeColor: "#000000",
-        // ),
       );
-
+// we make for loop to load many images
       for (Asset i in resultList) {
         print("IMAGE");
         print(i.name + " " + i.getByteData().toString());
@@ -108,12 +102,12 @@ class RecipeImagePickerState extends State<RecipeImagePicker> {
             print(fileURL);
             print('the id in image class is  ');
             // to add https://
-            //  setState(() {
+            // to add the image
             imagesURLs.add(fileURL);
+// to remove the default image
             imagesURLs.remove(
                 "https://firebasestorage.googleapis.com/v0/b/instayum-f7a34.appspot.com/o/recpie_image%2FdefaultRecipeImage.png?alt=media&token=f12725db-646b-4692-9ccf-131a99667e43");
             print("set state work now!");
-            // });
           }).then((nothing) async {
             // nothing mean null, but null cause an error
             setState(() {
@@ -136,116 +130,6 @@ class RecipeImagePickerState extends State<RecipeImagePicker> {
       _error = error;
     });
   }
-
-  // Future chooseFile() async {
-  //   List<Asset> resultList = List<Asset>();
-  //   resultList = await MultiImagePicker.pickImages(
-  //     maxImages: 300,
-  //     enableCamera: true,
-  //     selectedAssets: images,
-  //     materialOptions: MaterialOptions(
-  //       actionBarTitle: "FlutterCorner.com",
-  //     ),
-  //   ).then((resultList1) {
-  //     setState(() {
-  //       images = resultList;
-  //     });
-
-  //     if (resultList1 != null) {
-  //       uploadFile();
-  //     }
-  //   });
-
-  //   .then((image)   {
-  //   setState(() {
-  //     images = image;
-  //   });
-  //   if (image != null) {
-  //     uploadFile();
-  //   }
-  // });
-  //await ImagePicker.pickImage(source: ImageSource.gallery).then((image)
-  // {
-  //   setState(() {
-  //     _image = image;
-  //   });
-  //   if (image != null) {
-  //     uploadFile();
-  //   }
-  // });
-  //}
-
-  // Future uploadFile() async {
-  //   setState(() {
-  //     _isloading = true;
-  //   });
-  //   final FirebaseAuth _auth = FirebaseAuth.instance;
-
-  //   FirebaseStorage storageReference = FirebaseStorage.instance;
-
-  //   for (var image in images) {
-  //     _image = getImageFileFromAssets(image);
-
-  //     Reference ref = storageReference
-  //         .ref()
-  //         .child('recpie_image/${Path.basename(_image.path)}}');
-
-  //     UploadTask uploadTask = ref.putFile(_image);
-  //     uploadTask.then((res) {
-  //       print('File Uploaded');
-  //       res.ref.getDownloadURL().then((fileURL) {
-  //         uploadedFileURL = fileURL;
-  //         print('here in image class ');
-  //         print(fileURL);
-  //         print('the id in image class is  ');
-  //         // to add https://
-  //         setState(() {
-  //           uploadedFileURL = fileURL;
-  //           print("set state work now!");
-  //         });
-  //       }).then((nothing) async {
-  //         // nothing mean null, but null cause an error
-  //         setState(() {
-  //           _isloading = false;
-  //         });
-  //       });
-  //     });
-  //   }
-  // }
-
-  // FileSystemCreateEvent getImageFileFromAssets(Asset asset) async {
-  //   final byteData = await asset.getByteData();
-  //   final tempFile =
-  //       File("${(await getTemporaryDirectory()).path}/${asset.name}");
-  //   final file = await tempFile.writeAsBytes(
-  //     byteData.buffer
-  //         .asUint8List(byteData.offsetInBytes, byteData.lengthInBytes),
-  //   );
-  //   return file;
-  // }
-
-  // @override
-  // Widget build(BuildContext context) {
-  //   return new MaterialApp(
-  //     home: new Scaffold(
-  //       appBar: new AppBar(
-  //         title: const Text('Plugin example app'),
-  //       ),
-  //       body: Column(
-  //         children: <Widget>[
-  //           Center(child: Text('Error: $_error')),
-  //           RaisedButton(
-  //             child: Text("Pick images"),
-  //             onPressed: loadAssets,
-  //           ),
-  //           Expanded(
-  //             child: buildGridView(),
-  //           )
-  //         ],
-  //       ),
-  //     ),
-  //   );
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -293,12 +177,6 @@ class RecipeImagePickerState extends State<RecipeImagePicker> {
                       },
                     ),
                   )
-                //buildGridView()
-                // ? Image.network(
-                //     uploadedFileURL,
-                //     height: 180,
-                //     width: 180,
-                //   )
                 : Image.asset(
                     "assets/images/defaultRecipeImage.png",
                     height: 200,
