@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:multi_image_picker/multi_image_picker.dart';
 import 'dart:async';
 import 'package:path_provider/path_provider.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 
 class RecipeImagePicker extends StatefulWidget {
   @override
@@ -48,7 +49,9 @@ class RecipeImagePickerState extends State<RecipeImagePicker> {
   }
 
   Future<void> loadAssets() async {
-    imagesURLs = [];
+    imagesURLs = [
+      "https://firebasestorage.googleapis.com/v0/b/instayum-f7a34.appspot.com/o/recpie_image%2FdefaultRecipeImage.png?alt=media&token=f12725db-646b-4692-9ccf-131a99667e43"
+    ];
     List<Asset> resultList = List<Asset>();
 
     List<File> fikles = List<File>();
@@ -105,10 +108,12 @@ class RecipeImagePickerState extends State<RecipeImagePicker> {
             print(fileURL);
             print('the id in image class is  ');
             // to add https://
-            setState(() {
-              imagesURLs.add(fileURL);
-              print("set state work now!");
-            });
+            //  setState(() {
+            imagesURLs.add(fileURL);
+            imagesURLs.remove(
+                "https://firebasestorage.googleapis.com/v0/b/instayum-f7a34.appspot.com/o/recpie_image%2FdefaultRecipeImage.png?alt=media&token=f12725db-646b-4692-9ccf-131a99667e43");
+            print("set state work now!");
+            // });
           }).then((nothing) async {
             // nothing mean null, but null cause an error
             setState(() {
@@ -251,7 +256,44 @@ class RecipeImagePickerState extends State<RecipeImagePicker> {
             // Center(child: Text('Error: $_error')),
             Padding(padding: EdgeInsets.only(top: 15)),
             images.isNotEmpty
-                ? buildGridView()
+                ? Container(
+                    margin: EdgeInsets.all(15),
+                    child: CarouselSlider.builder(
+                      itemCount: imagesURLs.length,
+                      options: CarouselOptions(
+                        enlargeCenterPage: true,
+                        height: 175,
+                        reverse: false,
+                        aspectRatio: 5.0,
+                      ),
+                      itemBuilder: (context, i, id) {
+                        //for onTap to redirect to another screen
+                        return GestureDetector(
+                          child: Container(
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15),
+                                border: Border.all(
+                                  color: Colors.white,
+                                )),
+                            //ClipRRect for image border radius
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(15),
+                              child: Image.network(
+                                imagesURLs[i],
+                                width: 500,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                          onTap: () {
+                            var url = imagesURLs[i];
+                            print(url.toString());
+                          },
+                        );
+                      },
+                    ),
+                  )
+                //buildGridView()
                 // ? Image.network(
                 //     uploadedFileURL,
                 //     height: 180,

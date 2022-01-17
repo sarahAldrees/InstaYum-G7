@@ -177,7 +177,7 @@ class addRecipe extends State<AddRecipePage> {
     } else {
       int countImage = 0;
       for (var url in RecipeImagePickerState.imagesURLs) {
-        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        // print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         print(url);
         countImage++;
         await FirebaseFirestore.instance
