@@ -56,6 +56,7 @@ class _MyRecipesScreenState extends State<MyRecipesScreen> {
         (doc) => {
           ingredientsList = [],
           dirctionsList = [],
+          imageUrlsList = [],
           lengthOfIngredients = doc.data()['length_of_ingredients'],
           lengthOfDirections = doc.data()['length_of_directions'],
           lengthOfImages = doc.data()['image_count'],
@@ -93,7 +94,7 @@ class _MyRecipesScreenState extends State<MyRecipesScreen> {
               mainImageURL: doc.data()["img1"],
               dirctions: dirctionsList,
               ingredients: ingredientsList,
-              imageUrlsList: imageUrlsList,
+              imageUrls: imageUrlsList,
             ),
           ),
         },
@@ -124,7 +125,7 @@ class _MyRecipesScreenState extends State<MyRecipesScreen> {
               e.cuisine,
               e.ingredients,
               e.dirctions,
-              e.imageUrlsList))
+              e.imageUrls))
           .toList(),
     );
   }

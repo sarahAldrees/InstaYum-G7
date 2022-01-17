@@ -10,7 +10,7 @@ class Recipe {
   final String cuisine;
   final List<String> ingredients;
   final List<String> dirctions;
-  final List<String> imageUrlsList;
+  final List<String> imageUrls;
 
   const Recipe({
     // @required this.key,
@@ -22,6 +22,6 @@ class Recipe {
     @required this.cuisine,
     @required this.ingredients,
     @required this.dirctions,
-    @required this.imageUrlsList,
+    @required this.imageUrls,
   });
 }

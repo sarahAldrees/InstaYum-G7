@@ -61,6 +61,7 @@ class addRecipe extends State<AddRecipePage> {
   // we will add the ingredients to database from this list
   static List<String> userIngredients = [null];
   static List<String> userDirections = [null];
+
   var recipe_id = Uuid().v4(); //uuid.v() is a library to create a random key
 
   //--------------------------------------------------------------------------
@@ -176,6 +177,8 @@ class addRecipe extends State<AddRecipePage> {
     } else {
       int countImage = 0;
       for (var url in RecipeImagePickerState.imagesURLs) {
+        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        print(url);
         countImage++;
         await FirebaseFirestore.instance
             .collection("users")

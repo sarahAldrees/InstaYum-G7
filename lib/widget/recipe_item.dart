@@ -17,7 +17,7 @@ class RecipeItem extends StatelessWidget {
   final String cuisine;
   final List<String> ingredients;
   final List<String> dirctions;
-  final List<String> imageUrlsList;
+  final List<String> imageUrls;
 
   const RecipeItem(
     // Key key,
@@ -32,7 +32,7 @@ class RecipeItem extends StatelessWidget {
     this.cuisine,
     this.ingredients,
     this.dirctions,
-    this.imageUrlsList,
+    this.imageUrls,
   );
 
   @override
@@ -79,7 +79,7 @@ class RecipeItem extends StatelessWidget {
                             cuisine,
                             ingredients,
                             dirctions,
-                            imageUrlsList)));
+                            imageUrls)));
               }, //what happend after clicking image
 
               child: ClipRRect(

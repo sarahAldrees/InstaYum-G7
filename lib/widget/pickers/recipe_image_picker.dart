@@ -48,6 +48,7 @@ class RecipeImagePickerState extends State<RecipeImagePicker> {
   }
 
   Future<void> loadAssets() async {
+    imagesURLs = [];
     List<Asset> resultList = List<Asset>();
 
     List<File> fikles = List<File>();

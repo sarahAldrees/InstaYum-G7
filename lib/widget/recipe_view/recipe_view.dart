@@ -8,8 +8,9 @@ import 'package:instayum1/widget/recipe_view/convert_to_check_box.dart';
 import 'package:instayum1/widget/recipe_view/rating_recipe.dart';
 import 'package:instayum1/widget/recipe_view/user_information_design.dart';
 import 'package:instayum1/widget/recipe_view/view_reicpe_flotingbutton.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 
-class RecipeView extends StatelessWidget {
+class RecipeView extends StatefulWidget {
   String _autherId;
   String _recipeid;
   String _recipeName;
@@ -19,7 +20,7 @@ class RecipeView extends StatelessWidget {
   String _cuisine;
   List<String> _ingredients;
   List<String> _dirctions;
-  List<String> _imageUrlsList;
+  List<String> _imageUrls;
 
   RecipeView(
     //Key,
@@ -32,16 +33,24 @@ class RecipeView extends StatelessWidget {
     this._cuisine,
     this._ingredients,
     this._dirctions,
-    this._imageUrlsList,
+    this._imageUrls,
   );
+
+  @override
+  State<RecipeView> createState() => _RecipeViewState();
+}
+
+class _RecipeViewState extends State<RecipeView> {
   @override
   Widget build(BuildContext context) {
+    int currentPos = 0;
+
     // to return the default image if user does not enter an image by puting "noImageUrl" in the database and converting here to an image
-    final image = _mainImageUrl == "noImageUrl" ||
-            _mainImageUrl.isEmpty ||
-            _mainImageUrl == null
+    final image = widget._mainImageUrl == "noImageUrl" ||
+            widget._mainImageUrl.isEmpty ||
+            widget._mainImageUrl == null
         ? AssetImage("assets/images/defaultRecipeImage.png")
-        : NetworkImage(_mainImageUrl);
+        : NetworkImage(widget._mainImageUrl);
     //----titles of buttons that inside floting button-----
 
     const _actionTitles = [
@@ -53,7 +62,7 @@ class RecipeView extends StatelessWidget {
     //-------------
     return Scaffold(
       appBar: new AppBar(
-        title: Text(_recipeName),
+        title: Text(widget._recipeName),
         backgroundColor: Color(0xFFeb6d44),
       ),
       //--------------------floating button that contain comment and rating button -------------------------
@@ -65,14 +74,15 @@ class RecipeView extends StatelessWidget {
             icon: const Icon(Icons.shopping_bag),
           ),
           //---------------to view action button rating and open smale windo to get the rate ---------------------
-          RatingRecipe(_recipeid, _autherId),
+          RatingRecipe(widget._recipeid, widget._autherId),
           //-------------comments button to open comment page -------------
           ActionButton(
             onPressed: () {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => Comments(_recipeid, _autherId)));
+                      builder: (context) =>
+                          Comments(widget._recipeid, widget._autherId)));
             },
             icon: const Icon(Icons.comment_sharp),
           ),
@@ -80,31 +90,86 @@ class RecipeView extends StatelessWidget {
         ],
       ),
       body: ListView(
+        shrinkWrap: true,
         children: <Widget>[
           //---------------------image with bookmarked and shear button---------------
           Padding(
             padding: const EdgeInsets.only(bottom: 10),
-            child: Stack(
-              children: [
-                ClipRRect(
-                  child: Material(
-                      color: Colors.white,
-                      child: Ink.image(
-                          image: image, height: 250, fit: BoxFit.cover)
-//-----------very importatnt to check which attribute is the best with boxfit ? # delete */
-                      ),
+            child: Container(
+              margin: EdgeInsets.all(15),
+              child: CarouselSlider.builder(
+                itemCount: widget._imageUrls.length,
+                options: CarouselOptions(
+                  enlargeCenterPage: true,
+                  height: 300,
+                  reverse: false,
+                  aspectRatio: 5.0,
                 ),
-              ],
+                itemBuilder: (context, i, id) {
+                  //for onTap to redirect to another screen
+                  return GestureDetector(
+                    child: Container(
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          border: Border.all(
+                            color: Colors.white,
+                          )),
+                      //ClipRRect for image border radius
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(15),
+                        child: Image.network(
+                          widget._imageUrls[i],
+                          width: 500,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                    onTap: () {
+                      var url = widget._imageUrls[i];
+                      print(url.toString());
+                    },
+                  );
+                },
+              ),
             ),
+
+            // Stack(children: [
+            //   CarouselSlider(
+            //     options: CarouselOptions(
+            //       height: 200.0,
+            //       enlargeCenterPage: true,
+            //       onPageChanged: (position, reason) {
+            //         print(reason);
+            //         print(CarouselPageChangedReason.controller);
+            //       },
+            //       enableInfiniteScroll: false,
+            //     ),
+            //     items: _imageUrlsList.map<Widget>((i) {
+            //       return Builder(
+            //         builder: (BuildContext context) {
+            //           return Container(
+            //             width: MediaQuery.of(context).size.width,
+            //             decoration: BoxDecoration(
+            //               image: DecorationImage(
+            //                 image: NetworkImage(i),
+            //               ),
+            //             ),
+            //           );
+            //         },
+            //       );
+            //     }).toList(),
+            //   )
+
+            // ]),
           ),
           //----------------------------user name and image--------------------
 
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              getuserinfo(_autherId),
+              getuserinfo(widget._autherId),
 //------------------------ Rating of recipe -------------------------------------
-              getRating(_recipeid, _autherId),
+              getRating(widget._recipeid, widget._autherId),
             ],
           ),
           //-------------------------ginral discription ------------------------------------
@@ -123,7 +188,7 @@ class RecipeView extends StatelessWidget {
                       ),
                       Center(
                           child: Text(
-                        "  " + _typeOfMeal,
+                        "  " + widget._typeOfMeal,
                       ))
                     ],
                   ),
@@ -136,7 +201,7 @@ class RecipeView extends StatelessWidget {
                         Icons.public,
                         color: Colors.grey[600],
                       ),
-                      Center(child: Text("  " + _cuisine))
+                      Center(child: Text("  " + widget._cuisine))
                     ],
                   ),
                 ),
@@ -148,7 +213,7 @@ class RecipeView extends StatelessWidget {
                         Icons.format_list_bulleted,
                         color: Colors.grey[600],
                       ),
-                      Center(child: Text("  " + _category))
+                      Center(child: Text("  " + widget._category))
                     ],
                   ),
                 ),
@@ -157,9 +222,9 @@ class RecipeView extends StatelessWidget {
           ),
 
           //--------------------------ingrediants and dirctions--------------------------
-          ConvertTocheckBox(_ingredients, "Ingrediants"),
+          ConvertTocheckBox(widget._ingredients, "Ingrediants"),
 
-          ConvertTocheckBox(_dirctions, "Dirctions")
+          ConvertTocheckBox(widget._dirctions, "Dirctions")
           //-------------------------------------------
         ],
       ),
