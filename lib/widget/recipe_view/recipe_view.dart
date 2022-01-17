@@ -43,8 +43,6 @@ class RecipeView extends StatefulWidget {
 class _RecipeViewState extends State<RecipeView> {
   @override
   Widget build(BuildContext context) {
-    int currentPos = 0;
-
     // to return the default image if user does not enter an image by puting "noImageUrl" in the database and converting here to an image
     final image = widget._mainImageUrl == "noImageUrl" ||
             widget._mainImageUrl.isEmpty ||
@@ -97,6 +95,7 @@ class _RecipeViewState extends State<RecipeView> {
             padding: const EdgeInsets.only(bottom: 10),
             child: Container(
               margin: EdgeInsets.all(15),
+              // CarouselSlider is package used to show many images
               child: CarouselSlider.builder(
                 itemCount: widget._imageUrls.length,
                 options: CarouselOptions(
@@ -132,35 +131,6 @@ class _RecipeViewState extends State<RecipeView> {
                 },
               ),
             ),
-
-            // Stack(children: [
-            //   CarouselSlider(
-            //     options: CarouselOptions(
-            //       height: 200.0,
-            //       enlargeCenterPage: true,
-            //       onPageChanged: (position, reason) {
-            //         print(reason);
-            //         print(CarouselPageChangedReason.controller);
-            //       },
-            //       enableInfiniteScroll: false,
-            //     ),
-            //     items: _imageUrlsList.map<Widget>((i) {
-            //       return Builder(
-            //         builder: (BuildContext context) {
-            //           return Container(
-            //             width: MediaQuery.of(context).size.width,
-            //             decoration: BoxDecoration(
-            //               image: DecorationImage(
-            //                 image: NetworkImage(i),
-            //               ),
-            //             ),
-            //           );
-            //         },
-            //       );
-            //     }).toList(),
-            //   )
-
-            // ]),
           ),
           //----------------------------user name and image--------------------
 
