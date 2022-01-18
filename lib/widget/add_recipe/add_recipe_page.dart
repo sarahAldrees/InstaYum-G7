@@ -88,6 +88,52 @@ class addRecipe extends State<AddRecipePage> {
       return false;
     }
   }
+  //--------------------------- Notify the user about the ingredients-------------
+
+  showAlertDialogCheckIngredients(BuildContext context) {
+    // set up the button
+    Widget yesButton = RaisedButton(
+      child: Text("Yes"),
+      onPressed: () {
+        setState(() {
+          isloading = true;
+        });
+        _addRecipeToDatabase();
+        Navigator.of(context).pop();
+      },
+    );
+    Widget noButton = RaisedButton(
+      child: Text("No"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text(
+        "Warning",
+        style: TextStyle(
+            fontWeight: FontWeight.bold, color: Theme.of(context).accentColor),
+      ),
+      content: Text(
+        "It seems that your recipe does not contain any standard measurements \n Are you sure you want to continue to add the recipe?  ",
+        style: TextStyle(color: Color(0xFF444444)),
+      ),
+      actions: [
+        yesButton,
+        noButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
 
   //----------------------------------------------------------------------------
   void _addRecipeButton() {
@@ -98,11 +144,30 @@ class addRecipe extends State<AddRecipePage> {
     List<String> userIngredientsCopy = List.from(userIngredients);
 
     setState(() {}); //to refresh the page after delete any empty fields
-
+    bool isContainMeasures = false;
     if (formKey.currentState.validate()) {
       formKey.currentState.save();
-
-      _addRecipeToDatabase();
+      for (int i = 0; i < userIngredients.length; i++) {
+        //if (userIngredients[i]=='cup' ||)
+        var string = userIngredients[i].toLowerCase();
+        if (string.contains('cup') ||
+            string.contains('spoon') ||
+            string.contains('gram') ||
+            string.contains('liter') ||
+            string.contains('bottle') ||
+            string.contains('glass') ||
+            string.contains('bowl') ||
+            string.contains('can') ||
+            string.contains(new RegExp(r'[0-9]'))) isContainMeasures = true;
+      }
+      if (isContainMeasures)
+        _addRecipeToDatabase();
+      else {
+        showAlertDialogCheckIngredients(context);
+        setState(() {
+          isloading = false;
+        });
+      }
     } else {
       setState(() {
         isloading = false;
