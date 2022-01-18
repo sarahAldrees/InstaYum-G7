@@ -80,17 +80,26 @@ class _AuthScreenState extends State<AuthScreen> {
           ),
         );
       } else {
+        //log in
         authResult = await _auth.signInWithEmailAndPassword(
           email: email,
           password: password,
         );
         //here we can check the admin
-        // to move the user to the profile page (Mainpages) after he login successfully
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (context) => MainPages(),
-          ),
-        );
+        if (email == 'admin' && password == '') {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (context) => MainPages(),
+            ),
+          );
+        } else {
+          // to move the user to the profile page (Mainpages) after he login successfully
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (context) => MainPages(),
+            ),
+          );
+        }
       }
     } on PlatformException catch (err) {
       setState(() {
