@@ -43,11 +43,11 @@ class CommentState extends State<Comments> {
     this.comment,
     // this.databaseRef,
   );
+  List<Widget> comments = [];
 // --------------------------------------------------
   CollectionReference databaseRef;
   Widget _buildCommentList() {
     //User user = firebaseAuth.currentUser;
-    List<Widget> comments = [];
 
     databaseRef = FirebaseFirestore.instance
         .collection("users")
@@ -89,6 +89,22 @@ class CommentState extends State<Comments> {
       children: comments,
     );
   }
+
+//
+
+// ---------------------- Delete from database ------------------------------
+
+  _deleteCommentFromFirestore(comId) {
+    FirebaseFirestore.instance
+        .collection("users")
+        .doc(_authorId)
+        .collection("recipes")
+        .doc(_recipeId)
+        .collection("comments")
+        .doc(comId)
+        .delete();
+  }
+//-----------------------------------------------------------------------------
 
   String userUsername = "";
   String imageURL = "";
@@ -140,6 +156,36 @@ class CommentState extends State<Comments> {
     _commentController.addListener(() {
       setState(() {});
     }); //we call the method here to get the data immediately when init the page.
+  }
+
+  showDialogDelete() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text("Are you sure to delete the comment ?"),
+            actions: [
+              Row(
+                children: [
+                  Container(
+                    // margin: EdgeInsets.only(right: 20, left: 2),
+                    padding: EdgeInsets.only(right: 12),
+                    child: IconButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        icon: Icon(
+                          Icons.delete_outline,
+                          size: 20,
+                          color: Colors.red,
+                        )),
+                  ),
+                  Text('Delete'),
+                ],
+              ),
+            ],
+          );
+        });
   }
 
   @override
@@ -315,36 +361,79 @@ class CommentListState extends State<CommentList> {
     getData();
   }
 
-// ------------------- Design of each comment -----------------
-  Widget designComment(CommentObj comment) => Container(
-        child: Column(
-          children: [
-            Row(
-              children: [
-                UserInformationDesign(
-                  comment.username,
-                  comment.commentImgUrl,
-                ),
-                Padding(
-                    padding: const EdgeInsets.only(left: 10),
-                    child: Text(comment.date,
-                        style: TextStyle(color: Colors.grey))),
-              ],
-            ),
-            Align(
-                alignment: Alignment.bottomLeft,
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                      left: 40.0, bottom: 10, right: 30, top: 10),
-                  child: Text(comment.comment),
-                )),
-            Divider(
-              height: 20,
-              thickness: 1,
-              indent: 20,
-              endIndent: 20,
-            ),
-          ],
-        ),
-      );
+//******************************************************* */
+  //---------------------------Delete a comment from firestore ------------------------------------------------**
+  _DeletFirestoreComment(var key) async {
+    await FirebaseFirestore.instance
+        .collection("users")
+        .doc(widget._authorId)
+        .collection("recipes")
+        .doc(widget._recipeID)
+        .collection("comments")
+        .doc(key)
+        .delete();
+  }
+
+  _DeletCommentFromScreen(index) {
+    comments.removeAt(index);
+  }
 }
+
+//********************************************************* */
+//--------------------------------------------------------------------------
+// ------------------- Design of each comment -----------------
+Widget designComment(CommentObj comment) => Container(
+      child: Column(
+        children: [
+          Row(
+            children: [
+              UserInformationDesign(
+                comment.username,
+                comment.commentImgUrl,
+              ),
+              Padding(
+                  padding: const EdgeInsets.only(left: 10),
+                  child:
+                      Text(comment.date, style: TextStyle(color: Colors.grey))),
+              //************************************ */
+              SizedBox(
+                width: 50,
+              ),
+              InkWell(
+                  onTap: () {},
+                  child: Icon(
+                    Icons.flag_outlined,
+                    color: Colors.black,
+                  )),
+
+              InkWell(
+                  onTap: () {
+                    // var comkey = snapshot Key;
+                    // print(comkey);
+                    // // userDirections.length > 1 to prevent deleting the field if there is only one field
+                    // _DeletFirestoreComment(comkey);
+                    // setState(() {}); // refresh the screen
+                  },
+                  child: Icon(
+                    Icons.delete_outlined,
+                    color: Colors.red,
+                  )),
+              //*************************************** */
+            ],
+          ),
+          Align(
+              alignment: Alignment.bottomLeft,
+              child: Padding(
+                padding: const EdgeInsets.only(
+                    left: 40.0, bottom: 10, right: 30, top: 10),
+                child: Text(comment.comment),
+              )),
+          Divider(
+            height: 20,
+            thickness: 1,
+            indent: 20,
+            endIndent: 20,
+          ),
+        ],
+      ),
+    );
