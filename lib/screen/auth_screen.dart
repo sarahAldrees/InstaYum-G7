@@ -84,6 +84,7 @@ class _AuthScreenState extends State<AuthScreen> {
           email: email,
           password: password,
         );
+        //here we can check the admin
         // to move the user to the profile page (Mainpages) after he login successfully
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(

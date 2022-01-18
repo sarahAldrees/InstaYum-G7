@@ -8,7 +8,7 @@ import 'package:instayum1/screen/profile.dart';
 import 'package:instayum1/shopping_list_page.dart';
 import 'package:instayum1/widget/auth/auth_form.dart';
 import 'package:instayum1/widget/pickers/recipe_image_picker.dart';
-import 'meal_plans.dart';
+import 'widget/meal_plan/meal_plans.dart';
 
 //*********************************************************************
 //********************************************************************
