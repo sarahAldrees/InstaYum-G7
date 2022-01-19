@@ -56,8 +56,6 @@ class RecipeImagePickerState extends State<RecipeImagePicker> {
     imagesURLs = [
       "https://firebasestorage.googleapis.com/v0/b/instayum-f7a34.appspot.com/o/recpie_image%2FdefaultRecipeImage.png?alt=media&token=f12725db-646b-4692-9ccf-131a99667e43"
     ];
-    // RecipeImagePickerState.imagesURLs.add(
-    //     "https://firebasestorage.googleapis.com/v0/b/instayum-f7a34.appspot.com/o/recpie_image%2FdefaultRecipeImage.png?alt=media&token=f12725db-646b-4692-9ccf-131a99667e43");
 
     List<Asset> resultList = List<Asset>();
 
