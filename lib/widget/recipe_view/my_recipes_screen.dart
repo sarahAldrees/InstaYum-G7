@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:instayum1/model/recipe.dart';
 import 'package:instayum1/widget/recipe_item.dart';
 
-import '../data.dart';
+import '../../data.dart';
 
 class MyRecipesScreen extends StatefulWidget {
   // String autherName;

@@ -15,6 +15,7 @@ class cookbook_item extends StatelessWidget {
   );
 
   void selectCookbook() {}
+
   @override
   Widget build(BuildContext context) {
     final String image = imageURLCookbook;
