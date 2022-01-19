@@ -40,7 +40,7 @@ class appPages extends State<MainPages> {
           ),
         ),
         onPressed: () {
-// we will first clear the form
+          // we will first clear the form
 
           addRecipe.recipeTitle = '';
           if (addRecipe.recipeTitleController.value.text.isNotEmpty) {
@@ -52,7 +52,7 @@ class appPages extends State<MainPages> {
           addRecipe.userDirections = [null];
           RecipeImagePickerState.uploadedFileURL = null;
 
-//then we will move the user to the required page
+          //then we will move the user to the required page
           indexOfPages = indexOfNewPage;
           if (indexOfNewPage == 0)
             appBarTitel = "Discover Page";

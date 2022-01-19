@@ -62,6 +62,30 @@ class _RecipeViewState extends State<RecipeView> {
       appBar: new AppBar(
         title: Text(widget._recipeName),
         backgroundColor: Color(0xFFeb6d44),
+        actions: [
+          Row(
+            children: [
+              IconButton(
+                  icon: Icon(
+                    Icons.bookmark_add_outlined,
+                    size: 26,
+                    // color: Color(0xFFeb6d44),
+                  ),
+                  onPressed: () {
+                    //setstat :change the kind of ici=on and add it to bookmark list
+                  }),
+              IconButton(
+                  icon: Icon(
+                    Icons.ios_share_outlined,
+                    //  Icons.ios_share,
+                    size: 26,
+                  ),
+                  onPressed: () {
+                    //setstat :change the kind of ici=on and add it to bookmark list
+                  }),
+            ],
+          ),
+        ],
       ),
       //--------------------floating button that contain comment and rating button -------------------------
       floatingActionButton: ExpandableFab(
@@ -90,7 +114,8 @@ class _RecipeViewState extends State<RecipeView> {
       body: ListView(
         shrinkWrap: true,
         children: <Widget>[
-          //---------------------image with bookmarked and shear button---------------
+          //---------------------images ---------------
+
           Padding(
             padding: const EdgeInsets.only(bottom: 10),
             child: Container(
@@ -133,7 +158,12 @@ class _RecipeViewState extends State<RecipeView> {
             ),
           ),
           //----------------------------user name and image--------------------
+          // Positioned(
+          //   left: 10,
+          //   top: 10,
+          // child:
 
+          // ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [

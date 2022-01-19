@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:instayum1/main_pages.dart';
+import 'package:instayum1/widget/admin/admin_home_page.dart';
 import 'package:instayum1/widget/auth/auth_form.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -86,10 +87,10 @@ class _AuthScreenState extends State<AuthScreen> {
           password: password,
         );
         //here we can check the admin
-        if (email == 'admin' && password == '') {
+        if (email == 'admin@admin.admin') {
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(
-              builder: (context) => MainPages(),
+              builder: (context) => AdminHomePage(),
             ),
           );
         } else {
