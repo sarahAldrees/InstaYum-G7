@@ -31,6 +31,9 @@ class RecipeImagePickerState extends State<RecipeImagePicker> {
   @override
   void initState() {
     super.initState();
+    //to solve the exception of the default image
+    imagesURLs.add(
+        "https://firebasestorage.googleapis.com/v0/b/instayum-f7a34.appspot.com/o/recpie_image%2FdefaultRecipeImage.png?alt=media&token=f12725db-646b-4692-9ccf-131a99667e43");
   }
 
   Widget buildGridView() {
@@ -53,6 +56,9 @@ class RecipeImagePickerState extends State<RecipeImagePicker> {
     imagesURLs = [
       "https://firebasestorage.googleapis.com/v0/b/instayum-f7a34.appspot.com/o/recpie_image%2FdefaultRecipeImage.png?alt=media&token=f12725db-646b-4692-9ccf-131a99667e43"
     ];
+    // RecipeImagePickerState.imagesURLs.add(
+    //     "https://firebasestorage.googleapis.com/v0/b/instayum-f7a34.appspot.com/o/recpie_image%2FdefaultRecipeImage.png?alt=media&token=f12725db-646b-4692-9ccf-131a99667e43");
+
     List<Asset> resultList = List<Asset>();
 
     List<File> fikles = List<File>();
@@ -79,7 +85,7 @@ class RecipeImagePickerState extends State<RecipeImagePicker> {
         final FirebaseAuth _auth = FirebaseAuth.instance;
 
         FirebaseStorage storageReference = FirebaseStorage.instance;
-//-------------------To covert to file--------------------------------
+//-------------------To convert to file--------------------------------
 
         final byteData = await i.getByteData();
         final tempFile =

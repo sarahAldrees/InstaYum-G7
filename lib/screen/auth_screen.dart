@@ -10,13 +10,13 @@ import 'package:firebase_storage/firebase_storage.dart';
 
 class AuthScreen extends StatefulWidget {
   @override
-  _AuthScreenState createState() => _AuthScreenState();
+  AuthScreenState createState() => AuthScreenState();
 }
 
-class _AuthScreenState extends State<AuthScreen> {
+class AuthScreenState extends State<AuthScreen> {
   final _auth = FirebaseAuth.instance;
   bool _isLoading = false;
-
+  static bool isAdmin = false;
   void _submitAuthForm(
     String email,
     String username,
@@ -88,6 +88,9 @@ class _AuthScreenState extends State<AuthScreen> {
         );
         //here we can check the admin
         if (email == 'admin@admin.admin') {
+          setState(() {
+            isAdmin = true;
+          });
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(
               builder: (context) => AdminHomePage(),
@@ -95,6 +98,9 @@ class _AuthScreenState extends State<AuthScreen> {
           );
         } else {
           // to move the user to the profile page (Mainpages) after he login successfully
+          setState(() {
+            isAdmin = false;
+          });
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(
               builder: (context) => MainPages(),

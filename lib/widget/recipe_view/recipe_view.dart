@@ -130,6 +130,8 @@ class _RecipeViewState extends State<RecipeView> {
                   aspectRatio: 5.0,
                 ),
                 itemBuilder: (context, i, id) {
+                  // print('******************** exception******************');
+                  // print(widget._imageUrls[i]);
                   //for onTap to redirect to another screen
                   return GestureDetector(
                     child: Container(

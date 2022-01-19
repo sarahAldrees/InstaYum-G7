@@ -5,6 +5,7 @@ import 'package:instayum1/screen/profile.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:instayum1/main_pages.dart';
 import 'package:flutter/services.dart';
+import 'package:instayum1/widget/admin/admin_home_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -46,7 +47,10 @@ class Main extends StatelessWidget {
                 builder: (context, userSnapshot) {
                   if (userSnapshot.hasData) {
                     // it mean he is authintecated
-                    return MainPages();
+                    if (AuthScreenState.isAdmin)
+                      return AdminHomePage();
+                    else
+                      return MainPages();
                   } else {
                     return AuthScreen();
                   } //otherwise he does not have an accoun and return him to authScreen
