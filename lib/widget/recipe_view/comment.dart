@@ -351,7 +351,8 @@ class CommentListState extends State<CommentList> {
     final FirebaseAuth usId = FirebaseAuth.instance;
     final _currentUser = usId.currentUser.uid;
 
-    if (_currentUser == widget._authorId) {
+    if (_currentUser != widget._authorId ||
+        _currentUser == "7DNb5UkMjxVeMmY1Q7vPebXzdk73") {
       return IconButton(
           onPressed: () {
             _DeletFirestoreComment(commentRef);
@@ -363,7 +364,23 @@ class CommentListState extends State<CommentList> {
           ));
     } else {
       return IconButton(
-          onPressed: () {},
+          onPressed: () {
+            final reportId = Uuid().v4();
+            FirebaseFirestore.instance
+                .collection("users")
+                .doc("7DNb5UkMjxVeMmY1Q7vPebXzdk73")
+                .collection("ReportedComment")
+                .doc(reportId)
+                .set({
+              "commentRef": commentRef,
+            });
+// await FirebaseFirestore.instance
+//         .collection("users")
+//         .doc(admin)
+//         .collection("comment")
+//         .doc(reportedcomment)
+//         .set();
+          },
           icon: Icon(
             Icons.flag_outlined,
             size: 20,
