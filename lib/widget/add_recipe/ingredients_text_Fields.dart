@@ -59,7 +59,8 @@ class _IngredientsTextFieldsState extends State<IngredientsTextFields> {
   }
 
   Future toggleRecording() => SpeechApi.toggleRecording(
-      onResult: (text) => setState(() => this.text = text),
+      onResult: (text) =>
+          setState(() => this._ingredientController.text = text),
       onListening: (isListening) {
         setState(() => this.isListening = isListening);
       });
