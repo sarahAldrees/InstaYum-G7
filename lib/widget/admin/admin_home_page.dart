@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:instayum1/screen/auth_screen.dart';
+import 'package:instayum1/widget/auth/auth_screen.dart';
 
 class AdminHomePage extends StatefulWidget {
   @override

@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'model/recipe.dart';
-import 'model/cookbook.dart';
+import '../../model/recipe.dart';
+import '../../model/cookbook.dart';
 
 class RecipeData extends StatefulWidget {
   @override

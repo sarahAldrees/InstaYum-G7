@@ -2,9 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:instayum1/model/recipe.dart';
-import 'package:instayum1/widget/recipe_item.dart';
+import 'package:instayum1/widget/recipe_view/recipe_item.dart';
 
-import '../../data.dart';
+import '../bookmark/data.dart';
 
 class MyRecipesScreen extends StatefulWidget {
   // String autherName;
