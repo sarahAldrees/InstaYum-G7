@@ -1,7 +1,15 @@
+import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:instayum1/model/cookbook.dart';
 import 'package:instayum1/widget/bookmark/add_new_cookbook.dart';
+import 'package:instayum1/widget/pickers/cookbook_image_picker.dart';
 import 'add_new_cookbook.dart';
 import 'package:instayum1/widget/bookmark/cookbook_item.dart';
+import 'package:path/path.dart' as Path;
 
 class bookmarked_recipes extends StatefulWidget {
 //----------------Alert dialog------------------------------
@@ -11,6 +19,25 @@ class bookmarked_recipes extends StatefulWidget {
 }
 
 class bookmarked_recipesState extends State<bookmarked_recipes> {
+  String imagePath;
+  File image;
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+  static String uploadedFileURL;
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) => getCookbookObjects());
+  }
+
+  var Cookbooks_List = [
+    Cookbook(
+      id: 'Default cookbook',
+      // cookbookName: 'Default cookbook',
+      imageURLCookbook:
+          'https://lacuisinedegeraldine.fr/wp-content/uploads/2021/06/Pancakes-04483-2-scaled.jpg',
+    ),
+  ];
+
   TextEditingController _CookbookTitleTextFieldController =
       TextEditingController();
 
@@ -37,28 +64,57 @@ class bookmarked_recipesState extends State<bookmarked_recipes> {
       child: Text(
         "Add new cookbook",
       ),
-      onPressed: () {
-        AddNewCookBookState.createNewCookBook(
-            _CookbookTitleTextFieldController.text);
+      onPressed: () async {
+        final validCookbookName =
+            await _checkCookbookName(_CookbookTitleTextFieldController.text);
+        if (validCookbookName) {
+          AddNewCookBookState.createNewCookBook(
+              _CookbookTitleTextFieldController.text);
+          CookbookImagePickerState.uploadedFileURL = null;
+          _CookbookTitleTextFieldController.clear();
+          Navigator.of(context).pop();
+        } else {
+          //may be we have to change it later ????
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+                content:
+                    Text("This name already exist please enter another name"),
+                backgroundColor: Theme.of(context).errorColor),
+          );
+        }
       },
     );
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
       //backgroundColor: Theme.of(context).backgroundColor,
       title: Center(
-          child: Text(
-        "Add cookbook",
-        style: TextStyle(
-            fontWeight: FontWeight.bold, color: Theme.of(context).accentColor),
-      )),
-      content: TextField(
-        controller: _CookbookTitleTextFieldController,
-        decoration: InputDecoration(hintText: "Cookbook title"),
+        child: Text(
+          "Add cookbook",
+          style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Theme.of(context).accentColor),
+        ),
       ),
-      // Text(
-      //   "Enter the title of the cookbook",
-      //   style: TextStyle(color: Color(0xFF444444)),
-      // ),
+//--------------------------------------
+      content: new SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              //the big container
+              width: 300,
+              height: 180,
+              alignment: Alignment.center,
+              child: CookbookImagePicker(),
+              // recipe_id # delete
+            ),
+            TextField(
+              controller: _CookbookTitleTextFieldController,
+              decoration: InputDecoration(hintText: "Cookbook title"),
+            ),
+          ],
+        ),
+      ),
+
       actions: [
         cancelButton,
         addButton,
@@ -73,33 +129,70 @@ class bookmarked_recipesState extends State<bookmarked_recipes> {
     );
   }
 
+  Future<bool> _checkCookbookName(String cookBookname) async {
+    User user = firebaseAuth.currentUser;
+    final result = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.uid)
+        .collection("cookbooks")
+        .where('cookbook_id', isEqualTo: cookBookname)
+        .get();
+    return result.docs.isEmpty;
+  }
+
+  void getCookbookObjects() {
+    User user = firebaseAuth.currentUser;
+    FirebaseFirestore.instance
+        .collection("users")
+        .doc(user.uid)
+        .collection("cookbooks")
+        //  .doc(cookBookTitle)
+        .get()
+        .then((querySnapshot) {
+      querySnapshot.docs.forEach(
+        (doc) => {
+          Cookbooks_List.add(
+            Cookbook(
+              id: doc.data()['cookbook_id'],
+              // cookbookName: ,
+              imageURLCookbook: doc.data()['cookbook_img_url'],
+            ),
+          ),
+        },
+      );
+      setState(() {});
+    });
+    // setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       // remove the default default flutter banner
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-          // build the button to add a new cookbook
-          floatingActionButton: FloatingActionButton(
-            backgroundColor: Color(0xFFeb6d44),
-            onPressed: () {
-              showAlertDialogOfAddCookbook(context);
-              // add new cookbook
-            },
-            child: Icon(Icons.add),
-          ),
-          // here the list of grid view
-          body: GridView.count(
-            crossAxisCount: 2, // 2 items in each row
-            padding: EdgeInsets.all(25),
-            // map all available cookbooks and list them in Gridviwe.
-            children: Cookbooks_List.map((c) => cookbook_item(
-                  // Key,
-                  c.id,
-                  c.cookbookName,
-                  c.imageURLCookbook,
-                )).toList(),
-          )),
+        // build the button to add a new cookbook
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: Color(0xFFeb6d44),
+          onPressed: () {
+            showAlertDialogOfAddCookbook(context);
+            // add new cookbook
+          },
+          child: Icon(Icons.add),
+        ),
+        // here the list of grid view
+        body: GridView.count(
+          crossAxisCount: 2, // 2 items in each row
+          padding: EdgeInsets.all(25),
+          // map all available cookbooks and list them in Gridviwe.
+          children: Cookbooks_List.map((c) => cookbook_item(
+                // Key,
+                c.id,
+                // c.cookbookName,
+                c.imageURLCookbook,
+              )).toList(),
+        ),
+      ),
     );
     // ]);
   }

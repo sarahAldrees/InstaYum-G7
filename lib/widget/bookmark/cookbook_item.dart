@@ -2,15 +2,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class cookbook_item extends StatelessWidget {
-  final String id;
-  final String cookbookName;
+  final String cookbookID;
+  // final String cookbookName;
   final String imageURLCookbook;
   // final VoidCallback onClicked;
 
   const cookbook_item(
     // Key key,
-    this.id,
-    this.cookbookName,
+    this.cookbookID,
+    // this.cookbookName,
     this.imageURLCookbook,
   );
 
@@ -18,7 +18,9 @@ class cookbook_item extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String image = imageURLCookbook;
+    final image = imageURLCookbook == "noImage"
+        ? AssetImage("assets/images/defaultRecipeImage.png")
+        : NetworkImage(imageURLCookbook);
 // this section will return one item of Grid Items that in bookmarked recipes page.
     return Column(children: [
       ClipOval(
@@ -35,13 +37,14 @@ class cookbook_item extends StatelessWidget {
               debugPrint('bottun clicked');
             },
             child: ClipOval(
-              child: Image.network(
-                image,
-                fit: BoxFit.cover,
-                // cimageURL, fit: BoxFit.cover,
-                // Size of the image
-                width: 120,
-                height: 120,
+              child: Material(
+                color: Colors.white,
+                child: Ink.image(
+                  image: image,
+                  fit: BoxFit.cover,
+                  width: 120,
+                  height: 120,
+                ),
               ),
             ),
           ),
@@ -56,7 +59,8 @@ class cookbook_item extends StatelessWidget {
           ),
           child: Center(
             child: Text(
-              cookbookName,
+              // cookbookName,
+              cookbookID, // the ID is the same is the title that's why we remove the cookbook name
               style: TextStyle(fontSize: 14),
             ),
           )),
