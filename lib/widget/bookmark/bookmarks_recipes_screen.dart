@@ -80,9 +80,9 @@ class bookmarked_recipesState extends State<bookmarked_recipes> {
             validCookbookName = await _checkCookbookName(
                 _CookbookTitleTextFieldController.text);
             if (validCookbookName) {
-              AddNewCookBookState.createNewCookBook(cookbookTitle)
-                  //_CookbookTitleTextFieldController.text)
-                  ;
+              AddNewCookBookState.createNewCookBook(cookbookTitle);
+              //_CookbookTitleTextFieldController.text)
+
               getCookbookObjects();
               CookbookImagePickerState.uploadedFileURL = null;
               _CookbookTitleTextFieldController.clear();
@@ -173,7 +173,18 @@ class bookmarked_recipesState extends State<bookmarked_recipes> {
     return result.docs.isEmpty;
   }
 
-  void getCookbookObjects() {
+  void getCookbookObjects() async {
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+    final currentUser = await _auth.currentUser;
+    final timestamp =
+        DateTime.now(); // to update the time and make the default upper
+    FirebaseFirestore.instance
+        .collection("users")
+        .doc(currentUser.uid)
+        .collection("cookbooks")
+        .doc("Default cookbook")
+        .update({"timestamp": timestamp});
+
     Cookbooks_List = [];
     User user = firebaseAuth.currentUser;
     FirebaseFirestore.instance

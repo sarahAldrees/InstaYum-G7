@@ -37,6 +37,13 @@ class AddNewCookBookState extends State<AddNewCookBook> {
       "cookbook_img_url": cookbookImageUrl,
       "timestamp": timestamp,
     });
+    // timestamp = DateTime.now(); // to update the time and make the default upper
+    // FirebaseFirestore.instance
+    //     .collection("users")
+    //     .doc(currentUser.uid)
+    //     .collection("cookbooks")
+    //     .doc("Default cookbook")
+    //     .update({"timestamp": timestamp});
 
     //*****************************WE WILL WORK ON IT LATER */
     // await FirebaseFirestore.instance.collection("users")
