@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "instayum-chatbot",
+  "private_key_id": "6077955177de757f41473c4b55952b903e1059fd",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQCYDO5ImmZxlmzj\nd7xk+uXwJ9rbtK60oCSOClplgnbhwxBj9AZudG1Cede2mZld0YrH9befAPIstcp8\n+o2vgDQgHyuwqjsAKzD4odycN1PhBxKVSM3C3mfA76/MbG4oj2LyJ6MBITMhXZ7v\nkiCHPLVbNv7VKmHfkGckYDlLkWN5XsO8Jf8qSauH6Ik/SJZ1H/sqfl5XRw8FK+nd\n2f0IX2lfzptdNm/EqypqpnbRIa5blYsvIsbsAefNpZl2A0H4870P0BR2YZ9LNw41\n6saCIUXoN1+arBnhFavFa6Ixkp827z5cQUDd6P+9s5I2FVRdyCSJU8Q2Z00W48e5\npXq+0mXVAgMBAAECggEANJVQOLKQ2BpuCNJpSEDOkVmvIgkf3B5/1dF1xqIyS8wi\nWHbVXJCOEo3BkIgZFm13gcST3ny8w8KQxtz9b+K15B/zg5KzedD2DB4qBapKq0k/\nX3pAknJIzlv134vmIsfHr7gOcr8RCCpw4ygVcL+JdoST55NTKrYtPVK7rcsXbCrV\nmQSz5b0EzKGSYeTZWaqS0KgHM60jze5wfS4VO7Vs/TLpzfWvg/C2TEqIrvojRl2E\nwCsk98oMkvnBClyIgYu5MMgQdYWvfK1sP+wne27aXTm6NRmT+elUS3OCDzT6BDWa\nwvta1K46e9pkON/FuH+BRPXlfECg2gMmyDtKPO6CBwKBgQDMbc109b4PQmZ6f0qx\nBdzNSpX9IrR1vmMgiTYJ9DvHjvaS2MTwgtklJbP2FIoRLEONZSmMy6SYP9n2dncQ\nxlyt5uHK8rdsIADG4SnJcUHu9BlPkDf4w4vY/nDNB9csYCS4dwl/n8NKXEWS+jnk\nMM2+y30gxLxmRYH2SErduB7f0wKBgQC+aHw2B0lUbT2HjXAA0dSwlfFiMnCMsV5i\n92/yifJAvlOV85xc1tdMY7YuYKyHpRYaWMTD1SNm3ezvTTfdHYK5pkgzKnFELlBG\nfcdzUers2Hof+vWD1eUna5km1Jx4D5rF3WCrDY4AOL15jVoipebmHhU7PQ2jLkBN\nTTVhDURCtwKBgQCqtAG9abrUOSkjnwl6up9/GYoXf5RbQai6sXjbZQNKBzokszf4\ncfrrBwm4Mbx8zI54EoJYnHAL5j2WjaOs8UbQvBvNgVHiyvJ7H+fp21YoN9Ku2omy\ng29SulztCGAIIRxooJXg6UKE5HoAWkxfHNWhPYB2DXIYoG/+fK1vaWD2mwKBgQCO\n2zGmD51y3Gr3kqRf2Q5sVnM+K33J8SFRuzegjuLUtHdd3+KGvSHXTFBZR2rqcm+8\n4LDwBK+E9ChZ+mNZYFS+GQW+ba+BagYMfT3xRZqujFREPjOJ8Cb3hoDnY0jpwztq\nDIgEjizl+awe0HC54iL0r8laIppivca8uJq98AgwzQKBgQCCFnQRRt+AlN69n3qV\nQTkaI/TtjTNwYUjUPaRANJ1o2ekKDCNvTi9zEmzOUVw7innPlDrKFeM4HjiLtk6K\nmo1pJ3VEO5ipdDn6dmAi4VE7gF344YYeHFdSlOlT+IWAkkbGHzGnaJmLPdphnuTG\n8IvJgiwJF+wOKCU43HfsKi+ggg==\n-----END PRIVATE KEY-----\n",
+  "client_email": "instayum-chatbot@instayum-chatbot.iam.gserviceaccount.com",
+  "client_id": "113737822080073571804",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/instayum-chatbot%40instayum-chatbot.iam.gserviceaccount.com"
+}

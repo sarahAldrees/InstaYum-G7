@@ -52,7 +52,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   void response(query) async {
     AuthGoogle authGoogle =
-        await AuthGoogle(fileJson: "assets/instayum-chatbot-25e169982ef9.json")
+        await AuthGoogle(fileJson: "assets/instayum-chatbot-6077955177de.json")
             .build();
     Dialogflow dialogflow =
         Dialogflow(authGoogle: authGoogle, language: Language.english);

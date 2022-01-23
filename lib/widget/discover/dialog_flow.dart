@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+//import 'package:flutter_dialogflow/dialogflow_v2.dart';
 
 import 'package:flutter_dialogflow/dialogflow_v2.dart';
+
 import 'package:instayum1/widget/discover/facts_message.dart';
 
 class FlutterFactsChatBot extends StatefulWidget {
@@ -51,7 +53,7 @@ class _FlutterFactsChatBotState extends State<FlutterFactsChatBot> {
   void agentResponse(query) async {
     _textController.clear();
     AuthGoogle authGoogle =
-        await AuthGoogle(fileJson: "assets/instayum-chatbot-25e169982ef9.json")
+        await AuthGoogle(fileJson: "assets/instayum-chatbot-6077955177de.json")
             .build();
     Dialogflow dialogFlow =
         Dialogflow(authGoogle: authGoogle, language: Language.english);
@@ -68,6 +70,7 @@ class _FlutterFactsChatBotState extends State<FlutterFactsChatBot> {
   }
 
   void _submitQuery(String text) {
+    print("SUUUBBBMMMMIT WOOOORKIINNGG");
     _textController.clear();
     Facts message = new Facts(
       text: text,
