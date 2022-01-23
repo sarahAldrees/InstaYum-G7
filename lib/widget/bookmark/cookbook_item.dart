@@ -65,20 +65,5 @@ class cookbook_item extends StatelessWidget {
             ),
           )),
     ]);
-
-    // child: Stack(
-    //   children: [
-    //     ClipRRect(
-    //       borderRadius: BorderRadius.circular(10),
-    //       child: Image.network(imageURLCookbook),
-    //     ),
-    //     Container(
-    //       padding: EdgeInsets.symmetric(vertical: 10),
-    //       color: Color(0xff9C635614),
-    //       child: Text(cookbookName,
-    //           style: TextStyle(fontSize: 15, color: Colors.white)),
-    //     ),
-    //   ],
-    // ),
   }
 }

@@ -83,6 +83,7 @@ flutter:
      - assets/images/defaultUser.png
      - assets/images/HLine.png
      - assets/images/defaultRecipeImage.png
+     - assets/images/defaultCookbookImage.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

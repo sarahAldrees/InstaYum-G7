@@ -22,7 +22,10 @@ class bookmarked_recipesState extends State<bookmarked_recipes> {
   String imagePath;
   File image;
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-
+  bool _isEmptyCookbookTitle = false;
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  String cookbookTitle = "";
+  bool validCookbookName = true;
   static String uploadedFileURL;
   void initState() {
     super.initState();
@@ -57,33 +60,45 @@ class bookmarked_recipesState extends State<bookmarked_recipes> {
       ),
       onPressed: () {
         _CookbookTitleTextFieldController.clear();
+        CookbookImagePickerState.uploadedFileURL = null;
         Navigator.of(context).pop();
       },
     );
     Widget addButton = RaisedButton(
-      child: Text(
-        "Add new cookbook",
-      ),
-      onPressed: () async {
-        final validCookbookName =
-            await _checkCookbookName(_CookbookTitleTextFieldController.text);
-        if (validCookbookName) {
-          AddNewCookBookState.createNewCookBook(
-              _CookbookTitleTextFieldController.text);
-          CookbookImagePickerState.uploadedFileURL = null;
-          _CookbookTitleTextFieldController.clear();
-          Navigator.of(context).pop();
-        } else {
-          //may be we have to change it later ????
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-                content:
-                    Text("This name already exist please enter another name"),
-                backgroundColor: Theme.of(context).errorColor),
-          );
-        }
-      },
-    );
+        child: Text(
+          "Add new cookbook",
+        ),
+        onPressed: () async {
+          // setState(() {
+          //   _CookbookTitleTextFieldController.text.isEmpty
+          //       ? _isEmptyCookbookTitle = true
+          //       : _isEmptyCookbookTitle = false;
+          // });
+          if (formKey.currentState.validate()) {
+            formKey.currentState.save();
+            // if (!_isEmptyCookbookTitle) {
+            validCookbookName = await _checkCookbookName(
+                _CookbookTitleTextFieldController.text);
+            if (validCookbookName) {
+              AddNewCookBookState.createNewCookBook(cookbookTitle)
+                  //_CookbookTitleTextFieldController.text)
+                  ;
+              getCookbookObjects();
+              CookbookImagePickerState.uploadedFileURL = null;
+              _CookbookTitleTextFieldController.clear();
+              Navigator.of(context).pop();
+            } else {
+              //may be we have to change it later ????
+              // ScaffoldMessenger.of(context).showSnackBar(
+              //   SnackBar(
+              //       content: Text(
+              //           "This name already exist please enter another name"),
+              //       backgroundColor: Theme.of(context).errorColor),
+              // );
+            }
+            // }
+          }
+        });
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
       //backgroundColor: Theme.of(context).backgroundColor,
@@ -107,10 +122,28 @@ class bookmarked_recipesState extends State<bookmarked_recipes> {
               child: CookbookImagePicker(),
               // recipe_id # delete
             ),
-            TextField(
-              controller: _CookbookTitleTextFieldController,
-              decoration: InputDecoration(hintText: "Cookbook title"),
-            ),
+            Form(
+              key: formKey,
+              child: TextFormField(
+                key: ValueKey("cookbook_title"),
+                controller: _CookbookTitleTextFieldController,
+                decoration: InputDecoration(
+                    // errorText:
+                    //     _isEmptyCookbookTitle ? 'title can not be empty' : null,
+                    hintText: "Cookbook title"),
+                validator: (value) {
+                  if (value == null || value == '' || value.isEmpty)
+                    return 'title can not be empty ';
+                  else if (!validCookbookName) {
+                    return "The name is already exist";
+                  } else
+                    return null;
+                },
+                onSaved: (value) {
+                  cookbookTitle = value;
+                },
+              ),
+            )
           ],
         ),
       ),
@@ -141,11 +174,13 @@ class bookmarked_recipesState extends State<bookmarked_recipes> {
   }
 
   void getCookbookObjects() {
+    Cookbooks_List = [];
     User user = firebaseAuth.currentUser;
     FirebaseFirestore.instance
         .collection("users")
         .doc(user.uid)
         .collection("cookbooks")
+        .orderBy("timestamp", descending: true)
         //  .doc(cookBookTitle)
         .get()
         .then((querySnapshot) {
@@ -162,7 +197,6 @@ class bookmarked_recipesState extends State<bookmarked_recipes> {
       );
       setState(() {});
     });
-    // setState(() {});
   }
 
   @override

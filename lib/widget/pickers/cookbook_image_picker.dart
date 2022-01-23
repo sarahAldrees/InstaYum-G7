@@ -67,10 +67,11 @@ class CookbookImagePickerState extends State<CookbookImagePicker> {
     final image = uploadedFileURL == "noImage" ||
             // uploadedFileURL.isEmpty ||
             uploadedFileURL == null
-        ? AssetImage("assets/images/defaultRecipeImage.png") // NEW
+        ? AssetImage("assets/images/defaultCookbookImage.png") // NEW
         : NetworkImage(uploadedFileURL);
 
     // build a circular user image
+
     return Padding(
       padding: EdgeInsets.all(10.0),
       child: ClipOval(
@@ -95,11 +96,19 @@ class CookbookImagePickerState extends State<CookbookImagePicker> {
           height: 16,
         ),
         buildCookbookImage(),
-        FlatButton.icon(
-            onPressed: chooseFile,
-            textColor: Theme.of(context).accentColor,
-            icon: Icon(Icons.image),
-            label: Text("Choose cookbook image")),
+        _isloading
+            ? Padding(
+                padding: const EdgeInsets.only(top: 10),
+                child: CircularProgressIndicator(
+                  backgroundColor: Color(0xFFeb6d44),
+                  color: Colors.white,
+                ),
+              )
+            : FlatButton.icon(
+                onPressed: chooseFile,
+                textColor: Theme.of(context).accentColor,
+                icon: Icon(Icons.image),
+                label: Text("Choose cookbook image")),
       ],
     );
   }
