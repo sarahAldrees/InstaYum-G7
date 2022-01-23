@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:instayum1/widget/discover/dialog_flow.dart';
 import 'package:instayum1/widget/recipe_view/my_recipes_screen.dart';
 import 'package:flutter/cupertino.dart';
 import '../recipe_view/my_recipes_screen.dart';
+import 'chatbot_chat.dart';
 
 //import 'package:flutter/material.dart';
 
@@ -16,6 +18,18 @@ class discover extends State<discoverPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Color(0xFFeb6d44),
+        onPressed: () {
+          // Navigator.push(
+          //     context, MaterialPageRoute(builder: (context) => ChatbotChat()));
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => FlutterFactsChatBot()));
+//FlutterFactsChatBot
+          // ChatbotChat();
+        },
+        child: Icon(Icons.chat_bubble),
+      ),
       body: ListView(
         children: [
           Container(
