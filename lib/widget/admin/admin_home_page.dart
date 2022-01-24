@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:instayum1/widget/admin/reported_comment_list.dart';
 import 'package:instayum1/widget/auth/auth_screen.dart';
 
 class AdminHomePage extends StatefulWidget {
@@ -131,7 +132,7 @@ class AdminHomePageState extends State<AdminHomePage> {
                 children: [
                   //This list is the content of each tab.
                   // ------------ reported comment-------------
-                  Center(child: Text("hi")),
+                  ReportedCommentList(),
 
                   // ------------ reported account-----------.
                   Center(child: Text("data"))
