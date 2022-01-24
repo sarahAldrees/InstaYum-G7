@@ -12,12 +12,14 @@ class Messages extends StatelessWidget {
       Container(
         margin: const EdgeInsets.only(right: 10.0),
         child: CircleAvatar(
-          child: Padding(
-            padding: const EdgeInsets.all(5),
-            child: Image.asset('assets/images/InstaYum_chatbot.png'),
-          ),
+          child:
+              // Padding(
+              //   padding: const EdgeInsets.all(5),
+              //child:
+              Image.asset('assets/images/InstaYum_chatbot.png'),
+          // ),
           backgroundColor: Colors.white,
-          radius: 12,
+          radius: 30,
         ),
       ),
       Expanded(
@@ -52,7 +54,7 @@ class Messages extends StatelessWidget {
             Card(
                 color: Colors.white,
                 shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(20))),
+                    borderRadius: BorderRadius.all(Radius.circular(50))),
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
@@ -66,9 +68,11 @@ class Messages extends StatelessWidget {
       Container(
         margin: const EdgeInsets.only(left: 10.0),
         child: CircleAvatar(
-          child: new Text(this.name[0]),
+          child: Image.asset(
+            'assets/images/defalut_image_chatbot.jpg',
+          ),
           backgroundColor: Colors.grey[200],
-          radius: 12,
+          radius: 25,
         ),
       ),
     ];

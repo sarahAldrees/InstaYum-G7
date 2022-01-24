@@ -19,7 +19,8 @@ class discover extends State<discoverPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Color(0xFFeb6d44),
+        // backgroundColor: Color(0xFFeb6d44),
+
         onPressed: () {
           // Navigator.push(
           //     context, MaterialPageRoute(builder: (context) => ChatbotChat()));
@@ -28,7 +29,10 @@ class discover extends State<discoverPage> {
 //FlutterFactsChatBot
           // ChatbotChat();
         },
-        child: Image.asset('assets/images/InstaYum_chatbot.png'),
+        child: Image.asset(
+          'assets/images/InstaYum_chatbot.png',
+          height: 300,
+        ),
         //Icon(Icons.support_agent_rounded),
       ),
       body: ListView(
