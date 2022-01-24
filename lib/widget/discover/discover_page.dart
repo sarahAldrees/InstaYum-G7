@@ -23,12 +23,13 @@ class discover extends State<discoverPage> {
         onPressed: () {
           // Navigator.push(
           //     context, MaterialPageRoute(builder: (context) => ChatbotChat()));
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => FlutterFactsChatBot()));
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => ChatBot()));
 //FlutterFactsChatBot
           // ChatbotChat();
         },
-        child: Icon(Icons.chat_bubble),
+        child: Image.asset('assets/images/InstaYum_chatbot.png'),
+        //Icon(Icons.support_agent_rounded),
       ),
       body: ListView(
         children: [

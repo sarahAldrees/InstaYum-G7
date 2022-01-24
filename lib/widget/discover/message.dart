@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class Facts extends StatelessWidget {
-  Facts({this.text, this.name, this.type});
+class Messages extends StatelessWidget {
+  Messages({this.text, this.name, this.type});
 
   final String text;
   final String name;
@@ -14,9 +14,9 @@ class Facts extends StatelessWidget {
         child: CircleAvatar(
           child: Padding(
             padding: const EdgeInsets.all(5),
-            child: FlutterLogo(),
+            child: Image.asset('assets/images/InstaYum_chatbot.png'),
           ),
-          backgroundColor: Colors.grey[200],
+          backgroundColor: Colors.white,
           radius: 12,
         ),
       ),
@@ -50,14 +50,14 @@ class Facts extends StatelessWidget {
           children: <Widget>[
 //            Text(this.name, style: Theme.of(context).textTheme.subhead),
             Card(
-                color: Colors.green[400],
+                color: Colors.white,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(20))),
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
                     text,
-                    style: TextStyle(color: Colors.white),
+                    style: TextStyle(color: Colors.black),
                   ),
                 )),
           ],

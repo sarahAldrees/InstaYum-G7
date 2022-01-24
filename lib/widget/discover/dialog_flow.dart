@@ -3,19 +3,19 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_dialogflow/dialogflow_v2.dart';
 
-import 'package:instayum1/widget/discover/facts_message.dart';
+import 'package:instayum1/widget/discover/message.dart';
 
-class FlutterFactsChatBot extends StatefulWidget {
-  FlutterFactsChatBot({Key key, this.title}) : super(key: key);
+class ChatBot extends StatefulWidget {
+  ChatBot({Key key, this.title}) : super(key: key);
 
   final String title;
 
   @override
-  _FlutterFactsChatBotState createState() => new _FlutterFactsChatBotState();
+  _ChatBotState createState() => new _ChatBotState();
 }
 
-class _FlutterFactsChatBotState extends State<FlutterFactsChatBot> {
-  final List<Facts> messageList = <Facts>[];
+class _ChatBotState extends State<ChatBot> {
+  final List<Messages> messageList = <Messages>[];
   final TextEditingController _textController = new TextEditingController();
 
   Widget _queryInputWidget(BuildContext context) {
@@ -40,7 +40,7 @@ class _FlutterFactsChatBotState extends State<FlutterFactsChatBot> {
               child: IconButton(
                   icon: Icon(
                     Icons.send,
-                    color: Colors.green[400],
+                    color: Color(0xFFeb6d44),
                   ),
                   onPressed: () => _submitQuery(_textController.text)),
             ),
@@ -58,10 +58,10 @@ class _FlutterFactsChatBotState extends State<FlutterFactsChatBot> {
     Dialogflow dialogFlow =
         Dialogflow(authGoogle: authGoogle, language: Language.english);
     AIResponse response = await dialogFlow.detectIntent(query);
-    Facts message = Facts(
+    Messages message = Messages(
       text: response.getMessage() ??
           CardDialogflow(response.getListMessage()[0]).title,
-      name: "Flutter",
+      name: "InstaYum",
       type: false,
     );
     setState(() {
@@ -72,7 +72,7 @@ class _FlutterFactsChatBotState extends State<FlutterFactsChatBot> {
   void _submitQuery(String text) {
     print("SUUUBBBMMMMIT WOOOORKIINNGG");
     _textController.clear();
-    Facts message = new Facts(
+    Messages message = new Messages(
       text: text,
       name: "User",
       type: true,
@@ -89,10 +89,10 @@ class _FlutterFactsChatBotState extends State<FlutterFactsChatBot> {
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          "Flutter Facts",
-          style: TextStyle(color: Colors.green[400]),
+          "InstaYum's Chef",
+          style: TextStyle(color: Colors.white),
         ),
-        backgroundColor: Colors.white,
+        backgroundColor: Color(0xFFeb6d44),
         elevation: 0,
       ),
       body: Column(children: <Widget>[

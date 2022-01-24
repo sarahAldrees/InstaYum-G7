@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dialogflow/dialogflow_v2.dart';
 import 'package:intl/intl.dart';
 
+//to be deleted ask Ghaiada *************************
 class ChatbotChat extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
