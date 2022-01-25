@@ -3,7 +3,6 @@ import 'package:instayum1/widget/discover/dialog_flow.dart';
 import 'package:instayum1/widget/recipe_view/my_recipes_screen.dart';
 import 'package:flutter/cupertino.dart';
 import '../recipe_view/my_recipes_screen.dart';
-import 'chatbot_chat.dart';
 
 //import 'package:flutter/material.dart';
 
