@@ -1,10 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class cookbook_item extends StatelessWidget {
+class cookbook_item extends StatefulWidget {
+  @override
+  State<cookbook_item> createState() => cookbook_itemState();
   final String cookbookID;
   // final String cookbookName;
+
   final String imageURLCookbook;
+  static bool isBrowse = true;
+  static Color colorOfCircule = Colors.grey.shade300;
+
   // final VoidCallback onClicked;
 
   const cookbook_item(
@@ -13,14 +19,14 @@ class cookbook_item extends StatelessWidget {
     // this.cookbookName,
     this.imageURLCookbook,
   );
+}
 
-  void selectCookbook() {}
-
+class cookbook_itemState extends State<cookbook_item> {
   @override
   Widget build(BuildContext context) {
-    final image = imageURLCookbook == "noImage"
+    final image = widget.imageURLCookbook == "noImage"
         ? AssetImage("assets/images/defaultRecipeImage.png")
-        : NetworkImage(imageURLCookbook);
+        : NetworkImage(widget.imageURLCookbook);
 // this section will return one item of Grid Items that in bookmarked recipes page.
     return Column(children: [
       ClipOval(
@@ -28,13 +34,21 @@ class cookbook_item extends StatelessWidget {
           width: 120,
           height: 120,
           decoration: BoxDecoration(
-            color: Colors.grey.shade300,
+            color: cookbook_item.colorOfCircule,
           ),
           // ignore: deprecated_member_use
           child: FlatButton(
             padding: EdgeInsets.all(10),
             onPressed: () {
-              debugPrint('bottun clicked');
+              if (!cookbook_item.isBrowse) {
+                debugPrint('add to cookbook');
+                setState(() {
+                  cookbook_item.colorOfCircule = Colors.red;
+                });
+                print(widget.cookbookID);
+              } else {
+                debugPrint('browse');
+              }
             },
             child: ClipOval(
               child: Material(
@@ -60,7 +74,8 @@ class cookbook_item extends StatelessWidget {
           child: Center(
             child: Text(
               // cookbookName,
-              cookbookID, // the ID is the same is the title that's why we remove the cookbook name
+              widget
+                  .cookbookID, // the ID is the same is the title that's why we remove the cookbook name
               style: TextStyle(fontSize: 14),
             ),
           )),

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -75,24 +76,16 @@ class _RecipeViewState extends State<RecipeView> {
                     // color: Color(0xFFeb6d44),
                   ),
                   onPressed: () {
-                    // bookmarked_recipesState().getCookbookObjects();
+                    // bookmarked_recipesState.getCookbookObjects();
+
+                    setState(() {
+                      cookbook_item.isBrowse = false;
+                    });
                     showModalBottomSheet(
                         context: context,
                         builder: (context) {
-                          return GridView.count(
-                            crossAxisCount: 2, // 2 items in each row
-                            padding: EdgeInsets.all(25),
-                            // map all available cookbooks and list them in Gridviwe.
-                            children: bookmarked_recipesState()
-                                .Cookbooks_List
-                                .map((c) => cookbook_item(
-                                      // Key,
-                                      c.id,
-                                      // c.cookbookName,
-                                      c.imageURLCookbook,
-                                    ))
-                                .toList(),
-                          );
+                          return bookmarked_recipes();
+                          // return bookmarked_recipes();
                         });
                     //setstat :change the kind of ici=on and add it to bookmark list
                   }),

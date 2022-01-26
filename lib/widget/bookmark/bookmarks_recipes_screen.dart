@@ -32,7 +32,7 @@ class bookmarked_recipesState extends State<bookmarked_recipes> {
     WidgetsBinding.instance.addPostFrameCallback((_) => getCookbookObjects());
   }
 
-  var Cookbooks_List = [
+  static var Cookbooks_List = [
     Cookbook(
       id: 'Default cookbook',
       // cookbookName: 'Default cookbook',
