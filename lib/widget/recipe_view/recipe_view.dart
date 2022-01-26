@@ -3,12 +3,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:instayum1/model/recipe.dart';
+import 'package:instayum1/widget/bookmark/cookbook_item.dart';
 import 'package:instayum1/widget/recipe_view/comment.dart';
 import 'package:instayum1/widget/recipe_view/convert_to_check_box.dart';
 import 'package:instayum1/widget/recipe_view/rating_recipe.dart';
 import 'package:instayum1/widget/recipe_view/user_information_design.dart';
 import 'package:instayum1/widget/recipe_view/view_reicpe_flotingbutton.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:instayum1/widget/bookmark/bookmarks_recipes_screen.dart';
 
 class RecipeView extends StatefulWidget {
   String _autherId;
@@ -59,6 +61,7 @@ class _RecipeViewState extends State<RecipeView> {
 
     //-------------
     return Scaffold(
+      // ignore: unnecessary_new
       appBar: new AppBar(
         title: Text(widget._recipeName),
         backgroundColor: Color(0xFFeb6d44),
@@ -72,6 +75,25 @@ class _RecipeViewState extends State<RecipeView> {
                     // color: Color(0xFFeb6d44),
                   ),
                   onPressed: () {
+                    // bookmarked_recipesState().getCookbookObjects();
+                    showModalBottomSheet(
+                        context: context,
+                        builder: (context) {
+                          return GridView.count(
+                            crossAxisCount: 2, // 2 items in each row
+                            padding: EdgeInsets.all(25),
+                            // map all available cookbooks and list them in Gridviwe.
+                            children: bookmarked_recipesState()
+                                .Cookbooks_List
+                                .map((c) => cookbook_item(
+                                      // Key,
+                                      c.id,
+                                      // c.cookbookName,
+                                      c.imageURLCookbook,
+                                    ))
+                                .toList(),
+                          );
+                        });
                     //setstat :change the kind of ici=on and add it to bookmark list
                   }),
               IconButton(
