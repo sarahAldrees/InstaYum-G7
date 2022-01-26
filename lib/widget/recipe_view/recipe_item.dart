@@ -8,7 +8,6 @@ class RecipeItem extends StatelessWidget {
   // final String autherName;
   // final String autherImage;
   final String autherId;
-
   final String RecipeId;
   final String recipeName;
   final String typeOfMeal;
@@ -19,7 +18,7 @@ class RecipeItem extends StatelessWidget {
   final List<String> dirctions;
   final List<String> imageUrls;
 
-  const RecipeItem(
+  RecipeItem(
     // Key key,
     // this.autherName,
     // this.autherImage,

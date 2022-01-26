@@ -11,13 +11,13 @@ class ChatBot extends StatefulWidget {
   final String title;
 
   @override
-  _ChatBotState createState() => new _ChatBotState();
+  ChatBotState createState() => new ChatBotState();
 }
 
-class _ChatBotState extends State<ChatBot> {
-  String userPreferredTypeOfMeal = '';
-  String userPreferredCategory = '';
-  String userPreferredCuisine = '';
+class ChatBotState extends State<ChatBot> {
+  static String userPreferredTypeOfMeal = '';
+  static String userPreferredCategory = '';
+  static String userPreferredCuisine = '';
 
   final List<Messages> messageList = <Messages>[];
   final TextEditingController _textController = new TextEditingController();
@@ -91,6 +91,7 @@ class _ChatBotState extends State<ChatBot> {
 
     if (text.toLowerCase().contains('breakfast')) {
       userPreferredTypeOfMeal = 'Breakfast';
+      print("userPreferredTypeOfMeal is Breakfast");
     } else if (text.toLowerCase().contains('lunch')) {
       userPreferredTypeOfMeal = 'Lunch';
     } else if (text.toLowerCase().contains('dinner')) {
@@ -170,7 +171,7 @@ class _ChatBotState extends State<ChatBot> {
     } else if (text.toLowerCase().contains('turkey')) {
       userPreferredCuisine = 'Turkish';
     }
-    getData();
+    //  getData();
   } //method
 
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
@@ -190,83 +191,96 @@ class _ChatBotState extends State<ChatBot> {
   int lengthOfImages = 0;
 
   void getRecipeObjects() {
-    User user = firebaseAuth.currentUser;
-    FirebaseFirestore.instance.collection("users").get()
+    // User user = firebaseAuth.currentUser;
+    // FirebaseFirestore.instance.collection("users").get()
 
-        // .doc(user.uid)
-        // .collection("recipes")
-        // .orderBy("timestamp", descending: true)
-        // .get()
-        .then((querySnapshot) {
-      querySnapshot.docs
-        ..forEach(
-          (doc) => {
-            ingredientsList = [],
-            dirctionsList = [],
-            imageUrlsList = [],
-            lengthOfIngredients = doc.data()['length_of_ingredients'],
-            lengthOfDirections = doc.data()['length_of_directions'],
-            lengthOfImages = doc.data()['image_count'],
+    FirebaseFirestore.instance.collection("users").get().then((querySnapshot) {
+      querySnapshot.docs.forEach((result) {
+        FirebaseFirestore.instance
+            .collection("users")
+            .doc(result.id)
+            .collection("recipes")
+            .get()
+            .then((querySnapshot) {
+          querySnapshot.docs.forEach(
+            (doc) => {
+              ingredientsList = [],
+              dirctionsList = [],
+              imageUrlsList = [],
 
-            for (int i = 0; i < lengthOfIngredients; i++)
-              {
+              // String userPreferredCategory = '';
+              // String userPreferredCuisine = '';
+              if (doc.data()['type_of_meal'] == userPreferredTypeOfMeal &&
+                  doc.data()['category'] == userPreferredCategory &&
+                  doc.data()['cuisine'] == userPreferredCuisine &&
+                  doc.data()['is_public_recipe'])
+                {}
+              else
+                lengthOfIngredients = doc.data()['length_of_ingredients'],
+              lengthOfDirections = doc.data()['length_of_directions'],
+              lengthOfImages = doc.data()['image_count'],
+
+              for (int i = 0; i < lengthOfIngredients; i++)
                 {
-                  ingredientsList.add(
-                    doc.data()['ing${i + 1}'],
+                  {
+                    ingredientsList.add(
+                      doc.data()['ing${i + 1}'],
+                    ),
+                  }
+                },
+              for (int i = 0; i < lengthOfDirections; i++)
+                {
+                  dirctionsList.add(
+                    doc.data()['dir${i + 1}'],
                   ),
-                }
-              },
-            for (int i = 0; i < lengthOfDirections; i++)
-              {
-                dirctionsList.add(
-                  doc.data()['dir${i + 1}'],
+                },
+              for (int i = 0; i < lengthOfImages; i++)
+                {
+                  imageUrlsList.add(
+                    doc.data()['img${i + 1}'],
+                  ),
+                },
+              // recipe_image_url = doc.data()['recipe_image_url'],
+              // widget.autherId = doc.data()['user_id'],
+              recpiesList.add(
+                Recipe(
+                  id: doc.id,
+                  //imageURL: recipe_image_url,
+                  recipeName: doc.data()['recipe_title'],
+                  typeOfMeal: doc.data()['type_of_meal'],
+                  category: doc.data()['category'],
+                  cuisine: doc.data()['cuisine'],
+                  mainImageURL: doc.data()["img1"],
+                  dirctions: dirctionsList,
+                  ingredients: ingredientsList,
+                  imageUrls: imageUrlsList,
                 ),
-              },
-            for (int i = 0; i < lengthOfImages; i++)
-              {
-                imageUrlsList.add(
-                  doc.data()['img${i + 1}'],
-                ),
-              },
-            // recipe_image_url = doc.data()['recipe_image_url'],
-            // widget.autherId = doc.data()['user_id'],
-            recpiesList.add(
-              Recipe(
-                id: doc.id,
-                //imageURL: recipe_image_url,
-                recipeName: doc.data()['recipe_title'],
-                typeOfMeal: doc.data()['type_of_meal'],
-                category: doc.data()['category'],
-                cuisine: doc.data()['cuisine'],
-                mainImageURL: doc.data()["img1"],
-                dirctions: dirctionsList,
-                ingredients: ingredientsList,
-                imageUrls: imageUrlsList,
               ),
-            ),
-          },
-        );
-      setState(() {});
+            },
+          );
+          setState(() {});
+        });
+      });
     });
   }
 
-  final _fireStore = FirebaseFirestore.instance;
-  Future<void> getData() async {
-    // Get docs from collection reference
-    QuerySnapshot querySnapshot = await _fireStore.collection('users').get();
+  // final _fireStore = FirebaseFirestore.instance;
+  // Future<void> getData() async {
+  //   // Get docs from collection reference
+  //   QuerySnapshot querySnapshot = await _fireStore.collection('users').get();
 
-    // Get data from docs and convert map to List
-    final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
-    //for a specific field
-    // final allData = querySnapshot.docs.map((doc) => doc.get('recipes'));
+  //   // Get data from docs and convert map to List
+  //   final allData = querySnapshot.docs.map((doc) => {}).toList();
+  //   //for a specific field
+  //   // final allData = querySnapshot.docs.map((doc) => doc.get('recipes'));
 
-    print('**********************===***');
-    print(allData);
-    for (int i = 0; i < allData.length; i++) {
-      print(allData.elementAt(i));
-    }
-    // print(allData);
-  }
+  //   print('**********************===***');
+  //   print(allData);
+  //   for (int i = 0; i < allData.length; i++) {
+  //     print(allData.elementAt(i));
+  //   }
+  //   // print(allData);
+  // }
 
   @override
   Widget build(BuildContext context) {

@@ -4,7 +4,7 @@ import 'package:instayum1/widget/discover/recipe_card.dart';
 import 'package:instayum1/widget/meal_plan/meal_title.dart';
 import 'package:instayum1/widget/recipe_view/recipe_view.dart';
 
-import 'home_of_design.dart';
+import 'recipe_card_screen.dart';
 
 class Messages extends StatefulWidget {
   Messages({this.text, this.name, this.type});
@@ -75,7 +75,7 @@ class _MessagesState extends State<Messages> {
       return <Widget>[
         Column(children: [
           // HomeOfD(),
-          HomeOfD(),
+          RecipeCardScreen(),
           // Card(
           //   child: Container(
           //     height: 90,
