@@ -1,8 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-//import 'package:flutter_dialogflow/dialogflow_v2.dart';
-
 import 'package:flutter_dialogflow/dialogflow_v2.dart';
-
+import 'package:instayum1/model/recipe.dart';
 import 'package:instayum1/widget/discover/message.dart';
 
 class ChatBot extends StatefulWidget {
@@ -15,6 +15,10 @@ class ChatBot extends StatefulWidget {
 }
 
 class _ChatBotState extends State<ChatBot> {
+  String userPreferredTypeOfMeal = '';
+  String userPreferredCategory = '';
+  String userPreferredCuisine = '';
+
   final List<Messages> messageList = <Messages>[];
   final TextEditingController _textController = new TextEditingController();
 
@@ -70,7 +74,10 @@ class _ChatBotState extends State<ChatBot> {
   }
 
   void _submitQuery(String text) {
-    print("SUUUBBBMMMMIT WOOOORKIINNGG");
+    //user text
+    print('user response in the chatbot***********');
+    print(text);
+
     _textController.clear();
     Messages message = new Messages(
       text: text,
@@ -81,6 +88,184 @@ class _ChatBotState extends State<ChatBot> {
       messageList.insert(0, message);
     });
     agentResponse(text);
+
+    if (text.toLowerCase().contains('breakfast')) {
+      userPreferredTypeOfMeal = 'Breakfast';
+    } else if (text.toLowerCase().contains('lunch')) {
+      userPreferredTypeOfMeal = 'Lunch';
+    } else if (text.toLowerCase().contains('dinner')) {
+      userPreferredTypeOfMeal = 'Dinner';
+    } else if (text.toLowerCase().contains('appetizers')) {
+      userPreferredCategory = 'Appetizers';
+    } else if (text.toLowerCase().contains('app')) {
+      userPreferredCategory = 'Appetizers';
+    } else if (text.toLowerCase().contains('appetizer')) {
+      userPreferredCategory = 'Appetizers';
+    } else if (text.toLowerCase().contains('main course')) {
+      userPreferredCategory = 'Main course';
+    } else if (text.toLowerCase().contains('main')) {
+      userPreferredCategory = 'Main course';
+    } else if (text.toLowerCase().contains('desserts')) {
+      userPreferredCategory = 'Desserts';
+    } else if (text.toLowerCase().contains('dess')) {
+      userPreferredCategory = 'Desserts';
+    } else if (text.toLowerCase().contains('dessert')) {
+      userPreferredCategory = 'Desserts';
+    } else if (text.toLowerCase().contains('drinks')) {
+      userPreferredCategory = 'Drinks';
+    } else if (text.toLowerCase().contains('drink')) {
+      userPreferredCategory = 'Drinks';
+    } else if (text.toLowerCase().contains('salads')) {
+      userPreferredCategory = 'Salads';
+    } else if (text.toLowerCase().contains('salad')) {
+      userPreferredCategory = 'Salads';
+    } else if (text.toLowerCase().contains('soups')) {
+      userPreferredCategory = 'Soups';
+    } else if (text.toLowerCase().contains('soup')) {
+      userPreferredCategory = 'Soups';
+    } else if (text.toLowerCase().contains('american')) {
+      userPreferredCuisine = 'American';
+    } else if (text.toLowerCase().contains('usa')) {
+      userPreferredCuisine = 'American';
+    } else if (text.toLowerCase().contains('america')) {
+      userPreferredCuisine = 'American';
+    } else if (text.toLowerCase().contains('asian')) {
+      userPreferredCuisine = 'Asian';
+    } else if (text.toLowerCase().contains('asia')) {
+      userPreferredCuisine = 'Asian';
+    } else if (text.toLowerCase().contains('brazilian')) {
+      userPreferredCuisine = 'Brazilian';
+    } else if (text.toLowerCase().contains('brazil')) {
+      userPreferredCuisine = 'Brazilian';
+    } else if (text.toLowerCase().contains('egyptian')) {
+      userPreferredCuisine = 'Egyptian';
+    } else if (text.toLowerCase().contains('egypt')) {
+      userPreferredCuisine = 'Egyptian';
+    } else if (text.toLowerCase().contains('french')) {
+      userPreferredCuisine = 'French';
+    } else if (text.toLowerCase().contains('france')) {
+      userPreferredCuisine = 'French';
+    } else if (text.toLowerCase().contains('gulf')) {
+      userPreferredCuisine = 'Gulf';
+    } else if (text.toLowerCase().contains('saudi arabia')) {
+      userPreferredCuisine = 'Gulf';
+    } else if (text.toLowerCase().contains('saudi')) {
+      userPreferredCuisine = 'Gulf';
+    } else if (text.toLowerCase().contains('indian')) {
+      userPreferredCuisine = 'Indian';
+    } else if (text.toLowerCase().contains('india')) {
+      userPreferredCuisine = 'Indian';
+    } else if (text.toLowerCase().contains('italian')) {
+      userPreferredCuisine = 'Italian';
+    } else if (text.toLowerCase().contains('italia')) {
+      userPreferredCuisine = 'Italian';
+    } else if (text.toLowerCase().contains('lebanese')) {
+      userPreferredCuisine = 'Lebanese';
+    } else if (text.toLowerCase().contains('mexican')) {
+      userPreferredCuisine = 'Mexican';
+    } else if (text.toLowerCase().contains('mexico')) {
+      userPreferredCuisine = 'Mexican';
+    } else if (text.toLowerCase().contains('turkish')) {
+      userPreferredCuisine = 'Turkish';
+    } else if (text.toLowerCase().contains('turkey')) {
+      userPreferredCuisine = 'Turkish';
+    }
+    getData();
+  } //method
+
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+  List<Recipe> recpiesList = [];
+
+  List<String> ingredientsList = [];
+
+  List<String> dirctionsList = [];
+
+  List<String> imageUrlsList = [];
+
+  int lengthOfIngredients = 0;
+
+  int lengthOfDirections = 0;
+
+  int lengthOfImages = 0;
+
+  void getRecipeObjects() {
+    User user = firebaseAuth.currentUser;
+    FirebaseFirestore.instance.collection("users").get()
+
+        // .doc(user.uid)
+        // .collection("recipes")
+        // .orderBy("timestamp", descending: true)
+        // .get()
+        .then((querySnapshot) {
+      querySnapshot.docs
+        ..forEach(
+          (doc) => {
+            ingredientsList = [],
+            dirctionsList = [],
+            imageUrlsList = [],
+            lengthOfIngredients = doc.data()['length_of_ingredients'],
+            lengthOfDirections = doc.data()['length_of_directions'],
+            lengthOfImages = doc.data()['image_count'],
+
+            for (int i = 0; i < lengthOfIngredients; i++)
+              {
+                {
+                  ingredientsList.add(
+                    doc.data()['ing${i + 1}'],
+                  ),
+                }
+              },
+            for (int i = 0; i < lengthOfDirections; i++)
+              {
+                dirctionsList.add(
+                  doc.data()['dir${i + 1}'],
+                ),
+              },
+            for (int i = 0; i < lengthOfImages; i++)
+              {
+                imageUrlsList.add(
+                  doc.data()['img${i + 1}'],
+                ),
+              },
+            // recipe_image_url = doc.data()['recipe_image_url'],
+            // widget.autherId = doc.data()['user_id'],
+            recpiesList.add(
+              Recipe(
+                id: doc.id,
+                //imageURL: recipe_image_url,
+                recipeName: doc.data()['recipe_title'],
+                typeOfMeal: doc.data()['type_of_meal'],
+                category: doc.data()['category'],
+                cuisine: doc.data()['cuisine'],
+                mainImageURL: doc.data()["img1"],
+                dirctions: dirctionsList,
+                ingredients: ingredientsList,
+                imageUrls: imageUrlsList,
+              ),
+            ),
+          },
+        );
+      setState(() {});
+    });
+  }
+
+  final _fireStore = FirebaseFirestore.instance;
+  Future<void> getData() async {
+    // Get docs from collection reference
+    QuerySnapshot querySnapshot = await _fireStore.collection('users').get();
+
+    // Get data from docs and convert map to List
+    final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
+    //for a specific field
+    // final allData = querySnapshot.docs.map((doc) => doc.get('recipes'));
+
+    print('**********************===***');
+    print(allData);
+    for (int i = 0; i < allData.length; i++) {
+      print(allData.elementAt(i));
+    }
+    // print(allData);
   }
 
   @override
