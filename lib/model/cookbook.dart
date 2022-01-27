@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 // test
 class Cookbook {
@@ -7,10 +8,8 @@ class Cookbook {
   // final String cookbookName;// the ID is the same is the title that's why we remove the cookbook name
   final String imageURLCookbook;
 
-  const Cookbook({
+  Cookbook({
     @required this.id,
-    // @required this.cookbookName,
-
     @required this.imageURLCookbook,
   });
 }

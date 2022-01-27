@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:instayum1/model/recipe.dart';
 import 'package:instayum1/widget/recipe_view/recipe_item.dart';
+import 'package:instayum1/widget/bookmark/cookbook_item.dart';
 
 // import '../bookmark/data.dart';
 
@@ -10,6 +11,7 @@ class MyRecipesScreen extends StatefulWidget {
   // String autherName;
   // String autherImage;
   String autherId;
+
   // my_recipes(this.autherName, this.autherImage, this.autherId);
 
   @override
@@ -44,66 +46,6 @@ class _MyRecipesScreenState extends State<MyRecipesScreen> {
   //String recipe_image_url = '';
 
   void getRecipeObjects() {
-    // FirebaseFirestore.instance.collection("users").get().then((querySnapshot) {
-    //   querySnapshot.docs.forEach((result) {
-    //     FirebaseFirestore.instance
-    //         .collection("users")
-    //         .doc(result.id)
-    //         .collection("recipes")
-    //         .get()
-    //         .then((querySnapshot) {
-    //       querySnapshot.docs.forEach(
-    //         (doc) => {
-    //           ingredientsList = [],
-    //           dirctionsList = [],
-    //           imageUrlsList = [],
-    //           lengthOfIngredients = doc.data()['length_of_ingredients'],
-    //           lengthOfDirections = doc.data()['length_of_directions'],
-    //           lengthOfImages = doc.data()['image_count'],
-
-    //           for (int i = 0; i < lengthOfIngredients; i++)
-    //             {
-    //               {
-    //                 ingredientsList.add(
-    //                   doc.data()['ing${i + 1}'],
-    //                 ),
-    //               }
-    //             },
-    //           for (int i = 0; i < lengthOfDirections; i++)
-    //             {
-    //               dirctionsList.add(
-    //                 doc.data()['dir${i + 1}'],
-    //               ),
-    //             },
-    //           for (int i = 0; i < lengthOfImages; i++)
-    //             {
-    //               imageUrlsList.add(
-    //                 doc.data()['img${i + 1}'],
-    //               ),
-    //             },
-    //           // recipe_image_url = doc.data()['recipe_image_url'],
-    //           widget.autherId = doc.data()['user_id'],
-    //           recpiesList.add(
-    //             Recipe(
-    //               id: doc.id,
-    //               //imageURL: recipe_image_url,
-    //               recipeName: doc.data()['recipe_title'],
-    //               typeOfMeal: doc.data()['type_of_meal'],
-    //               category: doc.data()['category'],
-    //               cuisine: doc.data()['cuisine'],
-    //               mainImageURL: doc.data()["img1"],
-    //               dirctions: dirctionsList,
-    //               ingredients: ingredientsList,
-    //               imageUrls: imageUrlsList,
-    //             ),
-    //           ),
-    //         },
-    //       );
-    //       setState(() {});
-    //     });
-    //   });
-    // });
-
     User user = firebaseAuth.currentUser;
     FirebaseFirestore.instance
         .collection("users")

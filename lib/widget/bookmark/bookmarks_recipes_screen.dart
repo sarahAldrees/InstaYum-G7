@@ -1,3 +1,4 @@
+import 'dart:ffi';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -5,13 +6,20 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:instayum1/model/cookbook.dart';
+import 'package:instayum1/model/recipe.dart';
 import 'package:instayum1/widget/bookmark/add_new_cookbook.dart';
 import 'package:instayum1/widget/pickers/cookbook_image_picker.dart';
+import 'package:instayum1/widget/recipe_view/comment.dart';
 import 'add_new_cookbook.dart';
 import 'package:instayum1/widget/bookmark/cookbook_item.dart';
 import 'package:path/path.dart' as Path;
 
 class bookmarked_recipes extends StatefulWidget {
+  String aoutherId;
+  String recipeId;
+
+  bookmarked_recipes(this.aoutherId, this.recipeId);
+
 //----------------Alert dialog------------------------------
 
   @override
@@ -210,12 +218,100 @@ class bookmarked_recipesState extends State<bookmarked_recipes> {
     });
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      // remove the default default flutter banner
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
+  GridView showingData() {
+    return GridView.count(
+      crossAxisCount: 2, // 2 items in each row
+      padding: EdgeInsets.all(25),
+      // map all available cookbooks and list them in Gridviwe.
+      children: Cookbooks_List.map((c) => cookbook_item(
+            // Key,
+            c.id,
+            c.imageURLCookbook,
+            // c.colorOfCircule=Colors.grey.shade300,
+          )).toList(),
+    );
+  }
+
+  Scaffold checking() {
+    if (!cookbook_item.isBrowse) {
+      return Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          elevation: 0,
+          // shape:
+          //     Border(bottom: BorderSide(color: Color(0xFFeb6d44), width: 4)),
+          // title: Text("hi"),
+          actions: [
+            SizedBox(
+              width: 10,
+            ),
+            TextButton(
+              child: Text(
+                "Cancel",
+                style: TextStyle(fontSize: 16),
+              ),
+              style: TextButton.styleFrom(
+                primary: Color(0xFFeb6d44),
+                backgroundColor: Colors.white,
+                //side: BorderSide(color: Colors.deepOrange, width: 1),
+                elevation: 0,
+                //minimumSize: Size(100, 50),
+                //shadowColor: Colors.red,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10)),
+              ),
+              onPressed: () {
+                setState(() {
+                  cookbook_item.isBrowse = true;
+                });
+                Navigator.pop(context);
+              },
+            ),
+            SizedBox(
+              width: 10,
+            ),
+            TextButton(
+              child: Text(
+                "Save",
+                style: TextStyle(fontSize: 16),
+              ),
+              style: TextButton.styleFrom(
+                primary: Color(0xFFeb6d44),
+                backgroundColor: Colors.white,
+                //side: BorderSide(color: Colors.deepOrange, width: 1),
+                elevation: 0,
+                //minimumSize: Size(100, 50),
+                //shadowColor: Colors.red,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10)),
+              ),
+              onPressed: () {
+                DateTime timestamp = DateTime.now();
+                for (int i = 0;
+                    i < cookbook_item.slectedCookbooks.length;
+                    i++) {
+                  FirebaseFirestore.instance
+                      .collection("users")
+                      .doc(FirebaseAuth.instance.currentUser.uid)
+                      .collection("cookbooks")
+                      .doc(cookbook_item.slectedCookbooks[i])
+                      .collection("bookmarked_recipe")
+                      .doc(widget.recipeId)
+                      .set({
+                    "autherId": widget.aoutherId,
+                    "recipeId": widget.recipeId,
+                    "timestamp": timestamp,
+                  });
+                }
+                cookbook_item.isBrowse = true;
+                Navigator.pop(context);
+              },
+            ),
+            SizedBox(
+              width: 20,
+            ),
+          ],
+        ),
         // build the button to add a new cookbook
         floatingActionButton: FloatingActionButton(
           backgroundColor: Color(0xFFeb6d44),
@@ -226,18 +322,31 @@ class bookmarked_recipesState extends State<bookmarked_recipes> {
           child: Icon(Icons.add),
         ),
         // here the list of grid view
-        body: GridView.count(
-          crossAxisCount: 2, // 2 items in each row
-          padding: EdgeInsets.all(25),
-          // map all available cookbooks and list them in Gridviwe.
-          children: Cookbooks_List.map((c) => cookbook_item(
-                // Key,
-                c.id,
-                // c.cookbookName,
-                c.imageURLCookbook,
-              )).toList(),
+        body: showingData(),
+      );
+    } else {
+      return Scaffold(
+        // build the button to add a new cookbook
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: Color(0xFFeb6d44),
+          onPressed: () {
+            showAlertDialogOfAddCookbook(context);
+            // add new cookbook
+          },
+          child: Icon(Icons.add),
         ),
-      ),
+        // here the list of grid view
+        body: showingData(),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      // remove the default default flutter banner
+      debugShowCheckedModeBanner: false,
+      home: checking(),
     );
     // ]);
   }

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:instayum1/widget/bookmark/cookbook_item.dart';
 import 'package:instayum1/widget/meal_plan/my_mealplans_screen.dart';
 import 'package:instayum1/widget/profile/followers_numbers.dart';
 import '../recipe_view/my_recipes_screen.dart';
@@ -38,7 +39,9 @@ class ProfileState extends State<Profile> {
   @override
   void initState() {
     super.initState();
-    getData(); //we call the method here to get the data immediately when init the page.
+    getData();
+
+    //we call the method here to get the data immediately when init the page.
   }
 
 //----------------------------------------------------------
@@ -122,7 +125,8 @@ class ProfileState extends State<Profile> {
                   // ------------ list item 2 tab view bookmarks screen.
                   my_meal_plans(),
                   // ------------ list item 3 tab view bookmarks screen.
-                  bookmarked_recipes(),
+
+                  bookmarked_recipes("", ""),
                 ],
               ),
             ),

@@ -81,12 +81,23 @@ class _RecipeViewState extends State<RecipeView> {
                     setState(() {
                       cookbook_item.isBrowse = false;
                     });
+
+                    ///------------------bookmark --------
                     showModalBottomSheet(
+                        isDismissible: false,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(24),
+                            topRight: Radius.circular(24),
+                          ),
+                        ),
                         context: context,
                         builder: (context) {
-                          return bookmarked_recipes();
+                          return bookmarked_recipes(
+                              widget._autherId, widget._recipeid);
                           // return bookmarked_recipes();
                         });
+
                     //setstat :change the kind of ici=on and add it to bookmark list
                   }),
               IconButton(

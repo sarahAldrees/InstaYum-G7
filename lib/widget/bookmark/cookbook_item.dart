@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:instayum1/widget/bookmark/bookmarks_recipes_screen.dart';
 
 class cookbook_item extends StatefulWidget {
   @override
@@ -9,11 +10,13 @@ class cookbook_item extends StatefulWidget {
 
   final String imageURLCookbook;
   static bool isBrowse = true;
-  static Color colorOfCircule = Colors.grey.shade300;
+  Color colorOfCircule = Colors.grey.shade300;
+  bool isSlected = false;
+  static List<String> slectedCookbooks = [];
 
   // final VoidCallback onClicked;
 
-  const cookbook_item(
+  cookbook_item(
     // Key key,
     this.cookbookID,
     // this.cookbookName,
@@ -22,8 +25,14 @@ class cookbook_item extends StatefulWidget {
 }
 
 class cookbook_itemState extends State<cookbook_item> {
+  int length = bookmarked_recipesState.Cookbooks_List.length;
+
   @override
   Widget build(BuildContext context) {
+    // if (!cookbook_item.slectedCookbooks.isEmpty) {
+    //   cookbook_item.slectedCookbooks.clear();
+    // }
+    for (int i = 0; i < length; i++) {}
     final image = widget.imageURLCookbook == "noImage"
         ? AssetImage("assets/images/defaultRecipeImage.png")
         : NetworkImage(widget.imageURLCookbook);
@@ -34,18 +43,47 @@ class cookbook_itemState extends State<cookbook_item> {
           width: 120,
           height: 120,
           decoration: BoxDecoration(
-            color: cookbook_item.colorOfCircule,
+            color: widget.colorOfCircule,
           ),
           // ignore: deprecated_member_use
           child: FlatButton(
             padding: EdgeInsets.all(10),
             onPressed: () {
+              int i = 0;
+              // for (i; i < length; i++) {
+              //   if (bookmarked_recipesState.Cookbooks_List[i].id ==
+              //       widget.cookbookID) {
+              //         bookmarked_recipesState.Cookbooks_List[i].colorOfCircule=Colors.red;
+              //       cookbook_item.colorOfCircule=bookmarked_recipesState.Cookbooks_List[i].colorOfCircule;
+              //       break;}
+              // }
+
               if (!cookbook_item.isBrowse) {
-                debugPrint('add to cookbook');
+                // debugPrint('add to cookbook');
                 setState(() {
-                  cookbook_item.colorOfCircule = Colors.red;
+                  widget.isSlected = !widget.isSlected;
+                  if (widget.isSlected)
+                    widget.colorOfCircule = Colors.red;
+                  else
+                    widget.colorOfCircule = Colors.grey.shade300;
                 });
-                print(widget.cookbookID);
+                if (widget.isSlected) {
+                  cookbook_item.slectedCookbooks.add(widget.cookbookID);
+                } else {
+                  for (int i = 0;
+                      i < cookbook_item.slectedCookbooks.length;
+                      i++) {
+                    if (cookbook_item.slectedCookbooks[i] == widget.cookbookID)
+                      cookbook_item.slectedCookbooks.removeAt(i);
+                  }
+                }
+                print("/////////------------");
+                for (int i = 0;
+                    i < cookbook_item.slectedCookbooks.length;
+                    i++) {
+                  print(cookbook_item.slectedCookbooks[i]);
+                }
+                //print(widget.cookbookID);
               } else {
                 debugPrint('browse');
               }

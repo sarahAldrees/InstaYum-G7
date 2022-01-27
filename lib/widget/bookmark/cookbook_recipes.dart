@@ -32,6 +32,33 @@ class cookbook_recipesState extends State<cookbook_recipes> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp();
+    return ListView(
+      children: [
+        // GridView.count(
+//                                 crossAxisCount: 2, // 2 items in each row
+//                                 padding: EdgeInsets.all(25),
+//                                 // map all available cookbooks and list them in Gridviwe.
+//                                 children: bookmarked_recipesState.Cookbooks_List.map(
+//                                         (c) => cookbook_item(
+//                                               // Key,
+//                                               c.id,
+//                                               // c.cookbookName,
+//                                               c.imageURLCookbook,
+//                                             )).toList(),
+//                           ),
+      ],
+    );
   }
 }
+// GridView.count(
+//                                 crossAxisCount: 2, // 2 items in each row
+//                                 padding: EdgeInsets.all(25),
+//                                 // map all available cookbooks and list them in Gridviwe.
+//                                 children: bookmarked_recipesState.Cookbooks_List.map(
+//                                         (c) => cookbook_item(
+//                                               // Key,
+//                                               c.id,
+//                                               // c.cookbookName,
+//                                               c.imageURLCookbook,
+//                                             )).toList(),
+//                           ),
