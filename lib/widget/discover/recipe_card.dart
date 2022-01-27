@@ -1,7 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:instayum1/widget/recipe_view/recipe_view.dart';
 
-class RecipeCard extends StatelessWidget {
+class RecipeCard extends StatefulWidget {
   final String autherId;
   final String RecipeId;
   final String recipeName;
@@ -35,6 +36,44 @@ class RecipeCard extends StatelessWidget {
   );
 
   @override
+  State<RecipeCard> createState() => _RecipeCardState();
+}
+
+class _RecipeCardState extends State<RecipeCard> {
+  var numOfRevewis;
+  var avg = 0.0;
+  var rating;
+
+  getData() async {
+    //to get previous rating info from firestor
+    await FirebaseFirestore.instance
+        .collection("users")
+        .doc(widget.autherId)
+        .collection("recipes")
+        .doc(widget.RecipeId)
+        .collection("rating")
+        .doc("recipeRating")
+        .snapshots()
+        .listen((userData) {
+      setState(() {
+        numOfRevewis = userData.data()["num_of_reviews"];
+
+        avg = userData.data()["average_rating"];
+        print("00000---------------------------------------");
+        print(avg);
+        print("00000---------------------------------------");
+        print(numOfRevewis);
+      });
+    });
+  }
+
+  void initState() {
+    super.initState();
+    getData();
+    //we call the method here to get the data immediately when init the page.
+  }
+
+  @override
   Widget build(BuildContext context) {
     final List<String> ingredients = ["milk"];
 
@@ -66,7 +105,7 @@ class RecipeCard extends StatelessWidget {
             Colors.black.withOpacity(0.35),
             BlendMode.multiply,
           ),
-          image: NetworkImage(mainImageURL),
+          image: NetworkImage(widget.mainImageURL),
           fit: BoxFit.cover,
         ),
       ),
@@ -82,23 +121,23 @@ class RecipeCard extends StatelessWidget {
                           //key,
                           // autherName,
                           // autherImage,
-                          autherId,
-                          RecipeId,
-                          recipeName,
-                          mainImageURL,
-                          typeOfMeal,
-                          category,
-                          cuisine,
+                          widget.autherId,
+                          widget.RecipeId,
+                          widget.recipeName,
+                          widget.mainImageURL,
+                          widget.typeOfMeal,
+                          widget.category,
+                          widget.cuisine,
                           ingredients,
                           dirctions,
-                          imageUrls)));
+                          widget.imageUrls)));
             }, //what happend after clicking image
           ),
           Align(
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 5.0),
               child: Text(
-                recipeName,
+                widget.recipeName,
                 style: TextStyle(
                     fontSize: 19, color: Colors.white), // color of the title
                 overflow: TextOverflow.ellipsis,
@@ -127,12 +166,12 @@ class RecipeCard extends StatelessWidget {
                         size: 18,
                       ),
                       SizedBox(width: 7),
-                      // Text(
-                      //  rating,
-                      // style: TextStyle(
-                      //     fontSize: 14,
-                      //     color: Colors.white), // text size ----------
-                      //  ),
+                      Text(
+                        numOfRevewis.toString(),
+                        style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.white), // text size ----------
+                      ),
                     ],
                   ),
                 ),
