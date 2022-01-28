@@ -44,6 +44,79 @@ class RecipeView extends StatefulWidget {
 }
 
 class _RecipeViewState extends State<RecipeView> {
+  // bool recipeExist = false;
+  // List<String> recipesNameslist = [];
+  // Widget bookmarkIcon() {
+  //   FirebaseFirestore.instance
+  //       .collection("users")
+  //       .doc(FirebaseAuth.instance.currentUser.uid)
+  //       .collection("cookbooks")
+  //       .snapshots()
+  //       .listen((data) {
+  //     data.docs.forEach((doc) {
+  //       FirebaseFirestore.instance
+  //           .collection("users")
+  //           .doc(FirebaseAuth.instance.currentUser.uid)
+  //           .collection("cookbooks")
+  //           .doc("cook")
+  //           .collection("bookmarked_recipe")
+  //           .snapshots()
+  //           .listen((data) {
+  //         data.docs.forEach((doc) {
+  //           if (doc.data()['recipeId'] == widget._recipeid) {
+  //             recipesNameslist.add(doc.data()['recipeId']);
+  //             return Icon(Icons.ac_unit_outlined);
+  //           }
+  //         });
+  //       });
+  //     });
+  //   });
+  //   setState(() {
+  //     recipesNameslist;
+  //     print(";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;");
+  //     print(recipesNameslist[0]);
+  //   });
+  //   return Icon(Icons.ice_skating);
+  // }
+  // Widget bookmarkIcon() {
+  //   recipeExist = false;
+  //   // FirebaseFirestore.instance
+  //   //     .collection("users")
+  //   //     .doc(FirebaseAuth.instance.currentUser.uid)
+  //   //     .collection("cookbooks")
+  //   //     .get()
+  //   //     .then((querySnapshot) {
+  //   //   querySnapshot.docs.forEach((result) {
+  //   FirebaseFirestore.instance
+  //       .collection("users")
+  //       .doc(FirebaseAuth.instance.currentUser.uid)
+  //       .collection("cookbooks")
+  //       .doc("cook")
+  //       .collection("bookmarked_recipe")
+  //       .get()
+  //       .then((querySnapshot) {
+  //     querySnapshot.docs.forEach(
+  //       (doc) => {
+  //         if (doc.data()['recipeId'] == widget._recipeid)
+  //           {
+  //             recipeExist = true,
+  //           }
+  //       },
+  //     );
+  //     // setState(() {});
+  //   });
+  //   // });
+  //   // });
+  //   setState(() {
+  //     recipeExist;
+  //   });
+  //   if (recipeExist) {
+  //     return Icon(Icons.ac_unit_outlined);
+  //   } else {
+  //     return Icon(Icons.ice_skating);
+  //   }
+  // }
+
   @override
   Widget build(BuildContext context) {
     // to return the default image if user does not enter an image by puting "noImageUrl" in the database and converting here to an image
@@ -69,6 +142,7 @@ class _RecipeViewState extends State<RecipeView> {
         actions: [
           Row(
             children: [
+              // bookmarkIcon(),
               IconButton(
                   icon: Icon(
                     Icons.bookmark_add_outlined,
