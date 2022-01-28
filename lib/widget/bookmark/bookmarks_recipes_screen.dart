@@ -15,10 +15,10 @@ import 'package:instayum1/widget/bookmark/cookbook_item.dart';
 import 'package:path/path.dart' as Path;
 
 class bookmarked_recipes extends StatefulWidget {
-  String aoutherId;
-  String recipeId;
+  String autherId;
+  Recipe recipeObj;
 
-  bookmarked_recipes(this.aoutherId, this.recipeId);
+  bookmarked_recipes(this.autherId, this.recipeObj);
 
 //----------------Alert dialog------------------------------
 
@@ -296,10 +296,21 @@ class bookmarked_recipesState extends State<bookmarked_recipes> {
                       .collection("cookbooks")
                       .doc(cookbook_item.slectedCookbooks[i])
                       .collection("bookmarked_recipe")
-                      .doc(widget.recipeId)
+                      .doc(widget.recipeObj.id)
                       .set({
-                    "autherId": widget.aoutherId,
-                    "recipeId": widget.recipeId,
+                    "autherId": widget.autherId,
+                    "recipeId": widget.recipeObj.id,
+                    "recipeName": widget.recipeObj.recipeName,
+                    "dirctions":
+                        FieldValue.arrayUnion(widget.recipeObj.dirctions),
+                    "ingredients":
+                        FieldValue.arrayUnion(widget.recipeObj.ingredients),
+                    "imageUrls":
+                        FieldValue.arrayUnion(widget.recipeObj.imageUrls),
+                    "category": widget.recipeObj.category,
+                    'cuisine': widget.recipeObj.cuisine,
+                    'typeOfMeal': widget.recipeObj.typeOfMeal,
+                    "img1": widget.recipeObj.mainImageURL,
                     "timestamp": timestamp,
                   });
                 }

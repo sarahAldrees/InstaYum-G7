@@ -1,6 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:instayum1/model/recipe.dart';
 import 'package:instayum1/widget/bookmark/bookmarks_recipes_screen.dart';
+import 'package:instayum1/widget/bookmark/cookbook_recipes.dart';
 
 class cookbook_item extends StatefulWidget {
   @override
@@ -49,15 +53,6 @@ class cookbook_itemState extends State<cookbook_item> {
           child: FlatButton(
             padding: EdgeInsets.all(10),
             onPressed: () {
-              int i = 0;
-              // for (i; i < length; i++) {
-              //   if (bookmarked_recipesState.Cookbooks_List[i].id ==
-              //       widget.cookbookID) {
-              //         bookmarked_recipesState.Cookbooks_List[i].colorOfCircule=Colors.red;
-              //       cookbook_item.colorOfCircule=bookmarked_recipesState.Cookbooks_List[i].colorOfCircule;
-              //       break;}
-              // }
-
               if (!cookbook_item.isBrowse) {
                 // debugPrint('add to cookbook');
                 setState(() {
@@ -85,7 +80,13 @@ class cookbook_itemState extends State<cookbook_item> {
                 }
                 //print(widget.cookbookID);
               } else {
-                debugPrint('browse');
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            new cookbook_recipes(widget.cookbookID)));
+//-------------------------------------------------------
+
               }
             },
             child: ClipOval(

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 
 class Recipe {
   // final Key key; //??
+  final String autherId;
   final String id; //change to user id
   final String recipeName;
   final String mainImageURL;
@@ -14,6 +15,7 @@ class Recipe {
 
   const Recipe({
     // @required this.key,
+    @required this.autherId,
     @required this.id,
     @required this.recipeName,
     @required this.mainImageURL,

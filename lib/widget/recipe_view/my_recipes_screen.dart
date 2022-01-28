@@ -87,8 +87,8 @@ class _MyRecipesScreenState extends State<MyRecipesScreen> {
           widget.autherId = doc.data()['user_id'],
           recpiesList.add(
             Recipe(
+              autherId: widget.autherId,
               id: doc.id,
-              //imageURL: recipe_image_url,
               recipeName: doc.data()['recipe_title'],
               typeOfMeal: doc.data()['type_of_meal'],
               category: doc.data()['category'],
@@ -115,10 +115,7 @@ class _MyRecipesScreenState extends State<MyRecipesScreen> {
       // map all available cookbooks and list them in Gridviwe.
       children: recpiesList
           .map((e) => RecipeItem(
-              //key,
-              // widget.autherName,
-              // widget.autherImage,
-              widget.autherId,
+              e.autherId,
               e.id,
               e.recipeName,
               e.mainImageURL,

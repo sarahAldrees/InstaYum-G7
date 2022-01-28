@@ -244,6 +244,7 @@ class ChatBotState extends State<ChatBot> {
               // widget.autherId = doc.data()['user_id'],
               recpiesList.add(
                 Recipe(
+                  autherId: result.id,
                   id: doc.id,
                   //imageURL: recipe_image_url,
                   recipeName: doc.data()['recipe_title'],
