@@ -24,16 +24,25 @@ class cookbook_recipes extends StatefulWidget {
 
 List<Recipe> recpiesList = [];
 
+List<String> ingredientsList = [];
+
+List<String> dirctionsList = [];
+
+List<String> imageUrlsList = [];
+
+int lengthOfIngredients = 0;
+
+int lengthOfDirections = 0;
+
+int lengthOfImages = 0;
+
+int numberOfRecipes = 0;
+
 String autherId;
+String recipeId;
 
 class cookbook_recipesState extends State<cookbook_recipes> {
   getData() async {
-    //---------------------retriving data--------------------
-    //final FirebaseAuth _auth = await FirebaseAuth.instance;
-    //final currentUser = _auth.currentUser;
-
-//------------- .collection("users")
-    //setState(() {});
     await FirebaseFirestore.instance
         .collection("users")
         .doc(FirebaseAuth.instance.currentUser.uid)
@@ -44,27 +53,58 @@ class cookbook_recipesState extends State<cookbook_recipes> {
         .listen((data) {
       recpiesList.clear();
       data.docs.forEach((doc) {
-        recpiesList.add(
-          Recipe(
-            autherId: doc.data()['autherId'],
-            id: doc.data()['recipeId'],
-            recipeName: doc.data()['recipeName'],
-            typeOfMeal: doc.data()['typeOfMeal'],
+        setState(() {
+          autherId = doc.data()['autherId'];
+          recipeId = doc.data()['recipeId'];
+        });
+//----------------------------------------------------------------
+        FirebaseFirestore.instance
+            .collection("users")
+            .doc(autherId)
+            .collection("recipes")
+            .doc(recipeId)
+            .snapshots()
+            .listen((doc) {
+          ingredientsList = [];
+          dirctionsList = [];
+          imageUrlsList = [];
+          lengthOfIngredients = doc.data()['length_of_ingredients'];
+          lengthOfDirections = doc.data()['length_of_directions'];
+          lengthOfImages = doc.data()['image_count'];
+
+          for (int i = 0; i < lengthOfIngredients; i++) {
+            {
+              ingredientsList.add(
+                doc.data()['ing${i + 1}'],
+              );
+            }
+          }
+          for (int i = 0; i < lengthOfDirections; i++) {
+            dirctionsList.add(
+              doc.data()['dir${i + 1}'],
+            );
+          }
+          for (int i = 0; i < lengthOfImages; i++) {
+            imageUrlsList.add(
+              doc.data()['img${i + 1}'],
+            );
+          }
+          // recipe_image_url = doc.data()['recipe_image_url'],
+          recpiesList.add(Recipe(
+            autherId: autherId,
+            id: doc.id,
+            recipeName: doc.data()['recipe_title'],
+            typeOfMeal: doc.data()['type_of_meal'],
             category: doc.data()['category'],
             cuisine: doc.data()['cuisine'],
             mainImageURL: doc.data()["img1"],
-            dirctions: List.from(doc.data()["dirctions"]),
-            ingredients: List.from(doc.data()["ingredients"]),
-            imageUrls: List.from(doc.data()["imageUrls"]),
-          ),
-        );
-      });
-      if (this.mounted) {
-        setState(() {
-          recpiesList;
+            dirctions: dirctionsList,
+            ingredients: ingredientsList,
+            imageUrls: imageUrlsList,
+          ));
+          setState(() {});
         });
-      }
-      //--------------------------------
+      });
     });
   }
 

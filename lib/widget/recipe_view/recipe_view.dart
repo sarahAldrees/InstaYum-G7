@@ -94,18 +94,7 @@ class _RecipeViewState extends State<RecipeView> {
                         context: context,
                         builder: (context) {
                           return bookmarked_recipes(
-                              widget._autherId,
-                              Recipe(
-                                  autherId: widget._autherId,
-                                  id: widget._recipeid,
-                                  recipeName: widget._recipeName,
-                                  mainImageURL: widget._mainImageUrl,
-                                  typeOfMeal: widget._typeOfMeal,
-                                  category: widget._category,
-                                  cuisine: widget._cuisine,
-                                  ingredients: widget._ingredients,
-                                  dirctions: widget._dirctions,
-                                  imageUrls: widget._imageUrls));
+                              widget._autherId, widget._recipeid);
                           // return bookmarked_recipes();
                         });
 

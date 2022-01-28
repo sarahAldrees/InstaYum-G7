@@ -16,9 +16,9 @@ import 'package:path/path.dart' as Path;
 
 class bookmarked_recipes extends StatefulWidget {
   String autherId;
-  Recipe recipeObj;
+  String recipeId;
 
-  bookmarked_recipes(this.autherId, this.recipeObj);
+  bookmarked_recipes(this.autherId, this.recipeId);
 
 //----------------Alert dialog------------------------------
 
@@ -296,22 +296,10 @@ class bookmarked_recipesState extends State<bookmarked_recipes> {
                       .collection("cookbooks")
                       .doc(cookbook_item.slectedCookbooks[i])
                       .collection("bookmarked_recipe")
-                      .doc(widget.recipeObj.id)
+                      .doc(widget.recipeId)
                       .set({
                     "autherId": widget.autherId,
-                    "recipeId": widget.recipeObj.id,
-                    "recipeName": widget.recipeObj.recipeName,
-                    "dirctions":
-                        FieldValue.arrayUnion(widget.recipeObj.dirctions),
-                    "ingredients":
-                        FieldValue.arrayUnion(widget.recipeObj.ingredients),
-                    "imageUrls":
-                        FieldValue.arrayUnion(widget.recipeObj.imageUrls),
-                    "category": widget.recipeObj.category,
-                    'cuisine': widget.recipeObj.cuisine,
-                    'typeOfMeal': widget.recipeObj.typeOfMeal,
-                    "img1": widget.recipeObj.mainImageURL,
-                    "timestamp": timestamp,
+                    "recipeId": widget.recipeId,
                   });
                 }
                 cookbook_item.isBrowse = true;

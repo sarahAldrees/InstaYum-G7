@@ -128,7 +128,7 @@ class ProfileState extends State<Profile> {
                   my_meal_plans(),
                   // ------------ list item 3 tab view bookmarks screen.
 
-                  bookmarked_recipes("", Recipe()),
+                  bookmarked_recipes("", ""),
                 ],
               ),
             ),
