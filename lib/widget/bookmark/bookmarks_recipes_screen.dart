@@ -290,18 +290,31 @@ class bookmarked_recipesState extends State<bookmarked_recipes> {
                 for (int i = 0;
                     i < cookbook_item.slectedCookbooks.length;
                     i++) {
-                  FirebaseFirestore.instance
-                      .collection("users")
-                      .doc(FirebaseAuth.instance.currentUser.uid)
-                      .collection("cookbooks")
-                      .doc(cookbook_item.slectedCookbooks[i])
-                      .collection("bookmarked_recipe")
-                      .doc(widget.recipeId)
-                      .set({
-                    "autherId": widget.autherId,
-                    "recipeId": widget.recipeId,
-                  });
+                  if (cookbook_item.slectedCookbooks[i] != "Default cookbook") {
+                    FirebaseFirestore.instance
+                        .collection("users")
+                        .doc(FirebaseAuth.instance.currentUser.uid)
+                        .collection("cookbooks")
+                        .doc(cookbook_item.slectedCookbooks[i])
+                        .collection("bookmarked_recipe")
+                        .doc(widget.recipeId)
+                        .set({
+                      "autherId": widget.autherId,
+                      "recipeId": widget.recipeId,
+                    });
+                  }
                 }
+                FirebaseFirestore.instance
+                    .collection("users")
+                    .doc(FirebaseAuth.instance.currentUser.uid)
+                    .collection("cookbooks")
+                    .doc("Default cookbook")
+                    .collection("bookmarked_recipe")
+                    .doc(widget.recipeId)
+                    .set({
+                  "autherId": widget.autherId,
+                  "recipeId": widget.recipeId,
+                });
                 cookbook_item.isBrowse = true;
                 Navigator.pop(context);
               },

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:instayum1/model/cookbook.dart';
 import 'package:instayum1/model/recipe.dart';
 import 'package:instayum1/widget/bookmark/cookbook_item.dart';
 import 'package:instayum1/widget/recipe_view/comment.dart';
@@ -44,40 +45,89 @@ class RecipeView extends StatefulWidget {
 }
 
 class _RecipeViewState extends State<RecipeView> {
-  // bool recipeExist = false;
-  // List<String> recipesNameslist = [];
-  // Widget bookmarkIcon() {
-  //   FirebaseFirestore.instance
+  bool recipeExist = false;
+  List<String> recipesNameslist = [];
+
+  // bookmarkIcon() async {
+  //   await FirebaseFirestore.instance
   //       .collection("users")
   //       .doc(FirebaseAuth.instance.currentUser.uid)
   //       .collection("cookbooks")
   //       .snapshots()
   //       .listen((data) {
   //     data.docs.forEach((doc) {
-  //       FirebaseFirestore.instance
-  //           .collection("users")
-  //           .doc(FirebaseAuth.instance.currentUser.uid)
-  //           .collection("cookbooks")
-  //           .doc("cook")
-  //           .collection("bookmarked_recipe")
-  //           .snapshots()
-  //           .listen((data) {
-  //         data.docs.forEach((doc) {
-  //           if (doc.data()['recipeId'] == widget._recipeid) {
-  //             recipesNameslist.add(doc.data()['recipeId']);
-  //             return Icon(Icons.ac_unit_outlined);
-  //           }
-  //         });
-  //       });
+  //       recipesNameslist.add(doc.data()["cookbook_id"]);
+  //       // ------------------------------------- Try 1 ------------------------------
+  //       print(recipesNameslist[0]);
   //     });
   //   });
+
   //   setState(() {
   //     recipesNameslist;
   //     print(";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;");
-  //     print(recipesNameslist[0]);
+  //     // print(recipesNameslist[0]);
   //   });
-  //   return Icon(Icons.ice_skating);
+  //   // print(recipesNameslist[0]);
+  //   // for (int i = 0; i < recipesNameslist.length; i++) {
+  //   //   FirebaseFirestore.instance
+  //   //       .collection("users")
+  //   //       .doc(FirebaseAuth.instance.currentUser.uid)
+  //   //       .collection("cookbooks")
+  //   //       .doc(recipesNameslist[i])
+  //   //       .collection("bookmarked_recipe")
+  //   //       .snapshots()
+  //   //       .listen((data) {
+  //   //     data.docs.forEach((doc) {
+
+  //   //       // if (doc.data()['recipeId'] == widget._recipeid) {
+  //   //       //   setState(() {
+  //   //       //     recipeExist = true;
+  //   //       //   });
+  //   //       //   // recipesNameslist.add(doc.data()['recipeId']);
+
+  //   //       // }
+  //   //     });
+  //   //   });
+  //   // }
+  //   // if (NestedForEach(recipesNameslist)) {
+  //   //   print("1");
+  //   //   // return Icon(Icons.ac_unit_outlined);
+  //   // }
+  //   // print("2");
+  //   // return Icon(Icons.ice_skating);
   // }
+
+  // void initState() {
+  //   super.initState();
+
+  //   bookmarkIcon();
+  //   //we call the method here to get the data immediately when init the page.
+  // }
+
+  bool NestedForEach(List<String> list) {
+    for (int i = 0; i < recipesNameslist.length; i++) {
+      FirebaseFirestore.instance
+          .collection("users")
+          .doc(FirebaseAuth.instance.currentUser.uid)
+          .collection("cookbooks")
+          .doc(list[i])
+          .collection("bookmarked_recipe")
+          .snapshots()
+          .listen((data) {
+        data.docs.forEach((doc) {
+          if (doc.data()['recipeId'] == widget._recipeid) {
+            setState(() {
+              recipeExist = true;
+            });
+            // recipesNameslist.add(doc.data()['recipeId']);
+            // return Icon(Icons.ac_unit_outlined);
+          }
+        });
+      });
+    }
+    return recipeExist;
+  }
+
   // Widget bookmarkIcon() {
   //   recipeExist = false;
   //   // FirebaseFirestore.instance
@@ -375,6 +425,7 @@ class getRatingState extends State<getRating> {
   void initState() {
     super.initState();
     getData();
+
     //we call the method here to get the data immediately when init the page.
   }
 
@@ -446,6 +497,7 @@ class getuserinfoState extends State<getuserinfo> {
   void initState() {
     super.initState();
     getData();
+
     //we call the method here to get the data immediately when init the page.
   }
 
