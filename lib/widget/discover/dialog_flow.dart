@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dialogflow/dialogflow_v2.dart';
 import 'package:instayum1/model/recipe.dart';
+import 'package:instayum1/widget/discover/bot_suggestion.dart';
 import 'package:instayum1/widget/discover/message.dart';
 
 class ChatBot extends StatefulWidget {
@@ -54,6 +55,29 @@ class ChatBotState extends State<ChatBot> {
     );
   }
 
+  Widget boardView;
+  listOfResponses(List<String> t) {
+    boardView = Container(
+      color: Colors.blue,
+      child: ListView.builder(
+          scrollDirection: Axis.vertical,
+          itemCount: 15,
+          itemBuilder: (BuildContext context, int index) {
+            return ListTile(
+              onTap: () {},
+              title: Row(
+                children: <Widget>[
+                  Expanded(child: Text(t.elementAt(0))),
+                  Text("12 Dec 18"),
+                ],
+              ),
+            );
+          }),
+    );
+  }
+
+  var botSuggestions;
+
   void agentResponse(query) async {
     _textController.clear();
     AuthGoogle authGoogle =
@@ -62,6 +86,10 @@ class ChatBotState extends State<ChatBot> {
     Dialogflow dialogFlow =
         Dialogflow(authGoogle: authGoogle, language: Language.english);
     AIResponse response = await dialogFlow.detectIntent(query);
+    var botSuggestions = BotSuggestions(response.getListMessage());
+    print('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%');
+    listOfResponses(botSuggestions.suggestions);
+    print(botSuggestions.suggestions);
     Messages message = Messages(
       text: response.getMessage() ??
           CardDialogflow(response.getListMessage()[0]).title,
@@ -295,16 +323,52 @@ class ChatBotState extends State<ChatBot> {
         backgroundColor: Color(0xFFeb6d44),
         elevation: 0,
       ),
-      body: Column(children: <Widget>[
-        Flexible(
-            child: ListView.builder(
-          padding: EdgeInsets.all(8.0),
-          reverse: true, //To keep the latest messages at the bottom
-          itemBuilder: (_, int index) => messageList[index],
-          itemCount: messageList.length,
-        )),
-        _queryInputWidget(context),
-      ]),
+      body: Column(
+          // crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            // Center(
+            // child:
+
+            // ),
+            Flexible(
+              child: ListView.builder(
+                padding: EdgeInsets.all(8.0),
+                reverse: true, //To keep the latest messages at the bottom
+                itemBuilder: (_, int index) => messageList[index],
+                itemCount: messageList.length,
+              ),
+            ),
+            Row(
+              //crossAxisAlignment: CrossAxisAlignment.baseline,
+              // mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                ActionChip(
+                  avatar: Icon(Icons.favorite),
+                  label: Text('Action 1'),
+                  onPressed: () {
+                    _submitQuery('hi');
+                    // _textController.text = 'wooow';
+                  },
+                ),
+                ActionChip(
+                  avatar: Icon(Icons.delete),
+                  label: Text('Action 2'),
+                  onPressed: () {},
+                ),
+                ActionChip(
+                  avatar: Icon(Icons.alarm),
+                  label: Text('Action 3'),
+                  onPressed: () {},
+                ),
+                // ActionChip(
+                //   avatar: Icon(Icons.location_on),
+                //   label: Text('Action 4'),
+                //   onPressed: () {},
+                // ),
+              ],
+            ),
+            _queryInputWidget(context),
+          ]),
     );
   }
 }
