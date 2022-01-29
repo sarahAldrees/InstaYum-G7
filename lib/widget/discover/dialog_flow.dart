@@ -293,6 +293,47 @@ class ChatBotState extends State<ChatBot> {
     });
   }
 
+  Widget dynamicActionChip(String str) {
+    return ActionChip(
+      avatar: CircleAvatar(
+        backgroundColor: Colors.grey.shade600,
+        child: Text(str[0].toUpperCase()),
+      ),
+      label: Text(str),
+      onPressed: () {
+        _submitQuery(str);
+        print("7777777777777777777777777777777777777777777777777777777777");
+        print(_textController.text);
+        // _textController.text = 'wooow';
+      },
+    );
+  }
+
+  Widget dynamicWrapChips(List<String> suggestionList) {
+    return Wrap(
+        spacing: 6.0,
+        runSpacing: 6.0,
+        children: List<Widget>.generate(suggestedLunchOrDinnerCategory.length,
+            (int index) {
+          return dynamicActionChip(suggestedLunchOrDinnerCategory[index]);
+        }));
+  }
+
+  List<String> suggestedMealType = ["breakfast", 'Lunch', "Dinner"];
+  List<String> suggestedBreakfastCategory = [
+    "appetizers",
+    "main course",
+    "drink"
+  ];
+  List<String> suggestedLunchOrDinnerCategory = [
+    "appetizers",
+    "main course",
+    "salads",
+    "soups",
+    "desserts",
+    "drink"
+  ];
+
   // final _fireStore = FirebaseFirestore.instance;
   // Future<void> getData() async {
   //   // Get docs from collection reference
@@ -326,10 +367,6 @@ class ChatBotState extends State<ChatBot> {
       body: Column(
           // crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            // Center(
-            // child:
-
-            // ),
             Flexible(
               child: ListView.builder(
                 padding: EdgeInsets.all(8.0),
@@ -338,35 +375,7 @@ class ChatBotState extends State<ChatBot> {
                 itemCount: messageList.length,
               ),
             ),
-            Row(
-              //crossAxisAlignment: CrossAxisAlignment.baseline,
-              // mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                ActionChip(
-                  avatar: Icon(Icons.favorite),
-                  label: Text('Action 1'),
-                  onPressed: () {
-                    _submitQuery('hi');
-                    // _textController.text = 'wooow';
-                  },
-                ),
-                ActionChip(
-                  avatar: Icon(Icons.delete),
-                  label: Text('Action 2'),
-                  onPressed: () {},
-                ),
-                ActionChip(
-                  avatar: Icon(Icons.alarm),
-                  label: Text('Action 3'),
-                  onPressed: () {},
-                ),
-                // ActionChip(
-                //   avatar: Icon(Icons.location_on),
-                //   label: Text('Action 4'),
-                //   onPressed: () {},
-                // ),
-              ],
-            ),
+            dynamicWrapChips(suggestedLunchOrDinnerCategory),
             _queryInputWidget(context),
           ]),
     );
