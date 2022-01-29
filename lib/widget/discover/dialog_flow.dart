@@ -26,7 +26,7 @@ class ChatBotState extends State<ChatBot> {
     type: false,
   );
 
-  List<Messages> messageList = <Messages>[];
+  static List<Messages> messageList = <Messages>[];
 
   final TextEditingController _textController = new TextEditingController();
 
@@ -291,15 +291,14 @@ class ChatBotState extends State<ChatBot> {
   Widget dynamicActionChip(String str) {
     return ActionChip(
       avatar: CircleAvatar(
-        backgroundColor: Colors.grey.shade600,
-        child: Text(str[0].toUpperCase()),
+        backgroundColor: Colors.white,
+        //grey.shade600,
+        child: Text(str[0].toUpperCase(),
+            style: TextStyle(color: Color(0xFFeb6d44))),
       ),
       label: Text(str),
       onPressed: () {
         _submitQuery(str);
-        print("7777777777777777777777777777777777777777777777777777777777");
-        print(_textController.text);
-        // _textController.text = 'wooow';
       },
     );
   }
@@ -312,39 +311,6 @@ class ChatBotState extends State<ChatBot> {
           return dynamicActionChip(suggestionList[index]);
         }));
   }
-
-  List<String> suggestedMealType = ["breakfast", 'Lunch', "Dinner"];
-  List<String> suggestedBreakfastCategory = [
-    "appetizers",
-    "main course",
-    "drink"
-  ];
-  List<String> suggestedLunchOrDinnerCategory = [
-    "appetizers",
-    "main course",
-    "salads",
-    "soups",
-    "desserts",
-    "drink"
-  ];
-
-  // final _fireStore = FirebaseFirestore.instance;
-  // Future<void> getData() async {
-  //   // Get docs from collection reference
-  //   QuerySnapshot querySnapshot = await _fireStore.collection('users').get();
-
-  //   // Get data from docs and convert map to List
-  //   final allData = querySnapshot.docs.map((doc) => {}).toList();
-  //   //for a specific field
-  //   // final allData = querySnapshot.docs.map((doc) => doc.get('recipes'));
-
-  //   print('**********************===***');
-  //   print(allData);
-  //   for (int i = 0; i < allData.length; i++) {
-  //     print(allData.elementAt(i));
-  //   }
-  //   // print(allData);
-  // }
 
   @override
   Widget build(BuildContext context) {

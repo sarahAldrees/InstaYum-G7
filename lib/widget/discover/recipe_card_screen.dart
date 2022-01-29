@@ -33,13 +33,14 @@ class RecipeCardScreenState extends State<RecipeCardScreen> {
 
   int lengthOfImages = 0;
 
-  int numberOfRecipes = 0;
+  int numberOfRecipes = 1;
 
   void getRecipeObjects() {
     // User user = firebaseAuth.currentUser;
     // FirebaseFirestore.instance.collection("users").get()
 
     FirebaseFirestore.instance.collection("users").get().then((querySnapshot) {
+      //  querySnapshot.docs.shuffle();
       querySnapshot.docs.forEach((result) {
         FirebaseFirestore.instance
             .collection("users")
@@ -52,9 +53,6 @@ class RecipeCardScreenState extends State<RecipeCardScreen> {
               ingredientsList = [],
               dirctionsList = [],
               imageUrlsList = [],
-
-              // String userPreferredCategory = '';
-              // String userPreferredCuisine = '';
               if (doc.data()['type_of_meal'] ==
                       ChatBotState.userPreferredTypeOfMeal &&
                   doc.data()['category'] ==
@@ -63,10 +61,6 @@ class RecipeCardScreenState extends State<RecipeCardScreen> {
                   doc.data()['is_public_recipe'] &&
                   numberOfRecipes <= 3)
                 {
-                  print(
-                      "2222222222222222222222222222222222222222222222222222222"),
-                  print("number or recipes in the list is: "),
-                  print(numberOfRecipes),
                   numberOfRecipes++,
                   lengthOfIngredients = doc.data()['length_of_ingredients'],
                   lengthOfDirections = doc.data()['length_of_directions'],
