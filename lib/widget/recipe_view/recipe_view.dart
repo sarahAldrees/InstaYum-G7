@@ -104,68 +104,75 @@ class _RecipeViewState extends State<RecipeView> {
   //   //we call the method here to get the data immediately when init the page.
   // }
 
-  bool NestedForEach(List<String> list) {
-    for (int i = 0; i < recipesNameslist.length; i++) {
-      FirebaseFirestore.instance
-          .collection("users")
-          .doc(FirebaseAuth.instance.currentUser.uid)
-          .collection("cookbooks")
-          .doc(list[i])
-          .collection("bookmarked_recipe")
-          .snapshots()
-          .listen((data) {
-        data.docs.forEach((doc) {
+  Widget bookmarkIcon() {
+    FirebaseFirestore.instance
+        .collection("users")
+        .doc(FirebaseAuth.instance.currentUser.uid)
+        .collection("cookbooks")
+        .doc("Default cookbook")
+        .collection("bookmarked_recipe")
+        .snapshots()
+        .listen((data) {
+      recipeExist = false;
+      data.docs.forEach(
+        (doc) {
           if (doc.data()['recipeId'] == widget._recipeid) {
             setState(() {
               recipeExist = true;
             });
-            // recipesNameslist.add(doc.data()['recipeId']);
-            // return Icon(Icons.ac_unit_outlined);
           }
-        });
-      });
-    }
-    return recipeExist;
-  }
+        },
+      );
+      // setState(() {});
+    });
+    // });
+    // });
+    print(recipeExist);
+    if (recipeExist) {
+      return IconButton(
+          icon: Icon(
+            Icons.bookmark,
+            //  Icons.ios_share,
+            size: 26,
+          ),
+          onPressed: () {
+//------------------delete from bookmark recipe--------------
 
-  // Widget bookmarkIcon() {
-  //   recipeExist = false;
-  //   // FirebaseFirestore.instance
-  //   //     .collection("users")
-  //   //     .doc(FirebaseAuth.instance.currentUser.uid)
-  //   //     .collection("cookbooks")
-  //   //     .get()
-  //   //     .then((querySnapshot) {
-  //   //   querySnapshot.docs.forEach((result) {
-  //   FirebaseFirestore.instance
-  //       .collection("users")
-  //       .doc(FirebaseAuth.instance.currentUser.uid)
-  //       .collection("cookbooks")
-  //       .doc("cook")
-  //       .collection("bookmarked_recipe")
-  //       .get()
-  //       .then((querySnapshot) {
-  //     querySnapshot.docs.forEach(
-  //       (doc) => {
-  //         if (doc.data()['recipeId'] == widget._recipeid)
-  //           {
-  //             recipeExist = true,
-  //           }
-  //       },
-  //     );
-  //     // setState(() {});
-  //   });
-  //   // });
-  //   // });
-  //   setState(() {
-  //     recipeExist;
-  //   });
-  //   if (recipeExist) {
-  //     return Icon(Icons.ac_unit_outlined);
-  //   } else {
-  //     return Icon(Icons.ice_skating);
-  //   }
-  // }
+//-------------------------------------------------
+          });
+    } else {
+      return IconButton(
+          icon: Icon(
+            Icons.bookmark_add_outlined,
+            size: 26,
+            // color: Color(0xFFeb6d44),
+          ),
+          onPressed: () {
+            // bookmarked_recipesState.getCookbookObjects();
+
+            setState(() {
+              cookbook_item.isBrowse = false;
+            });
+
+            ///------------------bookmark --------
+            showModalBottomSheet(
+                isDismissible: false,
+                shape: RoundedRectangleBorder(
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(24),
+                    topRight: Radius.circular(24),
+                  ),
+                ),
+                context: context,
+                builder: (context) {
+                  return bookmarked_recipes(widget._autherId, widget._recipeid);
+                  // return bookmarked_recipes();
+                });
+
+            //setstat :change the kind of ici=on and add it to bookmark list
+          });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -192,38 +199,7 @@ class _RecipeViewState extends State<RecipeView> {
         actions: [
           Row(
             children: [
-              // bookmarkIcon(),
-              IconButton(
-                  icon: Icon(
-                    Icons.bookmark_add_outlined,
-                    size: 26,
-                    // color: Color(0xFFeb6d44),
-                  ),
-                  onPressed: () {
-                    // bookmarked_recipesState.getCookbookObjects();
-
-                    setState(() {
-                      cookbook_item.isBrowse = false;
-                    });
-
-                    ///------------------bookmark --------
-                    showModalBottomSheet(
-                        isDismissible: false,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: const BorderRadius.only(
-                            topLeft: Radius.circular(24),
-                            topRight: Radius.circular(24),
-                          ),
-                        ),
-                        context: context,
-                        builder: (context) {
-                          return bookmarked_recipes(
-                              widget._autherId, widget._recipeid);
-                          // return bookmarked_recipes();
-                        });
-
-                    //setstat :change the kind of ici=on and add it to bookmark list
-                  }),
+              bookmarkIcon(),
               IconButton(
                   icon: Icon(
                     Icons.ios_share_outlined,
