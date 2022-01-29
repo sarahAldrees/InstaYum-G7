@@ -19,9 +19,21 @@ class ChatBotState extends State<ChatBot> {
   static String userPreferredTypeOfMeal = '';
   static String userPreferredCategory = '';
   static String userPreferredCuisine = '';
+  var botSuggestions;
+  Messages theStartedMessage = Messages(
+    text: "Welcome, I am InstaYum's chef do you need help?",
+    name: "InstaYum",
+    type: false,
+  );
 
-  final List<Messages> messageList = <Messages>[];
+  List<Messages> messageList = <Messages>[];
+
   final TextEditingController _textController = new TextEditingController();
+
+  void initState() {
+    super.initState();
+    messageList.add(theStartedMessage);
+  }
 
   Widget _queryInputWidget(BuildContext context) {
     return Card(
@@ -55,29 +67,7 @@ class ChatBotState extends State<ChatBot> {
     );
   }
 
-  Widget boardView;
-  listOfResponses(List<String> t) {
-    boardView = Container(
-      color: Colors.blue,
-      child: ListView.builder(
-          scrollDirection: Axis.vertical,
-          itemCount: 15,
-          itemBuilder: (BuildContext context, int index) {
-            return ListTile(
-              onTap: () {},
-              title: Row(
-                children: <Widget>[
-                  Expanded(child: Text(t.elementAt(0))),
-                  Text("12 Dec 18"),
-                ],
-              ),
-            );
-          }),
-    );
-  }
-
-  var botSuggestions;
-
+  List<String> suggestListAgent = ["Yes, I need help", 'No, thank you'];
   void agentResponse(query) async {
     _textController.clear();
     AuthGoogle authGoogle =
@@ -88,8 +78,13 @@ class ChatBotState extends State<ChatBot> {
     AIResponse response = await dialogFlow.detectIntent(query);
     var botSuggestions = BotSuggestions(response.getListMessage());
     print('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%');
-    listOfResponses(botSuggestions.suggestions);
+    // listOfResponses(botSuggestions.suggestions);
     print(botSuggestions.suggestions);
+    setState(() {
+      suggestListAgent = botSuggestions.suggestions;
+    });
+
+    print(suggestListAgent);
     Messages message = Messages(
       text: response.getMessage() ??
           CardDialogflow(response.getListMessage()[0]).title,
@@ -313,9 +308,8 @@ class ChatBotState extends State<ChatBot> {
     return Wrap(
         spacing: 6.0,
         runSpacing: 6.0,
-        children: List<Widget>.generate(suggestedLunchOrDinnerCategory.length,
-            (int index) {
-          return dynamicActionChip(suggestedLunchOrDinnerCategory[index]);
+        children: List<Widget>.generate(suggestionList.length, (int index) {
+          return dynamicActionChip(suggestionList[index]);
         }));
   }
 
@@ -375,7 +369,7 @@ class ChatBotState extends State<ChatBot> {
                 itemCount: messageList.length,
               ),
             ),
-            dynamicWrapChips(suggestedLunchOrDinnerCategory),
+            dynamicWrapChips(suggestListAgent),
             _queryInputWidget(context),
           ]),
     );
