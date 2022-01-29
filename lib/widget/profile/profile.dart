@@ -19,7 +19,7 @@ class ProfileState extends State<Profile> {
   // ---------------- Database -------------------------
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   String userUsername = "";
-  String imageURL = "";
+  static String imageURL = "";
   String uId = "";
 
 //getData() to get the data of users like username, image_url from database

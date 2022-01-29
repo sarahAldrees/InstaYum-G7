@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:instayum1/main_pages.dart';
 import 'package:instayum1/widget/discover/recipe_card.dart';
 import 'package:instayum1/widget/meal_plan/meal_title.dart';
+import 'package:instayum1/widget/profile/profile.dart';
 import 'package:instayum1/widget/recipe_view/recipe_view.dart';
 
 import 'dialog_flow.dart';
@@ -103,6 +104,12 @@ class _MessagesState extends State<Messages> {
     }
   }
 
+  final userImage = ProfileState.imageURL == "noImage" ||
+          ProfileState.imageURL.isEmpty ||
+          ProfileState.imageURL == null
+      ? AssetImage("assets/images/defaultUser.png") // NEW
+      : NetworkImage(ProfileState.imageURL);
+
   List<Widget> userMessage(context) {
     return <Widget>[
       Expanded(
@@ -127,9 +134,21 @@ class _MessagesState extends State<Messages> {
       Container(
         margin: const EdgeInsets.only(left: 10.0),
         child: CircleAvatar(
-          child: Image.asset(
-            'assets/images/defalut_image_chatbot.jpg', // change the image to be the same as the user image (IMPORTANT)
+          child: ClipOval(
+            child: Material(
+              color: Colors.grey.shade400,
+              child: Ink.image(
+                image: userImage,
+                fit: BoxFit.cover,
+                width: 90,
+                height: 90,
+              ),
+            ),
           ),
+
+          // Image.asset(ProfileState.imageURL
+          //     //   'assets/images/defalut_image_chatbot.jpg', // change the image to be the same as the user image (IMPORTANT)
+          //     ),
           backgroundColor: Colors.grey[200],
           radius: 25,
         ),
