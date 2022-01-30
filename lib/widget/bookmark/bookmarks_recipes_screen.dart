@@ -362,10 +362,10 @@ class bookmarked_recipesState extends State<bookmarked_recipes> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return Scaffold(
       // remove the default default flutter banner
-      debugShowCheckedModeBanner: false,
-      home: checking(),
+
+      body: checking(),
     );
     // ]);
   }

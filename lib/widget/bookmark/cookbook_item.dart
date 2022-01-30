@@ -14,6 +14,7 @@ class cookbook_item extends StatefulWidget {
 
   final String imageURLCookbook;
   static bool isBrowse = true;
+
   Color colorOfCircule = Colors.grey.shade300;
   bool isSlected = false;
   static List<String> slectedCookbooks = [];
@@ -84,7 +85,8 @@ class cookbook_itemState extends State<cookbook_item> {
                     context,
                     MaterialPageRoute(
                         builder: (context) =>
-                            new cookbook_recipes(widget.cookbookID)));
+                            cookbook_recipes(widget.cookbookID)));
+
 //-------------------------------------------------------
 
               }

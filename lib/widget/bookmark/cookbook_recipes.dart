@@ -16,6 +16,7 @@ import 'package:instayum1/widget/bookmark/cookbook_item.dart';
 class cookbook_recipes extends StatefulWidget {
   @override
   String cookbookID;
+  bool flag = true;
 
   cookbook_recipes(this.cookbookID);
 
@@ -52,13 +53,18 @@ class cookbook_recipesState extends State<cookbook_recipes> {
         .snapshots()
         .listen((data) {
       recpiesList.clear();
-      data.docs.forEach((doc) {
+      data.docs.forEach((doc) async {
         setState(() {
+          recpiesList.clear();
           autherId = doc.data()['autherId'];
           recipeId = doc.data()['recipeId'];
         });
+        // if (recpiesList.isEmpty) {
+        //   recpiesList = [];
+        // }
+
 //----------------------------------------------------------------
-        FirebaseFirestore.instance
+        await FirebaseFirestore.instance
             .collection("users")
             .doc(autherId)
             .collection("recipes")
@@ -105,12 +111,19 @@ class cookbook_recipesState extends State<cookbook_recipes> {
           setState(() {});
         });
       });
+
+      if (widget.flag) {
+        setState(() {
+          widget.flag = false;
+        });
+      }
     });
   }
 
   void initState() {
     super.initState();
     getData();
+
     //we call the method here to get the data immediately when init the page.
   }
 
@@ -120,27 +133,40 @@ class cookbook_recipesState extends State<cookbook_recipes> {
     //   recpiesList;
     // });
     print(autherId);
-    return Scaffold(
-      body: GridView.count(
-          crossAxisCount: 2, // 2 items in each row
-          crossAxisSpacing: 20,
-          padding: EdgeInsets.all(20),
-          mainAxisSpacing: 10,
-          children: [
-            ...recpiesList
-                .map((e) => RecipeItem(
-                    e.autherId,
-                    e.id,
-                    e.recipeName,
-                    e.mainImageURL,
-                    e.typeOfMeal,
-                    e.category,
-                    e.cuisine,
-                    e.ingredients,
-                    e.dirctions,
-                    e.imageUrls))
-                .toList(),
-          ]),
-    );
+    if (!widget.flag) {
+      return Scaffold(
+        appBar: new AppBar(
+          title: Text(widget.cookbookID),
+          backgroundColor: Color(0xFFeb6d44),
+        ),
+        body: GridView.count(
+            crossAxisCount: 2, // 2 items in each row
+            crossAxisSpacing: 20,
+            padding: EdgeInsets.all(20),
+            mainAxisSpacing: 10,
+            children: [
+              ...recpiesList
+                  .map((e) => RecipeItem(
+                      e.autherId,
+                      e.id,
+                      e.recipeName,
+                      e.mainImageURL,
+                      e.typeOfMeal,
+                      e.category,
+                      e.cuisine,
+                      e.ingredients,
+                      e.dirctions,
+                      e.imageUrls))
+                  .toList(),
+            ]),
+      );
+    } else {
+      widget.flag = true;
+      return Scaffold(
+          body: Center(
+              child: CircularProgressIndicator(
+        color: Colors.orange,
+      )));
+    }
   }
 }
