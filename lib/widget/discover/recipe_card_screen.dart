@@ -33,7 +33,7 @@ class RecipeCardScreenState extends State<RecipeCardScreen> {
 
   int lengthOfImages = 0;
 
-  int numberOfRecipes = 1;
+  static int numberOfRecipes = 0;
 
   void getRecipeObjects() {
     // User user = firebaseAuth.currentUser;
@@ -59,7 +59,7 @@ class RecipeCardScreenState extends State<RecipeCardScreen> {
                       ChatBotState.userPreferredCategory &&
                   doc.data()['cuisine'] == ChatBotState.userPreferredCuisine &&
                   doc.data()['is_public_recipe'] &&
-                  numberOfRecipes <= 3)
+                  numberOfRecipes <= 2)
                 {
                   numberOfRecipes++,
                   lengthOfIngredients = doc.data()['length_of_ingredients'],
@@ -109,7 +109,7 @@ class RecipeCardScreenState extends State<RecipeCardScreen> {
                   print(
                       "11111111111111111111111111111111111111111111111111111111111111111"),
                   print(
-                      "In recipe card screen we did not find any suitable recipe")
+                      "In recipe card screen we did not find any suitable recipe"),
                 }
             },
           );

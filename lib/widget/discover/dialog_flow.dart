@@ -21,17 +21,19 @@ class ChatBotState extends State<ChatBot> {
   static String userPreferredCuisine = '';
   var botSuggestions;
   Messages theStartedMessage = Messages(
-    text: "Welcome, I am InstaYum's chef do you need help?",
+    text:
+        "Welcome, I am InstaYum's chef Iam here to help you in deciding what to eat, do you need help?",
     name: "InstaYum",
     type: false,
   );
 
-  static List<Messages> messageList = <Messages>[];
+  List<Messages> messageList = <Messages>[];
 
   final TextEditingController _textController = new TextEditingController();
 
   void initState() {
     super.initState();
+    messageList = <Messages>[]; //to clean the chatbot every time
     messageList.add(theStartedMessage);
   }
 

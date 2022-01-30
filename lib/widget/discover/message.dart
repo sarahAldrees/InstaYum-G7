@@ -20,6 +20,7 @@ class Messages extends StatefulWidget {
 }
 
 class _MessagesState extends State<Messages> {
+  String finalText = '';
   final image = AssetImage("assets/images/defaultRecipeImage.png");
 
   List<Widget> botMessage(context) {
@@ -60,6 +61,10 @@ class _MessagesState extends State<Messages> {
         ),
       ];
     } else {
+      if (RecipeCardScreenState.numberOfRecipes == 0)
+        finalText = "There are no suitable recipes";
+      else
+        finalText = "The above are the suggested recipes";
       return <Widget>[
         Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           RecipeCardScreen(),
@@ -91,7 +96,7 @@ class _MessagesState extends State<Messages> {
                           borderRadius: BorderRadius.all(Radius.circular(20))),
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Text("The above are the suggested recipes"),
+                        child: Text(finalText),
                       ),
                     ),
                   ],
