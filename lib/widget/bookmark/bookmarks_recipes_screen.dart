@@ -10,11 +10,13 @@ import 'package:instayum1/model/recipe.dart';
 import 'package:instayum1/widget/bookmark/add_new_cookbook.dart';
 import 'package:instayum1/widget/pickers/cookbook_image_picker.dart';
 import 'package:instayum1/widget/recipe_view/comment.dart';
+import 'package:instayum1/widget/recipe_view/recipe_view.dart';
 import 'add_new_cookbook.dart';
 import 'package:instayum1/widget/bookmark/cookbook_item.dart';
 import 'package:path/path.dart' as Path;
 
 class bookmarked_recipes extends StatefulWidget {
+  static bool Saved = false;
   String autherId;
   String recipeId;
 
@@ -245,31 +247,31 @@ class bookmarked_recipesState extends State<bookmarked_recipes> {
             SizedBox(
               width: 10,
             ),
-            TextButton(
-              child: Text(
-                "Cancel",
-                style: TextStyle(fontSize: 16),
-              ),
-              style: TextButton.styleFrom(
-                primary: Color(0xFFeb6d44),
-                backgroundColor: Colors.white,
-                //side: BorderSide(color: Colors.deepOrange, width: 1),
-                elevation: 0,
-                //minimumSize: Size(100, 50),
-                //shadowColor: Colors.red,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)),
-              ),
-              onPressed: () {
-                setState(() {
-                  cookbook_item.isBrowse = true;
-                });
-                Navigator.pop(context);
-              },
-            ),
-            SizedBox(
-              width: 10,
-            ),
+            // TextButton(
+            //   child: Text(
+            //     "Cancel",
+            //     style: TextStyle(fontSize: 16),
+            //   ),
+            //   style: TextButton.styleFrom(
+            //     primary: Color(0xFFeb6d44),
+            //     backgroundColor: Colors.white,
+            //     //side: BorderSide(color: Colors.deepOrange, width: 1),
+            //     elevation: 0,
+            //     //minimumSize: Size(100, 50),
+            //     //shadowColor: Colors.red,
+            //     shape: RoundedRectangleBorder(
+            //         borderRadius: BorderRadius.circular(10)),
+            //   ),
+            //   onPressed: () {
+            //     setState(() {
+            //       cookbook_item.isBrowse = true;
+            //     });
+            //     Navigator.pop(context);
+            //   },
+            // ),
+            // SizedBox(
+            //   width: 10,
+            // ),
             TextButton(
               child: Text(
                 "Save",
@@ -315,7 +317,12 @@ class bookmarked_recipesState extends State<bookmarked_recipes> {
                   "autherId": widget.autherId,
                   "recipeId": widget.recipeId,
                 });
+
                 cookbook_item.isBrowse = true;
+                //RecipeViewState.ishappen = false;
+
+                bookmarked_recipes.Saved = false;
+
                 Navigator.pop(context);
               },
             ),

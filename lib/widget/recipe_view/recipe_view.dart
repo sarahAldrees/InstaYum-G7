@@ -5,7 +5,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:instayum1/model/cookbook.dart';
 import 'package:instayum1/model/recipe.dart';
-import 'package:instayum1/widget/bookmark/checking_bookmark.dart';
 import 'package:instayum1/widget/bookmark/cookbook_item.dart';
 import 'package:instayum1/widget/recipe_view/comment.dart';
 import 'package:instayum1/widget/recipe_view/convert_to_check_box.dart';
@@ -47,144 +46,85 @@ class RecipeView extends StatefulWidget {
 
 class _RecipeViewState extends State<RecipeView> {
   bool recipeExist = false;
-  List<String> recipesNameslist = [];
+  bool ishappend = false;
 
-  // bookmarkIcon() async {
-  //   await FirebaseFirestore.instance
-  //       .collection("users")
-  //       .doc(FirebaseAuth.instance.currentUser.uid)
-  //       .collection("cookbooks")
-  //       .snapshots()
-  //       .listen((data) {
-  //     data.docs.forEach((doc) {
-  //       recipesNameslist.add(doc.data()["cookbook_id"]);
-  //       // ------------------------------------- Try 1 ------------------------------
-  //       print(recipesNameslist[0]);
-  //     });
-  //   });
+  Widget bookmarkIcon() {
+    FirebaseFirestore.instance
+        .collection("users")
+        .doc(FirebaseAuth.instance.currentUser.uid)
+        .collection("cookbooks")
+        .doc("Default cookbook")
+        .collection("bookmarked_recipe")
+        .snapshots()
+        .listen((data) {
+      if (!ishappend) {
+        recipeExist = false;
 
-  //   setState(() {
-  //     recipesNameslist;
-  //     print(";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;");
-  //     // print(recipesNameslist[0]);
-  //   });
-  //   // print(recipesNameslist[0]);
-  //   // for (int i = 0; i < recipesNameslist.length; i++) {
-  //   //   FirebaseFirestore.instance
-  //   //       .collection("users")
-  //   //       .doc(FirebaseAuth.instance.currentUser.uid)
-  //   //       .collection("cookbooks")
-  //   //       .doc(recipesNameslist[i])
-  //   //       .collection("bookmarked_recipe")
-  //   //       .snapshots()
-  //   //       .listen((data) {
-  //   //     data.docs.forEach((doc) {
+        data.docs.forEach((doc) {
+          if (doc.data()['recipeId'] == widget._recipeid) {
+            recipeExist = true;
+            bookmarked_recipes.Saved = true;
+          }
+        });
+      }
+      if (!ishappend && bookmarked_recipes.Saved)
+        setState(() {
+          ishappend = recipeExist;
+        });
+      // if (!recipeExist) {
+      //   setState(() {
+      //     ishappend = recipeExist;
+      //   });
+      // }
+    });
 
-  //   //       // if (doc.data()['recipeId'] == widget._recipeid) {
-  //   //       //   setState(() {
-  //   //       //     recipeExist = true;
-  //   //       //   });
-  //   //       //   // recipesNameslist.add(doc.data()['recipeId']);
+    print(recipeExist);
+    if (recipeExist) {
+      return IconButton(
+          icon: Icon(
+            Icons.bookmark,
+            //  Icons.ios_share,
+            size: 26,
+          ),
+          onPressed: () {
+//------------------delete from bookmark recipe--------------
 
-  //   //       // }
-  //   //     });
-  //   //   });
-  //   // }
-  //   // if (NestedForEach(recipesNameslist)) {
-  //   //   print("1");
-  //   //   // return Icon(Icons.ac_unit_outlined);
-  //   // }
-  //   // print("2");
-  //   // return Icon(Icons.ice_skating);
-  // }
+//-----------------------------------------------------------
+          });
+    } else {
+      setState(() {
+        bookmarked_recipes.Saved = false;
+      });
+      return IconButton(
+          icon: Icon(
+            Icons.bookmark_add_outlined,
+            size: 26,
+          ),
+          onPressed: () {
+            setState(() {
+              cookbook_item.isBrowse = false;
+              bookmarked_recipes.Saved = true;
+            });
 
-  // void initState() {
-  //   super.initState();
+            ///------------------bookmark --------
+            showModalBottomSheet(
+                isDismissible: false,
+                shape: RoundedRectangleBorder(
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(24),
+                    topRight: Radius.circular(24),
+                  ),
+                ),
+                context: context,
+                builder: (context) {
+                  return bookmarked_recipes(widget._autherId, widget._recipeid);
+                  // return bookmarked_recipes();
+                });
 
-  //   bookmarkIcon();
-  //   //we call the method here to get the data immediately when init the page.
-  // }
-
-//   Widget bookmarkIcon() {
-//     FirebaseFirestore.instance
-//         .collection("users")
-//         .doc(FirebaseAuth.instance.currentUser.uid)
-//         .collection("cookbooks")
-//         .doc("Default cookbook")
-//         .collection("bookmarked_recipe")
-//         .snapshots()
-//         .listen((data) {
-//       recipeExist = false;
-//       data.docs.forEach(
-//         (doc) {
-//           if (doc.data()['recipeId'] == widget._recipeid) {
-//             recipeExist = true;
-//           }
-//         },
-//       );
-//       setState(() {
-
-//       });
-//     });
-
-//     // });
-//     // });
-
-//     print(recipeExist);
-//     if (recipeExist) {
-//       return IconButton(
-//           icon: Icon(
-//             Icons.bookmark,
-//             //  Icons.ios_share,
-//             size: 26,
-//           ),
-//           onPressed: () {
-// //------------------delete from bookmark recipe--------------
-//             FirebaseFirestore.instance
-//                 .collection("bookmarked_recipe")
-//                 .get()
-//                 .then((resultedId) {
-//               for (DocumentSnapshot ds in resultedId.docs) {
-//                 //ds.reference.delete();
-//                 print("esultedId.docs");
-//               }
-//             });
-
-// //-------------------------------------------------
-//           });
-//     } else {
-//       return IconButton(
-//           icon: Icon(
-//             Icons.bookmark_add_outlined,
-//             size: 26,
-//             // color: Color(0xFFeb6d44),
-//           ),
-//           onPressed: () {
-//             // bookmarked_recipesState.getCookbookObjects();
-
-//             setState(() {
-//               cookbook_item.isBrowse = false;
-//             });
-
-//             ///------------------bookmark --------
-//             showModalBottomSheet(
-//                 isDismissible: false,
-//                 shape: RoundedRectangleBorder(
-//                   borderRadius: const BorderRadius.only(
-//                     topLeft: Radius.circular(24),
-//                     topRight: Radius.circular(24),
-//                   ),
-//                 ),
-//                 context: context,
-//                 builder: (context) {
-//                   return bookmarked_recipes(widget._autherId, widget._recipeid);
-//                   // return bookmarked_recipes();
-//                 });
-
-//             //setstat :change the kind of ici=on and add it to bookmark list
-//           });
-//     }
-//   }
+            //setstat :change the kind of ici=on and add it to bookmark list
+          });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -211,7 +151,7 @@ class _RecipeViewState extends State<RecipeView> {
         actions: [
           Row(
             children: [
-              chekcingBookmarke(widget._autherId, widget._recipeid),
+              bookmarkIcon(),
               IconButton(
                   icon: Icon(
                     Icons.ios_share_outlined,
