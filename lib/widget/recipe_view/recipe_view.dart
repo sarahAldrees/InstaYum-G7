@@ -101,10 +101,10 @@ class _RecipeViewState extends State<RecipeView> {
             size: 26,
           ),
           onPressed: () {
-            setState(() {
-              cookbook_item.isBrowse = false;
-              bookmarked_recipes.Saved = true;
-            });
+            //   setState(() {
+            cookbook_item.isBrowse = false;
+            bookmarked_recipes.Saved = true;
+            // });
 
             ///------------------bookmark --------
             showModalBottomSheet(
