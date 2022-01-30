@@ -14,6 +14,9 @@ import 'package:instayum1/widget/recipe_view/recipe_view.dart';
 import 'add_new_cookbook.dart';
 import 'package:instayum1/widget/bookmark/cookbook_item.dart';
 import 'package:path/path.dart' as Path;
+import 'package:another_flushbar/flushbar.dart';
+import 'package:another_flushbar/flushbar_helper.dart';
+import 'package:another_flushbar/flushbar_route.dart';
 
 class bookmarked_recipes extends StatefulWidget {
   static bool Saved = false;
@@ -79,34 +82,42 @@ class bookmarked_recipesState extends State<bookmarked_recipes> {
           "Add new cookbook",
         ),
         onPressed: () async {
-          // setState(() {
-          //   _CookbookTitleTextFieldController.text.isEmpty
-          //       ? _isEmptyCookbookTitle = true
-          //       : _isEmptyCookbookTitle = false;
-          // });
-          if (formKey.currentState.validate()) {
-            formKey.currentState.save();
-            // if (!_isEmptyCookbookTitle) {
-            validCookbookName = await _checkCookbookName(
-                _CookbookTitleTextFieldController.text);
-            if (validCookbookName) {
-              AddNewCookBookState.createNewCookBook(cookbookTitle);
-              //_CookbookTitleTextFieldController.text)
+          if (CookbookImagePickerState.isUploadCookbookImageIsloading) {
+            Flushbar(
+              backgroundColor: Theme.of(context).errorColor,
+              message: "Please wait until the the cookbook's image is loaded",
+              duration: Duration(seconds: 4),
+            ).show(context);
+          } else {
+            // setState(() {
+            //   _CookbookTitleTextFieldController.text.isEmpty
+            //       ? _isEmptyCookbookTitle = true
+            //       : _isEmptyCookbookTitle = false;
+            // });
+            if (formKey.currentState.validate()) {
+              formKey.currentState.save();
+              // if (!_isEmptyCookbookTitle) {
+              validCookbookName = await _checkCookbookName(
+                  _CookbookTitleTextFieldController.text);
+              if (validCookbookName) {
+                AddNewCookBookState.createNewCookBook(cookbookTitle);
+                //_CookbookTitleTextFieldController.text)
 
-              getCookbookObjects();
-              CookbookImagePickerState.uploadedFileURL = null;
-              _CookbookTitleTextFieldController.clear();
-              Navigator.of(context).pop();
-            } else {
-              //may be we have to change it later ????
-              // ScaffoldMessenger.of(context).showSnackBar(
-              //   SnackBar(
-              //       content: Text(
-              //           "This name already exist please enter another name"),
-              //       backgroundColor: Theme.of(context).errorColor),
-              // );
+                getCookbookObjects();
+                CookbookImagePickerState.uploadedFileURL = null;
+                _CookbookTitleTextFieldController.clear();
+                Navigator.of(context).pop();
+              } else {
+                //may be we have to change it later ????
+                // ScaffoldMessenger.of(context).showSnackBar(
+                //   SnackBar(
+                //       content: Text(
+                //           "This name already exist please enter another name"),
+                //       backgroundColor: Theme.of(context).errorColor),
+                // );
+              }
+              // }
             }
-            // }
           }
         });
     // set up the AlertDialog

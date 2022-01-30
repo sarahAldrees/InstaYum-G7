@@ -39,7 +39,7 @@ class cookbook_itemState extends State<cookbook_item> {
     // }
     for (int i = 0; i < length; i++) {}
     final image = widget.imageURLCookbook == "noImage"
-        ? AssetImage("assets/images/defaultRecipeImage.png")
+        ? AssetImage("assets/images/defaultCookbookImage.png")
         : NetworkImage(widget.imageURLCookbook);
 // this section will return one item of Grid Items that in bookmarked recipes page.
     return Column(children: [

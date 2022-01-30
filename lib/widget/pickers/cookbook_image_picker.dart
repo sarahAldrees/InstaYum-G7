@@ -15,7 +15,8 @@ class CookbookImagePicker extends StatefulWidget {
 }
 
 class CookbookImagePickerState extends State<CookbookImagePicker> {
-  bool _isloading = false; // to show the progress circle
+  static bool isUploadCookbookImageIsloading =
+      false; // to show the progress circle
   File _image;
   static String uploadedFileURL;
 
@@ -32,7 +33,7 @@ class CookbookImagePickerState extends State<CookbookImagePicker> {
 
   Future uploadFile() async {
     setState(() {
-      _isloading = true;
+      isUploadCookbookImageIsloading = true;
     });
     final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -57,7 +58,7 @@ class CookbookImagePickerState extends State<CookbookImagePicker> {
       }).then((nothing) async {
         // nothing mean null, but null cause an error
         setState(() {
-          _isloading = false;
+          isUploadCookbookImageIsloading = false;
         });
       });
     });
@@ -96,7 +97,7 @@ class CookbookImagePickerState extends State<CookbookImagePicker> {
           height: 16,
         ),
         buildCookbookImage(),
-        _isloading
+        isUploadCookbookImageIsloading
             ? Padding(
                 padding: const EdgeInsets.only(top: 10),
                 child: CircularProgressIndicator(
