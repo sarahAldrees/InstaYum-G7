@@ -88,7 +88,7 @@ class _RecipeViewState extends State<RecipeView> {
           ),
           onPressed: () {
 //------------------delete from bookmark recipe--------------
-
+            unBookmarkRecipe();
 //-----------------------------------------------------------
           });
     } else {
@@ -125,6 +125,66 @@ class _RecipeViewState extends State<RecipeView> {
           });
     }
   }
+
+//---------------------------------------- try 1 unbookmark -----------------------------------------------
+  void unBookmarkRecipe() async {
+    await FirebaseFirestore.instance
+        .collection("users")
+        .doc(FirebaseAuth.instance.currentUser.uid)
+        .collection("cookbooks")
+        .get()
+        .then((querySnapshot) {
+      querySnapshot.docs.forEach((result1) {
+        final mes = FirebaseFirestore.instance
+            .collection("users")
+            .doc(FirebaseAuth.instance.currentUser.uid)
+            .collection("cookbooks")
+            .doc(result1.id)
+            .collection("bookmarked_recipe")
+            .get();
+
+        mes.then(
+          (querySnapshot) {
+            querySnapshot.docs.forEach((result) {
+              if (result.id == widget._recipeid) {
+                FirebaseFirestore.instance
+                    .collection("users")
+                    .doc(FirebaseAuth.instance.currentUser.uid)
+                    .collection("cookbooks")
+                    .doc(result1.id)
+                    .collection("bookmarked_recipe")
+                    .doc(result.id)
+                    .delete();
+                print(result.id);
+              }
+
+              //     for(var result1 in querySnapshot.docs){
+              //       if(querySnapshot.doc )
+              //     //  FirebaseFirestore.instance
+              // // .collection("bookmarked_recipe").doc().delete();
+              //                 }
+            });
+          },
+        );
+        setState(() {
+          recipeExist = false;
+          ishappend = false;
+        });
+      });
+    });
+
+    // final messages = await FirebaseFirestore.instance
+    //     .collection("users")
+    //     .doc(FirebaseAuth.instance.currentUser.uid)
+    //     .collection("cookbooks")
+    //     .get();
+
+    // for (var message in messages.docs) {
+    //   print("-------------------------------- L -------------");
+    //   print(message.data());
+    // }
+  }
+  //---------------------------------- t1 --------------------------------------------------------------
 
   @override
   Widget build(BuildContext context) {
