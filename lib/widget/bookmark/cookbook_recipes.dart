@@ -44,7 +44,7 @@ String autherId;
 String recipeId;
 
 class cookbook_recipesState extends State<cookbook_recipes> {
-  getData() {
+  _getBookmarkedRecipes() {
     FirebaseFirestore.instance
         .collection("users")
         .doc(FirebaseAuth.instance.currentUser.uid)
@@ -122,7 +122,7 @@ class cookbook_recipesState extends State<cookbook_recipes> {
 
   void initState() {
     super.initState();
-    getData();
+    _getBookmarkedRecipes();
 
     //we call the method here to get the data immediately when init the page.
   }
@@ -136,7 +136,7 @@ class cookbook_recipesState extends State<cookbook_recipes> {
     if (!widget.flag) {
       return Scaffold(
         appBar: new AppBar(
-          title: Text(widget.cookbookID),
+          title: Text(widget.cookbookID + "  cookbook"),
           backgroundColor: Color(0xFFeb6d44),
         ),
         body: GridView.count(

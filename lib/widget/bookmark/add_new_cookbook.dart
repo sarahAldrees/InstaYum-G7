@@ -42,7 +42,7 @@ class AddNewCookBookState extends State<AddNewCookBook> {
     //     .collection("users")
     //     .doc(currentUser.uid)
     //     .collection("cookbooks")
-    //     .doc("Default cookbook")
+    //     .doc("All bookmarked recipes")
     //     .update({"timestamp": timestamp});
 
     //*****************************WE WILL WORK ON IT LATER */

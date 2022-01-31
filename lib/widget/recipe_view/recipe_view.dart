@@ -57,7 +57,7 @@ class _RecipeViewState extends State<RecipeView> {
         .collection("users")
         .doc(FirebaseAuth.instance.currentUser.uid)
         .collection("cookbooks")
-        .doc("Default cookbook")
+        .doc("All bookmarked recipes")
         .collection("bookmarked_recipe")
         .snapshots()
         .listen((data) {
@@ -138,7 +138,7 @@ class _RecipeViewState extends State<RecipeView> {
 //---------------------------------------- try 1 unbookmark -----------------------------------------------
   void unBookmarkRecipe() async {
     if (!cookbook_item.isBrowse ||
-        widget.cookbook == "Default cookbook" ||
+        widget.cookbook == "All bookmarked recipes" ||
         widget.cookbook == "") {
       await FirebaseFirestore.instance
           .collection("users")
