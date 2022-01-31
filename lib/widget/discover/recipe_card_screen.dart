@@ -121,13 +121,13 @@ class RecipeCardScreenState extends State<RecipeCardScreen> {
           );
           setState(() {
             if (numberOfRecipes == 0)
-              //   setState(() {
-              finalText = "There are no suitable recipes";
-            //  });
+              setState(() {
+                finalText = "There are no suitable recipes";
+              });
             else
-              //  setState(() {
-              finalText = "The above are the suggested recipes";
-            // });
+              setState(() {
+                finalText = "The above are the suggested recipes";
+              });
           });
         });
       });
