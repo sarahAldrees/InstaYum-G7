@@ -19,6 +19,7 @@ class RecipeCardScreenState extends State<RecipeCardScreen> {
     getRecipeObjects(); // to create a default cookbook for each user when the user create an account
   }
 
+  String finalText = 'wait until I bring the recipes';
   List<Recipe> recpiesList = [];
 
   List<String> ingredientsList = [];
@@ -38,7 +39,7 @@ class RecipeCardScreenState extends State<RecipeCardScreen> {
   void getRecipeObjects() {
     // User user = firebaseAuth.currentUser;
     // FirebaseFirestore.instance.collection("users").get()
-
+    numberOfRecipes = 0;
     FirebaseFirestore.instance.collection("users").get().then((querySnapshot) {
       //  querySnapshot.docs.shuffle();
       querySnapshot.docs.forEach((result) {
@@ -61,7 +62,12 @@ class RecipeCardScreenState extends State<RecipeCardScreen> {
                   doc.data()['is_public_recipe'] &&
                   numberOfRecipes <= 2)
                 {
-                  numberOfRecipes++,
+                  setState(() {
+                    print('the number of founded recipes');
+                    numberOfRecipes++;
+                    print(numberOfRecipes);
+                  }),
+
                   lengthOfIngredients = doc.data()['length_of_ingredients'],
                   lengthOfDirections = doc.data()['length_of_directions'],
                   lengthOfImages = doc.data()['image_count'],
@@ -113,7 +119,16 @@ class RecipeCardScreenState extends State<RecipeCardScreen> {
                 }
             },
           );
-          setState(() {});
+          setState(() {
+            if (numberOfRecipes == 0)
+              //   setState(() {
+              finalText = "There are no suitable recipes";
+            //  });
+            else
+              //  setState(() {
+              finalText = "The above are the suggested recipes";
+            // });
+          });
         });
       });
     });
@@ -169,32 +184,43 @@ class RecipeCardScreenState extends State<RecipeCardScreen> {
               recipe.cuisine,
               recipe.ingredients,
               recipe.dirctions,
-              recipe.imageUrls)
-
-        // recpiesList
-        //   .map((e) =>
-        //  RecipeCard(
-        //     //key,
-        //     // widget.autherName,
-        //     // widget.autherImage,
-        //     widget.autherId,
-        //     e.id,
-        //     e.recipeName,
-        //     e.mainImageURL,
-        //     e.typeOfMeal,
-        //     e.category,
-        //     e.cuisine,
-        //     e.ingredients,
-        //     e.dirctions,
-        //     e.imageUrls))
-        // .toList(),
-        // RecipeCard(
-        //   title: 'My recipe',
-        //   rating: '4.9',
-        //   // cookTime: '30 min',
-        //   thumbnailUrl:
-        //       'https://lh3.googleusercontent.com/ei5eF1LRFkkcekhjdR_8XgOqgdjpomf-rda_vvh7jIauCgLlEWORINSKMRR6I6iTcxxZL9riJwFqKMvK0ixS0xwnRHGMY4I5Zw=s360',
-        // ),
+              recipe.imageUrls),
+        Row(
+          children: [
+            Container(
+              margin: const EdgeInsets.only(right: 10.0),
+              child: CircleAvatar(
+                child:
+                    // Padding(
+                    //   padding: const EdgeInsets.all(5),
+                    //child:
+                    Image.asset('assets/images/InstaYum_chatbot.png'),
+                // ),
+                backgroundColor: Colors.white,
+                radius: 30,
+              ),
+            ),
+            Container(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                // mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  //            Text(this.name,
+                  //                style: TextStyle(fontWeight: FontWeight.bold)),
+                  Card(
+                    elevation: 3,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(20))),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(finalText),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ],
     );
   }
