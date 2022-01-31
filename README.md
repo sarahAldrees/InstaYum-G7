@@ -1,6 +1,6 @@
 # instayum1
 
-INstaYum
+InstaYum
 
 Is a mobile application 
 That saves recipes in an organized manner.
