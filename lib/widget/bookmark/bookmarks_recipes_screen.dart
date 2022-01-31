@@ -47,8 +47,7 @@ class bookmarked_recipesState extends State<bookmarked_recipes> {
 
   static var Cookbooks_List = [
     Cookbook(
-      id: 'Default cookbook',
-      // cookbookName: 'Default cookbook',
+      id: 'All bookmarked recipes',
       imageURLCookbook:
           'https://lacuisinedegeraldine.fr/wp-content/uploads/2021/06/Pancakes-04483-2-scaled.jpg',
     ),
@@ -203,7 +202,7 @@ class bookmarked_recipesState extends State<bookmarked_recipes> {
         .collection("users")
         .doc(currentUser.uid)
         .collection("cookbooks")
-        .doc("Default cookbook")
+        .doc("All bookmarked recipes")
         .update({"timestamp": timestamp});
 
     Cookbooks_List = [];
@@ -303,7 +302,8 @@ class bookmarked_recipesState extends State<bookmarked_recipes> {
                 for (int i = 0;
                     i < cookbook_item.slectedCookbooks.length;
                     i++) {
-                  if (cookbook_item.slectedCookbooks[i] != "Default cookbook") {
+                  if (cookbook_item.slectedCookbooks[i] !=
+                      "All bookmarked recipes") {
                     FirebaseFirestore.instance
                         .collection("users")
                         .doc(FirebaseAuth.instance.currentUser.uid)
@@ -321,7 +321,7 @@ class bookmarked_recipesState extends State<bookmarked_recipes> {
                     .collection("users")
                     .doc(FirebaseAuth.instance.currentUser.uid)
                     .collection("cookbooks")
-                    .doc("Default cookbook")
+                    .doc("All bookmarked recipes")
                     .collection("bookmarked_recipe")
                     .doc(widget.recipeId)
                     .set({
@@ -333,6 +333,7 @@ class bookmarked_recipesState extends State<bookmarked_recipes> {
                 //RecipeViewState.ishappen = false;
 
                 bookmarked_recipes.Saved = false;
+                cookbook_item.slectedCookbooks.clear();
 
                 Navigator.pop(context);
               },

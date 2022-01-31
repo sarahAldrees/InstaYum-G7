@@ -16,7 +16,7 @@ class RecipeCardScreenState extends State<RecipeCardScreen> {
   @override
   void initState() {
     super.initState();
-    getRecipeObjects(); // to create a default cookbook for each user when the user create an account
+    getRecipeObjects(); // to create a All bookmarked recipes for each user when the user create an account
   }
 
   String finalText = 'wait until I bring the recipes';
