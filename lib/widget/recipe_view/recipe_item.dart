@@ -6,7 +6,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 
 class RecipeItem extends StatelessWidget {
   // final String autherName;
-  // final String autherImage;
+  String cookbookitme;
   final String autherId;
   final String RecipeId;
   final String recipeName;
@@ -21,7 +21,7 @@ class RecipeItem extends StatelessWidget {
   RecipeItem(
     // Key key,
     // this.autherName,
-    // this.autherImage,
+    this.cookbookitme,
     this.autherId,
     this.RecipeId,
     this.recipeName,
@@ -68,7 +68,7 @@ class RecipeItem extends StatelessWidget {
                         builder: (context) => new RecipeView(
                             //key,
                             // autherName,
-                            // autherImage,
+                            cookbookitme,
                             autherId,
                             RecipeId,
                             recipeName,

@@ -121,6 +121,7 @@ class _RecipeCardState extends State<RecipeCard> {
                           //key,
                           // autherName,
                           // autherImage,
+                          "",
                           widget.autherId,
                           widget.RecipeId,
                           widget.recipeName,

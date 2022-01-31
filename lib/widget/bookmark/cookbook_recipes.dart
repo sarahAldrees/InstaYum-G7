@@ -147,6 +147,7 @@ class cookbook_recipesState extends State<cookbook_recipes> {
             children: [
               ...recpiesList
                   .map((e) => RecipeItem(
+                      widget.cookbookID,
                       e.autherId,
                       e.id,
                       e.recipeName,

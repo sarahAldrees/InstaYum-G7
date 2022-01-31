@@ -115,6 +115,7 @@ class _MyRecipesScreenState extends State<MyRecipesScreen> {
       // map all available cookbooks and list them in Gridviwe.
       children: recpiesList
           .map((e) => RecipeItem(
+              "",
               e.autherId,
               e.id,
               e.recipeName,
