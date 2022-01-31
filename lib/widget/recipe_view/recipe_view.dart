@@ -6,6 +6,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:instayum1/model/cookbook.dart';
 import 'package:instayum1/model/recipe.dart';
 import 'package:instayum1/widget/bookmark/cookbook_item.dart';
+import 'package:instayum1/widget/bookmark/cookbook_recipes.dart';
 import 'package:instayum1/widget/recipe_view/comment.dart';
 import 'package:instayum1/widget/recipe_view/convert_to_check_box.dart';
 import 'package:instayum1/widget/recipe_view/rating_recipe.dart';
@@ -58,7 +59,10 @@ class _RecipeViewState extends State<RecipeView> {
         .snapshots()
         .listen((data) {
       if (!ishappend) {
-        recipeExist = false;
+        // setState(() {
+        recipeExist = bookmarked_recipes.Saved;
+        //});
+        //recipeExist = false;
 
         data.docs.forEach((doc) {
           if (doc.data()['recipeId'] == widget._recipeid) {
@@ -67,10 +71,11 @@ class _RecipeViewState extends State<RecipeView> {
           }
         });
       }
-      if (!ishappend && bookmarked_recipes.Saved)
-        setState(() {
-          ishappend = recipeExist;
-        });
+      if (!ishappend && bookmarked_recipes.Saved && this.mounted) {
+        ishappend = recipeExist;
+        // bookmarked_recipes.Saved = true;
+        setState(() {});
+      }
       // if (!recipeExist) {
       //   setState(() {
       //     ishappend = recipeExist;
@@ -89,6 +94,7 @@ class _RecipeViewState extends State<RecipeView> {
           onPressed: () {
 //------------------delete from bookmark recipe--------------
             unBookmarkRecipe();
+            cookbook_recipes.isNeedUpdate = true;
 //-----------------------------------------------------------
           });
     } else {

@@ -17,6 +17,7 @@ class cookbook_recipes extends StatefulWidget {
   @override
   String cookbookID;
   bool flag = true;
+  static bool isNeedUpdate = false;
 
   cookbook_recipes(this.cookbookID);
 
@@ -43,8 +44,8 @@ String autherId;
 String recipeId;
 
 class cookbook_recipesState extends State<cookbook_recipes> {
-  getData() async {
-    await FirebaseFirestore.instance
+  getData() {
+    FirebaseFirestore.instance
         .collection("users")
         .doc(FirebaseAuth.instance.currentUser.uid)
         .collection("cookbooks")
@@ -53,18 +54,17 @@ class cookbook_recipesState extends State<cookbook_recipes> {
         .snapshots()
         .listen((data) {
       recpiesList.clear();
-      data.docs.forEach((doc) async {
-        setState(() {
-          recpiesList.clear();
-          autherId = doc.data()['autherId'];
-          recipeId = doc.data()['recipeId'];
-        });
+      data.docs.forEach((doc) {
+        recpiesList.clear();
+        autherId = doc.data()['autherId'];
+        recipeId = doc.data()['recipeId'];
+        //setState(() {});
         // if (recpiesList.isEmpty) {
         //   recpiesList = [];
         // }
 
 //----------------------------------------------------------------
-        await FirebaseFirestore.instance
+        FirebaseFirestore.instance
             .collection("users")
             .doc(autherId)
             .collection("recipes")
@@ -108,14 +108,14 @@ class cookbook_recipesState extends State<cookbook_recipes> {
             ingredients: ingredientsList,
             imageUrls: imageUrlsList,
           ));
-          setState(() {});
+          if (this.mounted) setState(() {});
         });
       });
 
-      if (widget.flag) {
-        setState(() {
-          widget.flag = false;
-        });
+      if (widget.flag || cookbook_recipes.isNeedUpdate && this.mounted) {
+        widget.flag = false;
+        cookbook_recipes.isNeedUpdate = false;
+        setState(() {});
       }
     });
   }
