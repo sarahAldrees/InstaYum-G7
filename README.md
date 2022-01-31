@@ -1,16 +1,26 @@
 # instayum1
 
-A new Flutter project.
+InstaYum
 
-## Getting Started
+Is a mobile application 
+That saves recipes in an organized manner.
+Our product is an English mobile application with many tools to help cooking enthusiasts, like a shopping list and meals plan.... 
 
-This project is a starting point for a Flutter application.
+Technologices:
+we use Dart langague and flutter framework version 2.11.0 to develop our application. As well as, we used some libraries like firebase, image picker, flutter rating bar, and flutter dialogflow.
 
-A few resources to get you started if this is your first Flutter project:
+InstaYum main contributors:
+@sarahAldrees
+@GhaidaAlomran
+@LamaAlamri
+@ghadaALtamimi
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+## Launch
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+You can run the app simbly by clone the repository to do that follow the steps below:
+
+- click on the code button.
+- copy the url.
+- go to any source-code editor (e.g. visual studio code).
+- you can open it by clicking on source control and choose the option clone repository.
+
