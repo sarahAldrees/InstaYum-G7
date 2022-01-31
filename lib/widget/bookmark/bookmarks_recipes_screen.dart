@@ -82,6 +82,8 @@ class bookmarked_recipesState extends State<bookmarked_recipes> {
           "Add new cookbook",
         ),
         onPressed: () async {
+          String cookbookTitle = _CookbookTitleTextFieldController
+              .text; // used to print the cookbook title in the successfull message
           if (CookbookImagePickerState.isUploadCookbookImageIsloading) {
             Flushbar(
               backgroundColor: Theme.of(context).errorColor,
@@ -107,7 +109,14 @@ class bookmarked_recipesState extends State<bookmarked_recipes> {
                 CookbookImagePickerState.uploadedFileURL = null;
                 _CookbookTitleTextFieldController.clear();
                 Navigator.of(context).pop();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                      content: Text(
+                          "The $cookbookTitle cookbook has been added successfully"),
+                      backgroundColor: Colors.green),
+                );
               } else {
+                print("te name exist 2222222222222222");
                 //may be we have to change it later ????
                 // ScaffoldMessenger.of(context).showSnackBar(
                 //   SnackBar(
