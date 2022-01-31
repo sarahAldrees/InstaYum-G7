@@ -9,7 +9,7 @@ Our product is an English mobile application with many tools to help cooking ent
 Technologices:
 we use Dart langague and flutter framework version 2.11.0 to develop our application. As well as, we used some libraries like firebase, image picker, flutter rating bar, and flutter dialogflow.
 
-
+InstaYum main contributors:
 @sarahAldrees
 @GhaidaAlomran
 @LamaAlamri
