@@ -1,22 +1,13 @@
-import 'dart:ffi';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:instayum1/model/cookbook.dart';
-import 'package:instayum1/model/recipe.dart';
 import 'package:instayum1/widget/bookmark/add_new_cookbook.dart';
 import 'package:instayum1/widget/pickers/cookbook_image_picker.dart';
-import 'package:instayum1/widget/recipe_view/comment.dart';
-import 'package:instayum1/widget/recipe_view/recipe_view.dart';
 import 'add_new_cookbook.dart';
 import 'package:instayum1/widget/bookmark/cookbook_item.dart';
-import 'package:path/path.dart' as Path;
 import 'package:another_flushbar/flushbar.dart';
-import 'package:another_flushbar/flushbar_helper.dart';
-import 'package:another_flushbar/flushbar_route.dart';
 
 class BookmarkedRecipes extends StatefulWidget {
   static bool Saved = false;
@@ -35,7 +26,7 @@ class BookmarkedRecipesState extends State<BookmarkedRecipes> {
   String imagePath;
   File image;
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-  bool _isEmptyCookbookTitle = false;
+  //bool _isEmptyCookbookTitle = false;
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   String cookbookTitle = "";
   bool validCookbookName = true;

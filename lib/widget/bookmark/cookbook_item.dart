@@ -13,7 +13,7 @@ class CookbookItem extends StatefulWidget {
   static bool isBrowse = true;
 
   Color colorOfCircule = Colors.grey.shade300;
-  bool isSlected = false;
+  bool isSelected = false;
   static List<String> slectedCookbooks = [];
 
   // final VoidCallback onClicked;
@@ -54,13 +54,13 @@ class CookbookItemState extends State<CookbookItem> {
               if (!CookbookItem.isBrowse) {
                 // debugPrint('add to cookbook');
                 setState(() {
-                  widget.isSlected = !widget.isSlected;
-                  if (widget.isSlected)
+                  widget.isSelected = !widget.isSelected;
+                  if (widget.isSelected)
                     widget.colorOfCircule = Colors.red;
                   else
                     widget.colorOfCircule = Colors.grey.shade300;
                 });
-                if (widget.isSlected) {
+                if (widget.isSelected) {
                   CookbookItem.slectedCookbooks.add(widget.cookbookID);
                 } else {
                   for (int i = 0;
