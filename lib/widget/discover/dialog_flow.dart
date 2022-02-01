@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dialogflow/dialogflow_v2.dart';
 import 'package:instayum1/model/recipe.dart';
-import 'package:instayum1/widget/discover/bot_suggestion.dart';
+import 'package:instayum1/model/bot_suggestion.dart';
 import 'package:instayum1/widget/discover/message.dart';
 
 class ChatBot extends StatefulWidget {
