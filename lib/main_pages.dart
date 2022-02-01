@@ -202,7 +202,7 @@ class appPages extends State<MainPages> {
 
   List<Widget> listOfPagesContent = [
     //---------discover page  0-------------
-    discoverPage(),
+    DiscoverPage(),
     //--------- mealPlaner page 1------------
     MealPlans(),
     //----------add recipe page 2------------
