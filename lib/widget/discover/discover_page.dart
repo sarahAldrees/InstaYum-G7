@@ -6,12 +6,12 @@ import '../recipe_view/my_recipes_screen.dart';
 
 //import 'package:flutter/material.dart';
 
-class discoverPage extends StatefulWidget {
+class DiscoverPage extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => discover();
+  State<StatefulWidget> createState() => Discover();
 }
 
-class discover extends State<discoverPage> {
+class Discover extends State<DiscoverPage> {
   bool value = false;
   //final cookingEnthusist = UserPreferences.myCooking_Enthusiast;
   @override
