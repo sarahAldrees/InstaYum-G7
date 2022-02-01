@@ -1,27 +1,18 @@
-import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:instayum1/model/cookbook.dart';
 import 'package:instayum1/model/recipe.dart';
-import 'package:instayum1/widget/bookmark/add_new_cookbook.dart';
-import 'package:instayum1/widget/pickers/cookbook_image_picker.dart';
 import 'package:instayum1/widget/recipe_view/recipe_item.dart';
-import 'add_new_cookbook.dart';
-import 'package:instayum1/widget/bookmark/cookbook_item.dart';
 
-class cookbook_recipes extends StatefulWidget {
+class CookbookRecipes extends StatefulWidget {
   @override
   String cookbookID;
   bool flag = true;
   static bool isNeedUpdate = false;
 
-  cookbook_recipes(this.cookbookID);
+  CookbookRecipes(this.cookbookID);
 
-  State<cookbook_recipes> createState() => cookbook_recipesState();
+  State<CookbookRecipes> createState() => CookbookRecipesState();
 }
 
 List<Recipe> recpiesList = [];
@@ -43,7 +34,7 @@ int numberOfRecipes = 0;
 String autherId;
 String recipeId;
 
-class cookbook_recipesState extends State<cookbook_recipes> {
+class CookbookRecipesState extends State<CookbookRecipes> {
   _getBookmarkedRecipes() {
     FirebaseFirestore.instance
         .collection("users")
@@ -112,9 +103,9 @@ class cookbook_recipesState extends State<cookbook_recipes> {
         });
       });
 
-      if (widget.flag || cookbook_recipes.isNeedUpdate && this.mounted) {
+      if (widget.flag || CookbookRecipes.isNeedUpdate && this.mounted) {
         widget.flag = false;
-        cookbook_recipes.isNeedUpdate = false;
+        CookbookRecipes.isNeedUpdate = false;
         setState(() {});
       }
     });

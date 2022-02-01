@@ -1,14 +1,11 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:instayum1/model/recipe.dart';
 import 'package:instayum1/widget/bookmark/bookmarks_recipes_screen.dart';
 import 'package:instayum1/widget/bookmark/cookbook_recipes.dart';
 
-class cookbook_item extends StatefulWidget {
+class CookbookItem extends StatefulWidget {
   @override
-  State<cookbook_item> createState() => cookbook_itemState();
+  State<CookbookItem> createState() => CookbookItemState();
   final String cookbookID;
   // final String cookbookName;
 
@@ -21,7 +18,7 @@ class cookbook_item extends StatefulWidget {
 
   // final VoidCallback onClicked;
 
-  cookbook_item(
+  CookbookItem(
     // Key key,
     this.cookbookID,
     // this.cookbookName,
@@ -29,8 +26,8 @@ class cookbook_item extends StatefulWidget {
   );
 }
 
-class cookbook_itemState extends State<cookbook_item> {
-  int length = bookmarked_recipesState.Cookbooks_List.length;
+class CookbookItemState extends State<CookbookItem> {
+  int length = BookmarkedRecipesState.Cookbooks_List.length;
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +51,7 @@ class cookbook_itemState extends State<cookbook_item> {
           child: FlatButton(
             padding: EdgeInsets.all(10),
             onPressed: () {
-              if (!cookbook_item.isBrowse) {
+              if (!CookbookItem.isBrowse) {
                 // debugPrint('add to cookbook');
                 setState(() {
                   widget.isSlected = !widget.isSlected;
@@ -64,20 +61,18 @@ class cookbook_itemState extends State<cookbook_item> {
                     widget.colorOfCircule = Colors.grey.shade300;
                 });
                 if (widget.isSlected) {
-                  cookbook_item.slectedCookbooks.add(widget.cookbookID);
+                  CookbookItem.slectedCookbooks.add(widget.cookbookID);
                 } else {
                   for (int i = 0;
-                      i < cookbook_item.slectedCookbooks.length;
+                      i < CookbookItem.slectedCookbooks.length;
                       i++) {
-                    if (cookbook_item.slectedCookbooks[i] == widget.cookbookID)
-                      cookbook_item.slectedCookbooks.removeAt(i);
+                    if (CookbookItem.slectedCookbooks[i] == widget.cookbookID)
+                      CookbookItem.slectedCookbooks.removeAt(i);
                   }
                 }
                 print("/////////------------");
-                for (int i = 0;
-                    i < cookbook_item.slectedCookbooks.length;
-                    i++) {
-                  print(cookbook_item.slectedCookbooks[i]);
+                for (int i = 0; i < CookbookItem.slectedCookbooks.length; i++) {
+                  print(CookbookItem.slectedCookbooks[i]);
                 }
                 //print(widget.cookbookID);
               } else {
@@ -85,7 +80,7 @@ class cookbook_itemState extends State<cookbook_item> {
                     context,
                     MaterialPageRoute(
                         builder: (context) =>
-                            cookbook_recipes(widget.cookbookID)));
+                            CookbookRecipes(widget.cookbookID)));
 
 //-------------------------------------------------------
 

@@ -2,10 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:instayum1/widget/pickers/cookbook_image_picker.dart';
-import 'package:instayum1/widget/recipe_view/comment.dart';
-import '../../model/recipe.dart';
-import '../../model/cookbook.dart';
-import 'bookmarks_recipes_screen.dart';
 
 class AddNewCookBook extends StatefulWidget {
   @override
@@ -37,32 +33,6 @@ class AddNewCookBookState extends State<AddNewCookBook> {
       "cookbook_img_url": cookbookImageUrl,
       "timestamp": timestamp,
     });
-    // timestamp = DateTime.now(); // to update the time and make the default upper
-    // FirebaseFirestore.instance
-    //     .collection("users")
-    //     .doc(currentUser.uid)
-    //     .collection("cookbooks")
-    //     .doc("All bookmarked recipes")
-    //     .update({"timestamp": timestamp});
-
-    //*****************************WE WILL WORK ON IT LATER */
-    // await FirebaseFirestore.instance.collection("users")
-    //     .doc(currentUser.uid)
-    //     .collection(
-    //         "cookbooks") // create new collcetion of recipes inside user document to save all of the user's recipes
-    //     .doc()
-    //     .set({
-    //   "cookbook_id": cookBookTitle,
-    //   // "cookBook_title": cookBookTitle,//we will see later
-    //   "cookbook_img_url": cookbookImageUrl,
-    //   "timestamp": timestamp,
-    // });
-    //*****************************WE WILL WORK ON IT LATER */
-
-// to add the recipes to the cookbook
-    // .collection(cookBookTitle + "_recipes")
-    // .doc("empty") // the id of recipes
-    // .set({"empty": "empty"});
   }
 
   @override

@@ -18,20 +18,20 @@ import 'package:another_flushbar/flushbar.dart';
 import 'package:another_flushbar/flushbar_helper.dart';
 import 'package:another_flushbar/flushbar_route.dart';
 
-class bookmarked_recipes extends StatefulWidget {
+class BookmarkedRecipes extends StatefulWidget {
   static bool Saved = false;
   String autherId;
   String recipeId;
 
-  bookmarked_recipes(this.autherId, this.recipeId);
+  BookmarkedRecipes(this.autherId, this.recipeId);
 
 //----------------Alert dialog------------------------------
 
   @override
-  State<bookmarked_recipes> createState() => bookmarked_recipesState();
+  State<BookmarkedRecipes> createState() => BookmarkedRecipesState();
 }
 
-class bookmarked_recipesState extends State<bookmarked_recipes> {
+class BookmarkedRecipesState extends State<BookmarkedRecipes> {
   String imagePath;
   File image;
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
@@ -245,7 +245,7 @@ class bookmarked_recipesState extends State<bookmarked_recipes> {
       crossAxisCount: 2, // 2 items in each row
       padding: EdgeInsets.all(25),
       // map all available cookbooks and list them in Gridviwe.
-      children: Cookbooks_List.map((c) => cookbook_item(
+      children: Cookbooks_List.map((c) => CookbookItem(
             // Key,
             c.id,
             c.imageURLCookbook,
@@ -255,7 +255,7 @@ class bookmarked_recipesState extends State<bookmarked_recipes> {
   }
 
   Scaffold checking() {
-    if (!cookbook_item.isBrowse) {
+    if (!CookbookItem.isBrowse) {
       return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.white,
@@ -309,16 +309,14 @@ class bookmarked_recipesState extends State<bookmarked_recipes> {
               ),
               onPressed: () {
                 DateTime timestamp = DateTime.now();
-                for (int i = 0;
-                    i < cookbook_item.slectedCookbooks.length;
-                    i++) {
-                  if (cookbook_item.slectedCookbooks[i] !=
+                for (int i = 0; i < CookbookItem.slectedCookbooks.length; i++) {
+                  if (CookbookItem.slectedCookbooks[i] !=
                       "All bookmarked recipes") {
                     FirebaseFirestore.instance
                         .collection("users")
                         .doc(FirebaseAuth.instance.currentUser.uid)
                         .collection("cookbooks")
-                        .doc(cookbook_item.slectedCookbooks[i])
+                        .doc(CookbookItem.slectedCookbooks[i])
                         .collection("bookmarked_recipe")
                         .doc(widget.recipeId)
                         .set({
@@ -339,11 +337,11 @@ class bookmarked_recipesState extends State<bookmarked_recipes> {
                   "recipeId": widget.recipeId,
                 });
 
-                cookbook_item.isBrowse = true;
+                CookbookItem.isBrowse = true;
                 //RecipeViewState.ishappen = false;
 
-                bookmarked_recipes.Saved = false;
-                cookbook_item.slectedCookbooks.clear();
+                BookmarkedRecipes.Saved = false;
+                CookbookItem.slectedCookbooks.clear();
                 Navigator.pop(context);
               },
             ),

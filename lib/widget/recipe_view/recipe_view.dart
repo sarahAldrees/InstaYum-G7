@@ -63,18 +63,18 @@ class _RecipeViewState extends State<RecipeView> {
         .listen((data) {
       if (!ishappend) {
         // setState(() {
-        recipeExist = bookmarked_recipes.Saved;
+        recipeExist = BookmarkedRecipes.Saved;
         //});
         //recipeExist = false;
 
         data.docs.forEach((doc) {
           if (doc.data()['recipeId'] == widget._recipeid) {
             recipeExist = true;
-            bookmarked_recipes.Saved = true;
+            BookmarkedRecipes.Saved = true;
           }
         });
       }
-      if (!ishappend && bookmarked_recipes.Saved && this.mounted) {
+      if (!ishappend && BookmarkedRecipes.Saved && this.mounted) {
         ishappend = recipeExist;
         // bookmarked_recipes.Saved = true;
         setState(() {});
@@ -97,12 +97,12 @@ class _RecipeViewState extends State<RecipeView> {
           onPressed: () {
 //------------------delete from bookmark recipe--------------
             unBookmarkRecipe();
-            cookbook_recipes.isNeedUpdate = true;
+            CookbookRecipes.isNeedUpdate = true;
 //-----------------------------------------------------------
           });
     } else {
       setState(() {
-        bookmarked_recipes.Saved = false;
+        BookmarkedRecipes.Saved = false;
       });
       return IconButton(
           icon: Icon(
@@ -111,8 +111,8 @@ class _RecipeViewState extends State<RecipeView> {
           ),
           onPressed: () {
             //   setState(() {
-            cookbook_item.isBrowse = false;
-            bookmarked_recipes.Saved = true;
+            CookbookItem.isBrowse = false;
+            BookmarkedRecipes.Saved = true;
             // });
 
             ///------------------bookmark --------
@@ -126,7 +126,7 @@ class _RecipeViewState extends State<RecipeView> {
                 ),
                 context: context,
                 builder: (context) {
-                  return bookmarked_recipes(widget._autherId, widget._recipeid);
+                  return BookmarkedRecipes(widget._autherId, widget._recipeid);
                   // return bookmarked_recipes();
                 });
 
@@ -137,7 +137,7 @@ class _RecipeViewState extends State<RecipeView> {
 
 //---------------------------------------- try 1 unbookmark -----------------------------------------------
   void unBookmarkRecipe() async {
-    if (!cookbook_item.isBrowse ||
+    if (!CookbookItem.isBrowse ||
         widget.cookbook == "All bookmarked recipes" ||
         widget.cookbook == "") {
       await FirebaseFirestore.instance
