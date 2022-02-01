@@ -300,14 +300,16 @@ class BookmarkedRecipesState extends State<BookmarkedRecipes> {
               ),
               onPressed: () {
                 DateTime timestamp = DateTime.now();
-                for (int i = 0; i < CookbookItem.slectedCookbooks.length; i++) {
-                  if (CookbookItem.slectedCookbooks[i] !=
+                for (int i = 0;
+                    i < CookbookItem.selectedCookbooks.length;
+                    i++) {
+                  if (CookbookItem.selectedCookbooks[i] !=
                       "All bookmarked recipes") {
                     FirebaseFirestore.instance
                         .collection("users")
                         .doc(FirebaseAuth.instance.currentUser.uid)
                         .collection("cookbooks")
-                        .doc(CookbookItem.slectedCookbooks[i])
+                        .doc(CookbookItem.selectedCookbooks[i])
                         .collection("bookmarked_recipe")
                         .doc(widget.recipeId)
                         .set({
@@ -332,7 +334,7 @@ class BookmarkedRecipesState extends State<BookmarkedRecipes> {
                 //RecipeViewState.ishappen = false;
 
                 BookmarkedRecipes.Saved = false;
-                CookbookItem.slectedCookbooks.clear();
+                CookbookItem.selectedCookbooks.clear();
                 Navigator.pop(context);
               },
             ),
