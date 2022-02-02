@@ -26,10 +26,10 @@ class appPages extends State<MainPages> {
   @override
   void initState() {
     super.initState();
-    createDefaultCookbook(); // to create a All bookmarked recipes for each user when the user create an account
+    createAllBookmarkedRecipes(); // to create a create All Bookmarked Recipes  cookbook for each user when the user create an account
   }
 
-  void createDefaultCookbook() async {
+  void createAllBookmarkedRecipes() async {
     final FirebaseAuth _auth = FirebaseAuth.instance;
     final currentUser = await _auth.currentUser;
 
