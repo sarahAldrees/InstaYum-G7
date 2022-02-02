@@ -34,7 +34,6 @@ class CookbookItemState extends State<CookbookItem> {
     // if (!cookbook_item.slectedCookbooks.isEmpty) {
     //   cookbook_item.slectedCookbooks.clear();
     // }
-    for (int i = 0; i < length; i++) {}
     final image = widget.imageURLCookbook == "noImage"
         ? AssetImage("assets/images/defaultCookbookImage.png")
         : NetworkImage(widget.imageURLCookbook);
