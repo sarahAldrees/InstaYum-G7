@@ -14,7 +14,7 @@ class CookbookItem extends StatefulWidget {
 
   Color colorOfCircule = Colors.grey.shade300;
   bool isSelected = false;
-  static List<String> slectedCookbooks = [];
+  static List<String> selectedCookbooks = [];
 
   // final VoidCallback onClicked;
 
@@ -61,18 +61,20 @@ class CookbookItemState extends State<CookbookItem> {
                     widget.colorOfCircule = Colors.grey.shade300;
                 });
                 if (widget.isSelected) {
-                  CookbookItem.slectedCookbooks.add(widget.cookbookID);
+                  CookbookItem.selectedCookbooks.add(widget.cookbookID);
                 } else {
                   for (int i = 0;
-                      i < CookbookItem.slectedCookbooks.length;
+                      i < CookbookItem.selectedCookbooks.length;
                       i++) {
-                    if (CookbookItem.slectedCookbooks[i] == widget.cookbookID)
-                      CookbookItem.slectedCookbooks.removeAt(i);
+                    if (CookbookItem.selectedCookbooks[i] == widget.cookbookID)
+                      CookbookItem.selectedCookbooks.removeAt(i);
                   }
                 }
                 print("/////////------------");
-                for (int i = 0; i < CookbookItem.slectedCookbooks.length; i++) {
-                  print(CookbookItem.slectedCookbooks[i]);
+                for (int i = 0;
+                    i < CookbookItem.selectedCookbooks.length;
+                    i++) {
+                  print(CookbookItem.selectedCookbooks[i]);
                 }
                 //print(widget.cookbookID);
               } else {
