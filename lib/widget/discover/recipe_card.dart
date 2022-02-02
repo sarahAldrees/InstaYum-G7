@@ -57,12 +57,7 @@ class _RecipeCardState extends State<RecipeCard> {
         .listen((userData) {
       setState(() {
         numOfRevewis = userData.data()["num_of_reviews"];
-
         avg = userData.data()["average_rating"];
-        print("00000---------------------------------------");
-        print(avg);
-        print("00000---------------------------------------");
-        print(numOfRevewis);
       });
     });
   }
@@ -75,13 +70,10 @@ class _RecipeCardState extends State<RecipeCard> {
 
   @override
   Widget build(BuildContext context) {
-    final List<String> ingredients = ["milk"];
+    // final List<String> ingredients = ["milk"];
 
-    final List<String> dirctions = ["1"];
+    // final List<String> dirctions = ["1"];
 
-    final List<String> dircimageUrlst = [
-      "  https://firebasestorage.googleapis.com/v0/b/instayum-f7a34.appspot.com/o/recpie_image%2FdefaultRecipeImage.png?alt=media&token=f12725db-646b-4692-9ccf-131a99667e43"
-    ];
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 22, vertical: 10),
       width: 325,
@@ -129,8 +121,8 @@ class _RecipeCardState extends State<RecipeCard> {
                           widget.typeOfMeal,
                           widget.category,
                           widget.cuisine,
-                          ingredients,
-                          dirctions,
+                          widget.ingredients,
+                          widget.dirctions,
                           widget.imageUrls)));
             }, //what happend after clicking image
           ),
@@ -176,28 +168,6 @@ class _RecipeCardState extends State<RecipeCard> {
                     ],
                   ),
                 ),
-                // Container(
-                //   padding: EdgeInsets.all(5),
-                //   margin: EdgeInsets.all(10),
-                //   decoration: BoxDecoration(
-                //     color: Colors.black.withOpacity(0.4),
-                //     borderRadius: BorderRadius.circular(15),
-                //   ),
-                //   child: Row(
-                //     children: [
-                //       Icon(
-                //         Icons.schedule,
-                //         color: Colors.yellow,
-                //         size: 18,
-                //       ),
-                //       SizedBox(width: 7),
-                //       Text(
-                //         cookTime,
-                //         style: TextStyle(fontSize: 14),
-                //       ),
-                //     ],
-                //   ),
-                // )
               ],
             ),
             alignment: Alignment.bottomLeft,

@@ -19,7 +19,6 @@ class ChatBotState extends State<ChatBot> {
   static String userPreferredTypeOfMeal = '';
   static String userPreferredCategory = '';
   static String userPreferredCuisine = '';
-  var botSuggestions;
   Messages theStartedMessage = Messages(
     text:
         "Welcome, I am InstaYum's chef Iam here to help you in deciding what to eat, do you need help?",
@@ -79,14 +78,10 @@ class ChatBotState extends State<ChatBot> {
         Dialogflow(authGoogle: authGoogle, language: Language.english);
     AIResponse response = await dialogFlow.detectIntent(query);
     var botSuggestions = BotSuggestions(response.getListMessage());
-    print('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%');
-    // listOfResponses(botSuggestions.suggestions);
-    print(botSuggestions.suggestions);
     setState(() {
       suggestListAgent = botSuggestions.suggestions;
     });
 
-    print(suggestListAgent);
     Messages message = Messages(
       text: response.getMessage() ??
           CardDialogflow(response.getListMessage()[0]).title,

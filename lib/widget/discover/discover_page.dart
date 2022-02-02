@@ -18,15 +18,9 @@ class Discover extends State<DiscoverPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        // backgroundColor: Color(0xFFeb6d44),
-
         onPressed: () {
-          // Navigator.push(
-          //     context, MaterialPageRoute(builder: (context) => ChatbotChat()));
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => ChatBot()));
-//FlutterFactsChatBot
-          // ChatbotChat();
         },
         child: Image.asset(
           'assets/images/InstaYum_chatbot.png',
@@ -63,11 +57,6 @@ class Discover extends State<DiscoverPage> {
               ),
             ),
           ),
-          // Container(
-          //   height: 600,
-          //   child:,// my_recipes(),
-          //   padding: EdgeInsets.only(top: 20),
-          // ),
         ],
       ),
     );

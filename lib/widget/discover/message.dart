@@ -1,11 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:instayum1/main_pages.dart';
-import 'package:instayum1/widget/discover/recipe_card.dart';
-import 'package:instayum1/widget/meal_plan/meal_title.dart';
 import 'package:instayum1/widget/profile/profile.dart';
-import 'package:instayum1/widget/recipe_view/recipe_view.dart';
-
-import 'dialog_flow.dart';
 import 'recipe_card_screen.dart';
 
 class Messages extends StatefulWidget {
