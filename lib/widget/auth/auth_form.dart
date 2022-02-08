@@ -117,7 +117,7 @@ class _AuthFormState extends State<AuthForm> {
   bool _isValiedPassword(String password, bool isSignup) {
     //if in signup check the password
     if (isSignup) {
-      String pattern = r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{6,}$';
+      String pattern = r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$';
 
       RegExp regExp = new RegExp(pattern);
 
@@ -193,7 +193,7 @@ class _AuthFormState extends State<AuthForm> {
                         if (value.isEmpty) {
                           return "password should not be empty";
                         } else if (!_isValiedPassword(value, _isSignUp)) {
-                          return "The password must conatint at least \none upper case \none lower case \none digit \nand at least 6 characters in length";
+                          return "The password must conatint at least \none upper case \none lower case \none digit \nand at least 8 characters in length";
                         }
                         return null;
                       },

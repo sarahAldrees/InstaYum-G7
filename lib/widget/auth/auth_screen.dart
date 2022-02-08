@@ -87,26 +87,14 @@ class AuthScreenState extends State<AuthScreen> {
           password: password,
         );
         //here we can check the admin
-        if (email == 'admin@admin.admin') {
-          setState(() {
-            isAdmin = true;
-          });
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(
-              builder: (context) => AdminHomePage(),
-            ),
-          );
-        } else {
-          // to move the user to the profile page (Mainpages) after he login successfully
-          setState(() {
-            isAdmin = false;
-          });
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(
-              builder: (context) => MainPages(),
-            ),
-          );
-        }
+
+        // to move the user to the profile page (Mainpages) after he login successfully
+
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => MainPages(),
+          ),
+        );
       }
     } on PlatformException catch (err) {
       setState(() {
@@ -175,6 +163,14 @@ class AuthScreenState extends State<AuthScreen> {
       }
       print('catch #3');
     }
+  }
+
+  Future<bool> _usernameCheck(String username) async {
+    final result = await FirebaseFirestore.instance
+        .collection('users')
+        .where('username', isEqualTo: username)
+        .get();
+    return result.docs.isEmpty;
   }
 
   @override
