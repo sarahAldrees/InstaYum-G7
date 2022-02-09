@@ -101,7 +101,7 @@ class _MyRecipesScreenState extends State<MyRecipesScreen> {
           ),
         },
       );
-      setState(() {});
+      if (this.mounted) setState(() {});
     });
   }
 
