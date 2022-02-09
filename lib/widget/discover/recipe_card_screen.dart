@@ -41,7 +41,7 @@ class RecipeCardScreenState extends State<RecipeCardScreen> {
     // FirebaseFirestore.instance.collection("users").get()
     numberOfRecipes = 0;
     FirebaseFirestore.instance.collection("users").get().then((querySnapshot) {
-      //  querySnapshot.docs.shuffle();
+      querySnapshot.docs.shuffle();
       querySnapshot.docs.forEach((result) {
         FirebaseFirestore.instance
             .collection("users")
@@ -114,6 +114,7 @@ class RecipeCardScreenState extends State<RecipeCardScreen> {
                 {
                   print(
                       "11111111111111111111111111111111111111111111111111111111111111111"),
+                  print(numberOfRecipes),
                   print(
                       "In recipe card screen we did not find any suitable recipe"),
                 }
