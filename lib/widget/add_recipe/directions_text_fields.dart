@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:instayum1/widget/add_recipe/add_recipe_page.dart';
+import 'package:instayum1/widget/add_recipe/speech_to_text_API.dart';
 
 class DirectionsTextFields extends StatefulWidget {
   final int index;
@@ -11,7 +12,9 @@ class DirectionsTextFields extends StatefulWidget {
 
 class _DirectionsTextFieldsState extends State<DirectionsTextFields> {
   TextEditingController _directionController;
-
+  String text = "";
+  bool isListening = false;
+  bool isListening1 = false;
   @override
   void initState() {
     super.initState();
@@ -28,6 +31,13 @@ class _DirectionsTextFieldsState extends State<DirectionsTextFields> {
     return TextFormField(
       controller: _directionController,
       decoration: InputDecoration(
+          suffixIcon: IconButton(
+            onPressed: toggleRecording,
+            icon: Icon(
+              isListening1 ? Icons.mic : Icons.mic_none,
+              color: Color(0xFFeb6d44),
+            ),
+          ),
           hintText: 'Enter a direction'), // errorText: _errorText
       onChanged: (value) {
         addRecipe.userDirections[widget.index] = value;
@@ -39,5 +49,18 @@ class _DirectionsTextFieldsState extends State<DirectionsTextFields> {
         return null;
       },
     );
+  }
+
+  Future toggleRecording() {
+    if (this.mounted)
+      setState(() {
+        isListening1 = !isListening1;
+      });
+    SpeechApi.toggleRecording(
+        onResult: (text) =>
+            setState(() => this._directionController.text = text),
+        onListening: (isListening) {
+          setState(() => this.isListening = isListening);
+        });
   }
 }

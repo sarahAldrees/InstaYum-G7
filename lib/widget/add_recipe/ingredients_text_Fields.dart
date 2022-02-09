@@ -15,6 +15,7 @@ class _IngredientsTextFieldsState extends State<IngredientsTextFields> {
   TextEditingController _ingredientController;
   String text = "";
   bool isListening = false;
+  bool isListening1 = false;
   @override
   void initState() {
     super.initState();
@@ -32,16 +33,11 @@ class _IngredientsTextFieldsState extends State<IngredientsTextFields> {
       controller: _ingredientController,
       decoration: InputDecoration(
           //============================
-          suffixIcon: AvatarGlow(
-            animate: isListening,
-            endRadius: 25,
-            glowColor: Colors.orange,
-            child: IconButton(
-              onPressed: toggleRecording,
-              icon: Icon(
-                isListening ? Icons.mic : Icons.mic_none,
-                color: Color(0xFFeb6d44),
-              ),
+          suffixIcon: IconButton(
+            onPressed: toggleRecording,
+            icon: Icon(
+              isListening1 ? Icons.mic : Icons.mic_none,
+              color: Color(0xFFeb6d44),
             ),
           ),
           //---------------------
@@ -58,10 +54,16 @@ class _IngredientsTextFieldsState extends State<IngredientsTextFields> {
     );
   }
 
-  Future toggleRecording() => SpeechApi.toggleRecording(
-      onResult: (text) =>
-          setState(() => this._ingredientController.text = text),
-      onListening: (isListening) {
-        setState(() => this.isListening = isListening);
+  Future toggleRecording() {
+    if (this.mounted)
+      setState(() {
+        isListening1 = !isListening1;
       });
+    SpeechApi.toggleRecording(
+        onResult: (text) =>
+            setState(() => this._ingredientController.text = text),
+        onListening: (isListening) {
+          setState(() => this.isListening = isListening);
+        });
+  }
 }
