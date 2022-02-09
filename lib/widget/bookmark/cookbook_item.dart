@@ -101,21 +101,21 @@ class CookbookItemState extends State<CookbookItem> {
           ),
         ),
       ),
-      Container(
-          width: double.infinity,
-          margin: EdgeInsets.only(
-            top: 10,
-            left: 10,
-            right: 10,
-          ),
+      Expanded(
+        child: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
           child: Center(
             child: Text(
               // cookbookName,
-              widget
-                  .cookbookID, // the ID is the same is the title that's why we remove the cookbook name
-              style: TextStyle(fontSize: 14),
+              widget.cookbookID,
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+              // the ID is the same is the title that's why we remove the cookbook name
+              style: TextStyle(fontSize: 12),
             ),
-          )),
+          ),
+        ),
+      ),
     ]);
   }
 }

@@ -109,7 +109,11 @@ class CookbookImagePickerState extends State<CookbookImagePicker> {
                 onPressed: chooseFile,
                 textColor: Theme.of(context).accentColor,
                 icon: Icon(Icons.image),
-                label: Text("Choose cookbook image")),
+                label: Text(
+                  "Choose cookbook image",
+                  style: TextStyle(fontSize: 13),
+                ),
+              ),
       ],
     );
   }

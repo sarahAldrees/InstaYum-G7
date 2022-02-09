@@ -171,8 +171,15 @@ class BookmarkedRecipesState extends State<BookmarkedRecipes> {
       ),
 
       actions: [
-        cancelButton,
-        addButton,
+        Row(
+          children: [
+            cancelButton,
+            SizedBox(
+              width: 2,
+            ),
+            addButton,
+          ],
+        )
       ],
     );
     // show the dialog
