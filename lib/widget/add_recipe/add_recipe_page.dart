@@ -6,7 +6,6 @@ import 'package:instayum1/widget/add_recipe/directions_text_fields.dart';
 import 'package:instayum1/widget/add_recipe/ingredients_text_Fields.dart';
 import 'package:instayum1/widget/pickers/recipe_image_picker.dart';
 import 'package:uuid/uuid.dart';
-
 import '../../main_pages.dart';
 
 //import 'dynamic_fields.dart';
