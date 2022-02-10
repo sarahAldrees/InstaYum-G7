@@ -127,7 +127,7 @@ class RecipeCardScreenState extends State<RecipeCardScreen> {
               });
             else
               setState(() {
-                finalText = "The above are the suggested recipes";
+                finalText = "Suggested recipes are above";
               });
           });
         });

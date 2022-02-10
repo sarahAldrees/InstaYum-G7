@@ -684,12 +684,12 @@ class CommentListState extends State<CommentList> {
                   comment.commentImgUrl,
                 ),
                 Padding(
-                    padding: const EdgeInsets.only(left: 10),
+                    padding: const EdgeInsets.only(left: 5),
                     child: Text(comment.date,
-                        style: TextStyle(color: Colors.grey))),
+                        style: TextStyle(color: Colors.grey, fontSize: 12))),
                 //************************************ */
                 SizedBox(
-                  width: 20,
+                  width: 0,
                 ),
                 // InkWell(
                 //     onTap: () {},

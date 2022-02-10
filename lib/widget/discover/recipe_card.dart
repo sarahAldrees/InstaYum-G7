@@ -77,7 +77,7 @@ class _RecipeCardState extends State<RecipeCard> {
 
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 22, vertical: 10),
-      width: 325,
+      width: 290,
       height: 180,
       decoration: BoxDecoration(
         color: Colors.black,
