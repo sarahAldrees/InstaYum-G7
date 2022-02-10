@@ -8,35 +8,34 @@ class CookbookRecipes extends StatefulWidget {
   @override
   String cookbookID;
   bool flag = true;
-  static bool isNeedUpdate = false;
+  static bool isNeedUpdate = true;
 
   CookbookRecipes(this.cookbookID);
 
   State<CookbookRecipes> createState() => CookbookRecipesState();
 }
 
-List<Recipe> recpiesList = [];
-
-List<String> ingredientsList = [];
-
-List<String> dirctionsList = [];
-
-List<String> imageUrlsList = [];
-
-int lengthOfIngredients = 0;
-
-int lengthOfDirections = 0;
-
-int lengthOfImages = 0;
-
-int numberOfRecipes = 0;
-
-String autherId;
-String recipeId;
-
 class CookbookRecipesState extends State<CookbookRecipes> {
-  _getBookmarkedRecipes() {
-    FirebaseFirestore.instance
+  List<Recipe> recpiesList = [];
+
+  List<String> ingredientsList = [];
+
+  List<String> dirctionsList = [];
+
+  List<String> imageUrlsList = [];
+
+  int lengthOfIngredients = 0;
+
+  int lengthOfDirections = 0;
+
+  int lengthOfImages = 0;
+
+  int numberOfRecipes = 0;
+
+  String autherId;
+  String recipeId;
+  _getBookmarkedRecipes() async {
+    await FirebaseFirestore.instance
         .collection("users")
         .doc(FirebaseAuth.instance.currentUser.uid)
         .collection("cookbooks")
@@ -45,7 +44,7 @@ class CookbookRecipesState extends State<CookbookRecipes> {
         .snapshots()
         .listen((data) {
       recpiesList.clear();
-      data.docs.forEach((doc) {
+      data.docs.forEach((doc) async {
         recpiesList.clear();
         autherId = doc.data()['autherId'];
         recipeId = doc.data()['recipeId'];
@@ -55,7 +54,7 @@ class CookbookRecipesState extends State<CookbookRecipes> {
         // }
 
 //----------------------------------------------------------------
-        FirebaseFirestore.instance
+        await FirebaseFirestore.instance
             .collection("users")
             .doc(autherId)
             .collection("recipes")
@@ -87,6 +86,8 @@ class CookbookRecipesState extends State<CookbookRecipes> {
             );
           }
           // recipe_image_url = doc.data()['recipe_image_url'],
+
+          //setState(() {
           recpiesList.add(Recipe(
             autherId: autherId,
             id: doc.id,
@@ -99,11 +100,15 @@ class CookbookRecipesState extends State<CookbookRecipes> {
             ingredients: ingredientsList,
             imageUrls: imageUrlsList,
           ));
-          if (this.mounted) setState(() {});
+          //});
+          if (mounted)
+            setState(() {
+              recpiesList = recpiesList;
+            });
         });
       });
 
-      if (widget.flag || CookbookRecipes.isNeedUpdate && this.mounted) {
+      if ((widget.flag || CookbookRecipes.isNeedUpdate) && mounted) {
         widget.flag = false;
         CookbookRecipes.isNeedUpdate = false;
         setState(() {});
@@ -113,6 +118,11 @@ class CookbookRecipesState extends State<CookbookRecipes> {
 
   void initState() {
     super.initState();
+    setState(() {
+      if (!recpiesList.isEmpty) {
+        recpiesList.clear();
+      }
+    });
     _getBookmarkedRecipes();
 
     //we call the method here to get the data immediately when init the page.
@@ -120,9 +130,11 @@ class CookbookRecipesState extends State<CookbookRecipes> {
 
   @override
   Widget build(BuildContext context) {
-    // setState(() {
-    //   recpiesList;
-    // });
+    setState(() {
+      recpiesList;
+    });
+    // print(recpiesList[0].autherId);
+
     print(autherId);
     if (!widget.flag) {
       return Scaffold(

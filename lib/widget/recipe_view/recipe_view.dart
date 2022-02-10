@@ -97,7 +97,7 @@ class _RecipeViewState extends State<RecipeView> {
           onPressed: () {
 //------------------delete from bookmark recipe--------------
             unBookmarkRecipe();
-            CookbookRecipes.isNeedUpdate = true;
+
 //-----------------------------------------------------------
           });
     } else {
@@ -181,6 +181,8 @@ class _RecipeViewState extends State<RecipeView> {
           setState(() {
             recipeExist = false;
             ishappend = false;
+
+            CookbookRecipes.isNeedUpdate = true;
           });
         });
       });
