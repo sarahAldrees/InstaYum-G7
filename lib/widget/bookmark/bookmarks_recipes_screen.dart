@@ -221,21 +221,40 @@ class BookmarkedRecipesState extends State<BookmarkedRecipes> {
         .doc(user.uid)
         .collection("cookbooks")
         .orderBy("timestamp", descending: true)
-        //  .doc(cookBookTitle)
-        .get()
-        .then((querySnapshot) {
-      querySnapshot.docs.forEach(
-        (doc) => {
-          Cookbooks_List.add(
-            Cookbook(
-              id: doc.data()['cookbook_id'],
-              // cookbookName: ,
-              imageURLCookbook: doc.data()['cookbook_img_url'],
+        .snapshots()
+        .listen((querySnapshot) {
+      if (CookbookItem.isBrowse) {
+        Cookbooks_List = [];
+        querySnapshot.docs.forEach(
+          (doc) => {
+            Cookbooks_List.add(
+              Cookbook(
+                id: doc.data()['cookbook_id'],
+                // cookbookName: ,
+                imageURLCookbook: doc.data()['cookbook_img_url'],
+              ),
             ),
-          ),
-        },
-      );
-      setState(() {});
+          },
+        );
+        if (mounted) setState(() {});
+      } else {
+        Cookbooks_List = [];
+        querySnapshot.docs.forEach(
+          (doc) => {
+            if (doc.data()['cookbook_id'] != "All bookmarked recipes")
+              {
+                Cookbooks_List.add(
+                  Cookbook(
+                    id: doc.data()['cookbook_id'],
+                    // cookbookName: ,
+                    imageURLCookbook: doc.data()['cookbook_img_url'],
+                  ),
+                ),
+              }
+          },
+        );
+        if (mounted) setState(() {});
+      }
     });
   }
 
@@ -244,12 +263,16 @@ class BookmarkedRecipesState extends State<BookmarkedRecipes> {
       crossAxisCount: 2, // 2 items in each row
       padding: EdgeInsets.all(25),
       // map all available cookbooks and list them in Gridviwe.
-      children: Cookbooks_List.map((c) => CookbookItem(
-            // Key,
-            c.id,
-            c.imageURLCookbook,
-            // c.colorOfCircule=Colors.grey.shade300,
-          )).toList(),
+      children: Cookbooks_List.map((c) =>
+              //if (CookbookItem.isBrowse) {
+              CookbookItem(
+                // Key,
+                c.id,
+                c.imageURLCookbook,
+                // c.colorOfCircule=Colors.grey.shade300,
+              )
+          // }
+          ).toList(),
     );
   }
 
@@ -257,6 +280,13 @@ class BookmarkedRecipesState extends State<BookmarkedRecipes> {
     if (!CookbookItem.isBrowse) {
       return Scaffold(
         appBar: AppBar(
+          title: Center(
+            child: Text(
+              "The recipe will always saves in all bookmared recipe with your selected cookbook if any ",
+              style: TextStyle(color: Colors.red, fontSize: 15),
+              maxLines: 3,
+            ),
+          ),
           backgroundColor: Colors.white,
           elevation: 0,
           // shape:

@@ -30,11 +30,12 @@ class ProfileState extends State<Profile> {
         .doc(user.uid)
         .snapshots()
         .listen((userData) {
-      setState(() {
-        userUsername = userData.data()['username'];
-        imageURL = userData.data()['image_url'];
-        uId = user.uid;
-      });
+      if (mounted)
+        setState(() {
+          userUsername = userData.data()['username'];
+          imageURL = userData.data()['image_url'];
+          uId = user.uid;
+        });
     });
   }
 

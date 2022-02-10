@@ -211,6 +211,7 @@ class _RecipeViewState extends State<RecipeView> {
         //ishappend = false;
       });
     }
+    //setState(() {});
   }
   //---------------------------------- t1 --------------------------------------------------------------
 
