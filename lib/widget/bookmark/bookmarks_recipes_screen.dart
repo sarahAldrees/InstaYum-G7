@@ -282,20 +282,19 @@ class BookmarkedRecipesState extends State<BookmarkedRecipes> {
         appBar: AppBar(
           title: Center(
             child: Text(
-              "The recipe will always saves in all bookmared recipe with your selected cookbook if any ",
-              style: TextStyle(color: Colors.red, fontSize: 15),
+              "The recipe will be in all bookmared recipes and your selected cookbook if any",
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.red, fontSize: 12),
               maxLines: 3,
             ),
           ),
+
           backgroundColor: Colors.white,
           elevation: 0,
           // shape:
           //     Border(bottom: BorderSide(color: Color(0xFFeb6d44), width: 4)),
           // title: Text("hi"),
           actions: [
-            SizedBox(
-              width: 10,
-            ),
             // TextButton(
             //   child: Text(
             //     "Cancel",
