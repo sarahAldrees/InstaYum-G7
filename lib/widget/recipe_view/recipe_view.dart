@@ -136,11 +136,10 @@ class _RecipeViewState extends State<RecipeView> {
   }
 
 //---------------------------------------- try 1 unbookmark -----------------------------------------------
-  void unBookmarkRecipe() async {
-    if (!CookbookItem.isBrowse ||
-        widget.cookbook == "All bookmarked recipes" ||
-        widget.cookbook == "") {
-      await FirebaseFirestore.instance
+  void unBookmarkRecipe() {
+    recipeExist = false;
+    if (widget.cookbook == "All bookmarked recipes" || widget.cookbook == "") {
+      FirebaseFirestore.instance
           .collection("users")
           .doc(FirebaseAuth.instance.currentUser.uid)
           .collection("cookbooks")
@@ -181,7 +180,6 @@ class _RecipeViewState extends State<RecipeView> {
           setState(() {
             recipeExist = false;
             ishappend = false;
-
             CookbookRecipes.isNeedUpdate = true;
           });
         });
@@ -199,7 +197,7 @@ class _RecipeViewState extends State<RecipeView> {
       // }
     } else {
       print(widget.cookbook);
-      await FirebaseFirestore.instance
+      FirebaseFirestore.instance
           .collection("users")
           .doc(FirebaseAuth.instance.currentUser.uid)
           .collection("cookbooks")
@@ -207,10 +205,10 @@ class _RecipeViewState extends State<RecipeView> {
           .collection("bookmarked_recipe")
           .doc(widget._recipeid)
           .delete();
-
       setState(() {
         recipeExist = false;
-        //   ishappend = false;
+        CookbookRecipes.isNeedUpdate = true;
+        //ishappend = false;
       });
     }
   }
