@@ -1,11 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:instayum1/model/cookbook.dart';
 import 'package:instayum1/model/recipe.dart';
 import 'package:instayum1/widget/recipe_view/recipe_item.dart';
-
-import 'bookmarks_recipes_screen.dart';
 
 class CookbookRecipes extends StatefulWidget {
   @override
@@ -132,75 +129,56 @@ class CookbookRecipesState extends State<CookbookRecipes> {
   }
 
   //----------------------------------DELETE COOKBOOK-----------------------------
+  showAlertDialogDeleteCookbook(BuildContext context) {
+    // set up the button
+    Widget yesButton = RaisedButton(
+      child: Text("Yes"),
+      onPressed: () {
+        deleteCookbook();
+        Navigator.of(context).pop();
+      },
+    );
+    Widget noButton = RaisedButton(
+      child: Text("No"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
 
-  void getCookbookObjects() async {
-    print("inside getCookbookObjects()");
-    final FirebaseAuth _auth = FirebaseAuth.instance;
-    final currentUser = await _auth.currentUser;
-    final timestamp =
-        DateTime.now(); // to update the time and make the default upper
-    FirebaseFirestore.instance
-        .collection("users")
-        .doc(currentUser.uid)
-        .collection("cookbooks")
-        .doc("All bookmarked recipes")
-        .update({"timestamp": timestamp});
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text(
+        "Delete cookbook",
+        style: TextStyle(
+            fontWeight: FontWeight.bold, color: Theme.of(context).accentColor),
+      ),
+      content: Text(
+        " Are you sure you want to delete this cookbook?  ",
+        style: TextStyle(color: Color(0xFF444444)),
+      ),
+      actions: [
+        yesButton,
+        noButton,
+      ],
+    );
 
-    BookmarkedRecipesState.Cookbooks_List = [];
-    User user = currentUser;
-    FirebaseFirestore.instance
-        .collection("users")
-        .doc(user.uid)
-        .collection("cookbooks")
-        .orderBy("timestamp", descending: true)
-        //  .doc(cookBookTitle)
-        .get()
-        .then((querySnapshot) {
-      querySnapshot.docs.forEach(
-        (doc) => {
-          BookmarkedRecipesState.Cookbooks_List.add(
-            Cookbook(
-              id: doc.data()['cookbook_id'],
-              // cookbookName: ,
-              imageURLCookbook: doc.data()['cookbook_img_url'],
-            ),
-          ),
-        },
-      );
-      if (this.mounted) {
-        print("Set state in getCookbookObjects workd222222");
-        setState(() {});
-      }
-    });
-    // setState(() {
-    //   print("second set state worked");
-    // });
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 
   void deleteCookbook() {
     print("inside delete method");
-    // int index;
-    // for (int i = 0; i < BookmarkedRecipesState.Cookbooks_List.length; i++) {
-    //   if (BookmarkedRecipesState.Cookbooks_List[i].id == widget.cookbookID) {
-    //     print("Founded");
-    //     index = i;
-    //   }
-    // }
-    // BookmarkedRecipesState.Cookbooks_List.removeAt(index);
     FirebaseFirestore.instance
         .collection("users")
         .doc(FirebaseAuth.instance.currentUser.uid)
         .collection("cookbooks")
         .doc(widget.cookbookID)
         .delete();
-
-    // setState(() {});
-    setState(() {
-      getCookbookObjects();
-    });
-    // setState(() {
-    //   BookmarkedRecipesState.updateCookbookScreen();
-    // });
     Navigator.of(context).pop();
     setState(() {
       print("After navigitor");
@@ -221,26 +199,20 @@ class CookbookRecipesState extends State<CookbookRecipes> {
           title: Text(widget.cookbookID + " cookbook"),
           backgroundColor: Color(0xFFeb6d44),
           actions: [
-            Row(
-              children: [
-                IconButton(
-                    icon: Icon(
-                      Icons.delete_outline_outlined,
-                      //  Icons.ios_share,
-                      size: 30,
-                    ),
-                    onPressed: () {
-                      print("clicked on delete");
-                      deleteCookbook();
-                      getCookbookObjects();
-                      setState(() {
-                        print("DEEEEEEEELEEEEEEETEEEEED");
-                      });
-                      // setState(() {});
-                      //setstat :change the kind of ici=on and add it to bookmark list
-                    }),
-              ],
-            ),
+            if (widget.cookbookID != 'All bookmarked recipes')
+              Row(
+                children: [
+                  IconButton(
+                      icon: Icon(
+                        Icons.delete_outline_outlined,
+                        //  Icons.ios_share,
+                        size: 30,
+                      ),
+                      onPressed: () {
+                        showAlertDialogDeleteCookbook(context);
+                      }),
+                ],
+              ),
           ],
         ),
         body: GridView.count(

@@ -74,8 +74,9 @@ class BookmarkedRecipesState extends State<BookmarkedRecipes> {
           "Add new cookbook",
         ),
         onPressed: () async {
-          String cookbookTitle = _CookbookTitleTextFieldController
-              .text; // used to print the cookbook title in the successfull message
+          String cookbookTitle = _CookbookTitleTextFieldController.text;
+          print(
+              cookbookTitle); // used to print the cookbook title in the successfull message
           if (CookbookImagePickerState.isUploadCookbookImageIsloading) {
             Flushbar(
               backgroundColor: Theme.of(context).errorColor,
@@ -83,19 +84,13 @@ class BookmarkedRecipesState extends State<BookmarkedRecipes> {
               duration: Duration(seconds: 4),
             ).show(context);
           } else {
-            // setState(() {
-            //   _CookbookTitleTextFieldController.text.isEmpty
-            //       ? _isEmptyCookbookTitle = true
-            //       : _isEmptyCookbookTitle = false;
-            // });
             if (formKey.currentState.validate()) {
               formKey.currentState.save();
-              // if (!_isEmptyCookbookTitle) {
+
               validCookbookName = await _checkCookbookName(
                   _CookbookTitleTextFieldController.text);
               if (validCookbookName) {
                 AddNewCookBookState.createNewCookBook(cookbookTitle);
-                //_CookbookTitleTextFieldController.text)
 
                 getCookbookObjects();
                 CookbookImagePickerState.uploadedFileURL = null;
@@ -108,16 +103,12 @@ class BookmarkedRecipesState extends State<BookmarkedRecipes> {
                       backgroundColor: Colors.green),
                 );
               } else {
-                print("te name exist 2222222222222222");
-                //may be we have to change it later ????
-                // ScaffoldMessenger.of(context).showSnackBar(
-                //   SnackBar(
-                //       content: Text(
-                //           "This name already exist please enter another name"),
-                //       backgroundColor: Theme.of(context).errorColor),
-                // );
+                Flushbar(
+                  backgroundColor: Theme.of(context).errorColor,
+                  message: "The name is already exist",
+                  duration: Duration(seconds: 4),
+                ).show(context);
               }
-              // }
             }
           }
         });
@@ -156,9 +147,7 @@ class BookmarkedRecipesState extends State<BookmarkedRecipes> {
                 validator: (value) {
                   if (value == null || value == '' || value.isEmpty)
                     return 'title can not be empty ';
-                  else if (!validCookbookName) {
-                    return "The name is already exist";
-                  } else
+                  else
                     return null;
                 },
                 onSaved: (value) {
