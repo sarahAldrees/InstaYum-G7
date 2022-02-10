@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:instayum1/widget/add_recipe/add_recipe_page.dart';
 import 'package:instayum1/widget/add_recipe/speech_to_text_API.dart';
+import 'package:speech_to_text/speech_to_text.dart';
 
 class DirectionsTextFields extends StatefulWidget {
   final int index;
@@ -15,6 +16,11 @@ class _DirectionsTextFieldsState extends State<DirectionsTextFields> {
   String text = "";
   bool isListening = false;
   bool isListening1 = false;
+  @required
+  Function(String text) onResult;
+  @required
+  ValueChanged<bool> onListening;
+  static final _speech = SpeechToText();
   @override
   void initState() {
     super.initState();
@@ -51,16 +57,42 @@ class _DirectionsTextFieldsState extends State<DirectionsTextFields> {
     );
   }
 
-  Future toggleRecording() {
-    if (this.mounted)
-      setState(() {
-        isListening1 = !isListening1;
-      });
-    SpeechApi.toggleRecording(
-        onResult: (text) =>
-            setState(() => this._directionController.text = text),
-        onListening: (isListening) {
-          setState(() => this.isListening = isListening);
+  void toggleRecording() async {
+    if (!isListening1) {
+      bool isAval = await _speech.initialize(
+        onStatus: (status) => onListening(_speech.isListening),
+        onError: (e) => print('Error: $e'),
+      );
+
+      if (isAval) {
+        setState(() {
+          isListening1 = true;
         });
+        // it is for recognaization
+        _speech.listen(
+            onResult: (value) => setState(() {
+                  this._directionController.text = value.recognizedWords;
+                  onResult(value.recognizedWords);
+                }));
+      }
+    } else {
+      setState(() {
+        isListening1 = false;
+        _speech.stop();
+      });
+    }
   }
+
+  // Future toggleRecording() {
+  //   if (this.mounted)
+  //     setState(() {
+  //       isListening1 = !isListening1;
+  //     });
+  //   SpeechApi.toggleRecording(
+  //       onResult: (text) =>
+  //           setState(() => this._directionController.text = text),
+  //       onListening: (isListening) {
+  //         setState(() => this.isListening = isListening);
+  //       });
+  // }
 }
