@@ -42,7 +42,7 @@ class RecipeCard extends StatefulWidget {
 class _RecipeCardState extends State<RecipeCard> {
   var numOfRevewis;
   var avg = 0.0;
-  var rating;
+  var rating = '0';
 
   getData() async {
     //to get previous rating info from firestor
@@ -58,6 +58,7 @@ class _RecipeCardState extends State<RecipeCard> {
       setState(() {
         numOfRevewis = userData.data()["num_of_reviews"];
         avg = userData.data()["average_rating"];
+        rating = avg.toString();
       });
     });
   }
@@ -160,7 +161,7 @@ class _RecipeCardState extends State<RecipeCard> {
                       ),
                       SizedBox(width: 7),
                       Text(
-                        numOfRevewis.toString(),
+                        rating,
                         style: TextStyle(
                             fontSize: 14,
                             color: Colors.white), // text size ----------

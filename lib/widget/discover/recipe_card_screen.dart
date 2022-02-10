@@ -96,7 +96,7 @@ class RecipeCardScreenState extends State<RecipeCardScreen> {
                   widget.autherId = doc.data()['user_id'],
                   recpiesList.add(
                     Recipe(
-                      autherId: result.id,
+                      autherId: doc.data()['user_id'],
                       id: doc.id,
                       //imageURL: recipe_image_url,
                       recipeName: doc.data()['recipe_title'],
@@ -176,7 +176,7 @@ class RecipeCardScreenState extends State<RecipeCardScreen> {
       children: [
         for (Recipe recipe in recpiesList)
           RecipeCard(
-              widget.autherId,
+              recipe.autherId,
               recipe.id,
               recipe.recipeName,
               recipe.mainImageURL,

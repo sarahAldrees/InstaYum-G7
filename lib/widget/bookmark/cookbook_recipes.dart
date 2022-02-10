@@ -1,8 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:instayum1/model/cookbook.dart';
 import 'package:instayum1/model/recipe.dart';
 import 'package:instayum1/widget/recipe_view/recipe_item.dart';
+
+import 'bookmarks_recipes_screen.dart';
 
 class CookbookRecipes extends StatefulWidget {
   @override
@@ -128,6 +131,82 @@ class CookbookRecipesState extends State<CookbookRecipes> {
     //we call the method here to get the data immediately when init the page.
   }
 
+  //----------------------------------DELETE COOKBOOK-----------------------------
+
+  void getCookbookObjects() async {
+    print("inside getCookbookObjects()");
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+    final currentUser = await _auth.currentUser;
+    final timestamp =
+        DateTime.now(); // to update the time and make the default upper
+    FirebaseFirestore.instance
+        .collection("users")
+        .doc(currentUser.uid)
+        .collection("cookbooks")
+        .doc("All bookmarked recipes")
+        .update({"timestamp": timestamp});
+
+    BookmarkedRecipesState.Cookbooks_List = [];
+    User user = currentUser;
+    FirebaseFirestore.instance
+        .collection("users")
+        .doc(user.uid)
+        .collection("cookbooks")
+        .orderBy("timestamp", descending: true)
+        //  .doc(cookBookTitle)
+        .get()
+        .then((querySnapshot) {
+      querySnapshot.docs.forEach(
+        (doc) => {
+          BookmarkedRecipesState.Cookbooks_List.add(
+            Cookbook(
+              id: doc.data()['cookbook_id'],
+              // cookbookName: ,
+              imageURLCookbook: doc.data()['cookbook_img_url'],
+            ),
+          ),
+        },
+      );
+      if (this.mounted) {
+        print("Set state in getCookbookObjects workd222222");
+        setState(() {});
+      }
+    });
+    // setState(() {
+    //   print("second set state worked");
+    // });
+  }
+
+  void deleteCookbook() {
+    print("inside delete method");
+    // int index;
+    // for (int i = 0; i < BookmarkedRecipesState.Cookbooks_List.length; i++) {
+    //   if (BookmarkedRecipesState.Cookbooks_List[i].id == widget.cookbookID) {
+    //     print("Founded");
+    //     index = i;
+    //   }
+    // }
+    // BookmarkedRecipesState.Cookbooks_List.removeAt(index);
+    FirebaseFirestore.instance
+        .collection("users")
+        .doc(FirebaseAuth.instance.currentUser.uid)
+        .collection("cookbooks")
+        .doc(widget.cookbookID)
+        .delete();
+
+    // setState(() {});
+    setState(() {
+      getCookbookObjects();
+    });
+    // setState(() {
+    //   BookmarkedRecipesState.updateCookbookScreen();
+    // });
+    Navigator.of(context).pop();
+    setState(() {
+      print("After navigitor");
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     setState(() {
@@ -139,8 +218,30 @@ class CookbookRecipesState extends State<CookbookRecipes> {
     if (!widget.flag) {
       return Scaffold(
         appBar: new AppBar(
-          title: Text(widget.cookbookID + "  cookbook"),
+          title: Text(widget.cookbookID + " cookbook"),
           backgroundColor: Color(0xFFeb6d44),
+          actions: [
+            Row(
+              children: [
+                IconButton(
+                    icon: Icon(
+                      Icons.delete_outline_outlined,
+                      //  Icons.ios_share,
+                      size: 30,
+                    ),
+                    onPressed: () {
+                      print("clicked on delete");
+                      deleteCookbook();
+                      getCookbookObjects();
+                      setState(() {
+                        print("DEEEEEEEELEEEEEEETEEEEED");
+                      });
+                      // setState(() {});
+                      //setstat :change the kind of ici=on and add it to bookmark list
+                    }),
+              ],
+            ),
+          ],
         ),
         body: GridView.count(
             crossAxisCount: 2, // 2 items in each row
