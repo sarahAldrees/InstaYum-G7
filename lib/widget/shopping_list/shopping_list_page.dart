@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:instayum1/model/checkbox_state.dart';
+import 'package:instayum/model/checkbox_state.dart';
 
 class ShoppingListPage extends StatefulWidget {
   @override
@@ -28,7 +28,7 @@ class ShoppingListState extends State<ShoppingListPage> {
       controlAffinity: ListTileControlAffinity.leading,
       activeColor: Color(0xFFeb6d44),
       value: checkbox.outvalue,
-      title: Text(checkbox.title,
+      title: Text(checkbox.title!,
           style: TextStyle(
             decoration: checkbox.checkedstyle,
             decorationColor: Color(0xFFeb6d44),
@@ -36,7 +36,7 @@ class ShoppingListState extends State<ShoppingListPage> {
           )),
       onChanged: (value) {
         setState(() {
-          checkbox.outvalue = value;
+          checkbox.outvalue = value!;
           if (checkbox.outvalue == true) {
             checkbox.checkedstyle = TextDecoration.lineThrough;
           } else {

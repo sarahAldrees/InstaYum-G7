@@ -17,11 +17,11 @@ class CookbookImagePicker extends StatefulWidget {
 class CookbookImagePickerState extends State<CookbookImagePicker> {
   static bool isUploadCookbookImageIsloading =
       false; // to show the progress circle
-  File _image;
-  static String uploadedFileURL;
+  XFile? _image;
+  static String? uploadedFileURL;
 
   Future chooseFile() async {
-    await ImagePicker.pickImage(source: ImageSource.gallery).then((image) {
+    await ImagePicker().pickImage(source: ImageSource.gallery).then((image) {
       setState(() {
         _image = image;
       });
@@ -36,13 +36,13 @@ class CookbookImagePickerState extends State<CookbookImagePicker> {
       isUploadCookbookImageIsloading = true;
     });
     final FirebaseAuth _auth = FirebaseAuth.instance;
-
+    final File? file = File(_image!.path);
     FirebaseStorage storageReference = FirebaseStorage.instance;
     Reference ref = storageReference
         .ref()
-        .child('recpie_image/${Path.basename(_image.path)}}');
+        .child('recpie_image/${Path.basename(_image!.path)}}');
 
-    UploadTask uploadTask = ref.putFile(_image);
+    UploadTask uploadTask = ref.putFile(file!);
     uploadTask.then((res) {
       print('File Uploaded');
       res.ref.getDownloadURL().then((fileURL) {
@@ -68,8 +68,9 @@ class CookbookImagePickerState extends State<CookbookImagePicker> {
     final image = uploadedFileURL == "noImage" ||
             // uploadedFileURL.isEmpty ||
             uploadedFileURL == null
-        ? AssetImage("assets/images/defaultCookbookImage.png") // NEW
-        : NetworkImage(uploadedFileURL);
+        ? AssetImage("assets/images/defaultCookbookImage.png")
+            as ImageProvider // NEW
+        : NetworkImage(uploadedFileURL!);
 
     // build a circular user image
 

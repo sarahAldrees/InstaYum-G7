@@ -1,15 +1,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dialogflow_flutter/googleAuth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_dialogflow/dialogflow_v2.dart';
-import 'package:instayum1/model/recipe.dart';
-import 'package:instayum1/model/bot_suggestion.dart';
-import 'package:instayum1/widget/discover/message.dart';
+// import 'package:flutter_dialogflow/dialogflow_v1.dart';
+import 'package:instayum/model/recipe.dart';
+import 'package:instayum/model/bot_suggestion.dart';
+import 'package:instayum/widget/discover/message.dart';
+import 'package:dialogflow_flutter/dialogflowFlutter.dart';
+import 'package:dialogflow_flutter/googleAuth.dart';
+import 'package:dialogflow_flutter/language.dart';
+import 'package:dialogflow_flutter/message.dart';
 
 class ChatBot extends StatefulWidget {
-  ChatBot({Key key, this.title}) : super(key: key);
+  ChatBot({Key? key, this.title}) : super(key: key);
 
-  final String title;
+  final String? title;
 
   @override
   ChatBotState createState() => new ChatBotState();
@@ -74,17 +79,17 @@ class ChatBotState extends State<ChatBot> {
     AuthGoogle authGoogle =
         await AuthGoogle(fileJson: "assets/instayum-chatbot-6077955177de.json")
             .build();
-    Dialogflow dialogFlow =
-        Dialogflow(authGoogle: authGoogle, language: Language.english);
+    DialogFlow dialogFlow =
+        DialogFlow(authGoogle: authGoogle, language: Language.english);
     AIResponse response = await dialogFlow.detectIntent(query);
-    var botSuggestions = BotSuggestions(response.getListMessage());
+    var botSuggestions = BotSuggestions(response.getListMessage()!);
     setState(() {
       suggestListAgent = botSuggestions.suggestions;
     });
 
     Messages message = Messages(
       text: response.getMessage() ??
-          CardDialogflow(response.getListMessage()[0]).title,
+          CardDialogflow(response.getListMessage()![0]).title!,
       name: "InstaYum",
       type: false,
     );

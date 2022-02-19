@@ -10,9 +10,9 @@ class ExpandableFab extends StatefulWidget {
     this.children,
   });
 
-  final bool initialOpen;
-  final double distance;
-  final List<Widget> children;
+  final bool? initialOpen;
+  final double? distance;
+  final List<Widget>? children;
 
   @override
   _ExpandableFabState createState() => _ExpandableFabState();
@@ -20,8 +20,8 @@ class ExpandableFab extends StatefulWidget {
 
 class _ExpandableFabState extends State<ExpandableFab>
     with SingleTickerProviderStateMixin {
-  AnimationController _controller;
-  Animation<double> _expandAnimation;
+  late AnimationController _controller;
+  Animation<double>? _expandAnimation;
   bool _open = false; //if button clicked or not
 
   @override
@@ -99,7 +99,7 @@ class _ExpandableFabState extends State<ExpandableFab>
 
   List<Widget> _buildExpandingActionButtons() {
     final children = <Widget>[];
-    final count = widget.children.length;
+    final count = widget.children!.length;
     final step = 90.0 / (count - 1);
     for (var i = 0, angleInDegrees = 0.0;
         i < count;
@@ -109,7 +109,7 @@ class _ExpandableFabState extends State<ExpandableFab>
           directionInDegrees: angleInDegrees,
           maxDistance: widget.distance,
           progress: _expandAnimation,
-          child: widget.children[i],
+          child: widget.children![i],
         ),
       );
     }
@@ -150,38 +150,38 @@ class _ExpandableFabState extends State<ExpandableFab>
 @immutable
 class _ExpandingActionButton extends StatelessWidget {
   const _ExpandingActionButton({
-    Key key,
+    Key? key,
     this.directionInDegrees,
     this.maxDistance,
     this.progress,
     this.child,
   }) : super(key: key);
 
-  final double directionInDegrees;
-  final double maxDistance;
-  final Animation<double> progress;
-  final Widget child;
+  final double? directionInDegrees;
+  final double? maxDistance;
+  final Animation<double>? progress;
+  final Widget? child;
 
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
-      animation: progress,
+      animation: progress!,
       builder: (context, child) {
         final offset = Offset.fromDirection(
-          directionInDegrees * (math.pi / 180.0),
-          progress.value * maxDistance,
+          directionInDegrees! * (math.pi / 180.0),
+          progress!.value * maxDistance!,
         );
         return Positioned(
           right: 4.0 + offset.dx,
           bottom: 4.0 + offset.dy,
           child: Transform.rotate(
-            angle: (1.0 - progress.value) * math.pi / 2,
+            angle: (1.0 - progress!.value) * math.pi / 2,
             child: child,
           ),
         );
       },
       child: FadeTransition(
-        opacity: progress,
+        opacity: progress!,
         child: child,
       ),
     );
@@ -191,13 +191,13 @@ class _ExpandingActionButton extends StatelessWidget {
 @immutable
 class ActionButton extends StatelessWidget {
   const ActionButton({
-    Key key,
+    Key? key,
     this.onPressed,
     this.icon,
   }) : super(key: key);
 
-  final VoidCallback onPressed;
-  final Widget icon;
+  final VoidCallback? onPressed;
+  final Widget? icon;
 
   @override
   Widget build(BuildContext context) {
@@ -211,7 +211,7 @@ class ActionButton extends StatelessWidget {
         data: theme.accentIconTheme,
         child: IconButton(
           onPressed: onPressed,
-          icon: icon,
+          icon: icon!,
         ),
       ),
     );

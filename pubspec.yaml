@@ -1,5 +1,5 @@
-name: instayum1
-description: A new Flutter project.
+name: instayum
+description: A social recipe sharing app.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -18,7 +18,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.11.0 <3.0.0"
+  sdk: '>=2.12.0 <3.0.0'
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -29,42 +29,31 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  rating_dialog: ^2.0.0
-  intl: ^0.16.1
-  speech_to_text: ^3.1.0
-
-
-
-  # floating action button effect
-  avatar_glow: ^1.2.0
- 
-
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
-  firebase_core: "^0.7.0"
-  cupertino_icons: ^1.0.2 # maybe we need to use 0.1.3 for chatbot
-  cloud_firestore: ^0.16.0+1
-  firebase_auth: ^0.20.1 
-  image_picker: ^0.6.5+3
-  firebase_storage: ^7.0.0
-  uuid: ^2.2.2 #for generating random id
-  flutter_rating_bar: ^4.0.0
-  cached_network_image: ^2.0.0
-  multi_image_picker: ^4.8.1
+  #cached_network_image: ^3.2.0
   carousel_slider: ^4.0.0
-  flutter_dialogflow: ^0.1.3
-  bubble: ^1.1.9+1
+  cloud_firestore: ^3.1.7
+  cupertino_icons: ^1.0.2
+  firebase_auth: ^3.3.6
+  firebase_core: ^1.12.0
+  firebase_messaging: ^11.2.6
+  firebase_storage: ^10.2.6
+  path_provider: ^2.0.9
+  flutter_rating_bar: ^4.0.0
+  image_picker: ^0.8.4+6
+  intl: ^0.17.0
+  multi_image_picker: ^4.8.1
+  overlay_support: ^1.2.1
+  rating_dialog: ^2.0.0
+  uuid: ^3.0.5
+  dialogflow_flutter: ^1.0.0
+  bubble: ^1.2.1
   another_flushbar: ^1.10.28
-  #kommunicate_flutter: ^1.1.6
-  #^1.1.6
-
-
-
+  avatar_glow: ^2.0.2
+  speech_to_text: ^5.4.3
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  # image_test_utils: ^1.0.0
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -75,7 +64,6 @@ dev_dependencies:
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
-
 # The following section is specific to Flutter.
 flutter:
 
@@ -94,15 +82,10 @@ flutter:
      - assets/instayum-chatbot-6077955177de.json
      - assets/images/InstaYum_chatbot.png
      - assets/images/defalut_image_chatbot.jpg
-
-
-
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
-
   # For details regarding adding assets from package dependencies, see
   # https://flutter.dev/assets-and-images/#from-packages
-
   # To add custom fonts to your application, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a
   # "family" key with the font family name, and a "fonts" key with a
@@ -122,3 +105,4 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+

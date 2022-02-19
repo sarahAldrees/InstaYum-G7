@@ -1,13 +1,8 @@
-//import 'dart:html';
-
 import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:instayum1/widget/auth/reset_password.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:instayum1/widget/pickers/user_image_picker.dart';
+import 'package:instayum/widget/auth/reset_password.dart';
+import 'package:instayum/widget/pickers/user_image_picker.dart';
 
 class AuthForm extends StatefulWidget {
   AuthForm(
@@ -19,7 +14,7 @@ class AuthForm extends StatefulWidget {
     String email,
     String username,
     String password,
-    File image,
+    File? image,
     bool isSignUp,
     bool isDefaultImage,
     BuildContext ctx,
@@ -38,10 +33,10 @@ class _AuthFormState extends State<AuthForm> {
   bool _isSignUp = true;
   bool _isDefaultImage = false;
 
-  var _userEmail = "";
-  var _userName = "";
-  var _userPassword = "";
-  File _userImageFile;
+  String? _userEmail = "";
+  String? _userName = "";
+  String? _userPassword = "";
+  File? _userImageFile;
 
   void _pickedImage(File image) {
     _userImageFile = image;
@@ -51,25 +46,25 @@ class _AuthFormState extends State<AuthForm> {
   Future<bool> _usernameCheck(String username) async {
     final result = await FirebaseFirestore.instance
         .collection('users')
-        .where('username', isEqualTo: username)
+        .where('username', isEqualTo: username.toLowerCase())
         .get();
     return result.docs.isEmpty;
   }
 
   void _trySubmit() async {
-    _formKey.currentState
+    _formKey.currentState!
         .save(); //To save the data we took from the user in form in OnSaved method.
 
-    final isValidFormt =
-        _formKey.currentState.validate(); // to check the Validitor in the form.
+    final isValidFormt = _formKey.currentState!
+        .validate(); // to check the Validitor in the form.
     FocusScope.of(context).unfocus();
 
     if (_userImageFile == null && _isSignUp) {
       _isDefaultImage = true;
     }
 
-    final validUsername = await _usernameCheck(_userName);
-    if (!validUsername && _userName.isNotEmpty && _isSignUp) {
+    final validUsername = await _usernameCheck(_userName!); //!
+    if (!validUsername && _userName!.isNotEmpty && _isSignUp) {
       //we use _isSignUp to avoid check the username in login case
       // print("user name in authform ***********");
       // print(validUsername);
@@ -84,11 +79,13 @@ class _AuthFormState extends State<AuthForm> {
     if (isValidFormt && validUsername || !_isSignUp) {
       //print('in checking if ____________________');
 
-      _formKey.currentState.save();
+      _formKey.currentState!.save();
       widget.submitFn(
-        _userEmail.trim(), // trim here to delete any extar space at the end
-        _userName.trim(),
-        _userPassword.trim(),
+        _userEmail!
+            .trim()
+            .toLowerCase(), // trim here to delete any extar space at the end
+        _userName!.trim().toLowerCase(),
+        _userPassword!.trim(),
         _userImageFile,
         _isSignUp,
         _isDefaultImage,
@@ -155,7 +152,7 @@ class _AuthFormState extends State<AuthForm> {
                       key: ValueKey(
                           "email"), // علشان اذا حولت من لوق ان الى ساين اب ما يتحول الوزرنيم الى باسوورد
                       validator: (value) {
-                        if (value.isEmpty) {
+                        if (value!.isEmpty) {
                           return "Email should not be empty";
                         } else if (!_isValidEmail(value)) {
                           return "Please enter a valid email";
@@ -175,7 +172,7 @@ class _AuthFormState extends State<AuthForm> {
                           _userName = value;
                         },
                         validator: (value) {
-                          if (value.isEmpty) {
+                          if (value!.isEmpty) {
                             return "username should not be empty";
                           } else if (!_isValiedUsername(value) ||
                               value.length < 4) {
@@ -190,7 +187,7 @@ class _AuthFormState extends State<AuthForm> {
                       //key: ValueKey("password"),
                       controller: _pass,
                       validator: (value) {
-                        if (value.isEmpty) {
+                        if (value!.isEmpty) {
                           return "password should not be empty";
                         } else if (!_isValiedPassword(value, _isSignUp)) {
                           return "The password must conatint at least \none upper case \none lower case \none digit \nand at least 8 characters in length";
@@ -209,7 +206,7 @@ class _AuthFormState extends State<AuthForm> {
                         key: ValueKey("password"),
                         controller: _confirmPass,
                         validator: (value) {
-                          if (value.isEmpty) {
+                          if (value!.isEmpty) {
                             return "password should not be empty";
                           } else if (!_isValiedPassword(value, _isSignUp)) {
                             return "The password must conatint at least \none upper case \none lower case \none digit \nand at least 6 characters in length";

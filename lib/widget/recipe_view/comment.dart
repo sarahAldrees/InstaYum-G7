@@ -2,21 +2,21 @@ import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:instayum1/model/comment_obj.dart';
-// import 'package:instayum1/widget/recipe_view/comments_sccreen.dart';
-import 'package:instayum1/widget/recipe_view/recipe_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:instayum1/widget/recipe_view/user_information_design.dart';
+import 'package:instayum/constant/app_globals.dart';
+
+import 'package:instayum/model/comment_model.dart';
+import 'package:instayum/widget/recipe_view/user_information_design.dart';
+
 import 'package:uuid/uuid.dart';
-import 'package:cloud_firestore_platform_interface/src/timestamp.dart';
 import 'package:intl/intl.dart';
 
 FieldValue timestamp = FieldValue.serverTimestamp();
 
 class Comments extends StatefulWidget {
-  final String _recipeId;
-  final String _authorId;
-  String comment;
+  final String? _recipeId;
+  final String? _authorId;
+  String? comment;
 
   Comments(
     this._recipeId,
@@ -32,21 +32,22 @@ class Comments extends StatefulWidget {
 }
 
 class CommentState extends State<Comments> {
-  final String _recipeId;
-
-  final String _authorId;
-  final String comment;
-  TextEditingController _commentController = TextEditingController();
+  final String? _recipeId;
+  final String? _authorId;
+  final String? comment;
 
   CommentState(
     this._recipeId,
     this._authorId,
     this.comment,
-    // this.databaseRef,
   );
   List<Widget> comments = [];
+  TextEditingController _commentController = TextEditingController();
+
 // --------------------------------------------------
-  CollectionReference databaseRef;
+  late CollectionReference databaseRef;
+  final FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+
   Widget _buildCommentList() {
     //User user = firebaseAuth.currentUser;
 
@@ -107,12 +108,12 @@ class CommentState extends State<Comments> {
   }
 //-----------------------------------------------------------------------------
 
-  String userUsername = "";
-  String imageURL = "";
+  String? userUsername = AppGlobals.userName;
+  String? imageURL = AppGlobals.userImage;
 
   getData() {
     final FirebaseAuth usId = FirebaseAuth.instance;
-    final _currentUser = usId.currentUser;
+    final _currentUser = usId.currentUser!;
     // final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
     FirebaseFirestore.instance
         .collection("users")
@@ -120,41 +121,42 @@ class CommentState extends State<Comments> {
         .snapshots()
         .listen((userData) {
       setState(() {
-        userUsername = userData.data()['username'];
-        imageURL = userData.data()['image_url'];
+        Map user = userData.data()!;
+        userUsername = user['username'];
+        imageURL = user['image_url'];
       });
     });
-    print('User id');
-    // print(currentUser.uid);
-    print('Image Url');
-    print(imageURL);
   }
 
 // -------- add a comment to firebase
 
-  addComment(String com) async {
+  addComment(String commentText) async {
     final commentRef = Uuid().v4();
-    FirebaseFirestore.instance
-        .collection("users")
-        .doc(_authorId)
+    Timestamp timestamp = Timestamp.now();
+    DateTime now = DateTime.now();
+    String formatter = 'yyyy-MM-dd - hh:mm:a';
+
+    CommentModel comment = CommentModel(
+      commentId: commentRef,
+      userId: widget._authorId,
+      username: userUsername,
+      imageUrl: imageURL,
+      comment: commentText,
+      recipeId: _recipeId,
+      timestamp: timestamp,
+      shownDate: DateFormat(formatter).format(now),
+    );
+    await firebaseFirestore
         .collection("recipes")
         .doc(_recipeId)
         .collection("comments")
         .doc(commentRef)
-        .set({
-      "username": userUsername,
-      "userId": FirebaseAuth.instance.currentUser.uid,
-      "reciepeId": "2cf0fbeb-957a-4330-96b3-36bc2fbfe080",
-      "imageUrl": imageURL,
-      "timestamp": timestamp,
-      "shownDate": DateFormat('yyyy-MM-dd – hh:mm:a').format(DateTime.now()),
-      "comment": com,
-      "commentRef": commentRef,
-    });
+        .set(comment.toJson());
   }
 
   void initState() {
     super.initState();
+    //0000
     getData();
     _commentController.addListener(() {
       setState(() {});
@@ -198,11 +200,9 @@ class CommentState extends State<Comments> {
                             borderSide: new BorderSide(color: Colors.orange)),
                         suffixIcon: _commentController.text.isEmpty ||
                                 _commentController.text.trim() == ''
-                            ? IconButton(
-                                icon: Icon(
-                                  Icons.send,
-                                  color: Colors.grey.shade300,
-                                ),
+                            ? Icon(
+                                Icons.send,
+                                color: Colors.grey.shade300,
                               )
                             : IconButton(
                                 icon: Icon(
@@ -236,8 +236,8 @@ class CommentState extends State<Comments> {
 }
 
 class CommentList extends StatefulWidget {
-  final String _authorId;
-  final String _recipeID;
+  final String? _authorId;
+  final String? _recipeID;
 
   CommentList(
     this._authorId,
@@ -248,40 +248,11 @@ class CommentList extends StatefulWidget {
 }
 
 class CommentListState extends State<CommentList> {
-  List<CommentObj> comments = [];
+  List<CommentModel> comments = [];
 
-  CollectionReference databaseRef;
+  late CollectionReference databaseRef;
   @override
   Widget build(BuildContext context) {
-    // ----------------------------------
-    // databaseRef = FirebaseFirestore.instance
-    //     .collection("users")
-    //     .doc(widget.authorId)
-    //     .collection("recpies")
-    //     .doc(widget.recipeID)
-    //     .collection("comments");
-
-    // databaseRef.snapshots().listen((data) {
-    //   data.docs.forEach((doc) {
-    //     //int s = 1;
-
-    //     bool enter = true;
-    //     if (enter) {
-    //       print(doc["username"]);
-    //       print(doc["imageUrl"]);
-    //       print(doc["comment"]);
-    //       comments.add(commentState(
-    //           username: doc["username"],
-    //           commentImgUrl: doc["imageUrl"],
-    //           comment: doc["comment"]));
-    //     }
-    //     print('@@@@@@@@@@@@@@@@@@@@');
-    //     print(comments[0].username);
-    //     enter = false;
-    //   });
-    // });
-    // --------
-
     return ListView(
         shrinkWrap: true,
         reverse: true,
@@ -294,41 +265,46 @@ class CommentListState extends State<CommentList> {
   getData() {
     // get data from database
     databaseRef = FirebaseFirestore.instance
-        .collection("users")
-        .doc(widget._authorId)
+        // .collection("users")
+        // .doc(widget._authorId)
         .collection("recipes")
         .doc(widget._recipeID)
         .collection("comments");
     setState(() {});
-    databaseRef.orderBy('timestamp').snapshots().listen((data) {
-      comments.clear();
-      //setState(() {
-      // clear duplicate comments.
-      data.docs.forEach((doc) {
-        //int s = 1;
+    databaseRef.orderBy('timestamp').snapshots().listen(
+      (data) {
+        comments.clear();
+        //setState(() {
+        // clear duplicate comments.
+        data.docs.forEach((doc) {
+          //int s = 1;
 
-        // print(doc["username"]);
-        // print(doc["imageUrl"]);
-        // print(doc["comment"]);
-        // add each comment doc in database to the list to show them in the screen
+          // print(doc["username"]);
+          // print(doc["imageUrl"]);
+          // print(doc["comment"]);
+          // add each comment doc in database to the list to show them in the screen
+          Map data = doc.data() as Map<dynamic, dynamic>;
 
-        comments.add(CommentObj(
-          username: doc["username"],
-          userId: doc["userId"],
-          commentImgUrl: doc["imageUrl"],
-          comment: doc["comment"],
-          date: doc["shownDate"],
-          commentRef: doc["commentRef"],
-        ));
-      });
-      if (this.mounted) {
-        setState(() {
-          comments;
+          comments.add(CommentModel(
+            userId: data["userId"],
+            username: data["username"],
+            imageUrl: data["imageUrl"],
+            comment: data["comment"],
+            commentId: data["commentId"],
+            recipeId: data["recipeId"],
+            shownDate: data["shownDate"],
+            timestamp: data["timestamp"],
+          ));
         });
-      }
-      // print('###');
-      // print(comments[0].username);
-      //});
+        if (this.mounted) {
+          setState(() {});
+        }
+        // print('###');
+        // print(comments[0].username);
+        //});
+      },
+    ).onError((err) {
+      print(" error in comments");
     });
   }
 
@@ -343,8 +319,8 @@ class CommentListState extends State<CommentList> {
     print("-----------inside method_");
     print(key);
     await FirebaseFirestore.instance
-        .collection("users")
-        .doc(widget._authorId)
+        // .collection("users")
+        // .doc(widget._authorId)
         .collection("recipes")
         .doc(widget._recipeID)
         .collection("comments")
@@ -352,9 +328,13 @@ class CommentListState extends State<CommentList> {
         .delete();
   }
 
-  Widget repordelIcon(CommentObj comment) {
+  // deletCommentFromScreen(index) {
+  //   comments.remove(index);
+  // }
+
+  Widget reportOrDeleteIcon(CommentModel comment) {
     final FirebaseAuth usId = FirebaseAuth.instance;
-    final _currentUser = usId.currentUser.uid;
+    final _currentUser = usId.currentUser!.uid;
 
     if (_currentUser == comment.userId) {
       return IconButton(
@@ -421,7 +401,7 @@ class CommentListState extends State<CommentList> {
                                     ),
                                     onPressed: () {
                                       _DeletFirestoreComment(
-                                          comment.commentRef);
+                                          comment.commentId!);
                                       Navigator.pop(context);
                                     }),
                                 TextButton(
@@ -460,208 +440,208 @@ class CommentListState extends State<CommentList> {
       bool isEven = false;
       return IconButton(
           onPressed: () {
-            List userAlreadyReported = [];
-            bool isAlreadyReportedOn = false;
-            bool isUserAlreadyReported = false;
-            bool isEven = false;
-            int counter = 0;
-            databaseRef = FirebaseFirestore.instance
-                .collection("users")
-                .doc("7DNb5UkMjxVeMmY1Q7vPebXzdk73")
-                .collection("ReportedComment");
+            // List userAlreadyReported = [];
+            // bool isAlreadyReportedOn = false;
+            // bool isUserAlreadyReported = false;
+            // bool isEven = false;
+            // int counter = 0;
+            // databaseRef = FirebaseFirestore.instance
+            //     .collection("users")
+            //     .doc("7DNb5UkMjxVeMmY1Q7vPebXzdk73")
+            //     .collection("ReportedComment");
 
-            databaseRef.snapshots().listen((data) {
-              data.docs.forEach((doc) {
-                if (!isAlreadyReportedOn) {
-                  //int s = 1;
-                  print("//---------------------------------------//");
-                  print(doc["commentRef"] == comment.commentRef);
-                  if (doc["commentRef"] == comment.commentRef) {
-                    isAlreadyReportedOn = true;
-                    print(isAlreadyReportedOn);
-                    print("ss");
-                    //==========check if user rated ===============
-                    userAlreadyReported =
-                        List.from(doc.data()["user_already_reported"]);
-                    counter = userAlreadyReported.length;
+            // databaseRef.snapshots().listen((data) {
+            //   data.docs.forEach((doc) {
+            //     if (!isAlreadyReportedOn) {
+            //       //int s = 1;
+            //       print("//---------------------------------------//");
+            //       print(doc["commentRef"] == comment.commentRef);
+            //       if (doc["commentRef"] == comment.commentRef) {
+            //         isAlreadyReportedOn = true;
+            //         print(isAlreadyReportedOn);
+            //         print("ss");
+            //         //==========check if user rated ===============
+            //         userAlreadyReported =
+            //             List.from(doc.data()["user_already_reported"]);
+            //         counter = userAlreadyReported.length;
 
-                    print(isAlreadyReportedOn);
-                    for (int i = 0; i < userAlreadyReported.length; i++) {
-                      if (userAlreadyReported[i] == _currentUser) {
-                        isUserAlreadyReported = true;
-                        print(isAlreadyReportedOn);
+            //         print(isAlreadyReportedOn);
+            //         for (int i = 0; i < userAlreadyReported.length; i++) {
+            //           if (userAlreadyReported[i] == _currentUser) {
+            //             isUserAlreadyReported = true;
+            //             print(isAlreadyReportedOn);
 
-                        break;
-                      }
-                    }
-                    ;
-                  }
-                }
+            //             break;
+            //           }
+            //         }
+            //         ;
+            //       }
+            //     }
 
-                print(isAlreadyReportedOn);
-              });
+            //     print(isAlreadyReportedOn);
+            //   });
 
-              if (isAlreadyReportedOn == false && isEven == false) {
-                print("----------------------------------------444");
-                print(isAlreadyReportedOn);
-                userAlreadyReported.add(_currentUser);
-                FirebaseFirestore.instance
-                    .collection("users")
-                    .doc("7DNb5UkMjxVeMmY1Q7vPebXzdk73")
-                    .collection("comments")
-                    .doc(comment.commentRef)
-                    .set({
-                  "commentRef": comment.commentRef,
-                  "recipeAuther": widget._authorId,
-                  "recipeId": widget._recipeID,
-                  "commentOwner": comment.username,
-                  "imageURLComment": comment.commentImgUrl,
-                  "commentText": comment.comment,
-                  "commentDate": comment.date,
-                  "user_already_reported":
-                      FieldValue.arrayUnion(userAlreadyReported),
-                  "no_reports": counter,
-                });
+            //   if (isAlreadyReportedOn == false && isEven == false) {
+            //     print("----------------------------------------444");
+            //     print(isAlreadyReportedOn);
+            //     userAlreadyReported.add(_currentUser);
+            //     FirebaseFirestore.instance
+            //         .collection("users")
+            //         .doc("7DNb5UkMjxVeMmY1Q7vPebXzdk73")
+            //         .collection("comments")
+            //         .doc(comment.commentRef)
+            //         .set({
+            //       "commentRef": comment.commentRef,
+            //       "recipeAuther": widget._authorId,
+            //       "recipeId": widget._recipeID,
+            //       "commentOwner": comment.username,
+            //       "imageURLComment": comment.commentImgUrl,
+            //       "commentText": comment.comment,
+            //       "commentDate": comment.date,
+            //       "user_already_reported":
+            //           FieldValue.arrayUnion(userAlreadyReported),
+            //       "no_reports": counter,
+            //     });
 
-                showDialog<void>(
-                  context: context,
-                  barrierDismissible: false,
-                  builder: (context) {
-                    return AlertDialog(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(15)),
-                      ),
-                      title: Text(' Thank you for report'),
-                      content: Text(
-                          ' and Appropriate action will be taken by the support team'),
-                      actions: [
-                        Container(
-                          width: double.infinity,
-                          margin: EdgeInsets.all(0),
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                                top: 15, right: 0, left: 0, bottom: 0),
-                            child: ElevatedButton(
-                                child: Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 10),
-                                  child: Text("close"),
-                                ),
-                                style: ButtonStyle(
-                                  backgroundColor: MaterialStateProperty.all(
-                                      Color(0xFFeb6d44)),
-                                ),
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                }),
-                          ),
-                        ),
-                      ],
-                    );
-                  },
-                );
-              } else {
-                if (isUserAlreadyReported == false) {
-                  print("// in sid if -----------------");
-                  userAlreadyReported.add(_currentUser);
-                  FirebaseFirestore.instance
-                      .collection("users")
-                      .doc("7DNb5UkMjxVeMmY1Q7vPebXzdk73")
-                      .collection("ReportedComment")
-                      .doc(comment.commentRef)
-                      .set({
-                    "commentRef": comment.commentRef,
-                    "recipeAuther": widget._authorId,
-                    "recipeId": widget._recipeID,
-                    "commentOwner": comment.username,
-                    "imageURLComment": comment.commentImgUrl,
-                    "commentText": comment.comment,
-                    "commentDate": comment.date,
-                    "user_already_reported":
-                        FieldValue.arrayUnion(userAlreadyReported),
-                  });
-                  isUserAlreadyReported = true;
-                  showDialog<void>(
-                    context: context,
-                    barrierDismissible: false,
-                    builder: (context) {
-                      return AlertDialog(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(15)),
-                        ),
-                        title: Text(' Thank you for helping'),
-                        content: Text(' You have already rated it'),
-                        actions: [
-                          Container(
-                            width: double.infinity,
-                            margin: EdgeInsets.all(0),
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                  top: 15, right: 0, left: 0, bottom: 0),
-                              child: ElevatedButton(
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 10),
-                                    child: Text("close"),
-                                  ),
-                                  style: ButtonStyle(
-                                    backgroundColor: MaterialStateProperty.all(
-                                        Color(0xFFeb6d44)),
-                                  ),
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  }),
-                            ),
-                          ),
-                        ],
-                      );
-                    },
-                  );
-                } else {
-                  print("inside else");
-                  if (isUserAlreadyReported) {
-                    showDialog<void>(
-                      context: context,
-                      barrierDismissible: false,
-                      builder: (context) {
-                        return AlertDialog(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(15)),
-                          ),
-                          title: Text(' Thank you '),
-                          content: Text(' You have already rated it'),
-                          actions: [
-                            Container(
-                              width: double.infinity,
-                              margin: EdgeInsets.all(0),
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                    top: 15, right: 0, left: 0, bottom: 0),
-                                child: ElevatedButton(
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 10),
-                                      child: Text("close"),
-                                    ),
-                                    style: ButtonStyle(
-                                      backgroundColor:
-                                          MaterialStateProperty.all(
-                                              Color(0xFFeb6d44)),
-                                    ),
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                    }),
-                              ),
-                            ),
-                          ],
-                        );
-                      },
-                    );
-                  }
-                }
-              }
-              isEven = false;
-            });
+            //     showDialog<void>(
+            //       context: context,
+            //       barrierDismissible: false,
+            //       builder: (context) {
+            //         return AlertDialog(
+            //           shape: RoundedRectangleBorder(
+            //             borderRadius: BorderRadius.all(Radius.circular(15)),
+            //           ),
+            //           title: Text(' Thank you for report'),
+            //           content: Text(
+            //               ' and Appropriate action will be taken by the support team'),
+            //           actions: [
+            //             Container(
+            //               width: double.infinity,
+            //               margin: EdgeInsets.all(0),
+            //               child: Padding(
+            //                 padding: const EdgeInsets.only(
+            //                     top: 15, right: 0, left: 0, bottom: 0),
+            //                 child: ElevatedButton(
+            //                     child: Padding(
+            //                       padding:
+            //                           const EdgeInsets.symmetric(vertical: 10),
+            //                       child: Text("close"),
+            //                     ),
+            //                     style: ButtonStyle(
+            //                       backgroundColor: MaterialStateProperty.all(
+            //                           Color(0xFFeb6d44)),
+            //                     ),
+            //                     onPressed: () {
+            //                       Navigator.pop(context);
+            //                     }),
+            //               ),
+            //             ),
+            //           ],
+            //         );
+            //       },
+            //     );
+            //   } else {
+            //     if (isUserAlreadyReported == false) {
+            //       print("// in sid if -----------------");
+            //       userAlreadyReported.add(_currentUser);
+            //       FirebaseFirestore.instance
+            //           .collection("users")
+            //           .doc("7DNb5UkMjxVeMmY1Q7vPebXzdk73")
+            //           .collection("ReportedComment")
+            //           .doc(comment.commentRef)
+            //           .set({
+            //         "commentRef": comment.commentRef,
+            //         "recipeAuther": widget._authorId,
+            //         "recipeId": widget._recipeID,
+            //         "commentOwner": comment.username,
+            //         "imageURLComment": comment.commentImgUrl,
+            //         "commentText": comment.comment,
+            //         "commentDate": comment.date,
+            //         "user_already_reported":
+            //             FieldValue.arrayUnion(userAlreadyReported),
+            //       });
+            //       isUserAlreadyReported = true;
+            //       showDialog<void>(
+            //         context: context,
+            //         barrierDismissible: false,
+            //         builder: (context) {
+            //           return AlertDialog(
+            //             shape: RoundedRectangleBorder(
+            //               borderRadius: BorderRadius.all(Radius.circular(15)),
+            //             ),
+            //             title: Text(' Thank you for helping'),
+            //             content: Text(' You have already rated it'),
+            //             actions: [
+            //               Container(
+            //                 width: double.infinity,
+            //                 margin: EdgeInsets.all(0),
+            //                 child: Padding(
+            //                   padding: const EdgeInsets.only(
+            //                       top: 15, right: 0, left: 0, bottom: 0),
+            //                   child: ElevatedButton(
+            //                       child: Padding(
+            //                         padding: const EdgeInsets.symmetric(
+            //                             vertical: 10),
+            //                         child: Text("close"),
+            //                       ),
+            //                       style: ButtonStyle(
+            //                         backgroundColor: MaterialStateProperty.all(
+            //                             Color(0xFFeb6d44)),
+            //                       ),
+            //                       onPressed: () {
+            //                         Navigator.pop(context);
+            //                       }),
+            //                 ),
+            //               ),
+            //             ],
+            //           );
+            //         },
+            //       );
+            //     } else {
+            //       print("inside else");
+            //       if (isUserAlreadyReported) {
+            //         showDialog<void>(
+            //           context: context,
+            //           barrierDismissible: false,
+            //           builder: (context) {
+            //             return AlertDialog(
+            //               shape: RoundedRectangleBorder(
+            //                 borderRadius: BorderRadius.all(Radius.circular(15)),
+            //               ),
+            //               title: Text(' Thank you '),
+            //               content: Text(' You have already rated it'),
+            //               actions: [
+            //                 Container(
+            //                   width: double.infinity,
+            //                   margin: EdgeInsets.all(0),
+            //                   child: Padding(
+            //                     padding: const EdgeInsets.only(
+            //                         top: 15, right: 0, left: 0, bottom: 0),
+            //                     child: ElevatedButton(
+            //                         child: Padding(
+            //                           padding: const EdgeInsets.symmetric(
+            //                               vertical: 10),
+            //                           child: Text("close"),
+            //                         ),
+            //                         style: ButtonStyle(
+            //                           backgroundColor:
+            //                               MaterialStateProperty.all(
+            //                                   Color(0xFFeb6d44)),
+            //                         ),
+            //                         onPressed: () {
+            //                           Navigator.pop(context);
+            //                         }),
+            //                   ),
+            //                 ),
+            //               ],
+            //             );
+            //           },
+            //         );
+            //       }
+            //     }
+            //   }
+            //   isEven = false;
+            // });
           },
           icon: Icon(
             Icons.flag_outlined,
@@ -674,18 +654,18 @@ class CommentListState extends State<CommentList> {
 //********************************************************* */
 //--------------------------------------------------------------------------
 // ------------------- Design of each comment -----------------
-  Widget designComment(CommentObj comment) => Container(
+  Widget designComment(CommentModel comment) => Container(
         child: Column(
           children: [
             Row(
               children: [
                 UserInformationDesign(
-                  comment.username,
-                  comment.commentImgUrl,
+                  comment.username!,
+                  comment.imageUrl!,
                 ),
                 Padding(
                     padding: const EdgeInsets.only(left: 5),
-                    child: Text(comment.date,
+                    child: Text(comment.shownDate ?? '',
                         style: TextStyle(color: Colors.grey, fontSize: 12))),
                 //************************************ */
                 SizedBox(
@@ -698,20 +678,8 @@ class CommentListState extends State<CommentList> {
                 //       color: Colors.black,
                 //     )),
 
-                InkWell(
-                  onTap: () {
-                    // var comkey = snapshot Key;
-                    // print(comkey);
-                    // // userDirections.length > 1 to prevent deleting the field if there is only one field
-                    // _DeletFirestoreComment(comkey);
-                    // refresh the screen
-                    print("--------------------------");
-                    print(comment.commentRef);
-//   _DeletFirestoreComment(comment.commentRef);
-                    // setState(() {});
-                  },
-                  child: repordelIcon(comment),
-                )
+                reportOrDeleteIcon(comment),
+
                 //*************************************** */
               ],
             ),
@@ -720,7 +688,7 @@ class CommentListState extends State<CommentList> {
                 child: Padding(
                   padding: const EdgeInsets.only(
                       left: 40.0, bottom: 10, right: 30, top: 10),
-                  child: Text(comment.comment),
+                  child: Text(comment.comment ?? ''),
                 )),
             Divider(
               height: 20,

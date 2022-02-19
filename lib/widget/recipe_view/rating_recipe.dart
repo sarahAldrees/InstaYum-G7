@@ -5,25 +5,29 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:instayum1/widget/recipe_view/view_reicpe_flotingbutton.dart';
+import 'package:instayum/model/recipe_rating.dart';
+import 'package:instayum/widget/recipe_view/view_reicpe_flotingbutton.dart';
 // import 'package:recipe_view/view_reicpe_flotingbutton.dart';
 
 class RatingRecipe extends StatefulWidget {
-  String _recipeId;
-  String _autherId;
+  String? recipeId;
+  String? autherId;
+  final Function(bool)? onRating;
 
-  RatingRecipe(this._recipeId, this._autherId);
+  RatingRecipe({Key? key, this.recipeId, this.autherId, this.onRating})
+      : super(key: key);
   @override
   Rating createState() => Rating();
 }
 
-String _currentUserId;
-double rating;
+bool _findUser = false;
+String? _currentUserId;
+double rating = 0;
 var numOfReviews;
 var total;
 var avg;
 
-List<String> _usersAlredyRate;
+late List<String?> _usersAlredyRate;
 
 class Rating extends State<RatingRecipe> {
   bool _findUser = false;
@@ -33,29 +37,35 @@ class Rating extends State<RatingRecipe> {
   getData() async {
     final FirebaseAuth usId = FirebaseAuth.instance;
     final _currentUser = usId.currentUser;
-
     await FirebaseFirestore.instance
-        .collection("users")
-        .doc(widget._autherId)
+        // .collection("users")
+        // .doc(widget.autherId)
         .collection("recipes")
-        .doc(widget._recipeId)
+        .doc(widget.recipeId)
         .collection("rating")
         .doc("recipeRating")
-        .snapshots()
-        .listen((userData) {
-      setState(() {
+        // .snapshots()
+        // .listen((userData) {
+        .get()
+        .then((document) {
+      if (document != null) {
+        // print('rating data: ${document.data()}');
         //usersAlredyRate.clear();
-        numOfReviews = userData.data()["num_of_reviews"];
+        Map<String, dynamic>? data = document.data();
 
-        total = userData.data()["sum_of_all_rating"];
+        if (data != null) {
+          RecipeRating rating = RecipeRating.fromJson(data);
+          numOfReviews = rating.numOfReviews;
+          total = rating.sumOfAllRating;
+          avg = rating.averageRating;
 
-        avg = userData.data()["average_rating"];
-
-        _usersAlredyRate = List.from(userData.data()["user_already_review"]);
-        _currentUserId = _currentUser.uid;
-        print("numOfRevewis===============");
-        print(numOfReviews);
-      });
+          _usersAlredyRate = List.from(rating.userAlreadyReview!);
+          _currentUserId = _currentUser!.uid;
+        }
+        // print("numOfRevewis===============");
+        // print(numOfReviews);
+        setState(() {});
+      }
     });
   }
 
@@ -172,10 +182,10 @@ class Rating extends State<RatingRecipe> {
 
                             //----------uppdating data --------
                             await FirebaseFirestore.instance
-                                .collection("users")
-                                .doc(widget._autherId)
+                                // .collection("users")
+                                // .doc(widget.autherId)
                                 .collection("recipes")
-                                .doc(widget._recipeId)
+                                .doc(widget.recipeId)
                                 .collection("rating")
                                 .doc("recipeRating")
                                 .update({
@@ -185,6 +195,11 @@ class Rating extends State<RatingRecipe> {
                               "user_already_review":
                                   FieldValue.arrayUnion(_usersAlredyRate)
                             });
+
+                            if (widget.onRating != null) {
+                              // rating done
+                              widget.onRating!(true);
+                            }
                           }),
                     ),
                   ),

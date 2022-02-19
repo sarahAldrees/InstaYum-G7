@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:instayum1/widget/auth/auth_screen.dart';
 
 class RestPassword extends StatefulWidget {
   @override
@@ -11,7 +10,7 @@ class RestPassword extends StatefulWidget {
 class _RestPasswordState extends State<RestPassword> {
   final _formKey = GlobalKey<FormState>();
 
-  var _userEmail = "";
+  String? _userEmail = "";
 
   bool _isValidEmail(String email) {
     String pattern =
@@ -23,22 +22,22 @@ class _RestPasswordState extends State<RestPassword> {
   }
 
   void _trySendRequest() async {
-    _formKey.currentState.save();
+    _formKey.currentState!.save();
 
-    final isValidForm = _formKey.currentState.validate();
+    final isValidForm = _formKey.currentState!.validate();
 
     bool _switchToLogin =
         false; // we will not switch the user to login page until he enterd a valid email
     if (isValidForm) {
       try {
         final _auth = await FirebaseAuth.instance
-            .sendPasswordResetEmail(email: _userEmail);
+            .sendPasswordResetEmail(email: _userEmail!);
         _switchToLogin =
             true; // valid email so we will send him to the login page
       } on PlatformException catch (err) {
         print(err.code);
         _switchToLogin = false;
-      } catch (err) {
+      } on FirebaseAuthException catch (err) {
         _switchToLogin = false;
         if (err.code == "user-not-found") {
           showAlertDialogUserNotFound(context);
@@ -108,7 +107,7 @@ class _RestPasswordState extends State<RestPassword> {
             fontWeight: FontWeight.bold, color: Theme.of(context).accentColor),
       ),
       content: Text(
-        "A reset request was sent to your email: " + _userEmail,
+        "A reset request was sent to your email: " + _userEmail!,
         style: TextStyle(color: Color(0xFF444444)),
       ),
       actions: [
@@ -157,7 +156,7 @@ class _RestPasswordState extends State<RestPassword> {
                           key: ValueKey(
                               "email"), // علشان اذا حولت من لوق ان الى ساين اب ما يتحول الوزرنيم الى باسوورد
                           validator: (value) {
-                            if (value.isEmpty) {
+                            if (value!.isEmpty) {
                               return "Email should not be empty";
                             } else if (!_isValidEmail(value)) {
                               return "Please enter a valid email";

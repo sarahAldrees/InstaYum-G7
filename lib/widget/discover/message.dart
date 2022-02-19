@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:instayum1/widget/profile/profile.dart';
+import 'package:instayum/constant/app_globals.dart';
+import 'package:instayum/widget/profile/profile.dart';
 import 'recipe_card_screen.dart';
 
 class Messages extends StatefulWidget {
   Messages({this.text, this.name, this.type});
 
-  final String text;
-  final String name;
-  final bool type;
+  final String? text;
+  final String? name;
+  final bool? type;
 
   @override
   State<Messages> createState() => _MessagesState();
@@ -46,7 +47,7 @@ class _MessagesState extends State<Messages> {
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      widget.text,
+                      widget.text!,
                     ),
                   )),
             ],
@@ -62,11 +63,11 @@ class _MessagesState extends State<Messages> {
     }
   }
 
-  final userImage = ProfileState.imageURL == "noImage" ||
-          ProfileState.imageURL.isEmpty ||
-          ProfileState.imageURL == null
+  final userImage = AppGlobals.userImage == "noImage" ||
+          AppGlobals.userImage!.isEmpty ||
+          AppGlobals.userImage == null
       ? AssetImage("assets/images/defaultUser.png") // NEW
-      : NetworkImage(ProfileState.imageURL);
+      : NetworkImage(AppGlobals.userImage!);
 
   List<Widget> userMessage(context) {
     return <Widget>[
@@ -82,7 +83,7 @@ class _MessagesState extends State<Messages> {
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
-                    widget.text,
+                    widget.text!,
                     style: TextStyle(color: Colors.black),
                   ),
                 )),
@@ -96,7 +97,7 @@ class _MessagesState extends State<Messages> {
             child: Material(
               color: Colors.grey.shade400,
               child: Ink.image(
-                image: userImage,
+                image: userImage as ImageProvider<Object>,
                 fit: BoxFit.cover,
                 width: 90,
                 height: 90,
@@ -120,7 +121,8 @@ class _MessagesState extends State<Messages> {
       margin: const EdgeInsets.symmetric(vertical: 10.0),
       child: new Row(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: this.widget.type ? userMessage(context) : botMessage(context),
+        children:
+            this.widget.type! ? userMessage(context) : botMessage(context),
       ),
     );
   }

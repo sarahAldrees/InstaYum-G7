@@ -2,11 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:instayum1/widget/add_recipe/directions_text_fields.dart';
-import 'package:instayum1/widget/add_recipe/ingredients_text_Fields.dart';
-import 'package:instayum1/widget/pickers/recipe_image_picker.dart';
+import 'package:instayum/constant/app_globals.dart';
+import 'package:instayum/widget/add_recipe/directions_text_fields.dart';
+import 'package:instayum/widget/add_recipe/ingredients_text_Fields.dart';
+import 'package:instayum/widget/pickers/recipe_image_picker.dart';
 import 'package:uuid/uuid.dart';
 import '../../main_pages.dart';
+import 'recipe_service.dart';
 
 //import 'dynamic_fields.dart';
 class AddRecipePage extends StatefulWidget {
@@ -16,40 +18,42 @@ class AddRecipePage extends StatefulWidget {
 
 class addRecipe extends State<AddRecipePage> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  final FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+
 //___________________Attributes_________________
 
-  static String recipeTitle;
+  static String? recipeTitle;
   static TextEditingController recipeTitleController = TextEditingController();
 
   //-----------------------dropdown list for classification-----------------
-  final _recipeType = ['Breakfast', 'Lunch', 'Dinner'];
+  // final _recipeType = ['Breakfast', 'Lunch', 'Dinner'];
 
-  final _recipeCategories = [
-    'Appetizers',
-    'Main course',
-    'Desserts',
-    'Drinks',
-    'Salads',
-    'Soups',
-  ];
+  // final _recipeCategories = [
+  //   'Appetizers',
+  //   'Main course',
+  //   'Desserts',
+  //   'Drinks',
+  //   'Salads',
+  //   'Soups',
+  // ];
 
-  final _cuisine = [
-    'American',
-    'Asian',
-    'Brazilian',
-    'Egyptian',
-    'French',
-    'Gulf',
-    'Indian',
-    'Italian',
-    'Lebanese',
-    'Mexican',
-    'Turkish',
-    'Other'
-  ];
-  var _currentSelectedTypeOfMeal = "Breakfast";
-  var _currentSelectedCategory = "Appetizers";
-  var _currentSelectedCuisine = "American";
+  // final _cuisine = [
+  //   'American',
+  //   'Asian',
+  //   'Brazilian',
+  //   'Egyptian',
+  //   'French',
+  //   'Gulf',
+  //   'Indian',
+  //   'Italian',
+  //   'Lebanese',
+  //   'Mexican',
+  //   'Turkish',
+  //   'Other'
+  // ];
+  String? _currentSelectedTypeOfMeal = "Breakfast";
+  String? _currentSelectedCategory = "Appetizers";
+  String? _currentSelectedCuisine = "American";
   bool _isPublic = false; //to determin wehther the recipe is public or private
   static bool isloading = false;
 
@@ -58,8 +62,8 @@ class addRecipe extends State<AddRecipePage> {
   // we put one null value instaed of "List<String>()" to make the lenght of list 1 instaed of 0
   // to meke _getIngredients() method create one empty feild
   // we will add the ingredients to database from this list
-  static List<String> userIngredients = [null];
-  static List<String> userDirections = [null];
+  static List<String?> userIngredients = [null];
+  static List<String?> userDirections = [null];
 
   var recipe_id = Uuid().v4(); //uuid.v() is a library to create a random key
 
@@ -74,12 +78,12 @@ class addRecipe extends State<AddRecipePage> {
     print(userDirections[0]);
     print(RecipeImagePickerState.uploadedFileURL);
 
-    if ((recipeTitle == null || recipeTitle.isEmpty || recipeTitle == "") &&
+    if ((recipeTitle == null || recipeTitle!.isEmpty || recipeTitle == "") &&
         (userIngredients[0] == null ||
-            userIngredients[0].isEmpty ||
+            userIngredients[0]!.isEmpty ||
             userIngredients[0] == "") &&
         (userDirections[0] == null ||
-            userDirections[0].isEmpty ||
+            userDirections[0]!.isEmpty ||
             userDirections[0] == "") &&
         RecipeImagePickerState.uploadedFileURL == null) {
       return true;
@@ -136,19 +140,20 @@ class addRecipe extends State<AddRecipePage> {
 
   //----------------------------------------------------------------------------
   void _addRecipeButton() {
-    setState(() {
-      //to show the progress bar
-      isloading = true;
-    });
-    List<String> userIngredientsCopy = List.from(userIngredients);
+    bool isContainMeasures = false;
+    // List<String> userIngredientsCopy = List.from(userIngredients);
 
     setState(() {}); //to refresh the page after delete any empty fields
-    bool isContainMeasures = false;
-    if (formKey.currentState.validate()) {
-      formKey.currentState.save();
+    if (formKey.currentState!.validate()) {
+      setState(() {
+        //to show the progress bar
+        isloading = true;
+      });
+
+      formKey.currentState!.save();
       for (int i = 0; i < userIngredients.length; i++) {
-        //if (userIngredients[i]=='cup' ||)
-        var string = userIngredients[i].toLowerCase();
+        // if(userIngredients[i] != null)
+        var string = userIngredients[i]!.toLowerCase();
         if (string.contains('cup') ||
             string.contains('spoon') ||
             string.contains('gram') ||
@@ -157,7 +162,9 @@ class addRecipe extends State<AddRecipePage> {
             string.contains('glass') ||
             string.contains('bowl') ||
             string.contains('can') ||
-            string.contains(new RegExp(r'[0-9]'))) isContainMeasures = true;
+            string.contains(new RegExp(r'[0-9]'))) {
+          isContainMeasures = true;
+        }
       }
       if (isContainMeasures)
         _addRecipeToDatabase();
@@ -168,9 +175,9 @@ class addRecipe extends State<AddRecipePage> {
         });
       }
     } else {
-      setState(() {
-        isloading = false;
-      });
+      // setState(() {
+      //   isloading = false;
+      // });
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
             content: Text("some fields missing check them please"),
@@ -180,111 +187,122 @@ class addRecipe extends State<AddRecipePage> {
   }
 
   void _addRecipeToDatabase() async {
-    final FirebaseAuth _auth = FirebaseAuth.instance;
-    final currentUser = await _auth.currentUser;
+    // final FirebaseAuth _auth = FirebaseAuth.instance;
+    // final currentUser = await _auth.currentUser;
+    print('add recipe button pressed');
 
-    DateTime timestamp = DateTime.now();
-    await FirebaseFirestore.instance
-        .collection("users")
-        .doc(currentUser.uid)
-        .collection(
-            "recipes") // create new collcetion of recipes inside user document to save all of the user's recipes
-        .doc(recipe_id)
-        .set({
-      "recipe_title": recipeTitle,
-      'length_of_ingredients': userIngredients.length,
-      'length_of_directions': userDirections.length,
-      'user_id': currentUser.uid,
-      "timestamp": timestamp,
-    });
+    await RecipeService.addRecipeToDatabase(
+      recipeTitle: recipeTitle,
+      currentSelectedTypeOfMeal: _currentSelectedCategory,
+      currentSelectedCategory: _currentSelectedCategory,
+      currentSelectedCuisine: _currentSelectedCuisine,
+      userIngredients: userIngredients,
+      userDirections: userDirections,
+      isPublic: _isPublic,
+    );
+
+    // DateTime timestamp = DateTime.now();
+    // await FirebaseFirestore.instance
+    //     .collection("users")
+    //     .doc(currentUser.uid)
+    //     .collection(
+    //         "recipes") // create new collcetion of recipes inside user document to save all of the user's recipes
+    //     .doc(recipe_id)
+    //     .set({
+    //   "recipe_title": recipeTitle,
+    //   'length_of_ingredients': userIngredients.length,
+    //   'length_of_directions': userDirections.length,
+    //   'user_id': currentUser.uid,
+    //   "timestamp": timestamp,
+    // });
 // to save the ingredients
-    int countItems = 0;
-    for (var ing in userIngredients) {
-      countItems++;
-      await FirebaseFirestore.instance
-          .collection("users")
-          .doc(currentUser.uid)
-          .collection("recipes")
-          .doc(recipe_id)
-          .update({
-        'ing$countItems': ing,
-      });
-    }
+    // int countItems = 0;
+    // for (var ing in userIngredients) {
+    //   countItems++;
+    //   await FirebaseFirestore.instance
+    //       .collection("users")
+    //       .doc(currentUser.uid)
+    //       .collection("recipes")
+    //       .doc(recipe_id)
+    //       .update({
+    //     'ing$countItems': ing,
+    //   });
+    // }
 // to save the directions
-    countItems = 0;
-    for (var dir in userDirections) {
-      countItems++;
-      await FirebaseFirestore.instance
-          .collection("users")
-          .doc(currentUser.uid)
-          .collection("recipes")
-          .doc(recipe_id)
-          .update({
-        'dir$countItems': '${countItems}- ' + dir,
-      });
-    }
+    // countItems = 0;
+    // for (var dir in userDirections) {
+    //   countItems++;
+    //   await FirebaseFirestore.instance
+    //       .collection("users")
+    //       .doc(currentUser.uid)
+    //       .collection("recipes")
+    //       .doc(recipe_id)
+    //       .update({
+    //     'dir$countItems': '${countItems}- ' + dir,
+    //   });
+    // }
 // to save the classification
     // String recipe_image_url = RecipeImagePickerState.uploadedFileURL;
 
     //if (recipe_image_url == null) recipe_image_url = 'noImageUrl';
 
-    if (RecipeImagePickerState.imagesURLs.isEmpty) {
-      await FirebaseFirestore.instance
-          .collection("users")
-          .doc(currentUser.uid)
-          .collection("recipes")
-          .doc(recipe_id)
-          .update({
-        'img1': "noImageUrl",
-        'image_count': 0,
-      });
-    } else {
-      int countImage = 0;
-      for (var url in RecipeImagePickerState.imagesURLs) {
-        // print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-        print(url);
-        countImage++;
-        await FirebaseFirestore.instance
-            .collection("users")
-            .doc(currentUser.uid)
-            .collection("recipes")
-            .doc(recipe_id)
-            .update({
-          'img$countImage': url,
-          'image_count': countImage,
-        });
-      }
-    }
-    await FirebaseFirestore.instance
-        .collection("users")
-        .doc(currentUser.uid)
-        .collection("recipes")
-        .doc(recipe_id)
-        .update({
-      'type_of_meal': _currentSelectedTypeOfMeal,
-      'category': _currentSelectedCategory,
-      'cuisine': _currentSelectedCuisine,
-      //'recipe_image_url': recipe_image_url,
-      'is_public_recipe': _isPublic,
-    });
+    // if (RecipeImagePickerState.imagesURLs.isEmpty) {
+    //   await FirebaseFirestore.instance
+    //       .collection("users")
+    //       .doc(currentUser.uid)
+    //       .collection("recipes")
+    //       .doc(recipe_id)
+    //       .update({
+    //     'img1': "noImageUrl",
+    //     'image_count': 0,
+    //   });
+    // } else {
+    //   int countImage = 0;
+    //   for (var url in RecipeImagePickerState.imagesURLs) {
+    //     // print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+    //     print(url);
+    //     countImage++;
+    //     await FirebaseFirestore.instance
+    //         .collection("users")
+    //         .doc(currentUser.uid)
+    //         .collection("recipes")
+    //         .doc(recipe_id)
+    //         .update({
+    //       'img$countImage': url,
+    //       'image_count': countImage,
+    //     });
+    //   }
+    // }
+    // await FirebaseFirestore.instance
+    //     .collection("users")
+    //     .doc(currentUser.uid)
+    //     .collection("recipes")
+    //     .doc(recipe_id)
+    //     .update({
+    //   'type_of_meal': _currentSelectedTypeOfMeal,
+    //   'category': _currentSelectedCategory,
+    //   'cuisine': _currentSelectedCuisine,
+    //   //'recipe_image_url': recipe_image_url,
+    //   'is_public_recipe': _isPublic,
+    // });
     //--------------------creat collection of reating with zeros----------
-    await FirebaseFirestore.instance
-        .collection("users")
-        .doc(currentUser.uid)
-        .collection(
-            "recipes") // create new collcetion of recipes inside user document to save all of the user's recipes
-        .doc(recipe_id)
-        .collection("rating")
-        .doc("recipeRating")
-        .set({
-      "sum_of_all_rating": 0,
-      "num_of_reviews": 0,
-      "average_rating": 0.0,
-      "user_already_review": FieldValue.arrayUnion([]),
-    });
+    // await FirebaseFirestore.instance
+    //     .collection("users")
+    //     .doc(currentUser.uid)
+    //     .collection(
+    //         "recipes") // create new collcetion of recipes inside user document to save all of the user's recipes
+    //     .doc(recipe_id)
+    //     .collection("rating")
+    //     .doc("recipeRating")
+    //     .set({
+    //   "sum_of_all_rating": 0,
+    //   "num_of_reviews": 0,
+    //   "average_rating": 0.0,
+    //   "user_already_review": FieldValue.arrayUnion([]),
+    // });
 
     //-----------------Clear the form--------------------------------
-    formKey.currentState.reset();
+    formKey.currentState!.reset();
     recipeTitleController.clear(); //to clean on the screen only
     recipeTitle = ''; // to realy clean it
     userIngredients = [null];
@@ -302,7 +320,7 @@ class addRecipe extends State<AddRecipePage> {
   }
 
 //_______ The two methods below is used to create a dynamic TextFormFeild for Ingredients__________________
-  TextEditingController _ingredientController;
+  TextEditingController? _ingredientController;
   List<Widget> ingredientsTextFieldsList = [];
   List<Widget> _getIngredients() {
     ingredientsTextFieldsList = [];
@@ -357,7 +375,7 @@ class addRecipe extends State<AddRecipePage> {
   }
 
 //_______ The two methods below is used to create a dynamic TextFormFeild for directions__________________
-  TextEditingController _directionController;
+  TextEditingController? _directionController;
   List<Widget> DirectionsTextFieldsList = [];
   List<Widget> _getDirections() {
     DirectionsTextFieldsList = [];
@@ -458,7 +476,7 @@ class addRecipe extends State<AddRecipePage> {
                         controller: recipeTitleController,
                         key: ValueKey("recipe_title"),
                         validator: (value) {
-                          if (value.isEmpty || value == "") {
+                          if (value!.isEmpty || value == "") {
                             return "Please enter the name of the recipe";
                           }
                           return null;
@@ -662,7 +680,7 @@ class addRecipe extends State<AddRecipePage> {
                               height: 1,
                               color: Colors.grey[700],
                             ),
-                            onChanged: (String newValue) {
+                            onChanged: (String? newValue) {
                               setState(() {
                                 _currentSelectedTypeOfMeal = newValue;
                               });
@@ -670,7 +688,7 @@ class addRecipe extends State<AddRecipePage> {
                             style: const TextStyle(
                               color: Color(0xFF616161),
                             ),
-                            items: _recipeType
+                            items: AppGlobals.recipeType
                                 .map<DropdownMenuItem<String>>((String value) {
                               return DropdownMenuItem<String>(
                                 value: value,
@@ -708,13 +726,13 @@ class addRecipe extends State<AddRecipePage> {
                               height: 1,
                               color: Colors.grey[700],
                             ),
-                            onChanged: (String newValue) {
+                            onChanged: (String? newValue) {
                               setState(() {
                                 _currentSelectedCategory = newValue;
                               });
                             },
                             style: const TextStyle(color: Color(0xFF616161)),
-                            items: _recipeCategories
+                            items: AppGlobals.recipeCategories
                                 .map<DropdownMenuItem<String>>((String value) {
                               return DropdownMenuItem<String>(
                                 value: value,
@@ -751,13 +769,13 @@ class addRecipe extends State<AddRecipePage> {
                               height: 1,
                               color: Colors.grey[700],
                             ),
-                            onChanged: (String newValue) {
+                            onChanged: (String? newValue) {
                               setState(() {
                                 _currentSelectedCuisine = newValue;
                               });
                             },
                             style: const TextStyle(color: Color(0xFF616161)),
-                            items: _cuisine
+                            items: AppGlobals.cuisine
                                 .map<DropdownMenuItem<String>>((String value) {
                               return DropdownMenuItem<String>(
                                 value: value,

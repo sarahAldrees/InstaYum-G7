@@ -15,7 +15,7 @@ class _HorizontalDayListState extends State<HorizontalDayList> {
   @override
   void initState() {
     super.initState();
-    SchedulerBinding.instance.addPostFrameCallback((_) {
+    SchedulerBinding.instance!.addPostFrameCallback((_) {
       DateTime date = DateTime.now();
       widget.dayUpdateFunction(weekdays[date.weekday - 1]);
       updateDayColor(date.weekday);
@@ -25,12 +25,12 @@ class _HorizontalDayListState extends State<HorizontalDayList> {
   List<String> weekdays = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
 
   Color activeCardColor = Color(0xFFeb6d44);
-  Color inactiveCardColor = Colors.grey[600];
+  Color? inactiveCardColor = Colors.grey[600];
 
   Color activeTextColor = Colors.white;
   Color inactiveTextColor = Colors.white;
 
-  List<List<Color>> cardColorList = [
+  List<List<Color?>> cardColorList = [
     [Colors.grey[600], Colors.white],
     [Colors.grey[600], Colors.white],
     [Colors.grey[600], Colors.white],

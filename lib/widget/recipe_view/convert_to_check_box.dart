@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:instayum1/model/checkbox_state.dart';
+import 'package:instayum/model/checkbox_state.dart';
 
 //import 'checkboxState.dart';
 
 class ConvertTocheckBox extends StatefulWidget {
-  List<String> listOfin;
+  List<String?> listOfin;
   String title;
   bool needConvert = true;
   List<CheckBoxState> listOfIngrediant = [];
@@ -61,7 +61,7 @@ class convert extends State<ConvertTocheckBox> {
       controlAffinity: ListTileControlAffinity.leading,
       activeColor: Color(0xFFeb6d44),
       value: checkbox.outvalue,
-      title: Text(checkbox.title,
+      title: Text(checkbox.title!,
           style: TextStyle(
             decoration: checkbox.checkedstyle,
             decorationColor: Color(0xFFeb6d44),
@@ -69,7 +69,7 @@ class convert extends State<ConvertTocheckBox> {
           )),
       onChanged: (value) {
         setState(() {
-          checkbox.outvalue = value;
+          checkbox.outvalue = value!;
           if (checkbox.outvalue == true) {
             checkbox.checkedstyle = TextDecoration.lineThrough;
           } else {

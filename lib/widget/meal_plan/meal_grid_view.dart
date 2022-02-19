@@ -4,7 +4,7 @@ import "meal_title.dart";
 class MealGridView extends StatefulWidget {
   List<List<String>> mealList;
 
-  MealGridView({@required this.mealList});
+  MealGridView({required this.mealList});
 
   @override
   _MealGridViewState createState() => _MealGridViewState();

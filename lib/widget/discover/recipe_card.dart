@@ -1,18 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:instayum1/widget/recipe_view/recipe_view.dart';
+import 'package:instayum/widget/recipe_view/recipe_view.dart';
 
 class RecipeCard extends StatefulWidget {
-  final String autherId;
-  final String RecipeId;
-  final String recipeName;
-  final String typeOfMeal;
-  final String category;
-  final String mainImageURL;
-  final String cuisine;
-  final List<String> ingredients;
-  final List<String> dirctions;
-  final List<String> imageUrls;
+  final String? autherId;
+  final String? RecipeId;
+  final String? recipeName;
+  final String? typeOfMeal;
+  final String? category;
+  final String? mainImageURL;
+  final String? cuisine;
+  final List<String?>? ingredients;
+  final List<String?>? dirctions;
+  final List<String?>? imageUrls;
 
   //final String title;
   //final String rating; ///LAAAAATTTTTTTTTTTTTTEEEEEEEEEEEEEEEEERRR
@@ -56,8 +56,8 @@ class _RecipeCardState extends State<RecipeCard> {
         .snapshots()
         .listen((userData) {
       setState(() {
-        numOfRevewis = userData.data()["num_of_reviews"];
-        avg = userData.data()["average_rating"];
+        numOfRevewis = userData.data()!["num_of_reviews"];
+        avg = userData.data()!["average_rating"];
         rating = avg.toString();
       });
     });
@@ -98,7 +98,7 @@ class _RecipeCardState extends State<RecipeCard> {
             Colors.black.withOpacity(0.35),
             BlendMode.multiply,
           ),
-          image: NetworkImage(widget.mainImageURL),
+          image: NetworkImage(widget.mainImageURL!),
           fit: BoxFit.cover,
         ),
       ),
@@ -111,27 +111,28 @@ class _RecipeCardState extends State<RecipeCard> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => new RecipeView(
-                          //key,
-                          // autherName,
-                          // autherImage,
-                          "",
-                          widget.autherId,
-                          widget.RecipeId,
-                          widget.recipeName,
-                          widget.mainImageURL,
-                          widget.typeOfMeal,
-                          widget.category,
-                          widget.cuisine,
-                          widget.ingredients,
-                          widget.dirctions,
-                          widget.imageUrls)));
+                            //key,
+                            // autherName,
+                            // autherImage,
+                            "",
+                            widget.autherId!,
+                            widget.RecipeId!,
+                            // widget.recipeName!,
+                            // widget.mainImageURL!,
+                            // widget.typeOfMeal!,
+                            // widget.category!,
+                            // widget.cuisine!,
+                            // widget.ingredients as List<String>,
+                            // widget.dirctions as List<String>,
+                            // widget.imageUrls as List<String>
+                          )));
             }, //what happend after clicking image
           ),
           Align(
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 5.0),
               child: Text(
-                widget.recipeName,
+                widget.recipeName!,
                 style: TextStyle(
                     fontSize: 19, color: Colors.white), // color of the title
                 overflow: TextOverflow.ellipsis,

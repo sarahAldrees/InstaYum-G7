@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart'; // For File Upload To Firestore
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart'; // For Image Picker
+
 import 'package:path/path.dart' as Path;
 import 'package:uuid/uuid.dart';
 import 'package:flutter/material.dart';
@@ -19,10 +20,10 @@ class RecipeImagePicker extends StatefulWidget {
 
 class RecipeImagePickerState extends State<RecipeImagePicker> {
   bool _isloading = false; // to show the progress circle
-  File _image;
-  static String uploadedFileURL;
-  List<Asset> images = List<Asset>();
-  static List<String> imagesURLs = List<String>();
+  File? _image;
+  static String? uploadedFileURL;
+  List<Asset> images = [];
+  static List<String> imagesURLs = [];
 
   String _error = 'No Error Dectected';
   var width;
@@ -57,9 +58,9 @@ class RecipeImagePickerState extends State<RecipeImagePicker> {
       "https://firebasestorage.googleapis.com/v0/b/instayum-f7a34.appspot.com/o/recpie_image%2FdefaultRecipeImage.png?alt=media&token=f12725db-646b-4692-9ccf-131a99667e43"
     ];
 
-    List<Asset> resultList = List<Asset>();
+    List<Asset> resultList = [];
 
-    List<File> fikles = List<File>();
+    List<File> fikles = [];
     String error = 'No Error Detected';
     try {
       resultList = await MultiImagePicker.pickImages(
@@ -74,7 +75,7 @@ class RecipeImagePickerState extends State<RecipeImagePicker> {
 // we make for loop to load many images
       for (Asset i in resultList) {
         print("IMAGE");
-        print(i.name + " " + i.getByteData().toString());
+        print(i.name! + " " + i.getByteData().toString());
         print("END OF NAME");
 
         setState(() {
@@ -182,7 +183,7 @@ class RecipeImagePickerState extends State<RecipeImagePicker> {
                     ),
                   )
                 : Image.asset(
-                    "assets/images/defaultRecipeImage.png",
+                    'assets/images/defaultRecipeImage.png',
                     height: 200,
                     width: 300,
                   ),

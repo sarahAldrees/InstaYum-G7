@@ -2,13 +2,16 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:instayum1/model/cookbook.dart';
-import 'package:instayum1/widget/bookmark/add_new_cookbook.dart';
-import 'package:instayum1/widget/pickers/cookbook_image_picker.dart';
+import 'package:instayum/constant/app_globals.dart';
+import 'package:instayum/model/cookbook.dart';
+import 'package:instayum/widget/pickers/cookbook_image_picker.dart';
+import 'package:instayum/model/cookbook.dart';
+import 'package:instayum/widget/bookmark/add_new_cookbook.dart';
+import 'package:instayum/widget/pickers/cookbook_image_picker.dart';
 import 'add_new_cookbook.dart';
-import 'package:instayum1/widget/bookmark/cookbook_item.dart';
+import 'package:instayum/widget/bookmark/cookbook_item.dart';
 import 'package:another_flushbar/flushbar.dart';
-import 'package:instayum1/widget/bookmark/cookbook_item.dart';
+import 'package:instayum/widget/bookmark/cookbook_item.dart';
 
 class BookmarkedRecipes extends StatefulWidget {
   static bool Saved = false;
@@ -24,17 +27,17 @@ class BookmarkedRecipes extends StatefulWidget {
 }
 
 class BookmarkedRecipesState extends State<BookmarkedRecipes> {
-  String imagePath;
-  File image;
+  String? imagePath;
+  File? image;
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   //bool _isEmptyCookbookTitle = false;
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   String cookbookTitle = "";
   bool validCookbookName = true;
-  static String uploadedFileURL;
+  static String? uploadedFileURL;
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) => getCookbookObjects());
+    WidgetsBinding.instance!.addPostFrameCallback((_) => getCookbookObjects());
   }
 
   static var Cookbooks_List = [
@@ -75,8 +78,7 @@ class BookmarkedRecipesState extends State<BookmarkedRecipes> {
         ),
         onPressed: () async {
           String cookbookTitle = _CookbookTitleTextFieldController.text;
-          print(
-              cookbookTitle); // used to print the cookbook title in the successfull message
+
           if (CookbookImagePickerState.isUploadCookbookImageIsloading) {
             Flushbar(
               backgroundColor: Theme.of(context).errorColor,
@@ -84,15 +86,16 @@ class BookmarkedRecipesState extends State<BookmarkedRecipes> {
               duration: Duration(seconds: 4),
             ).show(context);
           } else {
-            if (formKey.currentState.validate()) {
-              formKey.currentState.save();
+            if (formKey.currentState!.validate()) {
+              formKey.currentState!.save();
 
               validCookbookName = await _checkCookbookName(
                   _CookbookTitleTextFieldController.text);
               if (validCookbookName) {
                 AddNewCookBookState.createNewCookBook(cookbookTitle);
 
-                getCookbookObjects();
+                getCookbookObjects(); // to refresh the page after adding a new cookbook
+                // -------------------Clear the data ---------------------------
                 CookbookImagePickerState.uploadedFileURL = null;
                 _CookbookTitleTextFieldController.clear();
                 Navigator.of(context).pop();
@@ -151,7 +154,7 @@ class BookmarkedRecipesState extends State<BookmarkedRecipes> {
                     return null;
                 },
                 onSaved: (value) {
-                  cookbookTitle = value;
+                  cookbookTitle = value!;
                 },
               ),
             )
@@ -181,33 +184,32 @@ class BookmarkedRecipesState extends State<BookmarkedRecipes> {
   }
 
   Future<bool> _checkCookbookName(String cookBookname) async {
-    User user = firebaseAuth.currentUser;
+    User? user = firebaseAuth.currentUser;
     final result = await FirebaseFirestore.instance
         .collection('users')
-        .doc(user.uid)
+        .doc(user!.uid)
         .collection("cookbooks")
         .where('cookbook_id', isEqualTo: cookBookname)
         .get();
     return result.docs.isEmpty;
   }
 
-  void getCookbookObjects() async {
-    final FirebaseAuth _auth = FirebaseAuth.instance;
-    final currentUser = await _auth.currentUser;
+  void getCookbookObjects() {
+    // final FirebaseAuth _auth = FirebaseAuth.instance;
+    // final currentUser = await _auth.currentUser;
     final timestamp =
         DateTime.now(); // to update the time and make the default upper
     FirebaseFirestore.instance
         .collection("users")
-        .doc(currentUser.uid)
+        .doc(AppGlobals.userId)
         .collection("cookbooks")
         .doc("All bookmarked recipes")
         .update({"timestamp": timestamp});
 
     Cookbooks_List = [];
-    User user = firebaseAuth.currentUser;
     FirebaseFirestore.instance
         .collection("users")
-        .doc(user.uid)
+        .doc(AppGlobals.userId)
         .collection("cookbooks")
         .orderBy("timestamp", descending: true)
         .snapshots()
@@ -216,6 +218,11 @@ class BookmarkedRecipesState extends State<BookmarkedRecipes> {
         Cookbooks_List = [];
         querySnapshot.docs.forEach(
           (doc) => {
+            // will delete the arraw
+            // Map data = doc.data(),
+            // Cookbook cookbook = Cookbook.formJson(data  as Map<String, dynamic>),
+            // Cookbooks_List.add(cookbook),
+
             Cookbooks_List.add(
               Cookbook(
                 id: doc.data()['cookbook_id'],
@@ -333,7 +340,7 @@ class BookmarkedRecipesState extends State<BookmarkedRecipes> {
                       "All bookmarked recipes") {
                     FirebaseFirestore.instance
                         .collection("users")
-                        .doc(FirebaseAuth.instance.currentUser.uid)
+                        .doc(FirebaseAuth.instance.currentUser!.uid)
                         .collection("cookbooks")
                         .doc(CookbookItem.selectedCookbooks[i])
                         .collection("bookmarked_recipe")
@@ -346,7 +353,7 @@ class BookmarkedRecipesState extends State<BookmarkedRecipes> {
                 }
                 FirebaseFirestore.instance
                     .collection("users")
-                    .doc(FirebaseAuth.instance.currentUser.uid)
+                    .doc(FirebaseAuth.instance.currentUser!.uid)
                     .collection("cookbooks")
                     .doc("All bookmarked recipes")
                     .collection("bookmarked_recipe")

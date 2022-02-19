@@ -1,15 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:instayum1/widget/bookmark/bookmarks_recipes_screen.dart';
-import 'package:instayum1/widget/bookmark/cookbook_recipes.dart';
+import 'package:instayum/widget/bookmark/bookmarks_recipes_screen.dart';
+import 'package:instayum/widget/bookmark/cookbook_recipes.dart';
 
 class CookbookItem extends StatefulWidget {
   @override
   State<CookbookItem> createState() => CookbookItemState();
-  final String cookbookID;
+  final String? cookbookID;
   // final String cookbookName;
 
-  final String imageURLCookbook;
+  final String? imageURLCookbook;
   static bool isBrowse = true;
 
   Color colorOfCircule = Colors.grey.shade300;
@@ -36,7 +36,7 @@ class CookbookItemState extends State<CookbookItem> {
     // }
     final image = widget.imageURLCookbook == "noImage"
         ? AssetImage("assets/images/defaultCookbookImage.png")
-        : NetworkImage(widget.imageURLCookbook);
+        : NetworkImage(widget.imageURLCookbook!);
 // this section will return one item of Grid Items that in bookmarked recipes page.
     return Column(children: [
       ClipOval(
@@ -60,7 +60,7 @@ class CookbookItemState extends State<CookbookItem> {
                     widget.colorOfCircule = Colors.grey.shade300;
                 });
                 if (widget.isSelected) {
-                  CookbookItem.selectedCookbooks.add(widget.cookbookID);
+                  CookbookItem.selectedCookbooks.add(widget.cookbookID!);
                 } else {
                   for (int i = 0;
                       i < CookbookItem.selectedCookbooks.length;
@@ -81,7 +81,7 @@ class CookbookItemState extends State<CookbookItem> {
                     context,
                     MaterialPageRoute(
                         builder: (context) =>
-                            CookbookRecipes(widget.cookbookID)));
+                            CookbookRecipes(widget.cookbookID!)));
 
 //-------------------------------------------------------
 
@@ -91,7 +91,7 @@ class CookbookItemState extends State<CookbookItem> {
               child: Material(
                 color: Colors.white,
                 child: Ink.image(
-                  image: image,
+                  image: image as ImageProvider<Object>,
                   fit: BoxFit.cover,
                   width: 120,
                   height: 120,
@@ -107,7 +107,7 @@ class CookbookItemState extends State<CookbookItem> {
           child: Center(
             child: Text(
               // cookbookName,
-              widget.cookbookID,
+              widget.cookbookID!,
               overflow: TextOverflow.ellipsis,
               maxLines: 1,
               // the ID is the same is the title that's why we remove the cookbook name

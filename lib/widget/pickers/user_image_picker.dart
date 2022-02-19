@@ -12,16 +12,20 @@ class UserImagePicker extends StatefulWidget {
 }
 
 class _UserImagePickerState extends State<UserImagePicker> {
-  File _pickedImage;
+  File? _pickedImage;
   void _pickImage() async {
-    final pickedImageFile = await ImagePicker.pickImage(
+    final pickedImageFile = await ImagePicker().pickImage(
       source: ImageSource.gallery,
       maxWidth: 150,
     ); //we can add imageQuality: 50 to reduce the qulaity if image to half so the size if it will reduce
-    setState(() {
-      _pickedImage = pickedImageFile;
-    });
-    widget.imagePickFn(pickedImageFile);
+
+    if (pickedImageFile != null) {
+      File file = File(pickedImageFile.path);
+      setState(() {
+        _pickedImage = file;
+      });
+      widget.imagePickFn(file);
+    }
   }
 
   @override
@@ -35,7 +39,7 @@ class _UserImagePickerState extends State<UserImagePicker> {
           radius: 37,
           backgroundColor: Theme.of(context).accentColor,
           backgroundImage:
-              _pickedImage != null ? FileImage(_pickedImage) : null,
+              _pickedImage != null ? FileImage(_pickedImage!) : null,
         ),
         FlatButton.icon(
             onPressed: _pickImage,

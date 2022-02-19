@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:instayum1/model/recipe.dart';
-import 'package:instayum1/widget/recipe_view/recipe_item.dart';
+import 'package:instayum/model/recipe.dart';
+import 'package:instayum/widget/recipe_view/recipe_item.dart';
 
 class CookbookRecipes extends StatefulWidget {
   @override
@@ -18,31 +18,31 @@ class CookbookRecipes extends StatefulWidget {
 class CookbookRecipesState extends State<CookbookRecipes> {
   List<Recipe> recpiesList = [];
 
-  List<String> ingredientsList = [];
+  List<String>? ingredientsList = [];
 
-  List<String> dirctionsList = [];
+  List<String>? dirctionsList = [];
 
-  List<String> imageUrlsList = [];
+  List<String>? imageUrlsList = [];
 
-  int lengthOfIngredients = 0;
+  int? lengthOfIngredients = 0;
 
-  int lengthOfDirections = 0;
+  int? lengthOfDirections = 0;
 
-  int lengthOfImages = 0;
+  int? lengthOfImages = 0;
 
-  int numberOfRecipes = 0;
+  int? numberOfRecipes = 0;
 
-  String autherId;
-  String recipeId;
+  String? autherId;
+  String? recipeId;
   _getBookmarkedRecipes() async {
     await FirebaseFirestore.instance
         .collection("users")
-        .doc(FirebaseAuth.instance.currentUser.uid)
+        .doc(FirebaseAuth.instance.currentUser!.uid)
         .collection("cookbooks")
         .doc(widget.cookbookID)
         .collection("bookmarked_recipe")
-        .snapshots()
-        .listen((data) {
+        .get()
+        .then((data) {
       recpiesList.clear();
       data.docs.forEach((doc) async {
         recpiesList.clear();
@@ -59,47 +59,42 @@ class CookbookRecipesState extends State<CookbookRecipes> {
             .doc(autherId)
             .collection("recipes")
             .doc(recipeId)
-            .snapshots()
-            .listen((doc) {
-          ingredientsList = [];
-          dirctionsList = [];
-          imageUrlsList = [];
-          lengthOfIngredients = doc.data()['length_of_ingredients'];
-          lengthOfDirections = doc.data()['length_of_directions'];
-          lengthOfImages = doc.data()['image_count'];
+            .get()
+            .then((doc) {
+          Recipe recipe = Recipe.fromJson(doc as Map<String, dynamic>);
+          String? recipeName = recipe.recipeTitle;
+          String? typeOfMeal = recipe.typeOfMeal;
+          String? category = recipe.category;
+          String? cuisine = recipe.cuisine;
+          String? img1 = recipe.img1;
+          autherId = recipe.userId;
+          bool public = recipe.isPublicRecipe ?? false;
+          lengthOfIngredients = recipe.lengthOfIngredients!;
+          lengthOfDirections = recipe.lengthOfDirections;
+          lengthOfImages = recipe.imageCount!;
+          for (int i = 0; i < lengthOfIngredients!; i++) {
+            ingredientsList!.add(doc['ing${i + 1}']);
+          }
+          for (int i = 0; i < lengthOfDirections!; i++) {
+            dirctionsList!.add(doc['dir${i + 1}']);
+          }
+          for (int i = 0; i < lengthOfImages!; i++) {
+            imageUrlsList!.add(doc['img${i + 1}']);
+          }
+          recpiesList.add(
+            Recipe(
+              recipeId: doc.id,
+              recipeTitle: recipeName,
+              typeOfMeal: typeOfMeal,
+              category: category,
+              cuisine: cuisine,
+              img1: img1,
+              dirctions: dirctionsList,
+              ingredients: ingredientsList,
+              imageUrls: imageUrlsList,
+            ),
+          );
 
-          for (int i = 0; i < lengthOfIngredients; i++) {
-            {
-              ingredientsList.add(
-                doc.data()['ing${i + 1}'],
-              );
-            }
-          }
-          for (int i = 0; i < lengthOfDirections; i++) {
-            dirctionsList.add(
-              doc.data()['dir${i + 1}'],
-            );
-          }
-          for (int i = 0; i < lengthOfImages; i++) {
-            imageUrlsList.add(
-              doc.data()['img${i + 1}'],
-            );
-          }
-          // recipe_image_url = doc.data()['recipe_image_url'],
-
-          //setState(() {
-          recpiesList.add(Recipe(
-            autherId: autherId,
-            id: doc.id,
-            recipeName: doc.data()['recipe_title'],
-            typeOfMeal: doc.data()['type_of_meal'],
-            category: doc.data()['category'],
-            cuisine: doc.data()['cuisine'],
-            mainImageURL: doc.data()["img1"],
-            dirctions: dirctionsList,
-            ingredients: ingredientsList,
-            imageUrls: imageUrlsList,
-          ));
           //});
           if (mounted)
             setState(() {
@@ -175,7 +170,7 @@ class CookbookRecipesState extends State<CookbookRecipes> {
     print("inside delete method");
     FirebaseFirestore.instance
         .collection("users")
-        .doc(FirebaseAuth.instance.currentUser.uid)
+        .doc(FirebaseAuth.instance.currentUser!.uid)
         .collection("cookbooks")
         .doc(widget.cookbookID)
         .delete();
@@ -223,17 +218,20 @@ class CookbookRecipesState extends State<CookbookRecipes> {
             children: [
               ...recpiesList
                   .map((e) => RecipeItem(
-                      widget.cookbookID,
-                      e.autherId,
-                      e.id,
-                      e.recipeName,
-                      e.mainImageURL,
-                      e.typeOfMeal,
-                      e.category,
-                      e.cuisine,
-                      e.ingredients,
-                      e.dirctions,
-                      e.imageUrls))
+                        // widget.autherName,
+                        // widget.autherImage,
+                        widget.cookbookID,
+                        autherId,
+                        e.recipeId,
+                        e.recipeTitle,
+                        e.img1,
+                        e.typeOfMeal,
+                        e.category,
+                        e.cuisine,
+                        e.ingredients,
+                        e.dirctions,
+                        e.imageUrls,
+                      ))
                   .toList(),
             ]),
       );

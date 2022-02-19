@@ -2,19 +2,20 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:instayum1/widget/auth/auth_screen.dart';
-import 'package:instayum1/widget/add_recipe/add_recipe_page.dart';
-import 'package:instayum1/widget/discover/discover_page.dart';
-import 'package:instayum1/widget/shopping_list/shopping_list_page.dart';
-import 'package:instayum1/widget/auth/auth_form.dart';
-import 'package:instayum1/widget/pickers/recipe_image_picker.dart';
+import 'package:instayum/widget/auth/auth_screen.dart';
+import 'package:instayum/widget/add_recipe/add_recipe_page.dart';
+import 'package:instayum/widget/discover/discover_page.dart';
+import 'package:instayum/widget/shopping_list/shopping_list_page.dart';
+import 'package:instayum/widget/auth/auth_form.dart';
+import 'package:instayum/widget/pickers/recipe_image_picker.dart';
+import 'constant/app_globals.dart';
 import 'widget/meal_plan/meal_plans.dart';
 import 'widget/profile/profile.dart';
 
-//*********************************************************************
 //********************************************************************
 //********************************************************************
-// change the name to Appbar
+//********************************************************************
+// change the name to Appbar *****************************************
 //********************************************************************
 //********************************************************************
 class MainPages extends StatefulWidget {
@@ -38,7 +39,7 @@ class appPages extends State<MainPages> {
     // to check if the cookbook is already exist or not
     final isDefaultCookbookExist = await FirebaseFirestore.instance
         .collection("users")
-        .doc(currentUser.uid)
+        .doc(AppGlobals.userId)
         .collection("cookbooks")
         .where("cookbook_id", isEqualTo: "All bookmarked recipes")
         .get();
@@ -48,7 +49,7 @@ class appPages extends State<MainPages> {
       //no default exist
       FirebaseFirestore.instance
           .collection("users")
-          .doc(currentUser.uid)
+          .doc(AppGlobals.userId)
           .collection("cookbooks")
           .doc("All bookmarked recipes")
           .set({
@@ -60,7 +61,7 @@ class appPages extends State<MainPages> {
       // print("The All bookmarked recipes is exist ^^^^^^^^^^^^^^^^");
       FirebaseFirestore.instance
           .collection("users")
-          .doc(currentUser.uid)
+          .doc(AppGlobals.userId)
           .collection("cookbooks")
           .doc("All bookmarked recipes")
           .update({"timestamp": timestamp});
@@ -167,7 +168,6 @@ class appPages extends State<MainPages> {
             context,
             MaterialPageRoute(builder: (context) => MainPages()),
           );
-          print("ok is clicked after navigaotr");
         });
 
     // set up the AlertDialog
@@ -284,7 +284,12 @@ class appPages extends State<MainPages> {
       child: Text(
         "Yes",
       ),
-      onPressed: () {
+      onPressed: () async {
+        await FirebaseFirestore.instance
+            .collection("users")
+            .doc(AppGlobals.userId)
+            .update({"pushToken": ''});
+        AppGlobals().resetGlobals();
         FirebaseAuth.instance.signOut();
         Navigator.of(context).pop();
         print('sign out^^^^^^^^^^^^^^^^^^^^^^^^^^');
@@ -325,38 +330,62 @@ class appPages extends State<MainPages> {
 
   @override
   Widget build(BuildContext context) {
+    AppGlobals.screenHeight = MediaQuery.of(context).size.height;
+    AppGlobals.screenWidth = MediaQuery.of(context).size.width;
     return DefaultTabController(
       length: 5,
       child: Scaffold(
         appBar: AppBar(
           actions: [
-            DropdownButton(
+            PopupMenuButton(
               icon: Icon(
                 Icons.more_vert,
                 color: Theme.of(context).primaryIconTheme.color,
               ),
-              items: [
-                DropdownMenuItem(
-                  child: Container(
-                    child: Row(
-                      children: <Widget>[
-                        Icon(Icons.exit_to_app,
-                            color: Colors.black), // change the color
-                        SizedBox(width: 2),
-                        Text("Logout"),
-                      ],
-                    ),
+              itemBuilder: (context) => [
+                PopupMenuItem(
+                  child: Row(
+                    children: <Widget>[
+                      Icon(Icons.exit_to_app,
+                          color: Colors.black), // change the color
+                      SizedBox(width: 2),
+                      Text("Logout"),
+                    ],
                   ),
-                  value: "logout",
+                  value: 1,
                 ),
               ],
-              onChanged: (itemIdentifier) {
-                if (itemIdentifier == "logout") {
-                  print("cliked in logout");
-                  showAlertDialog(context);
-                }
+              onSelected: (dynamic val) {
+                showAlertDialog(context);
               },
-            )
+            ),
+            // DropdownButton(
+            //   icon: Icon(
+            //     Icons.more_vert,
+            //     color: Theme.of(context).primaryIconTheme.color,
+            //   ),
+            //   items: [
+            //     DropdownMenuItem(
+            //       child: Container(
+            //         child: Row(
+            //           children: <Widget>[
+            //             Icon(Icons.exit_to_app,
+            //                 color: Colors.black), // change the color
+            //             SizedBox(width: 2),
+            //             Text("Logout"),
+            //           ],
+            //         ),
+            //       ),
+            //       value: "logout",
+            //     ),
+            //   ],
+            //   onChanged: (itemIdentifier) {
+            //     if (itemIdentifier == "logout") {
+            //       print("cliked in logout");
+            //       showAlertDialog(context);
+            //     }
+            //   },
+            // )
           ],
           leading: Container(
               //color: Colors.white,
@@ -364,10 +393,7 @@ class appPages extends State<MainPages> {
           backgroundColor: Color(0xFFeb6d44),
           title: Text(appBarTitel),
         ),
-        body: Scrollbar(
-          isAlwaysShown: true,
-          child: listOfPagesContent[indexOfPages],
-        ),
+        body: listOfPagesContent[indexOfPages],
         bottomNavigationBar: BottomNavigationBar(
           selectedItemColor: Color(0xFFeb6d44),
           unselectedItemColor: Colors.grey[600],

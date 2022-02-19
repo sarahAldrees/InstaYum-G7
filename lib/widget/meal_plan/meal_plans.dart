@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:instayum1/widget/meal_plan/horizontal_day_list.dart';
+import 'package:instayum/widget/meal_plan/horizontal_day_list.dart';
 
 import 'meal_grid_view.dart';
 
