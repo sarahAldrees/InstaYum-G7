@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:instayum/constant/app_globals.dart';
 import 'package:instayum/model/recipe.dart';
@@ -16,10 +18,13 @@ class RecipeService {
     bool isPublic = false,
     List<String?> userIngredients = const [],
     List<String?> userDirections = const [],
+    int? position,
   }) async {
     Timestamp timestamp = Timestamp.now();
     String? userId = AppGlobals.userId;
     String? recipe_id;
+    Random random = new Random();
+    int randomNumber = random.nextInt(1000000);
 
     Recipe recipe = Recipe(
       userId: userId,
@@ -29,6 +34,7 @@ class RecipeService {
       cuisine: currentSelectedCuisine,
       category: currentSelectedCategory,
       typeOfMeal: currentSelectedTypeOfMeal,
+      position: randomNumber,
       lengthOfIngredients: userIngredients.length,
       lengthOfDirections: userDirections.length,
     );

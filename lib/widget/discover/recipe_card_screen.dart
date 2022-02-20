@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:instayum/model/recipe.dart';
@@ -37,12 +39,19 @@ class RecipeCardScreenState extends State<RecipeCardScreen> {
   static int numberOfRecipes = 0;
 
   void getRecipeObjects() {
+    print("ENTERD getRecipeObjects()");
+    print("99999999999999999999999999999999999999999");
     // User user = firebaseAuth.currentUser;
     // FirebaseFirestore.instance.collection("users").get()
     numberOfRecipes = 0;
 
-    FirebaseFirestore.instance.collection("recipes").get().then((snapshot) {
-      snapshot.docs.shuffle();
+    FirebaseFirestore.instance
+        .collection("recipes")
+        .orderBy("position")
+        .get()
+        .then((snapshot) {
+      // snapshot.docs.shuffle();
+
       snapshot.docs.forEach((doc) {
         Map data = doc.data();
         Recipe recipe = Recipe.fromJson(data as Map<String, dynamic>);
@@ -51,6 +60,8 @@ class RecipeCardScreenState extends State<RecipeCardScreen> {
         String? category = recipe.category;
         String? cuisine = recipe.cuisine;
         String? img1 = recipe.img1;
+        String? recipeID = recipe.recipeId;
+
         // autherId = recipe.userId;
         bool public = recipe.isPublicRecipe ?? false;
         // recipe_image_url = data['recipe_image_url'],
@@ -63,6 +74,12 @@ class RecipeCardScreenState extends State<RecipeCardScreen> {
           setState(() {
             numberOfRecipes++;
           });
+          Random random = new Random();
+          int randomNumber = random.nextInt(1000000);
+          FirebaseFirestore.instance
+              .collection("recipes")
+              .doc(doc.id)
+              .update({"position": randomNumber});
 
           lengthOfIngredients = recipe.lengthOfIngredients;
           lengthOfDirections = recipe.lengthOfDirections;

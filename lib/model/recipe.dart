@@ -14,6 +14,7 @@ class Recipe {
   String? typeOfMeal;
   String? img1;
   Timestamp? timestamp;
+  int? position;
   List<String>? ingredients;
   List<String>? dirctions;
   List<String>? imageUrls;
@@ -55,6 +56,7 @@ class Recipe {
     this.typeOfMeal,
     this.img1,
     this.timestamp,
+    this.position,
     this.dirctions,
     this.imageUrls,
     this.ingredients,
@@ -73,6 +75,7 @@ class Recipe {
     typeOfMeal = json['type_of_meal'];
     img1 = json['img1'];
     timestamp = json['timestamp'];
+    position = json['position'];
     dirctions = json['dirctions'];
     imageUrls = json['imageUrls'];
     ingredients = json['ingredients'];
@@ -93,6 +96,7 @@ class Recipe {
     data['type_of_meal'] = this.typeOfMeal;
     data['img1'] = this.img1;
     data['timestamp'] = this.timestamp;
+    data['position'] = this.position;
     //data['dirctions'] = this.dirctions; // because they are null in the database
     data['imageUrls'] = this.imageUrls;
     //data['ingredients'] = this.ingredients; // because they are null in the database
