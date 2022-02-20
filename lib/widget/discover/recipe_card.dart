@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:instayum/constant/app_globals.dart';
 import 'package:instayum/widget/recipe_view/recipe_view.dart';
 
 class RecipeCard extends StatefulWidget {
@@ -47,8 +48,8 @@ class _RecipeCardState extends State<RecipeCard> {
   getData() async {
     //to get previous rating info from firestor
     await FirebaseFirestore.instance
-        .collection("users")
-        .doc(widget.autherId)
+        //.collection("users")
+        // .doc(widget.autherId)
         .collection("recipes")
         .doc(widget.RecipeId)
         .collection("rating")
@@ -77,8 +78,8 @@ class _RecipeCardState extends State<RecipeCard> {
 
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 22, vertical: 10),
-      width: 290,
-      height: 180,
+      width: AppGlobals.screenWidth / 1.2,
+      height: AppGlobals.screenHeight / 4,
       decoration: BoxDecoration(
         color: Colors.black,
         borderRadius: BorderRadius.circular(15),

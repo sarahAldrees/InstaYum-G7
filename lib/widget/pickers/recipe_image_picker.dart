@@ -4,11 +4,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart'; // For File Upload To Firestore
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart'; // For Image Picker
+import 'package:multi_image_picker/multi_image_picker.dart';
 
 import 'package:path/path.dart' as Path;
 import 'package:uuid/uuid.dart';
 import 'package:flutter/material.dart';
-import 'package:multi_image_picker/multi_image_picker.dart';
 import 'dart:async';
 import 'package:path_provider/path_provider.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -122,7 +122,12 @@ class RecipeImagePickerState extends State<RecipeImagePicker> {
         });
       }
     } on Exception catch (e) {
+      print("wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww");
       error = e.toString();
+      print(error);
+      print("wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww");
+
+      print('IMMMMAAAGGGGEEEEEE PIIIICCCKKKEERR IN RECIPE ERROR');
     }
 
     // If the widget was removed from the tree while the asynchronous platform

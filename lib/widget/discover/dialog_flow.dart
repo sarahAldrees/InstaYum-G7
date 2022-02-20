@@ -26,7 +26,7 @@ class ChatBotState extends State<ChatBot> {
   static String userPreferredCuisine = '';
   Messages theStartedMessage = Messages(
     text:
-        "Welcome, I am InstaYum's chef Iam here to help you in deciding what to eat, do you need help?",
+        "Welcome, I am InstaYum's chef Iam here to help you in deciding what to eat, Just let me know if you want breakfast, lunch or dinner?",
     name: "InstaYum",
     type: false,
   );
@@ -73,7 +73,7 @@ class ChatBotState extends State<ChatBot> {
     );
   }
 
-  List<String> suggestListAgent = ["Yes, I need help", 'No, thank you'];
+  List<String> suggestListAgent = ["Breakfast", 'Lunch', "Dinner"];
   void agentResponse(query) async {
     _textController.clear();
     AuthGoogle authGoogle =

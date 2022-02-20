@@ -103,7 +103,7 @@ class RecipeCardScreenState extends State<RecipeCardScreen> {
         else
           setState(() {
             finalText =
-                "Suggested recipes are above, do you need more recipes?";
+                "Suggested recipes are above,\nAre you happy with these recipes?";
           });
       });
     });
@@ -234,6 +234,8 @@ class RecipeCardScreenState extends State<RecipeCardScreen> {
     //       .toList(),
     // );
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+
       //   //appBar: AppBar(
       //   // title: Row(
       //   //   mainAxisAlignment: MainAxisAlignment.center,

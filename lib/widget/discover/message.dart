@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:instayum/constant/app_globals.dart';
 import 'package:instayum/widget/profile/profile.dart';
+import 'package:intl/intl.dart';
 import 'recipe_card_screen.dart';
 
 class Messages extends StatefulWidget {
@@ -19,7 +20,20 @@ class _MessagesState extends State<Messages> {
 
   List<Widget> botMessage(context) {
     // bring_recipes is a word saved in dialogflow that indicate we need to represent the resipes
-    if (widget.text != "bring_recipes") {
+    if (widget.text == "bring_recipes") {
+      return <Widget>[
+        Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          RecipeCardScreen(),
+        ])
+      ];
+    } else if (widget.text == "Can i have more recipes") {
+      print("ddddddddddddddddddddddddddddddd");
+      return <Widget>[
+        Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          RecipeCardScreen(),
+        ])
+      ];
+    } else {
       return <Widget>[
         Container(
           margin: const EdgeInsets.only(right: 10.0),
@@ -53,12 +67,6 @@ class _MessagesState extends State<Messages> {
             ],
           ),
         ),
-      ];
-    } else {
-      return <Widget>[
-        Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          RecipeCardScreen(),
-        ])
       ];
     }
   }

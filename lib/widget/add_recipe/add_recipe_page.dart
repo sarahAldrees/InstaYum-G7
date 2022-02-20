@@ -193,7 +193,7 @@ class addRecipe extends State<AddRecipePage> {
 
     await RecipeService.addRecipeToDatabase(
       recipeTitle: recipeTitle,
-      currentSelectedTypeOfMeal: _currentSelectedCategory,
+      currentSelectedTypeOfMeal: _currentSelectedTypeOfMeal,
       currentSelectedCategory: _currentSelectedCategory,
       currentSelectedCuisine: _currentSelectedCuisine,
       userIngredients: userIngredients,
