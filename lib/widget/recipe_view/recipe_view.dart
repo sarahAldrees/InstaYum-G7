@@ -38,11 +38,11 @@ class RecipeView extends StatefulWidget {
   // List<String> _dirctions;
   // List<String> _imageUrls;
 
-  RecipeView(
-    // Key? key,
+  RecipeView({
+    Key? key,
     this.cookbook,
     this.autherId,
-    this.recipeid, {String? cookbook, String? autherId},
+    required this.recipeid,
     // this._recipeName,
     // this._mainImageUrl,
     // this._typeOfMeal,
@@ -51,7 +51,7 @@ class RecipeView extends StatefulWidget {
     // this._ingredients,
     // this._dirctions,
     // this._imageUrls,
-  );
+  }) : super(key: key);
 
   @override
   State<RecipeView> createState() => _RecipeViewState();
@@ -625,7 +625,7 @@ class getuserinfoState extends State<getuserinfo> {
 
   @override
   Widget build(BuildContext context) {
-    return UserInformationDesign(_autherName!,
-        _autherimage!); // calling this class to design image and user name after get them from database
+    return UserInformationDesign(_autherName,
+        _autherimage); // calling this class to design image and user name after get them from database
   }
 }

@@ -62,15 +62,13 @@ class RecipeItem extends StatelessWidget {
               // to make  clickable image
               onTap: () {
                 Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => new RecipeView(
-                      cookbook: cookbookitme,
-                      autherId: autherId,
-                      recipeid: RecipeId,
-                    ),
-                  ),
-                );
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => new RecipeView(
+                              cookbook: cookbookitme,
+                              autherId: autherId,
+                              recipeid: RecipeId,
+                            )));
               }, //what happend after clicking image
 
               child: ClipRRect(

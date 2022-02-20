@@ -110,13 +110,11 @@ class _RecipeCardState extends State<RecipeCard> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => new RecipeView(
-                            //key,
-                            // autherName,
-                            // autherImage,
-                            "",
-                            widget.autherId!,
-                            widget.RecipeId!,
+                      builder: (context) => RecipeView(
+                            cookbook: "",
+                            autherId: widget.autherId!,
+                            recipeid: widget.RecipeId!,
+                            //recipeid: '',
                             // widget.recipeName!,
                             // widget.mainImageURL!,
                             // widget.typeOfMeal!,
