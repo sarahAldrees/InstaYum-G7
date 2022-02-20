@@ -9,9 +9,9 @@ class UserInformationDesign extends StatelessWidget {
 
   Widget buildImage() {
     final image =
-        (userName == "noImage" || userImage!.isEmpty || userImage == null
+        userImage == "noImage" || userImage!.isEmpty || userImage == null
             ? AssetImage("assets/images/defaultUser.png") // NEW
-            : NetworkImage(userImage!)) as ImageProvider<Object>;
+            : NetworkImage(userImage!) as ImageProvider;
 
     return InkResponse(
         child: Container(

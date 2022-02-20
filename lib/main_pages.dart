@@ -6,16 +6,15 @@ import 'package:instayum/widget/auth/auth_screen.dart';
 import 'package:instayum/widget/add_recipe/add_recipe_page.dart';
 import 'package:instayum/widget/discover/discover_page.dart';
 import 'package:instayum/widget/shopping_list/shopping_list_page.dart';
-import 'package:instayum/widget/auth/auth_form.dart';
 import 'package:instayum/widget/pickers/recipe_image_picker.dart';
 import 'constant/app_globals.dart';
 import 'widget/meal_plan/meal_plans.dart';
 import 'widget/profile/profile.dart';
 
+//*********************************************************************
 //********************************************************************
 //********************************************************************
-//********************************************************************
-// change the name to Appbar *****************************************
+// change the name to Appbar
 //********************************************************************
 //********************************************************************
 class MainPages extends StatefulWidget {

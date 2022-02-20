@@ -1,7 +1,7 @@
 //import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
 import 'package:instayum/widget/add_recipe/add_recipe_page.dart';
-import 'package:instayum/widget/add_recipe/speech_to_text_API.dart';
+import 'package:speech_to_text/speech_to_text.dart';
 
 class IngredientsTextFields extends StatefulWidget {
   final int index;
@@ -16,11 +16,11 @@ class IngredientsTextFieldsState extends State<IngredientsTextFields> {
   String text = "";
   bool isListening = false;
   static bool isListening1 = false;
-  // @required
-  // Function(String text) onResult;
-  // @required
-  // ValueChanged<bool> onListening;
-  // static final _speech = SpeechToText();
+  @required
+  Function(String text)? onResult;
+  @required
+  ValueChanged<bool>? onListening;
+  static final _speech = SpeechToText();
   @override
   void initState() {
     super.initState();
@@ -39,13 +39,13 @@ class IngredientsTextFieldsState extends State<IngredientsTextFields> {
       controller: _ingredientController,
       decoration: InputDecoration(
           //============================
-          // suffixIcon: IconButton(
-          //   onPressed: toggleRecording,
-          //   icon: Icon(
-          //     isListening1 ? Icons.mic : Icons.mic_none,
-          //     color: Color(0xFFeb6d44),
-          //   ),
-          // ),
+          suffixIcon: IconButton(
+            onPressed: toggleRecording,
+            icon: Icon(
+              isListening1 ? Icons.mic : Icons.mic_none,
+              color: Color(0xFFeb6d44),
+            ),
+          ),
           //---------------------
           hintText: 'Enter an ingredient'), //errorText: _errorText
       onChanged: (value) {
@@ -60,31 +60,31 @@ class IngredientsTextFieldsState extends State<IngredientsTextFields> {
     );
   }
 
-  // void toggleRecording() async {
-  //   if (!isListening1) {
-  //     bool isAval = await _speech.initialize(
-  //       onStatus: (status) => onListening(_speech.isListening),
-  //       onError: (e) => print('Error: $e'),
-  //     );
+  void toggleRecording() async {
+    if (!isListening1) {
+      bool isAval = await _speech.initialize(
+        onStatus: (status) => onListening!(_speech.isListening),
+        onError: (e) => print('Error: $e'),
+      );
 
-  //     if (isAval) {
-  //       setState(() {
-  //         isListening1 = true;
-  //       });
-  //       // it is for recognaization
-  //       _speech.listen(
-  //           onResult: (value) => setState(() {
-  //                 this._ingredientController.text = value.recognizedWords;
-  //                 onResult(value.recognizedWords);
-  //               }));
-  //     }
-  //   } else {
-  //     setState(() {
-  //       isListening1 = false;
-  //       _speech.stop();
-  //     });
-  //   }
-  // }
+      if (isAval) {
+        setState(() {
+          isListening1 = true;
+        });
+        // it is for recognaization
+        _speech.listen(
+            onResult: (value) => setState(() {
+                  this._ingredientController!.text = value.recognizedWords;
+                  onResult!(value.recognizedWords);
+                }));
+      }
+    } else {
+      setState(() {
+        isListening1 = false;
+        _speech.stop();
+      });
+    }
+  }
 
   //____________________________________________________________________________
   //____________________________________________________________________________

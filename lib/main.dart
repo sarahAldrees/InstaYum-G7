@@ -6,6 +6,7 @@ import 'package:instayum/widget/auth/auth_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:instayum/main_pages.dart';
 import 'package:flutter/services.dart';
+import 'package:instayum/widget/admin/admin_home_page.dart';
 import 'package:overlay_support/overlay_support.dart';
 
 void main() async {

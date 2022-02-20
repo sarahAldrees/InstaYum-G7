@@ -164,6 +164,7 @@ class _RecipeViewState extends State<RecipeView> {
   void unBookmarkRecipe() {
     recipeExist = false;
     if (widget.cookbook == "All bookmarked recipes" || widget.cookbook == "") {
+      //delet from all(okay ,cancel)
       FirebaseFirestore.instance
           .collection("users")
           .doc(FirebaseAuth.instance.currentUser!.uid)
@@ -221,6 +222,7 @@ class _RecipeViewState extends State<RecipeView> {
       //   print(message.data());
       // }
     } else {
+      ////delet from specifec or all( ,cancel)
       print(widget.cookbook);
       FirebaseFirestore.instance
           .collection("users")
@@ -364,7 +366,7 @@ class _RecipeViewState extends State<RecipeView> {
                   context,
                   MaterialPageRoute(
                       builder: (context) =>
-                          Comments(widget.recipeid!, widget.autherId!)));
+                          Comments(widget.recipeid, widget.autherId)));
             },
             icon: const Icon(Icons.comment_sharp),
           ),
@@ -436,7 +438,7 @@ class _RecipeViewState extends State<RecipeView> {
                         children: [
                           getuserinfo(widget.autherId!),
 //------------------------ Rating of recipe -------------------------------------
-                          getRating(widget.recipeid!, widget.autherId!),
+                          GetRating(widget.recipeid!, widget.autherId!),
                         ],
                       ),
                       //-------------------------ginral discription ------------------------------------
@@ -505,21 +507,20 @@ class _RecipeViewState extends State<RecipeView> {
 
 //-------this clas to get rating from data base and display it ------------
 
-class getRating extends StatefulWidget {
+class GetRating extends StatefulWidget {
   String? _recipeId;
   String? _autherId;
-  getRating(this._recipeId, this._autherId);
+  GetRating(this._recipeId, this._autherId);
   @override
-  getRatingState createState() => getRatingState();
+  GetRatingState createState() => GetRatingState();
 }
 
-class getRatingState extends State<getRating> {
+class GetRatingState extends State<GetRating> {
   int? numOfRevewis = 0;
   double? avg = 0.0;
   var rating;
 
   getData() async {
-    //to get previous rating info from firestor
     //to get previous rating info from firestor
     await FirebaseFirestore.instance
         // .collection("users")
@@ -546,7 +547,6 @@ class getRatingState extends State<getRating> {
   void initState() {
     super.initState();
     getData();
-
     //we call the method here to get the data immediately when init the page.
   }
 
@@ -567,14 +567,15 @@ class getRatingState extends State<getRating> {
           child: Column(
             children: [
               RatingBarIndicator(
-                  rating: avg!,
-                  itemBuilder: (context, index) => Icon(
-                        Icons.star,
-                        color: Colors.amber,
-                      ),
-                  itemCount: 5,
-                  itemSize: 17.0,
-                  direction: Axis.horizontal),
+                rating: avg!,
+                itemBuilder: (context, index) => Icon(
+                  Icons.star,
+                  color: Colors.amber,
+                ),
+                itemCount: 5,
+                itemSize: 17.0,
+                direction: Axis.horizontal,
+              ),
               Text(
                 '$numOfRevewis Reviews',
                 style: TextStyle(fontSize: 15),

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:instayum/widget/add_recipe/add_recipe_page.dart';
 
+import 'package:speech_to_text/speech_to_text.dart';
+
 class DirectionsTextFields extends StatefulWidget {
   final int index;
   DirectionsTextFields(this.index);
@@ -14,11 +16,11 @@ class _DirectionsTextFieldsState extends State<DirectionsTextFields> {
   String text = "";
   bool isListening = false;
   bool isListening1 = false;
-  // @required
-  // Function(String text) onResult;
-  // @required
-  //  ValueChanged<bool> onListening;
-  // static final _speech = SpeechToText();
+  @required
+  Function(String text)? onResult;
+  @required
+  ValueChanged<bool>? onListening;
+  static final _speech = SpeechToText();
 
   @override
   void initState() {
@@ -36,13 +38,13 @@ class _DirectionsTextFieldsState extends State<DirectionsTextFields> {
     return TextFormField(
       controller: _directionController,
       decoration: InputDecoration(
-          // suffixIcon: IconButton(
-          //    onPressed: toggleRecording,
-          //   icon: Icon(
-          //     isListening1 ? Icons.mic : Icons.mic_none,
-          //     color: Color(0xFFeb6d44),
-          //   ),
-          // ),
+          suffixIcon: IconButton(
+            onPressed: toggleRecording,
+            icon: Icon(
+              isListening1 ? Icons.mic : Icons.mic_none,
+              color: Color(0xFFeb6d44),
+            ),
+          ),
           hintText: 'Enter a direction'), // errorText: _errorText
       onChanged: (value) {
         addRecipe.userDirections[widget.index] = value;
@@ -56,31 +58,31 @@ class _DirectionsTextFieldsState extends State<DirectionsTextFields> {
     );
   }
 
-  // void toggleRecording() async {
-  //   if (!isListening1) {
-  //     bool isAval = await _speech.initialize(
-  //       onStatus: (status) => onListening(_speech.isListening),
-  //       onError: (e) => print('Error: $e'),
-  //     );
+  void toggleRecording() async {
+    if (!isListening1) {
+      bool isAval = await _speech.initialize(
+        onStatus: (status) => onListening!(_speech.isListening),
+        onError: (e) => print('Error: $e'),
+      );
 
-  //     if (isAval) {
-  //       setState(() {
-  //         isListening1 = true;
-  //       });
-  //       // it is for recognaization
-  //       _speech.listen(
-  //           onResult: (value) => setState(() {
-  //                 this._directionController!.text = value.recognizedWords;
-  //                 onResult(value.recognizedWords);
-  //               }));
-  //     }
-  //   } else {
-  //     setState(() {
-  //       isListening1 = false;
-  //       _speech.stop();
-  //     });
-  //   }
-  // }
+      if (isAval) {
+        setState(() {
+          isListening1 = true;
+        });
+        // it is for recognaization
+        _speech.listen(
+            onResult: (value) => setState(() {
+                  this._directionController!.text = value.recognizedWords;
+                  onResult!(value.recognizedWords);
+                }));
+      }
+    } else {
+      setState(() {
+        isListening1 = false;
+        _speech.stop();
+      });
+    }
+  }
 
   //____________________________________________________________________________
   //____________________________________________________________________________

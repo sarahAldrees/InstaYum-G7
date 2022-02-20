@@ -660,8 +660,8 @@ class CommentListState extends State<CommentList> {
             Row(
               children: [
                 UserInformationDesign(
-                  comment.username,
-                  comment.imageUrl,
+                  comment.username!,
+                  comment.imageUrl!,
                 ),
                 Padding(
                     padding: const EdgeInsets.only(left: 5),

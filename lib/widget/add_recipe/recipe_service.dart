@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:instayum/constant/app_globals.dart';
 import 'package:instayum/model/recipe.dart';
+import 'package:instayum/model/recipe_rating.dart';
 import 'package:instayum/widget/pickers/recipe_image_picker.dart';
 
 class RecipeService {
@@ -83,25 +84,25 @@ class RecipeService {
     }
 
     //--------------------creat collection of reating with zeros----------
-    // RecipeRating recipeRating = RecipeRating(
-    //   numOfReviews: 0,
-    //   sumOfAllRating: 0,
-    //   averageRating: 0.0,
-    //   userAlreadyReview: [],
-    // );
+    RecipeRating recipeRating = RecipeRating(
+      numOfReviews: 0,
+      sumOfAllRating: 0,
+      averageRating: 0.0,
+      userAlreadyReview: [],
+    );
 
-    // create new collcetion of recipes inside user document to save all of the user's recipes
-    // await firebaseFirestore
-    //     .collection("recipes")
-    //     .doc(recipe_id)
-    //     .collection("rating")
-    //     .doc("recipeRating")
-    //     .set(
-    //       recipeRating.toJson(),
-    //       // { "sum_of_all_rating": 0,
-    //       // "num_of_reviews": 0,
-    //       // "average_rating": 0.0,
-    //       // "user_already_review": FieldValue.arrayUnion([]), }
-    //     );
+    //create new collcetion of recipes inside user document to save all of the user's recipes
+    await firebaseFirestore
+        .collection("recipes")
+        .doc(recipe_id)
+        .collection("rating")
+        .doc("recipeRating")
+        .set(
+          recipeRating.toJson(),
+          // { "sum_of_all_rating": 0,
+          // "num_of_reviews": 0,
+          // "average_rating": 0.0,
+          // "user_already_review": FieldValue.arrayUnion([]), }
+        );
   }
 }
