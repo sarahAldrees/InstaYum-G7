@@ -165,52 +165,90 @@ class _RecipeViewState extends State<RecipeView> {
     recipeExist = false;
     if (widget.cookbook == "All bookmarked recipes" || widget.cookbook == "") {
       //delet from all(okay ,cancel)
-      FirebaseFirestore.instance
-          .collection("users")
-          .doc(FirebaseAuth.instance.currentUser!.uid)
-          .collection("cookbooks")
-          .get()
-          .then((querySnapshot) {
-        querySnapshot.docs.forEach((result1) {
-          final mes = FirebaseFirestore.instance
-              .collection("users")
-              .doc(FirebaseAuth.instance.currentUser!.uid)
-              .collection("cookbooks")
-              .doc(result1.id)
-              .collection("bookmarked_recipe")
-              .get();
-
-          mes.then(
-            (querySnapshot) {
-              querySnapshot.docs.forEach((result) {
-                if (result.id == widget.recipeid) {
-                  FirebaseFirestore.instance
-                      .collection("users")
-                      .doc(FirebaseAuth.instance.currentUser!.uid)
-                      .collection("cookbooks")
-                      .doc(result1.id)
-                      .collection("bookmarked_recipe")
-                      .doc(result.id)
-                      .delete();
-                  print(result.id);
-                }
-
-                //     for(var result1 in querySnapshot.docs){
-                //       if(querySnapshot.doc )
-                //     //  FirebaseFirestore.instance
-                // // .collection("bookmarked_recipe").doc().delete();
-                //                 }
-              });
-            },
-          );
-          setState(() {
-            recipeExist = false;
-            ishappend = false;
-            CookbookRecipes.isNeedUpdate = true;
+      DleteFromAllCookbooks();
+      showDialog<void>(
+          context: context,
+          barrierDismissible: false,
+          builder: (context) {
+            return AlertDialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(8)),
+              ),
+              title: Column(
+                children: [
+                  Text(
+                    'Are you sure to remove the recipe from all cookbooks?',
+                    style: TextStyle(fontSize: 16),
+                  ),
+                ],
+              ),
+              actions: [
+                Container(
+                    width: double.infinity,
+                    margin: EdgeInsets.fromLTRB(3, 0, 3, 15),
+                    child: Padding(
+                        padding: const EdgeInsets.only(
+                            top: 0, right: 30, left: 30, bottom: 0),
+                        child: Column(
+                          children: [
+                            ElevatedButton(
+                                child: Center(
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(left: 30),
+                                    child: Row(
+                                      children: [
+                                        Center(
+                                            child: Icon(
+                                                Icons.delete_outline_rounded)),
+                                        SizedBox(
+                                          width: 2,
+                                        ),
+                                        Center(
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 12, horizontal: 10),
+                                            child: Text(
+                                              "Remove",
+                                              style: TextStyle(fontSize: 16),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all(
+                                      Color(0xFFeb6d44)),
+                                ),
+                                onPressed: () {
+                                  DleteFromAllCookbooks();
+                                  Navigator.pop(context);
+                                }),
+                            TextButton(
+                              child: Text(
+                                "Cancel",
+                                style: TextStyle(fontSize: 16),
+                              ),
+                              style: TextButton.styleFrom(
+                                primary: Color(0xFFeb6d44),
+                                backgroundColor: Colors.white,
+                                //side: BorderSide(color: Colors.deepOrange, width: 1),
+                                elevation: 0,
+                                //minimumSize: Size(100, 50),
+                                //shadowColor: Colors.red,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10)),
+                              ),
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                            ),
+                          ],
+                        )))
+              ],
+            );
           });
-        });
-      });
-
       // final messages = await FirebaseFirestore.instance
       //     .collection("users")
       //     .doc(FirebaseAuth.instance.currentUser.uid)
@@ -223,25 +261,181 @@ class _RecipeViewState extends State<RecipeView> {
       // }
     } else {
       ////delet from specifec or all( ,cancel)
+      showDialog<void>(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(8)),
+            ),
+            title: Column(
+              children: [
+                Text(
+                  'Are you sure to delete the recipe?',
+                  style: TextStyle(fontSize: 16),
+                ),
+              ],
+            ),
+            actions: [
+              Container(
+                  width: double.infinity,
+                  margin: EdgeInsets.fromLTRB(3, 0, 3, 15),
+                  child: Padding(
+                      padding: const EdgeInsets.only(
+                          top: 0, right: 30, left: 30, bottom: 0),
+                      child: Column(
+                        children: [
+                          ElevatedButton(
+                              child: Center(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 30),
+                                  child: Row(
+                                    children: [
+                                      Center(
+                                          child: Icon(
+                                              Icons.delete_outline_rounded)),
+                                      SizedBox(
+                                        width: 2,
+                                      ),
+                                      Center(
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 12, horizontal: 10),
+                                          child: Text(
+                                            "All cookbooks",
+                                            style: TextStyle(fontSize: 16),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              style: ButtonStyle(
+                                backgroundColor: MaterialStateProperty.all(
+                                    Color(0xFFeb6d44)),
+                              ),
+                              onPressed: () {
+                                DleteFromAllCookbooks();
+                                Navigator.pop(context);
+                              }),
+                          TextButton(
+                            child: Text(
+                              "This cookbook",
+                              style: TextStyle(fontSize: 16),
+                            ),
+                            style: TextButton.styleFrom(
+                              primary: Color(0xFFeb6d44),
+                              backgroundColor: Colors.white,
+                              //side: BorderSide(color: Colors.deepOrange, width: 1),
+                              elevation: 0,
+                              //minimumSize: Size(100, 50),
+                              //shadowColor: Colors.red,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10)),
+                            ),
+                            onPressed: () {
+                              deletFromThisCookbook();
+                              Navigator.pop(context);
+                            },
+                          ),
+                          TextButton(
+                            child: Text(
+                              "Cancel",
+                              style: TextStyle(fontSize: 16),
+                            ),
+                            style: TextButton.styleFrom(
+                              primary: Color(0xFFeb6d44),
+                              backgroundColor: Colors.white,
+                              //side: BorderSide(color: Colors.deepOrange, width: 1),
+                              elevation: 0,
+                              //minimumSize: Size(100, 50),
+                              //shadowColor: Colors.red,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10)),
+                            ),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                          ),
+                        ],
+                      )))
+            ],
+          );
+        },
+      );
       print(widget.cookbook);
-      FirebaseFirestore.instance
-          .collection("users")
-          .doc(FirebaseAuth.instance.currentUser!.uid)
-          .collection("cookbooks")
-          .doc(widget.cookbook)
-          .collection("bookmarked_recipe")
-          .doc(widget.recipeid)
-          .delete();
-      setState(() {
-        recipeExist = false;
-        CookbookRecipes.isNeedUpdate = true;
-        //ishappend = false;
-      });
     }
     //setState(() {});
   }
+
   //---------------------------------- t1 --------------------------------------------------------------
 //-----------------
+
+  void DleteFromAllCookbooks() {
+    FirebaseFirestore.instance
+        .collection("users")
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .collection("cookbooks")
+        .get()
+        .then((querySnapshot) {
+      querySnapshot.docs.forEach((result1) {
+        final mes = FirebaseFirestore.instance
+            .collection("users")
+            .doc(FirebaseAuth.instance.currentUser!.uid)
+            .collection("cookbooks")
+            .doc(result1.id)
+            .collection("bookmarked_recipe")
+            .get();
+
+        mes.then(
+          (querySnapshot) {
+            querySnapshot.docs.forEach((result) {
+              if (result.id == widget.recipeid) {
+                FirebaseFirestore.instance
+                    .collection("users")
+                    .doc(FirebaseAuth.instance.currentUser!.uid)
+                    .collection("cookbooks")
+                    .doc(result1.id)
+                    .collection("bookmarked_recipe")
+                    .doc(result.id)
+                    .delete();
+                print(result.id);
+              }
+
+              //     for(var result1 in querySnapshot.docs){
+              //       if(querySnapshot.doc )
+              //     //  FirebaseFirestore.instance
+              // // .collection("bookmarked_recipe").doc().delete();
+              //                 }
+            });
+          },
+        );
+        setState(() {
+          recipeExist = false;
+          ishappend = false;
+          CookbookRecipes.isNeedUpdate = true;
+        });
+      });
+    });
+  }
+
+  void deletFromThisCookbook() {
+    FirebaseFirestore.instance
+        .collection("users")
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .collection("cookbooks")
+        .doc(widget.cookbook)
+        .collection("bookmarked_recipe")
+        .doc(widget.recipeid)
+        .delete();
+    setState(() {
+      recipeExist = false;
+      CookbookRecipes.isNeedUpdate = true;
+      //ishappend = false;
+    });
+  }
 
   void initState() {
     super.initState();
