@@ -1,4 +1,4 @@
-# instayum1
+# InstaYum
 
 InstaYum
 
@@ -7,7 +7,7 @@ That saves recipes in an organized manner.
 Our product is an English mobile application with many tools to help cooking enthusiasts, like a shopping list and meals plan.... 
 
 Technologices:
-we use Dart langague and flutter framework version 2.11.0 to develop our application. As well as, we used some libraries like firebase, image picker, flutter rating bar, and flutter dialogflow.
+we use Dart langague and flutter framework version 2.12.0 to develop our application. As well as, we used some libraries like firebase, image picker, flutter rating bar, and flutter dialogflow.
 
 InstaYum main contributors:
 @sarahAldrees
