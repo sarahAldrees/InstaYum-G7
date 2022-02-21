@@ -112,17 +112,18 @@ class RecipeCardScreenState extends State<RecipeCardScreen> {
           );
         }
       });
-      setState(() {
-        if (numberOfRecipes == 0)
-          setState(() {
-            finalText = "There are no suitable recipes";
-          });
-        else
-          setState(() {
-            finalText =
-                "Suggested recipes are above,\nAre you happy with these recipes?";
-          });
-      });
+      if (mounted)
+        setState(() {
+          if (numberOfRecipes == 0)
+            setState(() {
+              finalText = "There are no suitable recipes";
+            });
+          else
+            setState(() {
+              finalText =
+                  "Suggested recipes are above,\nAre you happy with these recipes?";
+            });
+        });
     });
   }
 

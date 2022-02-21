@@ -56,11 +56,12 @@ class _RecipeCardState extends State<RecipeCard> {
         .doc("recipeRating")
         .snapshots()
         .listen((userData) {
-      setState(() {
-        numOfRevewis = userData.data()!["num_of_reviews"];
-        avg = userData.data()!["average_rating"];
-        rating = avg.toString();
-      });
+      if (mounted)
+        setState(() {
+          numOfRevewis = userData.data()!["num_of_reviews"];
+          avg = userData.data()!["average_rating"];
+          rating = avg.toString();
+        });
     });
   }
 
