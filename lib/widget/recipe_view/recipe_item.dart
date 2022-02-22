@@ -64,7 +64,7 @@ class RecipeItem extends StatelessWidget {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => new RecipeView(
+                        builder: (context) => RecipeView(
                               cookbook: cookbookitme,
                               autherId: autherId,
                               recipeid: RecipeId,

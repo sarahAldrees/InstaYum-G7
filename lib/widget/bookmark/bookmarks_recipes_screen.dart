@@ -15,10 +15,10 @@ import 'package:instayum/widget/bookmark/cookbook_item.dart';
 
 class BookmarkedRecipes extends StatefulWidget {
   static bool Saved = false;
-  String autherId;
+  //String autherId;
   String recipeId;
 
-  BookmarkedRecipes(this.autherId, this.recipeId);
+  BookmarkedRecipes(this.recipeId);
 
 //----------------Alert dialog------------------------------
 
@@ -336,32 +336,74 @@ class BookmarkedRecipesState extends State<BookmarkedRecipes> {
                 for (int i = 0;
                     i < CookbookItem.selectedCookbooks.length;
                     i++) {
-                  if (CookbookItem.selectedCookbooks[i] !=
-                      "All bookmarked recipes") {
-                    FirebaseFirestore.instance
-                        .collection("users")
-                        .doc(FirebaseAuth.instance.currentUser!.uid)
-                        .collection("cookbooks")
-                        .doc(CookbookItem.selectedCookbooks[i])
-                        .collection("bookmarked_recipe")
-                        .doc(widget.recipeId)
-                        .set({
-                      "autherId": widget.autherId,
-                      "recipeId": widget.recipeId,
-                    });
-                  }
+                  List<String> b2 = [];
+                  //----------------------------------
+                  FirebaseFirestore.instance
+                      .collection("users")
+                      .doc(FirebaseAuth.instance.currentUser!.uid)
+                      .collection("cookbooks")
+                      .doc(CookbookItem.selectedCookbooks[i])
+                      .get()
+                      .then((document) {
+                    b2.clear();
+                    if (document != null) {
+                      // print('rating data: ${document.data()}');
+                      //usersAlredyRate.clear();
+                      Map<String, dynamic>? data = document.data();
+
+                      if (data != null) {
+                        Cookbook bookmarkedRecipe = Cookbook.fromJson(data);
+                        b2 = List.from(bookmarkedRecipe.bookmarkedList!);
+                      }
+                    }
+                  });
+                  //--------------------------------------
+                  b2.add(widget.recipeId);
+                  FirebaseFirestore.instance
+                      .collection("users")
+                      .doc(FirebaseAuth.instance.currentUser!.uid)
+                      .collection("cookbooks")
+                      .doc(CookbookItem.selectedCookbooks[i])
+                      .update({"bookmarkedList": FieldValue.arrayUnion(b2)});
                 }
+                List<String> b2 = [];
+                //----------------------------------
                 FirebaseFirestore.instance
                     .collection("users")
                     .doc(FirebaseAuth.instance.currentUser!.uid)
                     .collection("cookbooks")
                     .doc("All bookmarked recipes")
-                    .collection("bookmarked_recipe")
-                    .doc(widget.recipeId)
-                    .set({
-                  "autherId": widget.autherId,
-                  "recipeId": widget.recipeId,
+                    .get()
+                    .then((document) {
+                  if (document != null) {
+                    Map<String, dynamic>? data = document.data();
+
+                    if (data != null) {
+                      Cookbook bookmarkedRecipe = Cookbook.fromJson(data);
+                      print(bookmarkedRecipe.id);
+                      b2 = List.from(bookmarkedRecipe.bookmarkedList!);
+                    }
+                  }
                 });
+                //--------------------------------------
+                b2.add(widget.recipeId);
+                FirebaseFirestore.instance
+                    .collection("users")
+                    .doc(FirebaseAuth.instance.currentUser!.uid)
+                    .collection("cookbooks")
+                    .doc("All bookmarked recipes")
+                    .update({"bookmarkedList": FieldValue.arrayUnion(b2)});
+                // FirebaseFirestore.instance
+                //     .collection("users")
+                //     .doc(FirebaseAuth.instance.currentUser!.uid)
+                //     .collection("cookbooks")
+                //     .doc("All bookmarked recipes")
+                //     .collection("bookmarked_recipe")
+                //     .doc(widget.recipeId)
+                //     .set({
+                //   // "autherId": widget.autherId,
+                //   "recipeId": widget.recipeId,
+                // });
 
                 CookbookItem.isBrowse = true;
                 //RecipeViewState.ishappen = false;

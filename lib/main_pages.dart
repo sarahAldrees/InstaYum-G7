@@ -54,7 +54,8 @@ class appPages extends State<MainPages> {
           .set({
         "cookbook_id": "All bookmarked recipes",
         "cookbook_img_url": "noImage", // to set the default image
-        "timestamp": timestamp
+        "timestamp": timestamp,
+        "bookmarkedList": FieldValue.arrayUnion([]),
       });
     } else {
       // print("The All bookmarked recipes is exist ^^^^^^^^^^^^^^^^");

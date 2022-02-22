@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:instayum/constant/app_globals.dart';
 import 'package:instayum/model/cookbook.dart';
 import 'package:instayum/model/recipe.dart';
 import 'package:instayum/widget/bookmark/bookmarks_recipes_screen.dart';
@@ -75,42 +76,42 @@ class _RecipeViewState extends State<RecipeView> {
   //-------------------------------------------------
   bool recipeExist = false;
   bool ishappend = false;
-
+  List<String?> _bookmarkedList = [];
   Widget bookmarkIcon() {
-    //cookbook_item.isBrowse = false;
-    FirebaseFirestore.instance
-        .collection("users")
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .collection("cookbooks")
-        .doc("All bookmarked recipes")
-        .collection("bookmarked_recipe")
-        .snapshots()
-        .listen((data) {
-      if (!ishappend) {
-        // setState(() {
-        recipeExist = BookmarkedRecipes.Saved;
-        //});
-        //recipeExist = false;
+    if (!ishappend) {
+      FirebaseFirestore.instance
+          .collection("users")
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .collection("cookbooks")
+          .doc("All bookmarked recipes")
+          .get()
+          .then((document) {
+        if (document != null) {
+          // print('rating data: ${document.data()}');
+          //usersAlredyRate.clear();
+          Map<String, dynamic>? data = document.data();
 
-        data.docs.forEach((doc) {
-          if (doc.data()['recipeId'] == widget.recipeid) {
-            recipeExist = true;
-            BookmarkedRecipes.Saved = true;
+          if (data != null) {
+            print("--------------------------------------4444---------");
+            Cookbook bookmarkedRecipe = Cookbook.fromJson(data);
+            print(bookmarkedRecipe.id);
+
+            _bookmarkedList = List.from(bookmarkedRecipe.bookmarkedList!);
+            if (!_bookmarkedList.isEmpty) print(_bookmarkedList[0]);
+            setState(() {
+              _bookmarkedList;
+              ishappend = true;
+            });
           }
-        });
-      }
-      if (!ishappend && BookmarkedRecipes.Saved && this.mounted) {
-        ishappend = recipeExist;
-        // bookmarked_recipes.Saved = true;
-        setState(() {});
-      }
-      // if (!recipeExist) {
-      //   setState(() {
-      //     ishappend = recipeExist;
-      //   });
-      // }
-    });
-
+        }
+      });
+    }
+    if (_bookmarkedList.contains(widget.recipeid)) {
+      setState(() {
+        recipeExist = true;
+      });
+    }
+    print("--------------------ghada------------------------------------");
     print(recipeExist);
     if (recipeExist) {
       return IconButton(
@@ -120,10 +121,10 @@ class _RecipeViewState extends State<RecipeView> {
             size: 26,
           ),
           onPressed: () {
-//------------------delete from bookmark recipe--------------
+            //------------------delete from bookmark recipe--------------
             unBookmarkRecipe();
 
-//-----------------------------------------------------------
+            //-----------------------------------------------------------
           });
     } else {
       setState(() {
@@ -135,10 +136,10 @@ class _RecipeViewState extends State<RecipeView> {
             size: 26,
           ),
           onPressed: () {
-            //   setState(() {
+            // setState(() {
             CookbookItem.isBrowse = false;
             BookmarkedRecipes.Saved = true;
-            // });
+            //});
 
             ///------------------bookmark --------
             showModalBottomSheet(
@@ -151,9 +152,12 @@ class _RecipeViewState extends State<RecipeView> {
                 ),
                 context: context,
                 builder: (context) {
-                  return BookmarkedRecipes(widget.autherId!, widget.recipeid!);
+                  return BookmarkedRecipes(widget.recipeid!);
                   // return bookmarked_recipes();
                 });
+            setState(() {
+              recipeExist = true;
+            });
 
             //setstat :change the kind of ici=on and add it to bookmark list
           });
@@ -162,10 +166,18 @@ class _RecipeViewState extends State<RecipeView> {
 
 //---------------------------------------- try 1 unbookmark -----------------------------------------------
   void unBookmarkRecipe() {
+    // // List b2 = [];
+
+    // if (widget.cookbook == "All bookmarked recipes" || widget.cookbook == "") {
+    //  // deletFromAllCookbooks();
+
+    // } else {
+    //   deletFromThisCookbook();
+    // }
     recipeExist = false;
     if (widget.cookbook == "All bookmarked recipes" || widget.cookbook == "") {
       //delet from all(okay ,cancel)
-      DleteFromAllCookbooks();
+
       showDialog<void>(
           context: context,
           barrierDismissible: false,
@@ -222,7 +234,7 @@ class _RecipeViewState extends State<RecipeView> {
                                       Color(0xFFeb6d44)),
                                 ),
                                 onPressed: () {
-                                  DleteFromAllCookbooks();
+                                  deletFromAllCookbooks();
                                   Navigator.pop(context);
                                 }),
                             TextButton(
@@ -317,7 +329,7 @@ class _RecipeViewState extends State<RecipeView> {
                                     Color(0xFFeb6d44)),
                               ),
                               onPressed: () {
-                                DleteFromAllCookbooks();
+                                deletFromAllCookbooks();
                                 Navigator.pop(context);
                               }),
                           TextButton(
@@ -367,75 +379,103 @@ class _RecipeViewState extends State<RecipeView> {
       );
       print(widget.cookbook);
     }
-    //setState(() {});
   }
+//---------------deletFromThisCookbook---------
 
-  //---------------------------------- t1 --------------------------------------------------------------
-//-----------------
-
-  void DleteFromAllCookbooks() {
+  void deletFromAllCookbooks() {
+    List b2 = [];
     FirebaseFirestore.instance
         .collection("users")
         .doc(FirebaseAuth.instance.currentUser!.uid)
         .collection("cookbooks")
         .get()
         .then((querySnapshot) {
-      querySnapshot.docs.forEach((result1) {
-        final mes = FirebaseFirestore.instance
-            .collection("users")
-            .doc(FirebaseAuth.instance.currentUser!.uid)
-            .collection("cookbooks")
-            .doc(result1.id)
-            .collection("bookmarked_recipe")
-            .get();
-
-        mes.then(
-          (querySnapshot) {
-            querySnapshot.docs.forEach((result) {
-              if (result.id == widget.recipeid) {
+      querySnapshot.docs.forEach(
+        (result1) {
+          FirebaseFirestore.instance
+              .collection("users")
+              .doc(FirebaseAuth.instance.currentUser!.uid)
+              .collection("cookbooks")
+              .doc(result1.id)
+              .get()
+              .then((document) {
+            if (document != null) {
+              Map<String, dynamic>? data = document.data();
+              if (data != null) {
+                Cookbook bookmarkedRecipe = Cookbook.fromJson(data);
+                if (document.data() != null) {
+                  //b2 = document.data()!["bookmarkedList"];
+                  b2 = List.from(bookmarkedRecipe.bookmarkedList!);
+                }
+              }
+              if (b2.contains(widget.recipeid)) {
+                print("-----------------------------ghada2");
+                print(widget.recipeid);
                 FirebaseFirestore.instance
                     .collection("users")
                     .doc(FirebaseAuth.instance.currentUser!.uid)
                     .collection("cookbooks")
                     .doc(result1.id)
-                    .collection("bookmarked_recipe")
-                    .doc(result.id)
-                    .delete();
-                print(result.id);
+                    .update({
+                  "bookmarkedList": FieldValue.arrayRemove([widget.recipeid])
+                });
               }
+            }
+          });
+        },
+      );
 
-              //     for(var result1 in querySnapshot.docs){
-              //       if(querySnapshot.doc )
-              //     //  FirebaseFirestore.instance
-              // // .collection("bookmarked_recipe").doc().delete();
-              //                 }
-            });
-          },
-        );
-        setState(() {
-          recipeExist = false;
-          ishappend = false;
-          CookbookRecipes.isNeedUpdate = true;
-        });
+      setState(() {
+        recipeExist = false;
+        _bookmarkedList = [];
       });
     });
   }
 
   void deletFromThisCookbook() {
+    List b2 = [];
     FirebaseFirestore.instance
         .collection("users")
         .doc(FirebaseAuth.instance.currentUser!.uid)
         .collection("cookbooks")
         .doc(widget.cookbook)
-        .collection("bookmarked_recipe")
-        .doc(widget.recipeid)
-        .delete();
+        .get()
+        .then((document) {
+      if (document != null) {
+        Map<String, dynamic>? data = document.data();
+        if (data != null) {
+          Cookbook bookmarkedRecipe = Cookbook.fromJson(data);
+          if (document.data() != null) {
+            //b2 = document.data()!["bookmarkedList"];
+            b2 = List.from(bookmarkedRecipe.bookmarkedList!);
+          }
+        }
+        if (b2.contains(widget.recipeid)) {
+          print("-----------------------------ghada2");
+          print(widget.recipeid);
+          FirebaseFirestore.instance
+              .collection("users")
+              .doc(FirebaseAuth.instance.currentUser!.uid)
+              .collection("cookbooks")
+              .doc(widget.cookbook)
+              .update({
+            "bookmarkedList": FieldValue.arrayRemove([widget.recipeid])
+          });
+        }
+      }
+    });
+
     setState(() {
       recipeExist = false;
-      CookbookRecipes.isNeedUpdate = true;
-      //ishappend = false;
+      _bookmarkedList = [];
     });
   }
+
+//---------------------------------
+
+  //setState(() {});
+
+  //---------------------------------- t1 --------------------------------------------------------------
 
   void initState() {
     super.initState();
@@ -480,8 +520,32 @@ class _RecipeViewState extends State<RecipeView> {
         }
       }
     });
+    // FirebaseFirestore.instance
+    //     .collection("users")
+    //     .doc(FirebaseAuth.instance.currentUser!.uid)
+    //     .collection("cookbooks")
+    //     .doc("All bookmarked recipes")
+    //     .get()
+    //     .then((document) {
+    //   if (document != null) {
+    //     // print('rating data: ${document.data()}');
+    //     //usersAlredyRate.clear();
+    //     Map<String, dynamic>? data = document.data();
+
+    //     if (data != null) {
+    //       print("--------------------------------------4444---------");
+    //       Cookbook bookmarkedRecipe = Cookbook.fromJson(data);
+    //       print(bookmarkedRecipe.id);
+
+    //       _bookmarkedList = List.from(bookmarkedRecipe.bookmarkedList!);
+    //       print(_bookmarkedList[0]);
+    //     }
+    //   }
+    // });
     isLoading = false;
     setState(() {});
+    print("//-----------------------------3333333----------------------------");
+    // print(_bookmarkedList[0]);
   }
 
 //------------
@@ -630,7 +694,7 @@ class _RecipeViewState extends State<RecipeView> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          getuserinfo(widget.autherId!),
+                          getuserinfo(widget.autherId),
 //------------------------ Rating of recipe -------------------------------------
                           GetRating(widget.recipeid!, widget.autherId!),
                         ],

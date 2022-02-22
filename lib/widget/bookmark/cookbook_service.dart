@@ -7,7 +7,7 @@ class CookbookService {
   static final FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
 
   static Future addCookbookToDatabase({String? cookBookIDAndTitle}) async {
-    DateTime timestamp = DateTime.now();
+    Timestamp? timestamp = Timestamp.now();
 
     String? cookbookImageUrl = CookbookImagePickerState.uploadedFileURL;
     if (cookbookImageUrl == null) cookbookImageUrl = 'noImage';
@@ -15,7 +15,8 @@ class CookbookService {
     Cookbook cookbook = Cookbook(
         id: cookBookIDAndTitle,
         imageURLCookbook: cookbookImageUrl,
-        cookbookTimestamp: timestamp);
+        cookbookTimestamp: timestamp,
+        bookmarkedList: []);
 
     await firebaseFirestore
         .collection("users")

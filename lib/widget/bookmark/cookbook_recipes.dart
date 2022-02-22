@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:instayum/constant/app_globals.dart';
+import 'package:instayum/model/cookbook.dart';
 import 'package:instayum/model/recipe.dart';
 import 'package:instayum/widget/recipe_view/recipe_item.dart';
 
@@ -17,7 +18,7 @@ class CookbookRecipes extends StatefulWidget {
 }
 
 class CookbookRecipesState extends State<CookbookRecipes> {
-  List<Recipe> recpiesList = [];
+  static List<Recipe> recpiesList = [];
 
   List<String> ingredientsList = [];
 
@@ -25,41 +26,34 @@ class CookbookRecipesState extends State<CookbookRecipes> {
 
   List<String> imageUrlsList = [];
 
-  int lengthOfIngredients = 0;
+  int? lengthOfIngredients = 0;
 
-  int lengthOfDirections = 0;
+  int? lengthOfDirections = 0;
 
-  int lengthOfImages = 0;
+  int? lengthOfImages = 0;
 
-  int numberOfRecipes = 0;
+  int? numberOfRecipes = 0;
 
   String? autherId;
   String? recipeId;
-  _getBookmarkedRecipes() async {
-    await FirebaseFirestore.instance
+  _getBookmarkedRecipes() {
+    // while (CookbookRecipes.isNeedUpdate) {
+    FirebaseFirestore.instance
         .collection("users")
         .doc(FirebaseAuth.instance.currentUser!.uid)
         .collection("cookbooks")
         .doc(widget.cookbookID)
-        .collection("bookmarked_recipe")
-        .get()
-        .then((data) {
+        .snapshots()
+        .listen((document) {
       recpiesList.clear();
-      data.docs.forEach((doc) async {
-        recpiesList.clear();
-        autherId = doc.data()['autherId'];
-        recipeId = doc.data()['recipeId'];
-        //setState(() {});
-        // if (recpiesList.isEmpty) {
-        //   recpiesList = [];
-        // }
+      Map<String, dynamic>? data = document.data();
+      Cookbook bookmarkedRecipe = Cookbook.fromJson(data!);
 
+      for (int i = 0; i < bookmarkedRecipe.bookmarkedList!.length; i++) {
 //----------------------------------------------------------------
-        await FirebaseFirestore.instance
-            // .collection("users")
-            // .doc(autherId)
+        FirebaseFirestore.instance
             .collection("recipes")
-            .doc(recipeId)
+            .doc(bookmarkedRecipe.bookmarkedList![i])
             .get()
             .then((doc) {
           ingredientsList = [];
@@ -69,26 +63,23 @@ class CookbookRecipesState extends State<CookbookRecipes> {
           lengthOfDirections = doc.data()?['length_of_directions'];
           lengthOfImages = doc.data()?['image_count'];
 
-          for (int i = 0; i < lengthOfIngredients; i++) {
+          for (int i = 0; i < lengthOfIngredients!; i++) {
             {
               ingredientsList.add(
                 doc.data()?['ing${i + 1}'],
               );
             }
           }
-          for (int i = 0; i < lengthOfDirections; i++) {
+          for (int i = 0; i < lengthOfDirections!; i++) {
             dirctionsList.add(
               doc.data()?['dir${i + 1}'],
             );
           }
-          for (int i = 0; i < lengthOfImages; i++) {
+          for (int i = 0; i < lengthOfImages!; i++) {
             imageUrlsList.add(
               doc.data()?['img${i + 1}'],
             );
           }
-          // recipe_image_url = doc.data()['recipe_image_url'],
-
-          //setState(() {
           recpiesList.add(Recipe(
             userId: autherId,
             recipeId: doc.id,
@@ -101,19 +92,13 @@ class CookbookRecipesState extends State<CookbookRecipes> {
             ingredients: ingredientsList,
             imageUrls: imageUrlsList,
           ));
-          //});
           if (mounted)
             setState(() {
               recpiesList = recpiesList;
             });
         });
-      });
-
-      if ((widget.flag || CookbookRecipes.isNeedUpdate) && mounted) {
-        widget.flag = false;
-        CookbookRecipes.isNeedUpdate = false;
-        setState(() {});
       }
+      if (mounted) setState(() {});
     });
   }
 
@@ -188,63 +173,57 @@ class CookbookRecipesState extends State<CookbookRecipes> {
 
   @override
   Widget build(BuildContext context) {
-    setState(() {
-      recpiesList;
-    });
-    // print(recpiesList[0].autherId);
-
     print(autherId);
-    if (!widget.flag) {
-      return Scaffold(
-        appBar: new AppBar(
-          title: Text(widget.cookbookID + " cookbook"),
-          backgroundColor: Color(0xFFeb6d44),
-          actions: [
-            if (widget.cookbookID != 'All bookmarked recipes')
-              Row(
-                children: [
-                  IconButton(
-                      icon: Icon(
-                        Icons.delete_outline_outlined,
-                        //  Icons.ios_share,
-                        size: 30,
-                      ),
-                      onPressed: () {
-                        showAlertDialogDeleteCookbook(context);
-                      }),
-                ],
-              ),
-          ],
-        ),
-        body: GridView.count(
-            crossAxisCount: 2, // 2 items in each row
-            crossAxisSpacing: 20,
-            padding: EdgeInsets.all(20),
-            mainAxisSpacing: 10,
-            children: [
-              ...recpiesList
-                  .map((e) => RecipeItem(
-                      widget.cookbookID,
-                      e.userId,
-                      e.recipeId,
-                      e.recipeTitle,
-                      e.img1,
-                      e.typeOfMeal,
-                      e.category,
-                      e.cuisine,
-                      e.ingredients,
-                      e.dirctions,
-                      e.imageUrls))
-                  .toList(),
-            ]),
-      );
-    } else {
-      widget.flag = true;
-      return Scaffold(
-          body: Center(
-              child: CircularProgressIndicator(
-        color: Colors.orange,
-      )));
-    }
+    return Scaffold(
+      appBar: new AppBar(
+        title: Text(widget.cookbookID + " cookbook"),
+        backgroundColor: Color(0xFFeb6d44),
+        actions: [
+          if (widget.cookbookID != 'All bookmarked recipes')
+            Row(
+              children: [
+                IconButton(
+                    icon: Icon(
+                      Icons.delete_outline_outlined,
+                      //  Icons.ios_share,
+                      size: 30,
+                    ),
+                    onPressed: () {
+                      showAlertDialogDeleteCookbook(context);
+                    }),
+              ],
+            ),
+        ],
+      ),
+      body: GridView.count(
+          crossAxisCount: 2, // 2 items in each row
+          crossAxisSpacing: 20,
+          padding: EdgeInsets.all(20),
+          mainAxisSpacing: 10,
+          children: [
+            ...recpiesList
+                .map((e) => RecipeItem(
+                    widget.cookbookID,
+                    e.userId,
+                    e.recipeId,
+                    e.recipeTitle,
+                    e.img1,
+                    e.typeOfMeal,
+                    e.category,
+                    e.cuisine,
+                    e.ingredients,
+                    e.dirctions,
+                    e.imageUrls))
+                .toList(),
+          ]),
+    );
+    // } else {
+    //widget.flag = true;
+    // return Scaffold(
+    //     body: Center(
+    //         child: CircularProgressIndicator(
+    //   color: Colors.orange,
+    // )));
+    // }
   }
 }
