@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:instayum/constant/app_colors.dart';
 import 'package:instayum/constant/app_globals.dart';
 import 'package:instayum/model/recipe.dart';
 import 'package:instayum/widget/profile/circular_loader.dart';
@@ -30,6 +32,8 @@ class _MyRecipesScreenState extends State<MyRecipesScreen> {
 
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   List<Recipe> recpiesList = [];
+  List<Recipe> userPublicRecpiesList = [];
+  List<Recipe> userPrivateRecpiesList = [];
   List<String>? ingredientsList = [];
   List<String>? dirctionsList = [];
   List<String>? imageUrlsList = [];
@@ -100,20 +104,37 @@ class _MyRecipesScreenState extends State<MyRecipesScreen> {
               }
             } else {
               // add current user all recipes
-              recpiesList.add(
-                Recipe(
-                  recipeId: doc.id,
-                  //imageURL: recipe_image_url,
-                  recipeTitle: recipeName,
-                  typeOfMeal: typeOfMeal,
-                  category: category,
-                  cuisine: cuisine,
-                  img1: img1,
-                  dirctions: dirctionsList,
-                  ingredients: ingredientsList,
-                  imageUrls: imageUrlsList,
-                ),
-              );
+              if (public == true) {
+                userPublicRecpiesList.add(
+                  Recipe(
+                    recipeId: doc.id,
+                    //imageURL: recipe_image_url,
+                    recipeTitle: recipeName,
+                    typeOfMeal: typeOfMeal,
+                    category: category,
+                    cuisine: cuisine,
+                    img1: img1,
+                    dirctions: dirctionsList,
+                    ingredients: ingredientsList,
+                    imageUrls: imageUrlsList,
+                  ),
+                );
+              } else {
+                userPrivateRecpiesList.add(
+                  Recipe(
+                    recipeId: doc.id,
+                    //imageURL: recipe_image_url,
+                    recipeTitle: recipeName,
+                    typeOfMeal: typeOfMeal,
+                    category: category,
+                    cuisine: cuisine,
+                    img1: img1,
+                    dirctions: dirctionsList,
+                    ingredients: ingredientsList,
+                    imageUrls: imageUrlsList,
+                  ),
+                );
+              }
             }
           },
         );
@@ -123,40 +144,151 @@ class _MyRecipesScreenState extends State<MyRecipesScreen> {
     }
   }
 
+  bool isPublicRecipes = true;
+  _switchbetweenPublicAndPrivateRecipes(bool val) {
+    if (isPublicRecipes != val) {
+      setState(() {
+        isPublicRecipes = val;
+      });
+    }
+  }
+
+  void updateRecipesScreen() {}
+
+  Widget getUserPublicOrPrivateRecipes() {
+    return Expanded(
+      child: GridView.count(
+          shrinkWrap: true,
+          physics: BouncingScrollPhysics(),
+          crossAxisCount: 2, // 2 items in each row
+          crossAxisSpacing: 20,
+          padding: EdgeInsets.all(20),
+          mainAxisSpacing: 10,
+          // map all available cookbooks and list them in Gridviwe.
+          children: isPublicRecipes
+              ? userPublicRecpiesList
+                  .map((e) => RecipeItem(
+                      "",
+                      //  e.key,
+                      // widget.autherName,
+                      // widget.autherImage,
+                      e.userId,
+                      e.recipeId,
+                      e.recipeTitle,
+                      e.img1,
+                      e.typeOfMeal,
+                      e.category,
+                      e.cuisine,
+                      e.ingredients,
+                      e.dirctions,
+                      e.imageUrls
+                      // e.ingredients,
+                      // e.dirctions,
+                      // e.imageUrls,
+                      ))
+                  .toList()
+              : userPrivateRecpiesList
+                  .map((e) => RecipeItem(
+                      "",
+                      //  e.key,
+                      // widget.autherName,
+                      // widget.autherImage,
+                      e.userId,
+                      e.recipeId,
+                      e.recipeTitle,
+                      e.img1,
+                      e.typeOfMeal,
+                      e.category,
+                      e.cuisine,
+                      e.ingredients,
+                      e.dirctions,
+                      e.imageUrls
+                      // e.ingredients,
+                      // e.dirctions,
+                      // e.imageUrls,
+                      ))
+                  .toList()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     // WidgetsBinding.instance!.addPostFrameCallback((_) => getRecipeObjects());
     return isLoading
         ? CustomCircularLoader()
-        : recpiesList.isNotEmpty
-            ? GridView.count(
-                crossAxisCount: 2, // 2 items in each row
-                crossAxisSpacing: 20,
-                padding: EdgeInsets.all(20),
-                mainAxisSpacing: 10,
-                // map all available cookbooks and list them in Gridviwe.
-                children: recpiesList
-                    .map((e) => RecipeItem(
-                        "",
-                        //  e.key,
-                        // widget.autherName,
-                        // widget.autherImage,
-                        e.userId,
-                        e.recipeId,
-                        e.recipeTitle,
-                        e.img1,
-                        e.typeOfMeal,
-                        e.category,
-                        e.cuisine,
-                        e.ingredients,
-                        e.dirctions,
-                        e.imageUrls
-                        // e.ingredients,
-                        // e.dirctions,
-                        // e.imageUrls,
-                        ))
-                    .toList(),
-              )
-            : Center(child: Text('No recipes yet'));
+        : Column(children: [
+            SizedBox(
+              height: 5,
+              width: 100,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                InkWell(
+                  onTap: () {
+                    _switchbetweenPublicAndPrivateRecipes(true);
+                  },
+                  child: Container(
+                    // margin: const EdgeInsets.only(left: 5, right: 5, top: 10),
+                    height: 40,
+                    width: AppGlobals.screenWidth * 0.4,
+                    decoration: BoxDecoration(
+                      color: isPublicRecipes
+                          ? AppColors.primaryColor.withOpacity(0.8)
+                          : Colors.grey[200],
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(10),
+                      ),
+                    ),
+                    child: Center(
+                      child: Text(
+                        "PUBLIC RECIPES",
+                        softWrap: true,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontSize: 14,
+                            color:
+                                isPublicRecipes ? Colors.white : Colors.black87,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(width: 10),
+                InkWell(
+                  onTap: () {
+                    _switchbetweenPublicAndPrivateRecipes(false);
+                  },
+                  child: Container(
+                    // margin: const EdgeInsets.only(left: 5, right: 5, top: 10),
+                    height: 40,
+                    width: AppGlobals.screenWidth * 0.4,
+                    decoration: BoxDecoration(
+                      color: !isPublicRecipes
+                          ? AppColors.primaryColor.withOpacity(0.8)
+                          : Colors.grey[200],
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(10),
+                      ),
+                    ),
+                    child: Center(
+                      child: Text(
+                        "PRIVATE RECIPES",
+                        softWrap: true,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontSize: 14,
+                            color: !isPublicRecipes
+                                ? Colors.white
+                                : Colors.black87,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            getUserPublicOrPrivateRecipes(),
+          ]);
   }
 }
