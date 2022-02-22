@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:instayum/constant/app_colors.dart';
+import 'package:instayum/constant/app_globals.dart';
 import 'package:instayum/model/user_model.dart';
 
 class SearchPage extends StatefulWidget {
@@ -114,13 +115,86 @@ class _SearchPageState extends State<SearchPage> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
+                          InkWell(
+                            onTap: _switchRecipes(true),
+                            child: Container(
+                              // margin: const EdgeInsets.only(left: 5, right: 5, top: 10),
+                              height: 45,
+                              width: AppGlobals.screenWidth * 0.4,
+                              decoration: BoxDecoration(
+                                color: isRecipes
+                                    ? AppColors.primaryColor.withOpacity(0.8)
+                                    : Colors.grey[200],
+                                borderRadius: const BorderRadius.all(
+                                  Radius.circular(10),
+                                ),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  "RECIPES",
+                                  softWrap: true,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      color: isRecipes
+                                          ? Colors.black87
+                                          : Colors.white,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            ),
+                          ),
                           SizedBox(width: 10),
+                          // InkWell(
+                          //   onTap: _switchRecipes(false),
+                          //   child: Container(
+                          //     // margin: const EdgeInsets.only(left: 5, right: 5, top: 10),
+                          //     height: 45,
+                          //     width: AppGlobals.screenWidth * 0.4,
+                          //     decoration: BoxDecoration(
+                          //       color: isRecipes
+                          //           ? AppColors.primaryColor.withOpacity(0.8)
+                          //           : Colors.grey[200],
+                          //       borderRadius: const BorderRadius.all(
+                          //         Radius.circular(10),
+                          //       ),
+                          //     ),
+                          //     child: Center(
+                          //       child: Text(
+                          //         "COOKING\nENTHUSIASTS",
+                          //         softWrap: true,
+                          //         textAlign: TextAlign.center,
+                          //         style: TextStyle(
+                          //             fontSize: 14,
+                          //             color: isRecipes
+                          //                 ? Colors.white
+                          //                 : Colors.black87,
+                          //             fontWeight: FontWeight.bold),
+                          //       ),
+                          //     ),
+                          //   ),
+                          // ),
                         ],
                       ),
                       SizedBox(height: 10),
+                      // Expanded(
+                      //   //child: isRecipes
+                      //       // ? SearchRecipe(
+                      //       //     recipes:
+                      //       //         List<DocumentSnapshot>.from(_searchResults),
+                      //       //   )
+                      //       // : SearchUsers(
+                      //       //     users: List<UserModel>.from(_searchResults),
+                      //       //     // _searchResults as List<UserModel>,
+                      //         ),
+                      //   // name: 'Shirley Perry',
+                      //   // userName: 'shirelyperry',
+                      //   // userImage: null,
+                      //   // ),
+                      // ),
                     ],
                   ),
-                  // if (showFilter) _showFilterDialog(),
+                  //if (showFilter) _showFilterDialog(),
                 ],
               ),
             ),
@@ -171,23 +245,30 @@ class _SearchPageState extends State<SearchPage> {
         if (withFilter) {
           // search using filters
           if (_searchIngredients.length > 0) {
+            var count = 0;
             //search by each ingredient
 
             outerLoop: //number of ingredients in recipe
-            for (int i = 1; i <= _ingLength!; i++) {
-              String _ing = (data['ing$i'] ?? '').toString().toLowerCase();
+            for (int si = 0; si < _searchIngredients.length; si++) {
+              //   String _ing = (data['ing$i'] ?? '').toString().toLowerCase();
+
               innerLopp: //number of ingredients in search
-              for (int si = 0; si < _searchIngredients.length; si++) {
+
+              for (int i = 1; i <= _ingLength!; i++) {
+                String _ing = (data['ing$i'] ?? '').toString().toLowerCase();
+
                 if (_ing.contains(_searchIngredients[si]) &&
                     _title!.contains(searchkey) &&
                     _category!.contains(_selectedCategory!) &&
                     _cuisine!.contains(_selectedCuisine!) &&
                     _typeOfMeal!.contains(_selectedTypeOfMeal!)) {
-                  _searchResults.add(recipe);
-                  break outerLoop;
+                  count++;
+                  //  break outerLoop;
                 }
               }
-            }
+              if (count == _searchIngredients.length)
+                _searchResults.add(recipe);
+            } //outer
           } else {
             //search by without ingredients
             if (_title!.contains(searchkey) &&
@@ -205,13 +286,6 @@ class _SearchPageState extends State<SearchPage> {
         }
       });
     } else {
-      // search from cooking enthusiasts / users
-
-      // Future<List<DocumentSnapshot>> getSuggestion(String suggestion) =>
-      // Get docs from collection reference
-      // QuerySnapshot querySnapshot =
-      // List<QueryDocumentSnapshot> querySnapshot =
-
       await firestoreInstance
           .collection('users')
           .orderBy('username')
@@ -226,14 +300,8 @@ class _SearchPageState extends State<SearchPage> {
                 user.userId = userdoc.id;
                 return user;
               }).toList();
-              // print('search: ${_searchResults.length}');
-              // print('search: ${_searchResults.first}');
             }
-
-            // return snapshot.docs;
           });
-      // Get data from docs and convert map to List
-      // final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
     }
 
     setState(() {});
@@ -247,18 +315,6 @@ class _SearchPageState extends State<SearchPage> {
       return;
     }
 
-    // call search function
     _searchFromFirestore(text);
-
-    // _allMessages.forEach((msg) {
-    //   Map data = msg.data() as Map<String, dynamic>;
-    //   if (data['msg'] != null) {
-    //     String msgText = (data["msg"]).toLowerCase();
-    //     String query = text.trim().toLowerCase();
-    //     if (msgText.startsWith(query) || msgText.contains(query))
-    //       _searchResults.add(msg);
-    //   }
-    // });
-    // setState(() {});
   }
 }
