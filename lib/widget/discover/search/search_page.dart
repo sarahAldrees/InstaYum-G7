@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:instayum/constant/app_colors.dart';
 import 'package:instayum/constant/app_globals.dart';
 import 'package:instayum/model/user_model.dart';
+import 'package:instayum/widget/discover/search/custom_dropdown.dart';
 
 class SearchPage extends StatefulWidget {
   SearchPage({Key? key}) : super(key: key);
@@ -116,7 +117,9 @@ class _SearchPageState extends State<SearchPage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           InkWell(
-                            onTap: _switchRecipes(true),
+                            onTap: () {
+                              _switchRecipes(true);
+                            },
                             child: Container(
                               // margin: const EdgeInsets.only(left: 5, right: 5, top: 10),
                               height: 45,
@@ -137,43 +140,46 @@ class _SearchPageState extends State<SearchPage> {
                                   style: TextStyle(
                                       fontSize: 14,
                                       color: isRecipes
-                                          ? Colors.black87
-                                          : Colors.white,
+                                          ? Colors.white
+                                          : Colors.black87,
                                       fontWeight: FontWeight.bold),
                                 ),
                               ),
                             ),
                           ),
                           SizedBox(width: 10),
-                          // InkWell(
-                          //   onTap: _switchRecipes(false),
-                          //   child: Container(
-                          //     // margin: const EdgeInsets.only(left: 5, right: 5, top: 10),
-                          //     height: 45,
-                          //     width: AppGlobals.screenWidth * 0.4,
-                          //     decoration: BoxDecoration(
-                          //       color: isRecipes
-                          //           ? AppColors.primaryColor.withOpacity(0.8)
-                          //           : Colors.grey[200],
-                          //       borderRadius: const BorderRadius.all(
-                          //         Radius.circular(10),
-                          //       ),
-                          //     ),
-                          //     child: Center(
-                          //       child: Text(
-                          //         "COOKING\nENTHUSIASTS",
-                          //         softWrap: true,
-                          //         textAlign: TextAlign.center,
-                          //         style: TextStyle(
-                          //             fontSize: 14,
-                          //             color: isRecipes
-                          //                 ? Colors.white
-                          //                 : Colors.black87,
-                          //             fontWeight: FontWeight.bold),
-                          //       ),
-                          //     ),
-                          //   ),
-                          // ),
+                          InkWell(
+                            onTap: () {
+                              print("on tap working !!!!!!!!!!!!!");
+                              _switchRecipes(false);
+                            },
+                            child: Container(
+                              // margin: const EdgeInsets.only(left: 5, right: 5, top: 10),
+                              height: 45,
+                              width: AppGlobals.screenWidth * 0.4,
+                              decoration: BoxDecoration(
+                                color: !isRecipes
+                                    ? AppColors.primaryColor.withOpacity(0.8)
+                                    : Colors.grey[200],
+                                borderRadius: const BorderRadius.all(
+                                  Radius.circular(10),
+                                ),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  "COOKING\nENTHUSIASTS",
+                                  softWrap: true,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      color: !isRecipes
+                                          ? Colors.white
+                                          : Colors.black87,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            ),
+                          ),
                         ],
                       ),
                       SizedBox(height: 10),
@@ -194,7 +200,7 @@ class _SearchPageState extends State<SearchPage> {
                       // ),
                     ],
                   ),
-                  //if (showFilter) _showFilterDialog(),
+                  if (showFilter) _showFilterDialog(),
                 ],
               ),
             ),
@@ -316,5 +322,105 @@ class _SearchPageState extends State<SearchPage> {
     }
 
     _searchFromFirestore(text);
+  }
+
+  Widget _showFilterDialog() {
+    return Container(
+      height: 300, //AppGlobals.screenHeight * 0.3,
+      width: 250, //AppGlobals.screenWidth * 0.7,
+      margin: EdgeInsets.only(right: 5),
+      padding: EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black12,
+            blurRadius: 4,
+            offset: Offset(2, 2),
+          ),
+        ],
+      ),
+
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            //--------------ingredients textfield for search------------
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextField(
+                controller: _ingredientsController,
+                decoration: InputDecoration(
+                  hintText: "ingredients",
+                  hintStyle: TextStyle(color: Colors.grey[800]),
+                  filled: true,
+                  fillColor: Colors.white70,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                ),
+              ),
+            ),
+            //--------------dropdown list for Search------------
+            CustomDropDown(
+              hintText: 'Type of meal',
+              list: AppGlobals.recipeType,
+              selectedValue: _selectedTypeOfMeal,
+              onChanged: (value) {
+                setState(() => _selectedTypeOfMeal = value);
+              },
+            ),
+            CustomDropDown(
+              hintText: 'Category',
+              list: AppGlobals.recipeCategories,
+              selectedValue: _selectedCategory,
+              onChanged: (value) {
+                setState(() => _selectedCategory = value);
+              },
+            ),
+            CustomDropDown(
+              hintText: 'Cuisine',
+              list: AppGlobals.cuisine,
+              selectedValue: _selectedCuisine,
+              onChanged: (value) {
+                setState(() => _selectedCuisine = value);
+              },
+            ),
+            Center(
+              child: ElevatedButton(
+                onPressed: () {
+                  print("_selectedCategory: $_selectedCategory");
+                  _searchResults.clear();
+                  _searchFromFirestore(_searchController.text,
+                      withFilter: true);
+                },
+                style: ElevatedButton.styleFrom(
+                  primary: AppColors.primaryColor.withOpacity(0.8),
+                  // shadowColor: Colors.black12,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  // fixedSize: Size(width ?? 80, height ?? 35),
+                ),
+                child: Center(
+                  child: Text(
+                    'Search',
+                    softWrap: true,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      // color: isActive ? Colors.white : Colors.black87,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
