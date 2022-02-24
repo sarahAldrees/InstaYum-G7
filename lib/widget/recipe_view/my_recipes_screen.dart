@@ -48,8 +48,6 @@ class _MyRecipesScreenState extends State<MyRecipesScreen> {
 
     if (widget.userId != null) {
       FirebaseFirestore.instance
-          // .collection("users")
-          // .doc(user.uid)
           .collection("recipes")
           .where("user_id", isEqualTo: widget.userId)
           .orderBy("timestamp", descending: true)
