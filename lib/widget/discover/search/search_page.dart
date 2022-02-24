@@ -6,6 +6,9 @@ import 'package:instayum/constant/app_globals.dart';
 import 'package:instayum/model/user_model.dart';
 import 'package:instayum/widget/discover/search/custom_dropdown.dart';
 
+import 'search_recipe.dart';
+import 'search_users.dart';
+
 class SearchPage extends StatefulWidget {
   SearchPage({Key? key}) : super(key: key);
 
@@ -183,21 +186,16 @@ class _SearchPageState extends State<SearchPage> {
                         ],
                       ),
                       SizedBox(height: 10),
-                      // Expanded(
-                      //   //child: isRecipes
-                      //       // ? SearchRecipe(
-                      //       //     recipes:
-                      //       //         List<DocumentSnapshot>.from(_searchResults),
-                      //       //   )
-                      //       // : SearchUsers(
-                      //       //     users: List<UserModel>.from(_searchResults),
-                      //       //     // _searchResults as List<UserModel>,
-                      //         ),
-                      //   // name: 'Shirley Perry',
-                      //   // userName: 'shirelyperry',
-                      //   // userImage: null,
-                      //   // ),
-                      // ),
+                      Expanded(
+                        child: SearchUsers(
+                          users: List<UserModel>.from(_searchResults),
+                          // _searchResults as List<UserModel>,
+                        ),
+                        //   // name: 'Shirley Perry',
+                        //   // userName: 'shirelyperry',
+                        //   // userImage: null,
+                        //   // ),
+                      ),
                     ],
                   ),
                   if (showFilter) _showFilterDialog(),
@@ -262,8 +260,9 @@ class _SearchPageState extends State<SearchPage> {
 
               for (int i = 1; i <= _ingLength!; i++) {
                 String _ing = (data['ing$i'] ?? '').toString().toLowerCase();
+                _ing.trim();
 
-                if (_ing.contains(_searchIngredients[si]) &&
+                if (_ing.contains(_searchIngredients[si].trim()) &&
                     _title!.contains(searchkey) &&
                     _category!.contains(_selectedCategory!) &&
                     _cuisine!.contains(_selectedCuisine!) &&

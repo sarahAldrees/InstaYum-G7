@@ -221,73 +221,104 @@ class _MyRecipesScreenState extends State<MyRecipesScreen> {
               height: 5,
               width: 100,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                InkWell(
-                  onTap: () {
-                    _switchbetweenPublicAndPrivateRecipes(true);
-                  },
-                  child: Container(
-                    // margin: const EdgeInsets.only(left: 5, right: 5, top: 10),
-                    height: 40,
-                    width: AppGlobals.screenWidth * 0.4,
-                    decoration: BoxDecoration(
-                      color: isPublicRecipes
-                          ? AppColors.primaryColor
-                          : Colors.grey[200],
-                      borderRadius: const BorderRadius.all(
-                        Radius.circular(10),
+            (widget.userId != AppGlobals.userId)
+                ? GridView.count(
+                    shrinkWrap: true,
+                    physics: BouncingScrollPhysics(),
+                    crossAxisCount: 2, // 2 items in each row
+                    crossAxisSpacing: 20,
+                    padding: EdgeInsets.all(20),
+                    mainAxisSpacing: 10,
+                    // map all available cookbooks and list them in Gridviwe.
+                    children: recpiesList
+                        .map((e) => RecipeItem(
+                            "",
+                            //  e.key,
+                            // widget.autherName,
+                            // widget.autherImage,
+                            e.userId,
+                            e.recipeId,
+                            e.recipeTitle,
+                            e.img1,
+                            e.typeOfMeal,
+                            e.category,
+                            e.cuisine,
+                            e.ingredients,
+                            e.dirctions,
+                            e.imageUrls
+                            // e.ingredients,
+                            // e.dirctions,
+                            // e.imageUrls,
+                            ))
+                        .toList())
+                : Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          _switchbetweenPublicAndPrivateRecipes(true);
+                        },
+                        child: Container(
+                          // margin: const EdgeInsets.only(left: 5, right: 5, top: 10),
+                          height: 40,
+                          width: AppGlobals.screenWidth * 0.4,
+                          decoration: BoxDecoration(
+                            color: isPublicRecipes
+                                ? AppColors.primaryColor
+                                : Colors.grey[200],
+                            borderRadius: const BorderRadius.all(
+                              Radius.circular(10),
+                            ),
+                          ),
+                          child: Center(
+                            child: Text(
+                              "PUBLIC RECIPES",
+                              softWrap: true,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  color: isPublicRecipes
+                                      ? Colors.white
+                                      : Colors.black87,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
-                    child: Center(
-                      child: Text(
-                        "PUBLIC RECIPES",
-                        softWrap: true,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontSize: 14,
-                            color:
-                                isPublicRecipes ? Colors.white : Colors.black87,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(width: 10),
-                InkWell(
-                  onTap: () {
-                    _switchbetweenPublicAndPrivateRecipes(false);
-                  },
-                  child: Container(
-                    // margin: const EdgeInsets.only(left: 5, right: 5, top: 10),
-                    height: 40,
-                    width: AppGlobals.screenWidth * 0.4,
-                    decoration: BoxDecoration(
-                      color: !isPublicRecipes
-                          ? AppColors.primaryColor
-                          : Colors.grey[200],
-                      borderRadius: const BorderRadius.all(
-                        Radius.circular(10),
-                      ),
-                    ),
-                    child: Center(
-                      child: Text(
-                        "PRIVATE RECIPES",
-                        softWrap: true,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontSize: 14,
+                      SizedBox(width: 10),
+                      InkWell(
+                        onTap: () {
+                          _switchbetweenPublicAndPrivateRecipes(false);
+                        },
+                        child: Container(
+                          // margin: const EdgeInsets.only(left: 5, right: 5, top: 10),
+                          height: 40,
+                          width: AppGlobals.screenWidth * 0.4,
+                          decoration: BoxDecoration(
                             color: !isPublicRecipes
-                                ? Colors.white
-                                : Colors.black87,
-                            fontWeight: FontWeight.bold),
+                                ? AppColors.primaryColor
+                                : Colors.grey[200],
+                            borderRadius: const BorderRadius.all(
+                              Radius.circular(10),
+                            ),
+                          ),
+                          child: Center(
+                            child: Text(
+                              "PRIVATE RECIPES",
+                              softWrap: true,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  color: !isPublicRecipes
+                                      ? Colors.white
+                                      : Colors.black87,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
+                    ],
                   ),
-                ),
-              ],
-            ),
             getUserPublicOrPrivateRecipes(),
           ]);
   }
