@@ -859,7 +859,7 @@ class getuserinfo extends StatefulWidget {
 class getuserinfoState extends State<getuserinfo> {
   String? _autherName = "";
   String? _autherimage = "";
-  getData() async {
+  getData() {
     String? _id = widget._autherId; //solve empty exeption
     FirebaseFirestore.instance
         .collection("users")
@@ -875,16 +875,18 @@ class getuserinfoState extends State<getuserinfo> {
     });
   }
 
+  @override
   void initState() {
     super.initState();
     getData();
-
     //we call the method here to get the data immediately when init the page.
   }
 
   @override
   Widget build(BuildContext context) {
+    print("------------------------------");
+    print(_autherName);
     return UserInformationDesign(widget._autherId, _autherName,
-        _autherimage); // calling this class to design image and user name after get them from database
+        _autherimage!); // calling this class to design image and user name after get them from database
   }
 }
