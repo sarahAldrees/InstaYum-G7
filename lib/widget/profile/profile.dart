@@ -123,40 +123,43 @@ class ProfileState extends State<Profile> {
                       ],
                     ),
                   ),
-                  //
-                  Container(
-                    margin:
-                        const EdgeInsets.only(bottom: 20, left: 100, right: 40),
-                    child: ElevatedButton(
-                        child: Center(
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 75),
-                            child: Row(
-                              children: [
-                                Center(
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 12, horizontal: 10),
-                                    child: Text(
-                                      "  Follow  ",
-                                      style: TextStyle(fontSize: 16),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        style: ButtonStyle(
-                          shape:
-                              MaterialStateProperty.all<RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(13))),
-                          backgroundColor:
-                              MaterialStateProperty.all(Color(0xFFeb6d44)),
-                        ),
-                        onPressed: () {}),
-                  ),
+                  //--------------------------------------
+
+                  // Container(
+                  //   margin:
+                  //       const EdgeInsets.only(bottom: 20, left: 100, right: 40),
+                  //   child: ElevatedButton(
+                  //       child: Center(
+                  //         child: Padding(
+                  //           padding: const EdgeInsets.only(left: 75),
+                  //           child: Row(
+                  //             children: [
+                  //               Center(
+                  //                 child: Padding(
+                  //                   padding: const EdgeInsets.symmetric(
+                  //                       vertical: 12, horizontal: 10),
+                  //                   child: Text(
+                  //                     "  Follow  ",
+                  //                     style: TextStyle(fontSize: 16),
+                  //                   ),
+                  //                 ),
+                  //               ),
+                  //             ],
+                  //           ),
+                  //         ),
+                  //       ),
+                  //       style: ButtonStyle(
+                  //         shape:
+                  //             MaterialStateProperty.all<RoundedRectangleBorder>(
+                  //                 RoundedRectangleBorder(
+                  //                     borderRadius: BorderRadius.circular(13))),
+                  //         backgroundColor:
+                  //             MaterialStateProperty.all(Color(0xFFeb6d44)),
+                  //       ),
+                  //       onPressed: () {}),
+                  // ),
+
+                  //------------------------------------------
                   TabBar(
                     labelStyle:
                         TextStyle(fontSize: 13, fontWeight: FontWeight.bold),

@@ -73,6 +73,7 @@ class CommentState extends State<Comments> {
               child: Column(
                 children: [
                   UserInformationDesign(
+                    doc["userId"],
                     doc["username"],
                     doc["imageUrl"],
                   ),
@@ -660,6 +661,7 @@ class CommentListState extends State<CommentList> {
             Row(
               children: [
                 UserInformationDesign(
+                  comment.userId,
                   comment.username!,
                   comment.imageUrl!,
                 ),
