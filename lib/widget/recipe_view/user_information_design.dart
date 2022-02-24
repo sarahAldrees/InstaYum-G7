@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:instayum/widget/profile/profile.dart';
 
 class UserInformationDesign extends StatelessWidget {
   String? userName;
@@ -22,7 +23,13 @@ class UserInformationDesign extends StatelessWidget {
               shape: BoxShape.circle,
               image: DecorationImage(fit: BoxFit.fill, image: image)),
         ),
-        onTap: () {});
+        onTap: () {
+          //  Navigator.push(
+          //             context,
+          //             MaterialPageRoute(
+          //               builder: (ccontext) => Profile(),
+          //             ));
+        });
   }
 
   @override
