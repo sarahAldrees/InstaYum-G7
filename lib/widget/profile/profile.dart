@@ -138,7 +138,7 @@ class ProfileState extends State<Profile> {
                                     padding: const EdgeInsets.symmetric(
                                         vertical: 12, horizontal: 10),
                                     child: Text(
-                                      "  Follow ",
+                                      "  Follow  ",
                                       style: TextStyle(fontSize: 16),
                                     ),
                                   ),
