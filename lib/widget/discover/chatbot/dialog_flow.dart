@@ -84,7 +84,16 @@ class ChatBotState extends State<ChatBot> {
     AIResponse response = await dialogFlow.detectIntent(query);
     var botSuggestions = BotSuggestions(response.getListMessage()!);
     setState(() {
-      suggestListAgent = botSuggestions.suggestions;
+      print(botSuggestions.suggestions);
+      // if (botSuggestions.suggestions[3] !=
+      //     null)
+      if (botSuggestions.suggestions.length > 3) {
+        if (botSuggestions.suggestions[3] != 'Breakfast') {
+          suggestListAgent = botSuggestions.suggestions;
+        }
+      } else {
+        suggestListAgent = botSuggestions.suggestions;
+      }
     });
 
     Messages message = Messages(
@@ -104,6 +113,7 @@ class ChatBotState extends State<ChatBot> {
     print(text);
 
     _textController.clear();
+
     Messages message = new Messages(
       text: text,
       name: "User",

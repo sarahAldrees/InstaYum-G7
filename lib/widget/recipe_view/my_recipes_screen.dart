@@ -234,7 +234,7 @@ class _MyRecipesScreenState extends State<MyRecipesScreen> {
                     width: AppGlobals.screenWidth * 0.4,
                     decoration: BoxDecoration(
                       color: isPublicRecipes
-                          ? AppColors.primaryColor.withOpacity(0.8)
+                          ? AppColors.primaryColor
                           : Colors.grey[200],
                       borderRadius: const BorderRadius.all(
                         Radius.circular(10),
@@ -265,7 +265,7 @@ class _MyRecipesScreenState extends State<MyRecipesScreen> {
                     width: AppGlobals.screenWidth * 0.4,
                     decoration: BoxDecoration(
                       color: !isPublicRecipes
-                          ? AppColors.primaryColor.withOpacity(0.8)
+                          ? AppColors.primaryColor
                           : Colors.grey[200],
                       borderRadius: const BorderRadius.all(
                         Radius.circular(10),

@@ -126,7 +126,7 @@ class _SearchPageState extends State<SearchPage> {
                               width: AppGlobals.screenWidth * 0.4,
                               decoration: BoxDecoration(
                                 color: isRecipes
-                                    ? AppColors.primaryColor.withOpacity(0.8)
+                                    ? AppColors.primaryColor
                                     : Colors.grey[200],
                                 borderRadius: const BorderRadius.all(
                                   Radius.circular(10),
@@ -159,7 +159,7 @@ class _SearchPageState extends State<SearchPage> {
                               width: AppGlobals.screenWidth * 0.4,
                               decoration: BoxDecoration(
                                 color: !isRecipes
-                                    ? AppColors.primaryColor.withOpacity(0.8)
+                                    ? AppColors.primaryColor
                                     : Colors.grey[200],
                                 borderRadius: const BorderRadius.all(
                                   Radius.circular(10),
