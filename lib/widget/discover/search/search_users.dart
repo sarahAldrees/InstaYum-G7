@@ -2,22 +2,25 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:instayum/constant/app_globals.dart';
 import 'package:instayum/model/user_model.dart';
+import 'package:instayum/widget/follow_and_notification/follow_user_service.dart';
 import 'package:instayum/widget/profile/user_profile_view.dart';
 
-import 'follow_tile.dart';
+import '../../follow_and_notification/follow_tile.dart';
 
 class SearchUsers extends StatefulWidget {
   SearchUsers({
     Key? key,
     this.users = const [],
+    this.isFollowing = false,
   }) : super(key: key);
   final List<UserModel> users;
-
+  final isFollowing;
   @override
   State<SearchUsers> createState() => _SearchUsersState();
 }
 
 class _SearchUsersState extends State<SearchUsers> {
+  final FollowUserService followUserService = FollowUserService();
   List<String?> userIds = [];
   List<UserModel> usersList = [];
 
@@ -46,14 +49,40 @@ class _SearchUsersState extends State<SearchUsers> {
             itemBuilder: (BuildContext context, int index) {
               UserModel user = usersList[index];
               String? uid = usersList[index].userId;
+              if (AppGlobals.allFollowing.contains(uid)) {
+                user.isFollowed = true;
+              }
 
               if (uid != AppGlobals.userId) {
                 return FollowTile(
                   name: user.username,
                   userName: user.username,
                   userImage: user.imageUrl,
-                  buttonText: "Follow",
-                  //HERE YOU CAN ACTIVIATE THE BUTTON AND CHANGE IT FORM FOLLOW TO UNFOLLOW
+                  buttonText:
+                      //--------------show follow and in follow button------------
+                      widget.isFollowing == true
+                          ? 'Unfollow'
+                          : user.isFollowed == true
+                              ? 'Unfollow'
+                              : 'Follow',
+                  followTap: () async {
+                    // print('UserId: $_userid ${AppGlobals.userId}');
+                    if (widget.isFollowing == false) {
+                      //----------Add user in globals following list----------
+                      bool exist = AppGlobals.allFollowing.contains(uid);
+                      if (!exist) AppGlobals.allFollowing.add(uid);
+
+                      setState(() {
+                        // user.isFollowed = true;
+                        widget.users[index].isFollowed = true;
+                      });
+                      //-------------to adding user to followers list----------------
+                      await followUserService.followUser(
+                        context,
+                        followId: uid,
+                      );
+                    }
+                  },
                   userTap: () {
                     Navigator.push(
                         context,

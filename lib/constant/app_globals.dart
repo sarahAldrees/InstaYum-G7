@@ -7,7 +7,7 @@ class AppGlobals {
   // static String? fullName;
   static String? email;
   static String? pushToken;
-
+  static List<String?> allFollowing = [];
   //-----------------------dropdown list for classification-----------------
   static final recipeType = ['Breakfast', 'Lunch', 'Dinner'];
 
@@ -41,5 +41,6 @@ class AppGlobals {
     // fullName = null;
     email = null;
     pushToken = null;
+    allFollowing.clear();
   }
 }
