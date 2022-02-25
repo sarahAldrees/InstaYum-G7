@@ -8,13 +8,13 @@ import 'package:instayum/widget/profile/user_profile_view.dart';
 import '../../follow_and_notification/follow_tile.dart';
 
 class SearchUsers extends StatefulWidget {
+  static bool isFollowing = false;
   SearchUsers({
     Key? key,
     this.users = const [],
-    this.isFollowing = false,
   }) : super(key: key);
   final List<UserModel> users;
-  final isFollowing;
+
   @override
   State<SearchUsers> createState() => _SearchUsersState();
 }
@@ -60,14 +60,14 @@ class _SearchUsersState extends State<SearchUsers> {
                   userImage: user.imageUrl,
                   buttonText:
                       //--------------show follow and in follow button------------
-                      widget.isFollowing == true
+                      SearchUsers.isFollowing == true
                           ? 'Unfollow'
                           : user.isFollowed == true
                               ? 'Unfollow'
                               : 'Follow',
                   followTap: () async {
                     // print('UserId: $_userid ${AppGlobals.userId}');
-                    if (widget.isFollowing == false) {
+                    if (SearchUsers.isFollowing == false) {
                       //----------Add user in globals following list----------
                       bool exist = AppGlobals.allFollowing.contains(uid);
                       if (!exist) AppGlobals.allFollowing.add(uid);

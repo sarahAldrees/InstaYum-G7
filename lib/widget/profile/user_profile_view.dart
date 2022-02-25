@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:instayum/constant/app_colors.dart';
+import 'package:instayum/constant/app_globals.dart';
+import 'package:instayum/model/user_model.dart';
+import 'package:instayum/widget/discover/search/search_users.dart';
+import 'package:instayum/widget/follow_and_notification/follow_user_service.dart';
 import 'package:instayum/widget/profile/circular_loader.dart';
 import 'package:instayum/widget/profile/followers_numbers.dart';
 import 'package:instayum/widget/recipe_view/my_recipes_screen.dart';
@@ -19,7 +23,9 @@ class UserProfileViewState extends State<UserProfileView> {
   String? imageURL;
   String? uId;
   bool isLoading = true;
-
+  final FollowUserService followUserService = FollowUserService();
+  bool isFollow = false;
+  late UserModel user;
 //getData() to get the data of users like username, image_url from database
   void getData() async {
     if (widget.userId != null) {
@@ -29,12 +35,15 @@ class UserProfileViewState extends State<UserProfileView> {
           .doc(widget.userId)
           .get()
           .then((userData) {
-        Map data = userData.data()!;
-
-        userUsername = data['username'];
-        imageURL = data['image_url'];
+        Map<String, dynamic> data = userData.data()!;
+        user = UserModel.fromJson(data);
+        // isFollow = user.isFollowed!;
+        userUsername = user.username;
+        imageURL = user.imageUrl;
         uId = userData.id;
-
+        if (AppGlobals.allFollowing.contains(userData.id)) {
+          user.isFollowed = true;
+        }
         // print('userId: ' + AppGlobals.userId);
         return userData;
       });
@@ -91,7 +100,7 @@ class UserProfileViewState extends State<UserProfileView> {
                             //       children: [
                             child: Center(
                               child: Text(
-                                "  Follow  ",
+                                user.isFollowed == true ? 'Unfollow' : 'Follow',
                                 style: TextStyle(fontSize: 16),
                               ),
                             ),
@@ -107,7 +116,45 @@ class UserProfileViewState extends State<UserProfileView> {
                             backgroundColor:
                                 MaterialStateProperty.all(Color(0xFFeb6d44)),
                           ),
-                          onPressed: () {}),
+                          onPressed: () async {
+                            //----------Add user in globals following list----------
+
+                            bool exist = AppGlobals.allFollowing.contains(uId);
+                            if (!exist) {
+                              AppGlobals.allFollowing.add(uId);
+                              SearchUsers.isFollowing = true;
+                              setState(() {
+                                user.isFollowed = true;
+                              });
+                              await followUserService.followUser(
+                                context,
+                                followId: uId,
+                              );
+                            }
+                          }
+                          //------
+// async {
+//                     // print('UserId: $_userid ${AppGlobals.userId}');
+//                     if (widget.isFollowing == false) {
+//                       //----------Add user in globals following list----------
+//                       bool exist = AppGlobals.allFollowing.contains(uid);
+//                       if (!exist) AppGlobals.allFollowing.add(uid);
+
+//                       setState(() {
+//                         // user.isFollowed = true;
+//                         widget.users[index].isFollowed = true;
+//                       });
+//                       //-------------to adding user to followers list----------------
+//                       await followUserService.followUser(
+//                         context,
+//                         followId: uid,
+//                       );
+//                     }
+//                   },
+
+                          //------
+
+                          ),
                     ),
                   ),
 //------------------------------------------
