@@ -104,22 +104,10 @@ class ProfileState extends State<Profile> {
               child: Column(
                 children: <Widget>[
                   Container(
-                    child: Column(
+                    child: Row(
                       children: [
-                        Row(
-                          children: [
-                            buildImage(),
-                            Padding(
-                              padding: EdgeInsets.all(5),
-                              child: Text(
-                                "@${userUsername ?? ''}",
-                                style: TextStyle(
-                                    fontSize: 15, fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                            if (uId != null) FollowersNumbers(userId: uId),
-                          ],
-                        ),
+                        buildImage(),
+                        if (uId != null) FollowersNumbers(userId: uId),
                       ],
                     ),
                   ),
@@ -158,6 +146,15 @@ class ProfileState extends State<Profile> {
                   //       ),
                   //       onPressed: () {}),
                   // ),
+
+                  Container(
+                    margin: EdgeInsets.only(right: 270),
+                    child: Text(
+                      "@${userUsername ?? ''}",
+                      style:
+                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                    ),
+                  ),
 
                   //------------------------------------------
                   TabBar(

@@ -57,7 +57,7 @@ class UserProfileViewState extends State<UserProfileView> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColors.primaryColor,
-        title: Text("User Profile"),
+        title: Text("${userUsername ?? ''}"),
       ),
       body: isLoading
           ? CustomCircularLoader()
@@ -69,20 +69,19 @@ class UserProfileViewState extends State<UserProfileView> {
                     children: [
                       // show User image and username
                       buildImage(),
-                      Padding(
-                        padding: EdgeInsets.all(5),
-                        child: Text(
-                          "@${userUsername ?? ''}",
-                          style: TextStyle(
-                              fontSize: 15, fontWeight: FontWeight.bold),
-                        ),
-                      ),
+
                       if (uId != null) FollowersNumbers(userId: uId),
                     ],
                   ),
+                  // Padding(
+                  //   padding: EdgeInsets.only(left: 11),
+                  //   child:
+                  // ),
                   //-------------- follow button-----------
                   Container(
-                    margin: const EdgeInsets.only(left: 60, right: 60),
+                    margin: const EdgeInsets.only(
+                      left: 110,
+                    ),
                     child: Center(
                       child: ElevatedButton(
                           // child: Center(

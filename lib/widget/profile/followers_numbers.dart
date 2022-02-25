@@ -25,29 +25,29 @@ class _FollowersNumbersState extends State<FollowersNumbers> {
 
   Widget buildButton(BuildContext context, String value, String text) =>
       MaterialButton(
-        padding: EdgeInsets.symmetric(vertical: 0),
+        padding: EdgeInsets.symmetric(horizontal: 25),
         onPressed: () {},
         materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
         child:
             //-----------------
-            Padding(
-          padding: const EdgeInsets.only(bottom: 12.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              Text(
-                value,
-                style: TextStyle(fontSize: 15),
-              ),
-              //------------------------
-              SizedBox(height: 2),
-              Text(
-                text,
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-            ],
-          ),
+            //Padding(
+            // padding: const EdgeInsets.only(bottom: 12.0),
+            Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            Text(
+              value,
+              style: TextStyle(fontSize: 15),
+            ),
+            //------------------------
+            SizedBox(height: 2),
+            Text(
+              text,
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ],
         ),
+        // ),
       );
 }
