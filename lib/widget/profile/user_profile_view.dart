@@ -57,7 +57,7 @@ class UserProfileViewState extends State<UserProfileView> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColors.primaryColor,
-        title: Text("${userUsername ?? ''}"),
+        title: Text("${userUsername ?? ''} Profile"),
       ),
       body: isLoading
           ? CustomCircularLoader()
@@ -80,7 +80,7 @@ class UserProfileViewState extends State<UserProfileView> {
                   //-------------- follow button-----------
                   Container(
                     margin: const EdgeInsets.only(
-                      left: 110,
+                      left: 120,
                     ),
                     child: Center(
                       child: ElevatedButton(
@@ -111,6 +111,9 @@ class UserProfileViewState extends State<UserProfileView> {
                     ),
                   ),
 //------------------------------------------
+                  Padding(
+                      padding: EdgeInsets.only(top: 10),
+                      child: Divider(color: Colors.grey)),
                   // User recipes heading
                   Row(
                     children: [
