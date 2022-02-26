@@ -16,7 +16,46 @@ class _FollowersNumbersState extends State<FollowersNumbers> {
   List<DocumentSnapshot> followingList = [];
 
   @override
+  void initState() {
+    super.initState();
+    getData();
+  }
+
+  void getData() async {
+    print('get user followers and following..');
+    // get user followers list
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(widget.userId)
+        .collection("followers")
+        .get()
+        .then((querySnapshot) {
+      followersList = querySnapshot.docs;
+    });
+
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(widget.userId)
+        .collection('following')
+        .get()
+        .then((querySnapshot) {
+      followingList = querySnapshot.docs;
+      _saveFollowing(followingList);
+    });
+    if (mounted) setState(() {});
+  }
+
+  _saveFollowing(List<DocumentSnapshot> followings) {
+    AppGlobals.allFollowing.clear();
+    for (int i = 0; i < followings.length; i++) {
+      String id = followings[i].id;
+      AppGlobals.allFollowing.add(id);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
+    // getData();
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
@@ -40,9 +79,11 @@ class _FollowersNumbersState extends State<FollowersNumbers> {
   Widget buildButton(BuildContext context,
           {String? value, String? text, bool isFollowing = false}) =>
       MaterialButton(
-        padding: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+        padding: EdgeInsets.symmetric(vertical: 4),
         onPressed: () {
-          if (widget.userId == AppGlobals.userId) {}
+          if (widget.userId == AppGlobals.userId) {
+            //move to page
+          }
         },
         materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
         child:
