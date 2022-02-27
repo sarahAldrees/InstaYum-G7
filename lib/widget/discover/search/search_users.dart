@@ -96,6 +96,6 @@ class _SearchUsersState extends State<SearchUsers> {
               }
             },
           )
-        : Center(child: Text('No results found!'));
+        : Center(child: Text('No Results Found!'));
   }
 }

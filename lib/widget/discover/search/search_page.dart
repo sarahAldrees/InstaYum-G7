@@ -153,7 +153,6 @@ class _SearchPageState extends State<SearchPage> {
                           SizedBox(width: 10),
                           InkWell(
                             onTap: () {
-                              print("on tap working !!!!!!!!!!!!!");
                               _switchRecipes(false);
                             },
                             child: Container(
