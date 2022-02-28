@@ -189,12 +189,7 @@ class _SearchPageState extends State<SearchPage> {
                       Expanded(
                         child: SearchUsers(
                           users: List<UserModel>.from(_searchResults),
-                          // _searchResults as List<UserModel>,
                         ),
-                        //   // name: 'Shirley Perry',
-                        //   // userName: 'shirelyperry',
-                        //   // userImage: null,
-                        //   // ),
                       ),
                     ],
                   ),
