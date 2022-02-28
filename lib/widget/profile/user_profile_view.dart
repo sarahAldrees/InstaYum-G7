@@ -100,7 +100,6 @@ class UserProfileViewState extends State<UserProfileView> {
               child: Column(
                 children: <Widget>[
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       // show User image and username
                       buildImage(),
@@ -128,7 +127,8 @@ class UserProfileViewState extends State<UserProfileView> {
                   //-------------- follow button-----------
                   Container(
                     margin: const EdgeInsets.only(
-                      left: 120,
+                      left: 100,
+                      right: 40,
                     ),
                     child: Center(
                       child: ElevatedButton(
