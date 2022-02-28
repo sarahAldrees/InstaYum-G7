@@ -122,7 +122,7 @@ class UserProfileViewState extends State<UserProfileView> {
                             bool exist = AppGlobals.allFollowing.contains(uId);
                             if (!exist) {
                               AppGlobals.allFollowing.add(uId);
-                              SearchUsers.isFollowing = true;
+
                               setState(() {
                                 user.isFollowed = true;
                               });

@@ -8,12 +8,10 @@ import 'package:instayum/widget/profile/user_profile_view.dart';
 import '../../follow_and_notification/follow_tile.dart';
 
 class SearchUsers extends StatefulWidget {
-  static bool isFollowing = false;
-  SearchUsers({
-    Key? key,
-    this.users = const [],
-  }) : super(key: key);
+  SearchUsers({Key? key, this.users = const [], this.isFollowing = false})
+      : super(key: key);
   final List<UserModel> users;
+  final isFollowing;
 
   @override
   State<SearchUsers> createState() => _SearchUsersState();
@@ -60,27 +58,34 @@ class _SearchUsersState extends State<SearchUsers> {
                   userImage: user.imageUrl,
                   buttonText:
                       //--------------show follow and in follow button------------
-                      SearchUsers.isFollowing == true
+                      widget.isFollowing == true
                           ? 'Unfollow'
                           : user.isFollowed == true
                               ? 'Unfollow'
                               : 'Follow',
                   followTap: () async {
-                    // print('UserId: $_userid ${AppGlobals.userId}');
-                    if (SearchUsers.isFollowing == false) {
-                      //----------Add user in globals following list----------
-                      bool exist = AppGlobals.allFollowing.contains(uid);
-                      if (!exist) AppGlobals.allFollowing.add(uid);
+                    if (widget.isFollowing == true) {
+                      _unFollowUser(uid, index, true);
+                    } else {
+                      if (usersList[index].isFollowed == true) {
+                        _unFollowUser(uid, index, false);
+                        widget.users[index].isFollowed = false;
 
-                      setState(() {
-                        // user.isFollowed = true;
-                        widget.users[index].isFollowed = true;
-                      });
-                      //-------------to adding user to followers list----------------
-                      await followUserService.followUser(
-                        context,
-                        followId: uid,
-                      );
+                        setState(() {});
+                      } else {
+                        //----------Add user in globals following list----------
+                        bool exist = AppGlobals.allFollowing.contains(uid);
+                        if (!exist) AppGlobals.allFollowing.add(uid);
+
+                        setState(() {
+                          widget.users[index].isFollowed = true;
+                        });
+                        //-------------to adding user to followers list----------------
+                        await followUserService.followUser(
+                          context,
+                          followId: uid,
+                        );
+                      }
                     }
                   },
                   userTap: () {
@@ -97,5 +102,14 @@ class _SearchUsersState extends State<SearchUsers> {
             },
           )
         : Center(child: Text('No Results Found!'));
+  }
+
+  Future _unFollowUser(String? userid, int index, bool isRemove) async {
+    followUserService.unFollowUser(context, followId: userid);
+    bool exist = AppGlobals.allFollowing.contains(userid);
+    if (exist) AppGlobals.allFollowing.remove(userid);
+
+    if (isRemove) widget.users.removeAt(index);
+    setState(() {});
   }
 }

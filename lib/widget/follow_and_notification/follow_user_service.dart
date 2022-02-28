@@ -109,6 +109,49 @@ class FollowUserService {
     }
   }
 
+  Future<bool?> unFollowUser(BuildContext context, {String? followId}) async {
+    String? userId = AppGlobals.userId;
+    try {
+      //Remove complete user from my following list
+      firebaseFirestore
+          .collection('users')
+          .doc(userId)
+          .collection("following")
+          .doc('$followId')
+          .delete()
+          .catchError((error) => print('Unfollowing failed: $error'));
+
+      //Remove complete user from other user followers list
+      firebaseFirestore
+          .collection('users')
+          .doc(followId)
+          .collection('followers')
+          .doc('$userId')
+          .delete()
+          .catchError((error) => print('Unfollowing failed: $error'));
+//------------------------------------------------------------------------------
+//-----------check wether user is in my followers list to convert status---------------
+      bool isFollower = await checkFollower(userId, followId);
+
+      if (isFollower) {
+        firebaseFirestore
+            .collection('users/$userId/followers')
+            .doc('$followId')
+            .update({'isFollowed': false});
+      }
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Unfollowed successfully'),
+          backgroundColor: Colors.green,
+        ),
+      );
+//----------------------------------------------------------------
+      return true;
+    } catch (e) {
+      print('unFollowUserService : $e');
+    }
+  }
   // --------to check in 1st user's followers list is 2nd user exist or not---------
 
   Future<bool> checkFollower(String? userId, String? followId) async {
