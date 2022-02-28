@@ -4,6 +4,7 @@ import 'package:instayum/constant/app_globals.dart';
 import 'package:instayum/model/recipe.dart';
 import 'package:instayum/widget/bookmark/cookbook_item.dart';
 import 'package:instayum/widget/bookmark/cookbook_recipes.dart';
+import 'package:instayum/widget/follow_and_notification/follow_tile.dart';
 import 'package:instayum/widget/meal_plan/my_mealplans_screen.dart';
 import 'package:instayum/widget/profile/followers_numbers.dart';
 import '../recipe_view/my_recipes_screen.dart';
@@ -28,6 +29,7 @@ class ProfileState extends State<Profile> {
 
 //getData() to get the data of users like username, image_url from database
   void getData() async {
+    FollowTile.inSearchPage = false;
     User? user = _firebaseAuth.currentUser;
     if (user != null && AppGlobals.userId == null) {
       print('get User data ${AppGlobals.userId}');

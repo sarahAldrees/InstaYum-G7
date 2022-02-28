@@ -24,7 +24,7 @@ class UserProfileViewState extends State<UserProfileView> {
   String? uId;
   bool isLoading = true;
   final FollowUserService followUserService = FollowUserService();
-  bool isFollow = false;
+  bool isFollowed = false;
   late UserModel user;
 //getData() to get the data of users like username, image_url from database
   void getData() async {
@@ -118,18 +118,143 @@ class UserProfileViewState extends State<UserProfileView> {
                           ),
                           onPressed: () async {
                             //----------Add user in globals following list----------
+                            if (user.isFollowed == true) {
+                              showDialog<void>(
+                                context: context,
+                                barrierDismissible: false,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(8)),
+                                    ),
+                                    title: Column(
+                                      children: [
+                                        Text(
+                                          'Are you sure to delete the recipe?',
+                                          style: TextStyle(fontSize: 16),
+                                        ),
+                                      ],
+                                    ),
+                                    actions: [
+                                      Container(
+                                          width: double.infinity,
+                                          margin:
+                                              EdgeInsets.fromLTRB(3, 0, 3, 15),
+                                          child: Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 0,
+                                                  right: 30,
+                                                  left: 30,
+                                                  bottom: 0),
+                                              child: Column(
+                                                children: [
+                                                  ElevatedButton(
+                                                      child: Center(
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .only(
+                                                                  left: 30),
+                                                          child: Row(
+                                                            children: [
+                                                              Center(
+                                                                  child: Icon(Icons
+                                                                      .delete_outline_rounded)),
+                                                              SizedBox(
+                                                                width: 2,
+                                                              ),
+                                                              Center(
+                                                                child: Padding(
+                                                                  padding: const EdgeInsets
+                                                                          .symmetric(
+                                                                      vertical:
+                                                                          12,
+                                                                      horizontal:
+                                                                          10),
+                                                                  child: Text(
+                                                                    "Yes",
+                                                                    style: TextStyle(
+                                                                        fontSize:
+                                                                            16),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      style: ButtonStyle(
+                                                        backgroundColor:
+                                                            MaterialStateProperty
+                                                                .all(Color(
+                                                                    0xFFeb6d44)),
+                                                      ),
+                                                      onPressed: () {
+                                                        followUserService
+                                                            .unFollowUser(
+                                                                context,
+                                                                followId: uId);
+                                                        bool exist = AppGlobals
+                                                            .allFollowing
+                                                            .contains(uId);
+                                                        if (exist)
+                                                          AppGlobals
+                                                              .allFollowing
+                                                              .remove(uId);
+                                                        setState(() {
+                                                          user.isFollowed =
+                                                              false;
+                                                        });
 
-                            bool exist = AppGlobals.allFollowing.contains(uId);
-                            if (!exist) {
-                              AppGlobals.allFollowing.add(uId);
-
-                              setState(() {
-                                user.isFollowed = true;
-                              });
-                              await followUserService.followUser(
-                                context,
-                                followId: uId,
+                                                        Navigator.pop(context);
+                                                      }),
+                                                  TextButton(
+                                                    child: Text(
+                                                      "Cancel",
+                                                      style: TextStyle(
+                                                          fontSize: 16),
+                                                    ),
+                                                    style: TextButton.styleFrom(
+                                                      primary:
+                                                          Color(0xFFeb6d44),
+                                                      backgroundColor:
+                                                          Colors.white,
+                                                      //side: BorderSide(color: Colors.deepOrange, width: 1),
+                                                      elevation: 0,
+                                                      //minimumSize: Size(100, 50),
+                                                      //shadowColor: Colors.red,
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          10)),
+                                                    ),
+                                                    onPressed: () {
+                                                      Navigator.pop(context);
+                                                    },
+                                                  ),
+                                                ],
+                                              )))
+                                    ],
+                                  );
+                                },
                               );
+                            } else {
+                              bool exist =
+                                  AppGlobals.allFollowing.contains(uId);
+                              if (!exist) {
+                                AppGlobals.allFollowing.add(uId);
+
+                                setState(() {
+                                  user.isFollowed = true;
+                                });
+                                await followUserService.followUser(
+                                  context,
+                                  followId: uId,
+                                );
+                              }
                             }
                           }
                           //------

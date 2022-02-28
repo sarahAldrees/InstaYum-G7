@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:instayum/constant/app_globals.dart';
+import 'package:instayum/widget/profile/followers_page.dart';
 
 class FollowersNumbers extends StatefulWidget {
   FollowersNumbers({Key? key, this.userId}) : super(key: key);
@@ -82,7 +83,14 @@ class _FollowersNumbersState extends State<FollowersNumbers> {
         padding: EdgeInsets.symmetric(vertical: 4),
         onPressed: () {
           if (widget.userId == AppGlobals.userId) {
-            //move to page
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => FollowersPage(
+                    isFollowing: isFollowing,
+                    users: isFollowing == true ? followingList : followersList,
+                  ),
+                )).then((value) => getData());
           }
         },
         materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
