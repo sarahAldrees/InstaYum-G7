@@ -187,9 +187,16 @@ class _SearchPageState extends State<SearchPage> {
                       ),
                       SizedBox(height: 10),
                       Expanded(
-                        child: SearchUsers(
-                          users: List<UserModel>.from(_searchResults),
-                        ),
+                        child: isRecipes
+                            ? SearchRecipe(
+                                recipes:
+                                    List<DocumentSnapshot>.from(_searchResults),
+                              )
+                            : SearchUsers(
+                                users: List<UserModel>.from(_searchResults),
+                                // _searchResults as List<UserModel>,
+                              ),
+                        //),
                       ),
                     ],
                   ),
