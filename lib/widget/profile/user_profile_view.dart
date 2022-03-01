@@ -8,6 +8,7 @@ import 'package:instayum/widget/discover/search/search_users.dart';
 import 'package:instayum/widget/follow_and_notification/follow_user_service.dart';
 import 'package:instayum/widget/profile/circular_loader.dart';
 import 'package:instayum/widget/profile/followers_numbers.dart';
+import 'package:instayum/widget/profile/followers_page.dart';
 import 'package:instayum/widget/recipe_view/my_recipes_screen.dart';
 
 class UserProfileView extends StatefulWidget {
@@ -19,6 +20,9 @@ class UserProfileView extends StatefulWidget {
 
 class UserProfileViewState extends State<UserProfileView> {
   // ---------------- Database -------------------------
+  List<DocumentSnapshot> followersList = [];
+  List<DocumentSnapshot> followingList = [];
+  List<String> followers = [];
   String? userUsername;
   String? imageURL;
   String? uId;
@@ -50,6 +54,27 @@ class UserProfileViewState extends State<UserProfileView> {
     }
     isLoading = false;
     setState(() {});
+    print('get user followers and following..');
+    // get user followers list
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(widget.userId)
+        .collection("followers")
+        .get()
+        .then((querySnapshot) {
+      followersList = querySnapshot.docs;
+      _saveFollowers(followersList);
+    });
+    if (mounted) setState(() {});
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(widget.userId)
+        .collection('following')
+        .get()
+        .then((querySnapshot) {
+      followingList = querySnapshot.docs;
+    });
+    if (mounted) setState(() {});
   }
 
   @override
@@ -79,7 +104,20 @@ class UserProfileViewState extends State<UserProfileView> {
                       // show User image and username
                       buildImage(),
 
-                      if (uId != null) FollowersNumbers(userId: uId),
+                      if (uId != null)
+                        buildButton(
+                          context,
+                          text: 'Following',
+                          isFollowing: true,
+                          value: '${followingList.length}',
+                        ),
+                      buildDivider(),
+                      buildButton(
+                        context,
+                        text: 'Followers',
+                        isFollowing: false,
+                        value: '${followers.length}',
+                      ),
                     ],
                   ),
                   // Padding(
@@ -89,7 +127,8 @@ class UserProfileViewState extends State<UserProfileView> {
                   //-------------- follow button-----------
                   Container(
                     margin: const EdgeInsets.only(
-                      left: 120,
+                      left: 100,
+                      right: 40,
                     ),
                     child: Center(
                       child: ElevatedButton(
@@ -119,129 +158,17 @@ class UserProfileViewState extends State<UserProfileView> {
                           onPressed: () async {
                             //----------Add user in globals following list----------
                             if (user.isFollowed == true) {
-                              showDialog<void>(
-                                context: context,
-                                barrierDismissible: false,
-                                builder: (context) {
-                                  return AlertDialog(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(8)),
-                                    ),
-                                    title: Column(
-                                      children: [
-                                        Text(
-                                          'Are you sure to delete the recipe?',
-                                          style: TextStyle(fontSize: 16),
-                                        ),
-                                      ],
-                                    ),
-                                    actions: [
-                                      Container(
-                                          width: double.infinity,
-                                          margin:
-                                              EdgeInsets.fromLTRB(3, 0, 3, 15),
-                                          child: Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 0,
-                                                  right: 30,
-                                                  left: 30,
-                                                  bottom: 0),
-                                              child: Column(
-                                                children: [
-                                                  ElevatedButton(
-                                                      child: Center(
-                                                        child: Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                      .only(
-                                                                  left: 30),
-                                                          child: Row(
-                                                            children: [
-                                                              Center(
-                                                                  child: Icon(Icons
-                                                                      .delete_outline_rounded)),
-                                                              SizedBox(
-                                                                width: 2,
-                                                              ),
-                                                              Center(
-                                                                child: Padding(
-                                                                  padding: const EdgeInsets
-                                                                          .symmetric(
-                                                                      vertical:
-                                                                          12,
-                                                                      horizontal:
-                                                                          10),
-                                                                  child: Text(
-                                                                    "Yes",
-                                                                    style: TextStyle(
-                                                                        fontSize:
-                                                                            16),
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      style: ButtonStyle(
-                                                        backgroundColor:
-                                                            MaterialStateProperty
-                                                                .all(Color(
-                                                                    0xFFeb6d44)),
-                                                      ),
-                                                      onPressed: () {
-                                                        followUserService
-                                                            .unFollowUser(
-                                                                context,
-                                                                followId: uId);
-                                                        bool exist = AppGlobals
-                                                            .allFollowing
-                                                            .contains(uId);
-                                                        if (exist)
-                                                          AppGlobals
-                                                              .allFollowing
-                                                              .remove(uId);
-                                                        setState(() {
-                                                          user.isFollowed =
-                                                              false;
-                                                        });
-
-                                                        Navigator.pop(context);
-                                                      }),
-                                                  TextButton(
-                                                    child: Text(
-                                                      "Cancel",
-                                                      style: TextStyle(
-                                                          fontSize: 16),
-                                                    ),
-                                                    style: TextButton.styleFrom(
-                                                      primary:
-                                                          Color(0xFFeb6d44),
-                                                      backgroundColor:
-                                                          Colors.white,
-                                                      //side: BorderSide(color: Colors.deepOrange, width: 1),
-                                                      elevation: 0,
-                                                      //minimumSize: Size(100, 50),
-                                                      //shadowColor: Colors.red,
-                                                      shape:
-                                                          RoundedRectangleBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          10)),
-                                                    ),
-                                                    onPressed: () {
-                                                      Navigator.pop(context);
-                                                    },
-                                                  ),
-                                                ],
-                                              )))
-                                    ],
-                                  );
-                                },
-                              );
+                              followers.remove(AppGlobals.userId);
+                              followUserService.unFollowUser(context,
+                                  followId: uId);
+                              bool exist =
+                                  AppGlobals.allFollowing.contains(uId);
+                              if (exist) AppGlobals.allFollowing.remove(uId);
+                              setState(() {
+                                user.isFollowed = false;
+                              });
                             } else {
+                              followers.add(AppGlobals.userId ?? '');
                               bool exist =
                                   AppGlobals.allFollowing.contains(uId);
                               if (!exist) {
@@ -333,4 +260,57 @@ class UserProfileViewState extends State<UserProfileView> {
       ),
     );
   }
+
+  _saveFollowers(List<DocumentSnapshot> followersP) {
+    followers.clear();
+    for (int i = 0; i < followersP.length; i++) {
+      String id = followersP[i].id;
+      followers.add(id);
+    }
+  }
+
+  Widget buildButton(BuildContext context,
+          {String? value, String? text, bool isFollowing = false}) =>
+      MaterialButton(
+        padding: EdgeInsets.symmetric(vertical: 4),
+        onPressed: () {
+          if (widget.userId == AppGlobals.userId) {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => FollowersPage(
+                    isFollowing: isFollowing,
+                    users: isFollowing == true ? followingList : followersList,
+                  ),
+                )).then((value) => getData());
+          }
+        },
+        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        child:
+            //-----------------
+            Padding(
+          padding: const EdgeInsets.only(bottom: 8.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                value ?? '0',
+                style: TextStyle(fontSize: 20),
+              ),
+              //------------------------
+              SizedBox(height: 2),
+              Text(
+                text ?? '',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
+        ),
+      );
+
+  Widget buildDivider() => Container(
+        height: 24,
+        child: VerticalDivider(),
+      );
 }
