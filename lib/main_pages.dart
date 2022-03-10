@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:instayum/widget/auth/auth_screen.dart';
 import 'package:instayum/widget/add_recipe/add_recipe_page.dart';
 import 'package:instayum/widget/discover/discover_page.dart';
+import 'package:instayum/widget/follow_and_notification/notification_page.dart';
 import 'package:instayum/widget/shopping_list/shopping_list_page.dart';
 import 'package:instayum/widget/pickers/recipe_image_picker.dart';
 import 'constant/app_globals.dart';
@@ -337,6 +338,16 @@ class appPages extends State<MainPages> {
       child: Scaffold(
         appBar: AppBar(
           actions: [
+            IconButton(
+              icon: Icon(Icons.notifications_none),
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => NotificationsPage(),
+                    ));
+              },
+            ),
             PopupMenuButton(
               icon: Icon(
                 Icons.more_vert,

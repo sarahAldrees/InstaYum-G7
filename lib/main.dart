@@ -7,17 +7,20 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:instayum/main_pages.dart';
 import 'package:flutter/services.dart';
 import 'package:instayum/widget/admin/admin_home_page.dart';
+import 'package:instayum/widget/follow_and_notification/notification_service.dart';
 import 'package:overlay_support/overlay_support.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-
+  NotificationService().registerNotification();
   await SystemChrome.setPreferredOrientations(
     [DeviceOrientation.portraitUp],
   ); // To turn off landscape mode
   runApp(Main());
 }
+
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 class Main extends StatefulWidget {
   @override
@@ -46,6 +49,7 @@ class _MainState extends State<Main> {
           builder: (context, appSnapshot) {
             return MaterialApp(
               debugShowCheckedModeBanner: false,
+              navigatorKey: navigatorKey,
               title: 'InstaYum',
               theme: ThemeData(
                 //primarySwatch: Colors.orangeAccent,
