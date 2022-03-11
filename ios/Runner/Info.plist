@@ -4,6 +4,8 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>CFBundleDisplayName</key>
+    <string>InstaYum</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -20,8 +22,20 @@
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
+	<key>FirebaseAppDelegateProxyEnabled</key>
+	<false/>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+			<string>https</string>
+			<string>http</string>
+	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+			<key>NSAllowsArbitraryLoads</key>
+			<true/>
+	</dict>
 	<key>UIBackgroundModes</key>
 	<array>
 			<string>fetch</string>
@@ -44,7 +58,50 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>UIUserInterfaceStyle</key>
+	<string>Light</string>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
-	<false/>
+	<true/>
+
+	
+	<!-- Permission options for the `location` group -->
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Kindly allow location access when in use to get current location</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Kindly allow location access always and when in use to get current location!</string>
+	<key>NSLocationUsageDescription</key>
+	<string>Kindly allow location access for older devices.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Kindly allow location access always to get current location</string>
+	<!-- Permission options for the `mediaLibrary` group -->
+	<key>NSAppleMusicUsageDescription</key>
+	<string>Kindly allow media library to access music files</string>
+	<key>kTCCServiceMediaLibrary</key>
+	<string>Kindly allow to get access of media library</string>
+	<!-- Permission options for the `calendar` group -->
+	<key>NSCalendarsUsageDescription</key>
+	<string>Kindly allow calendar to access events</string>
+	<!-- Permission options for the `camera` group -->
+	<key>NSCameraUsageDescription</key>
+	<string>Need to Capture Image from Camera</string>
+	<!-- Permission options for the `contacts` group -->
+	<key>NSContactsUsageDescription</key>
+	<string>Kindly allow to access contacts to invite users</string>
+	<!-- Permission options for the `microphone` group -->
+	<key>NSMicrophoneUsageDescription</key>
+	<string>App require access to your Microphone while using video and audio calling</string>
+	<!-- Permission options for the `speech` group -->
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>Kindly allow speech recognition to access video calling</string>
+	<!-- Permission options for the `sensors` group -->
+	<key>NSMotionUsageDescription</key>
+	<string>Kindly allow to detect motion to access video calling</string>
+	<!-- Permission options for the `photos` group -->
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>This app requires to save your images in user gallery</string>
+	<!-- Permission options for the `reminder` group -->
+	<key>NSRemindersUsageDescription</key>
+	<string>Kindly allow access to get notify about reminders</string>
+	
 </dict>
 </plist>

@@ -1,4 +1,4 @@
-package com.example.instayum1
+package com.example.instayum
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -1,9 +1,11 @@
 import 'dart:io';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:instayum/constant/app_globals.dart';
 import 'package:instayum/main_pages.dart';
 import 'package:instayum/widget/auth/auth_form.dart';
 
@@ -15,8 +17,12 @@ class AuthScreen extends StatefulWidget {
 //
 class AuthScreenState extends State<AuthScreen> {
   final _auth = FirebaseAuth.instance;
+  final firebaseFirestore = FirebaseFirestore.instance;
+  final FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
 
   bool _isLoading = false;
+  static bool isAdmin = false;
+  static final String adminEmail = 'admin@admin.admin';
 
   void _submitAuthForm(
     String email,
@@ -33,6 +39,9 @@ class AuthScreenState extends State<AuthScreen> {
         _isLoading = true;
       });
       UserCredential authResult;
+      String? token = await firebaseMessaging.getToken();
+      AppGlobals.pushToken = token;
+      String url = "noImage";
 
       if (isSignUp) {
         authResult = await _auth.createUserWithEmailAndPassword(
@@ -49,6 +58,7 @@ class AuthScreenState extends State<AuthScreen> {
             "username": "",
             "email": email,
             "image_url": "noImage",
+            "pushToken": AppGlobals.pushToken,
           }); // we put initail empty values to avoid the exception (username[] was call on null)
 
           var url = ""; // NEW
@@ -98,7 +108,12 @@ class AuthScreenState extends State<AuthScreen> {
           email: email,
           password: password,
         );
-        //here we can check the admin
+
+        //update push token
+        await firebaseFirestore
+            .collection("users")
+            .doc(authResult.user!.uid)
+            .update({"pushToken": AppGlobals.pushToken});
 
         // to move the user to the profile page (Mainpages) after he login successfully
 
