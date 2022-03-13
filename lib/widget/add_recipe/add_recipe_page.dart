@@ -313,10 +313,10 @@ class addRecipe extends State<AddRecipePage> {
 
 //--------------------------------------------------------------------
     //to clean the fields ingredients and directions
-
-    setState(() {
-      isloading = false;
-    });
+    if (mounted)
+      setState(() {
+        isloading = false;
+      });
     // we put it in mainpages because navigitor,push not work
     appPages.showAlertDialogRcipeAdedSuccessfully(context);
   }

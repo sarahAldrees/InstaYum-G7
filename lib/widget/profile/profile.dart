@@ -54,8 +54,7 @@ class ProfileState extends State<Profile> {
       });
     }
     isLoading = false;
-
-    setState(() {});
+    if (mounted) setState(() {});
   }
 
   @override

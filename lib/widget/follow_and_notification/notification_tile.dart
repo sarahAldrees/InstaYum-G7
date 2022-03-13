@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:instayum/widget/follow_and_notification/app_images.dart';
+import 'package:instayum/widget/follow_and_notification/convert_date.dart';
 
 class NotificationTile extends StatelessWidget {
   const NotificationTile({
@@ -67,6 +68,14 @@ class NotificationTile extends StatelessWidget {
           ),
         ),
         // notification date
+        trailing: Text(
+          "${ConvertDate.getTimeDifferenceFromNow(date)}",
+          style: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.normal,
+            color: Colors.black,
+          ),
+        ),
       ),
     );
   }
