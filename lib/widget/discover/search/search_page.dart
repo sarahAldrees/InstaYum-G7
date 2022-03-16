@@ -77,6 +77,7 @@ class _SearchPageState extends State<SearchPage> {
                     margin: const EdgeInsets.only(top: 10, left: 20, right: 5),
                     // padding: EdgeInsets.symmetric(horizontal: AppGlobals.screenWidth * 0.1),
                     child: CupertinoSearchTextField(
+                      // placeholder: searchText,
                       controller: searchControllerOfCupertinoSearchTextField ??
                           TextEditingController(),
                       itemColor: AppColors
@@ -90,6 +91,7 @@ class _SearchPageState extends State<SearchPage> {
                       padding: EdgeInsets.fromLTRB(20, 10, 12, 10),
                       onChanged: onSearchTextChanged,
                       // suffixIcon: suffixIcon,
+                      onSubmitted: onSearchTextChanged,
                     ),
                   ),
                 ),
@@ -229,7 +231,8 @@ class _SearchPageState extends State<SearchPage> {
     setState(() {});
   }
 
-  void _searchFromFirestore(String searchkey, {bool withFilter = false}) async {
+  void _searchFromFirestore(String searchkey, String ingredientsList,
+      {bool withFilter = false}) async {
     if (isRecipes) {
       //// search from recipes
 
@@ -238,8 +241,8 @@ class _SearchPageState extends State<SearchPage> {
         showFilter = false;
       }
 
-      List<String> _searchIngredients =
-          _ingredientsController.text.trim().toLowerCase().split(',');
+      // List<String> _searchIngredients =
+      //     _ingredientsController.text.trim().toLowerCase().split(',');
 
       _allRecipes.forEach((recipe) {
         Map data = recipe.data() as Map<dynamic, dynamic>;
@@ -250,15 +253,15 @@ class _SearchPageState extends State<SearchPage> {
         int? _ingLength = data['length_of_ingredients'];
 
         if (withFilter) {
-          // search using filters
-          if (_searchIngredients.length > 0) {
+          if (ingredientsList != "") {
+            List<String> _searchIngredients =
+                ingredientsList.toLowerCase().split(',');
+
             var count = 0;
             //search by each ingredient
 
             outerLoop: //number of ingredients in recipe
             for (int si = 0; si < _searchIngredients.length; si++) {
-              //   String _ing = (data['ing$i'] ?? '').toString().toLowerCase();
-
               innerLopp: //number of ingredients in search
 
               for (int i = 1; i <= _ingLength!; i++) {
@@ -274,12 +277,14 @@ class _SearchPageState extends State<SearchPage> {
                   //  break outerLoop;
                 }
               }
-              if (count == _searchIngredients.length)
+              if (count == _searchIngredients.length) {
                 _searchResults.add(recipe);
+              }
             } //outer
           } else {
             //search by without ingredients
             if (_title!.contains(searchkey) &&
+                //  _title.startsWith(searchkey) &&
                 _category!.contains(_selectedCategory!) &&
                 _cuisine!.contains(_selectedCuisine!) &&
                 _typeOfMeal!.contains(_selectedTypeOfMeal!)) {
@@ -318,17 +323,18 @@ class _SearchPageState extends State<SearchPage> {
   onSearchTextChanged(String text) async {
     _searchResults.clear();
     text = text.trim().toLowerCase();
+    _searchController.text = text;
     if (text.isEmpty) {
       setState(() {});
       return;
     }
 
-    _searchFromFirestore(text);
+    _searchFromFirestore(text, "");
   }
 
   Widget _showFilterDialog() {
     return Container(
-      height: 300, //AppGlobals.screenHeight * 0.3,
+      height: 320, //AppGlobals.screenHeight * 0.3,
       width: 250, //AppGlobals.screenWidth * 0.7,
       margin: EdgeInsets.only(right: 5),
       padding: EdgeInsets.all(10),
@@ -352,9 +358,14 @@ class _SearchPageState extends State<SearchPage> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextField(
-                controller: _ingredientsController,
+                onChanged: (value) {
+                  _ingredientsController.text = value;
+                },
+                // controller: _ingredientsController,
                 decoration: InputDecoration(
                   hintText: "ingredients",
+                  helperText:
+                      "For more than one ingredient\nseparate them by \",\"\ne.g : egg,water... ",
                   hintStyle: TextStyle(color: Colors.grey[800]),
                   filled: true,
                   fillColor: Colors.white70,
@@ -392,10 +403,11 @@ class _SearchPageState extends State<SearchPage> {
             Center(
               child: ElevatedButton(
                 onPressed: () {
-                  print("_selectedCategory: $_selectedCategory");
                   _searchResults.clear();
-                  _searchFromFirestore(_searchController.text,
+                  _searchFromFirestore(
+                      _searchController.text, _ingredientsController.text,
                       withFilter: true);
+                  _ingredientsController.text = "";
                 },
                 style: ElevatedButton.styleFrom(
                   primary: AppColors.primaryColor.withOpacity(0.8),

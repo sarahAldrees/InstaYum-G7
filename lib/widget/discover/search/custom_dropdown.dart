@@ -29,7 +29,10 @@ class _CustomDropDownState extends State<CustomDropDown> {
           child: DropdownButton<String>(
             isExpanded: true,
             isDense: true,
-            hint: Text(widget.hintText ?? 'Select'),
+            hint: Text(
+              widget.hintText ?? 'Select',
+              style: TextStyle(color: Colors.black),
+            ),
             value: widget.selectedValue != '' ? widget.selectedValue : null,
             icon: Icon(
               Icons.arrow_drop_down,
@@ -46,7 +49,7 @@ class _CustomDropDownState extends State<CustomDropDown> {
               });
               if (widget.onChanged != null) widget.onChanged!(newValue);
             },
-            style: TextStyle(color: AppColors.lightGrey),
+            style: TextStyle(color: Colors.black),
             items: widget.list.map<DropdownMenuItem<String>>((String value) {
               return DropdownMenuItem<String>(
                 value: value,

@@ -265,23 +265,23 @@ class _MyRecipesScreenState extends State<MyRecipesScreen> {
                           width: AppGlobals.screenWidth * 0.4,
                           decoration: BoxDecoration(
                             color: isPublicRecipes
-                                ? AppColors.primaryColor
-                                : Colors.grey[200],
+                                ? Colors.grey[200]
+                                : Colors.white,
                             borderRadius: const BorderRadius.all(
                               Radius.circular(10),
                             ),
                           ),
                           child: Center(
-                            child: Text(
-                              "PUBLIC RECIPES",
-                              softWrap: true,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  color: isPublicRecipes
-                                      ? Colors.white
-                                      : Colors.black87,
-                                  fontWeight: FontWeight.bold),
+                            child: IconButton(
+                              icon: Icon(
+                                Icons.lock_open,
+                                color: isPublicRecipes
+                                    ? AppColors.primaryColor
+                                    : Colors.grey[600],
+                              ),
+                              onPressed: () {
+                                _switchbetweenPublicAndPrivateRecipes(true);
+                              },
                             ),
                           ),
                         ),
@@ -297,23 +297,23 @@ class _MyRecipesScreenState extends State<MyRecipesScreen> {
                           width: AppGlobals.screenWidth * 0.4,
                           decoration: BoxDecoration(
                             color: !isPublicRecipes
-                                ? AppColors.primaryColor
-                                : Colors.grey[200],
+                                ? Colors.grey[200]
+                                : Colors.white,
                             borderRadius: const BorderRadius.all(
                               Radius.circular(10),
                             ),
                           ),
                           child: Center(
-                            child: Text(
-                              "PRIVATE RECIPES",
-                              softWrap: true,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  color: !isPublicRecipes
-                                      ? Colors.white
-                                      : Colors.black87,
-                                  fontWeight: FontWeight.bold),
+                            child: IconButton(
+                              icon: Icon(
+                                Icons.lock,
+                                color: !isPublicRecipes
+                                    ? AppColors.primaryColor
+                                    : Colors.grey[600],
+                              ),
+                              onPressed: () {
+                                _switchbetweenPublicAndPrivateRecipes(false);
+                              },
                             ),
                           ),
                         ),
