@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:instayum/constant/app_globals.dart';
 
 import 'package:instayum/model/comment_model.dart';
+import 'package:instayum/widget/add_recipe/recipe_service.dart';
 import 'package:instayum/widget/recipe_view/user_information_design.dart';
 
 import 'package:uuid/uuid.dart';
@@ -93,22 +94,6 @@ class CommentState extends State<Comments> {
     );
   }
 
-//
-
-// ---------------------- Delete from database ------------------------------
-
-  _deleteCommentFromFirestore(comId) {
-    FirebaseFirestore.instance
-        .collection("users")
-        .doc(_authorId)
-        .collection("recipes")
-        .doc(_recipeId)
-        .collection("comments")
-        .doc(comId)
-        .delete();
-  }
-//-----------------------------------------------------------------------------
-
   String? userUsername = AppGlobals.userName;
   String? imageURL = AppGlobals.userImage;
 
@@ -139,7 +124,7 @@ class CommentState extends State<Comments> {
 
     CommentModel comment = CommentModel(
       commentId: commentRef,
-      userId: widget._authorId,
+      userId: AppGlobals.userId,
       username: userUsername,
       imageUrl: imageURL,
       comment: commentText,
@@ -153,6 +138,8 @@ class CommentState extends State<Comments> {
         .collection("comments")
         .doc(commentRef)
         .set(comment.toJson());
+    if (_authorId != AppGlobals.userId)
+      RecipeService().sendNotificationToAuthor(_recipeId, userUsername);
   }
 
   void initState() {
@@ -336,6 +323,11 @@ class CommentListState extends State<CommentList> {
   Widget reportOrDeleteIcon(CommentModel comment) {
     final FirebaseAuth usId = FirebaseAuth.instance;
     final _currentUser = usId.currentUser!.uid;
+    print("----------------------------------------aa-----");
+    print(comment.userId);
+    print(AppGlobals.userId);
+    print(_currentUser);
+    print("----------------------------------------aa-----");
 
     if (_currentUser == comment.userId) {
       return IconButton(

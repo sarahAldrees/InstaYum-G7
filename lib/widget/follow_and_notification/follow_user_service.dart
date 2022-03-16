@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:instayum/constant/app_globals.dart';
+import 'package:instayum/model/notification_model.dart';
 import 'package:instayum/model/user_model.dart';
+import 'package:instayum/widget/follow_and_notification/notification_api.dart';
 
 class FollowUserService {
   final FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
@@ -76,6 +78,40 @@ class FollowUserService {
           .catchError(
             (error) => print('Followers failed: $error'),
           );
+
+      String name = '${currentUser.username}';
+      String desc = 'started following you';
+      Timestamp timestamp = Timestamp.now();
+
+      NotificationModel notification = NotificationModel(
+        date: timestamp,
+        title1: name,
+        title2: '',
+        description: desc,
+        type: 'follow',
+        userName: name,
+        userId: currentUser.userId,
+        userImage: currentUser.imageUrl,
+      );
+
+      //--- Add notification to other user notifications list-----
+      firebaseFirestore
+          .collection('users/$followId/notifications')
+          .add(notification.toJson())
+          .catchError((error) => print('Notifications failed: $error'));
+
+      //----- Send Notification to other user-------------
+      NotificationApi.SendNotification(
+        type: 'follow',
+        token: pushToken,
+        title1: name,
+        desc: desc,
+        body: '$name $desc',
+        timestamp: timestamp,
+        name: name,
+        userId: currentUser.userId,
+        imageUrl: currentUser.imageUrl,
+      );
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
