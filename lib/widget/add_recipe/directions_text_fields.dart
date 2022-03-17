@@ -47,7 +47,7 @@ class _DirectionsTextFieldsState extends State<DirectionsTextFields> {
           ),
           hintText: 'Enter a direction'), // errorText: _errorText
       onChanged: (value) {
-        addRecipe.userDirections[widget.index] = value;
+        addRecipe.userDirections[widget.index] = _directionController!.text;
         // setState(() {}); //used to refresh the screen //OLD
       },
       validator: (value) {
@@ -72,8 +72,10 @@ class _DirectionsTextFieldsState extends State<DirectionsTextFields> {
         // it is for recognaization
         _speech.listen(
             onResult: (value) => setState(() {
-                  this._directionController!.text = value.recognizedWords;
-                  onResult!(value.recognizedWords);
+                  _directionController!.text = value.recognizedWords;
+                  addRecipe.userDirections[widget.index] =
+                      value.recognizedWords;
+                  // onResult!(value.recognizedWords);
                 }));
       }
     } else {

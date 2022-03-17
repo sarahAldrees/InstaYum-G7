@@ -49,7 +49,7 @@ class IngredientsTextFieldsState extends State<IngredientsTextFields> {
           //---------------------
           hintText: 'Enter an ingredient'), //errorText: _errorText
       onChanged: (value) {
-        addRecipe.userIngredients[widget.index] = value;
+        addRecipe.userIngredients[widget.index] = _ingredientController!.text;
       },
       validator: (value) {
         if (value!.trim().isEmpty) {
@@ -74,13 +74,16 @@ class IngredientsTextFieldsState extends State<IngredientsTextFields> {
         // it is for recognaization
         _speech.listen(
             onResult: (value) => setState(() {
-                  this._ingredientController!.text = value.recognizedWords;
-                  onResult!(value.recognizedWords);
+                  _ingredientController!.text = value.recognizedWords;
+                  addRecipe.userIngredients[widget.index] =
+                      value.recognizedWords;
+                  // onResult!(value.recognizedWords);
                 }));
       }
     } else {
       setState(() {
         isListening1 = false;
+
         _speech.stop();
       });
     }

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:instayum/constant/app_colors.dart';
 import 'package:instayum/constant/app_globals.dart';
@@ -56,6 +57,116 @@ class _NotificationsPageState extends State<NotificationsPage> {
       appBar: AppBar(
         backgroundColor: AppColors.primaryColor,
         title: Text('Activities'),
+        actions: [
+          TextButton(
+              onPressed: () {
+                showDialog<void>(
+                  context: context,
+                  barrierDismissible: false,
+                  builder: (context) {
+                    return AlertDialog(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(8)),
+                      ),
+                      title: Column(
+                        children: [
+                          Text(
+                            'Are you sure to clear all notifications ?',
+                            style: TextStyle(fontSize: 16),
+                          ),
+                        ],
+                      ),
+                      actions: [
+                        Container(
+                            width: double.infinity,
+                            margin: EdgeInsets.fromLTRB(3, 0, 3, 15),
+                            child: Padding(
+                                padding: const EdgeInsets.only(
+                                    top: 0, right: 30, left: 30, bottom: 0),
+                                child: Column(
+                                  children: [
+                                    ElevatedButton(
+                                        child: Center(
+                                          child: Padding(
+                                            padding:
+                                                const EdgeInsets.only(left: 30),
+                                            child: Row(
+                                              children: [
+                                                Center(
+                                                    child: Icon(Icons
+                                                        .delete_outline_rounded)),
+                                                SizedBox(
+                                                  width: 2,
+                                                ),
+                                                Center(
+                                                  child: Padding(
+                                                    padding: const EdgeInsets
+                                                            .symmetric(
+                                                        vertical: 12,
+                                                        horizontal: 10),
+                                                    child: Text(
+                                                      "Clear ",
+                                                      style: TextStyle(
+                                                          fontSize: 16),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                        style: ButtonStyle(
+                                          backgroundColor:
+                                              MaterialStateProperty.all(
+                                                  Color(0xFFeb6d44)),
+                                        ),
+                                        onPressed: () {
+//                                           FirebaseFirestore.instance
+//                                               .collection("users")
+//                                               .doc(AppGlobals.userId)
+//                                               .collection("notifications")
+//                                            .get().then((snapshot) {
+//   for (DocumentSnapshot ds in snapshot.docs){
+//     ds.reference.delete();
+//   }
+//   );
+
+// });
+
+                                          _clearActiveites();
+
+                                          Navigator.pop(context);
+                                        }),
+                                    TextButton(
+                                      child: Text(
+                                        "Cancel",
+                                        style: TextStyle(fontSize: 16),
+                                      ),
+                                      style: TextButton.styleFrom(
+                                        primary: Color(0xFFeb6d44),
+                                        backgroundColor: Colors.white,
+                                        //side: BorderSide(color: Colors.deepOrange, width: 1),
+                                        elevation: 0,
+                                        //minimumSize: Size(100, 50),
+                                        //shadowColor: Colors.red,
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10)),
+                                      ),
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                    ),
+                                  ],
+                                )))
+                      ],
+                    );
+                  },
+                );
+              },
+              child: Text("Clear",
+                  style: TextStyle(color: Colors.white, fontSize: 16)))
+        ],
       ),
       // showing list of notifications
       body: Container(
@@ -101,5 +212,20 @@ class _NotificationsPageState extends State<NotificationsPage> {
             : CustomCircularLoader(),
       ),
     );
+  }
+
+  void _clearActiveites() {
+    FirebaseFirestore.instance
+        .collection("users")
+        .doc(AppGlobals.userId)
+        .collection("notifications")
+        .get()
+        .then((snapshot) {
+      for (DocumentSnapshot ds in snapshot.docs) {
+        ds.reference.delete();
+      }
+    });
+    notifications.clear();
+    setState(() {});
   }
 }

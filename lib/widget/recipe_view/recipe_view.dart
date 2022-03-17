@@ -313,7 +313,7 @@ class _RecipeViewState extends State<RecipeView> {
                                       Center(
                                         child: Padding(
                                           padding: const EdgeInsets.symmetric(
-                                              vertical: 12, horizontal: 10),
+                                              vertical: 12, horizontal: 9),
                                           child: Text(
                                             "All cookbooks",
                                             style: TextStyle(fontSize: 16),
