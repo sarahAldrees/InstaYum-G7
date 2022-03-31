@@ -1,5 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:instayum/constant/app_globals.dart';
 import 'package:instayum/model/checkbox_state.dart';
 
 //import 'checkboxState.dart';
@@ -162,6 +165,19 @@ class convert extends State<ConvertTocheckBox> {
           textStyle: const TextStyle(fontSize: 14),
         ),
         onPressed: () {
+          if (AppGlobals.shoppingList.contains(ingredant)) {
+          } else {
+            // -------- Add the ingredant to the shoping list
+            AppGlobals.shoppingList.add(ingredant);
+
+            // ------ Update the shopping list in the firestore of the user ---------------
+            FirebaseFirestore.instance
+                .collection("users")
+                .doc(AppGlobals.userId)
+                .update({
+              "shoppingList": FieldValue.arrayUnion([ingredant])
+            });
+          }
           Navigator.pop(context);
         },
         child: Text("Add"),

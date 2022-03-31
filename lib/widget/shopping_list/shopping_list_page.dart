@@ -1,5 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:instayum/constant/app_globals.dart';
 import 'package:instayum/model/checkbox_state.dart';
+import 'package:instayum/widget/recipe_view/convert_to_check_box.dart';
 
 class ShoppingListPage extends StatefulWidget {
   @override
@@ -7,41 +10,56 @@ class ShoppingListPage extends StatefulWidget {
 }
 
 class ShoppingListState extends State<ShoppingListPage> {
+  List<String> _ShoppingList = [];
+
   bool outvalue = false; //outvalue is change the state of check list
   var checkedstyle = TextDecoration.none;
-  var listOfIngrediant = [
-    CheckBoxState(title: "Milk"),
-    CheckBoxState(title: "Eggs"),
-    CheckBoxState(title: "Cream"),
-    CheckBoxState(title: "Sugar"),
-  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView(padding: EdgeInsets.all(12), children: [
-        ...listOfIngrediant.map(creatCheckbox).toList(),
-      ]),
+      body: ConvertTocheckBox(
+        _ShoppingList,
+        "",
+      ),
     );
   }
 
-  Widget creatCheckbox(CheckBoxState checkbox) => CheckboxListTile(
-      controlAffinity: ListTileControlAffinity.leading,
-      activeColor: Color(0xFFeb6d44),
-      value: checkbox.outvalue,
-      title: Text(checkbox.title!,
-          style: TextStyle(
-            decoration: checkbox.checkedstyle,
-            decorationColor: Color(0xFFeb6d44),
-            decorationThickness: 4,
-          )),
-      onChanged: (value) {
-        setState(() {
-          checkbox.outvalue = value!;
-          if (checkbox.outvalue == true) {
-            checkbox.checkedstyle = TextDecoration.lineThrough;
-          } else {
-            checkbox.checkedstyle = TextDecoration.none;
-          }
-        });
-      });
+  @override
+  void initState() {
+    super.initState();
+    getShoppingListIngredients(); // to create a create All Bookmarked Recipes  cookbook for each user when the user create an account
+  }
+
+  deleteFromShoppingListIngredients() async {
+    await FirebaseFirestore.instance
+        .collection("users")
+        .doc(AppGlobals.userId)
+        .snapshots()
+        .listen((data) {
+      if (data["shoppingList"] != null) {
+        // for(){}
+        // // _ShoppingList.clear();
+        // // _ShoppingList = List(data["shoppingList"]);
+        // // print("============== @@@@ ==================");
+        // // print(data["shoppingList"][0]);
+      }
+    });
+  }
+
+  getShoppingListIngredients() async {
+    await FirebaseFirestore.instance
+        .collection("users")
+        .doc(AppGlobals.userId)
+        .snapshots()
+        .listen((data) {
+      if (data["shoppingList"] != null) {
+        _ShoppingList.clear();
+        _ShoppingList = List.from(data["shoppingList"]);
+        print("============== @@@@ ==================");
+        print(data["shoppingList"][0]);
+      }
+      if (mounted) setState(() {});
+    });
+  }
 }
