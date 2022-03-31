@@ -93,19 +93,23 @@ class _NotificationsPageState extends State<NotificationsPage> {
                                             child: Row(
                                               children: [
                                                 Center(
-                                                    child: Icon(Icons
-                                                        .delete_outline_rounded)),
+                                                    child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 20),
+                                                  child: Icon(Icons
+                                                      .delete_outline_rounded),
+                                                )),
                                                 SizedBox(
                                                   width: 2,
                                                 ),
                                                 Center(
                                                   child: Padding(
-                                                    padding: const EdgeInsets
-                                                            .symmetric(
-                                                        vertical: 12,
-                                                        horizontal: 10),
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 5),
                                                     child: Text(
-                                                      "Clear ",
+                                                      "Clear",
                                                       style: TextStyle(
                                                           fontSize: 16),
                                                     ),

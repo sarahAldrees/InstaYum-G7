@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:instayum/constant/app_colors.dart';
 import 'package:instayum/constant/app_globals.dart';
+import 'package:instayum/model/reported_account.dart';
 import 'package:instayum/model/user_model.dart';
 import 'package:instayum/widget/discover/search/search_users.dart';
 import 'package:instayum/widget/follow_and_notification/follow_user_service.dart';
@@ -91,7 +92,533 @@ class UserProfileViewState extends State<UserProfileView> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColors.primaryColor,
-        title: Text("${userUsername ?? ''} Profile"),
+        title: Text("${userUsername ?? ''}"),
+        actions: [
+          IconButton(
+              onPressed: () {
+                List<String>? userAlreadyReported = [];
+
+                FirebaseFirestore.instance
+                    .collection('admin')
+                    .doc("reportes")
+                    .collection("ReportedAcount")
+                    .where('userId', isEqualTo: widget.userId)
+                    .get()
+                    .then((doc) {
+                  if (doc != null && doc.docs.length > 0) {
+                    Map<String, dynamic>? data = doc.docs[0].data();
+                    ReprtedAccount reprtedAccount =
+                        ReprtedAccount.fromJson(data);
+                    print("------------------------kk-----kk------mk--------");
+                    if (!reprtedAccount.user_already_reported!
+                        .contains(AppGlobals.userId)) {
+                      reprtedAccount.user_already_reported!
+                          .add(AppGlobals.userId!);
+
+                      //       //-------show dailoge about reson----------------
+                      showDialog<void>(
+                        context: context,
+                        barrierDismissible: false,
+                        builder: (context) {
+                          return AlertDialog(
+                            shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(8)),
+                            ),
+                            title: Column(
+                              children: [
+                                Text(
+                                  'Why are you reporting this?',
+                                  style: TextStyle(fontSize: 16),
+                                ),
+                              ],
+                            ),
+                            actions: [
+                              Container(
+                                  width: double.infinity,
+                                  margin: EdgeInsets.fromLTRB(3, 0, 3, 15),
+                                  child: Padding(
+                                      padding: const EdgeInsets.only(
+                                          top: 0,
+                                          right: 30,
+                                          left: 30,
+                                          bottom: 0),
+                                      child: Column(
+                                        children: [
+                                          TextButton(
+                                            child: Text(
+                                              "hurting others or bullying",
+                                              style: TextStyle(fontSize: 16),
+                                            ),
+                                            style: TextButton.styleFrom(
+                                              primary: Color(0xFFeb6d44),
+                                              backgroundColor: Colors.white,
+                                              elevation: 0,
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          10)),
+                                            ),
+                                            onPressed: () {
+                                              FirebaseFirestore.instance
+                                                  .collection("admin")
+                                                  .doc("reportes")
+                                                  .collection("ReportedAcount")
+                                                  .doc(widget.userId)
+                                                  .update({
+                                                "no_reports": reprtedAccount
+                                                    .user_already_reported!
+                                                    .length,
+                                                "user_already_reported": FieldValue
+                                                    .arrayUnion(reprtedAccount
+                                                        .user_already_reported!),
+                                                "bullying":
+                                                    reprtedAccount.bullying! +
+                                                        1,
+                                              });
+                                              Navigator.pop(context);
+                                            },
+                                          ),
+                                          TextButton(
+                                            child: Text(
+                                              "fraudulent",
+                                              style: TextStyle(fontSize: 16),
+                                            ),
+                                            style: TextButton.styleFrom(
+                                              primary: Color(0xFFeb6d44),
+                                              backgroundColor: Colors.white,
+                                              //side: BorderSide(color: Colors.deepOrange, width: 1),
+                                              elevation: 0,
+                                              //minimumSize: Size(100, 50),
+                                              //shadowColor: Colors.red,
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          10)),
+                                            ),
+                                            onPressed: () {
+                                              FirebaseFirestore.instance
+                                                  .collection("admin")
+                                                  .doc("reportes")
+                                                  .collection("ReportedAcount")
+                                                  .doc(widget.userId)
+                                                  .update({
+                                                "no_reports": reprtedAccount
+                                                    .user_already_reported!
+                                                    .length,
+                                                "user_already_reported": FieldValue
+                                                    .arrayUnion(reprtedAccount
+                                                        .user_already_reported!),
+                                                "fraudulent":
+                                                    reprtedAccount.fraudulent! +
+                                                        1,
+                                              });
+
+                                              Navigator.pop(context);
+                                            },
+                                          ),
+                                          TextButton(
+                                            child: Text(
+                                              "unethical",
+                                              style: TextStyle(fontSize: 16),
+                                            ),
+                                            style: TextButton.styleFrom(
+                                              primary: Color(0xFFeb6d44),
+                                              backgroundColor: Colors.white,
+                                              elevation: 0,
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          10)),
+                                            ),
+                                            onPressed: () {
+                                              FirebaseFirestore.instance
+                                                  .collection("admin")
+                                                  .doc("reportes")
+                                                  .collection("ReportedAcount")
+                                                  .doc(widget.userId)
+                                                  .update({
+                                                "no_reports": reprtedAccount
+                                                    .user_already_reported!
+                                                    .length,
+                                                "user_already_reported": FieldValue
+                                                    .arrayUnion(reprtedAccount
+                                                        .user_already_reported!),
+                                                "unethical":
+                                                    reprtedAccount.unethical! +
+                                                        1,
+                                              });
+
+                                              Navigator.pop(context);
+                                            },
+                                          ),
+                                          TextButton(
+                                            child: Text(
+                                              "I do not Like it",
+                                              style: TextStyle(fontSize: 16),
+                                            ),
+                                            style: TextButton.styleFrom(
+                                              primary: Color(0xFFeb6d44),
+                                              backgroundColor: Colors.white,
+                                              elevation: 0,
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          10)),
+                                            ),
+                                            onPressed: () {
+                                              FirebaseFirestore.instance
+                                                  .collection("admin")
+                                                  .doc("reportes")
+                                                  .collection("ReportedAcount")
+                                                  .doc(widget.userId)
+                                                  .update({
+                                                "no_reports": reprtedAccount
+                                                    .user_already_reported!
+                                                    .length,
+                                                "user_already_reported": FieldValue
+                                                    .arrayUnion(reprtedAccount
+                                                        .user_already_reported!),
+                                                "IDontLike":
+                                                    reprtedAccount.IDontLike! +
+                                                        1,
+                                              });
+
+                                              Navigator.pop(context);
+                                            },
+                                          ),
+                                          ElevatedButton(
+                                              child: const Center(
+                                                child: Padding(
+                                                  padding:
+                                                      EdgeInsets.only(left: 30),
+                                                  child: Padding(
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            vertical: 12,
+                                                            horizontal: 10),
+                                                    child: Text(
+                                                      "cancel",
+                                                      style: TextStyle(
+                                                          fontSize: 16),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              style: ButtonStyle(
+                                                backgroundColor:
+                                                    MaterialStateProperty.all(
+                                                        Color(0xFFeb6d44)),
+                                              ),
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              }),
+                                        ],
+                                      )))
+                            ],
+                          );
+                        },
+                      );
+                      //-------------------1---------------------
+
+                      //-----------------------------------------------
+                    } else {
+                      print("you are reported ");
+
+                      //-------show dailoge about reson----------
+                      showDialog<void>(
+                        context: context,
+                        barrierDismissible: false,
+                        builder: (context) {
+                          return AlertDialog(
+                            shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(8)),
+                            ),
+                            title: Column(
+                              children: [
+                                Text(
+                                  'You have already reported !!',
+                                  style: TextStyle(fontSize: 16),
+                                ),
+                              ],
+                            ),
+                            actions: [
+                              Container(
+                                  width: double.infinity,
+                                  margin: EdgeInsets.fromLTRB(3, 0, 3, 15),
+                                  child: Padding(
+                                      padding: const EdgeInsets.only(
+                                          top: 0,
+                                          right: 30,
+                                          left: 30,
+                                          bottom: 0),
+                                      child: Column(
+                                        children: [
+                                          ElevatedButton(
+                                              child: const Center(
+                                                child: Padding(
+                                                  padding:
+                                                      EdgeInsets.only(left: 30),
+                                                  child: Padding(
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            vertical: 12,
+                                                            horizontal: 10),
+                                                    child: Text(
+                                                      "OK     ",
+                                                      style: TextStyle(
+                                                          fontSize: 16),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              style: ButtonStyle(
+                                                backgroundColor:
+                                                    MaterialStateProperty.all(
+                                                        Color(0xFFeb6d44)),
+                                              ),
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              }),
+                                        ],
+                                      )))
+                            ],
+                          );
+                        },
+                      );
+                      //-----------------------------------------
+                    }
+                  } else {
+                    //-------------------------------
+                    showDialog<void>(
+                      context: context,
+                      barrierDismissible: false,
+                      builder: (context) {
+                        return AlertDialog(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(8)),
+                          ),
+                          title: Column(
+                            children: [
+                              Text(
+                                'Why are you reporting this?',
+                                style: TextStyle(fontSize: 16),
+                              ),
+                            ],
+                          ),
+                          actions: [
+                            Container(
+                                width: double.infinity,
+                                margin: EdgeInsets.fromLTRB(3, 0, 3, 15),
+                                child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: 0, right: 30, left: 30, bottom: 0),
+                                    child: Column(
+                                      children: [
+                                        TextButton(
+                                          child: Text(
+                                            "hurting others or bullying",
+                                            style: TextStyle(fontSize: 16),
+                                          ),
+                                          style: TextButton.styleFrom(
+                                            primary: Color(0xFFeb6d44),
+                                            backgroundColor: Colors.white,
+                                            elevation: 0,
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(10)),
+                                          ),
+                                          onPressed: () {
+                                            userAlreadyReported
+                                                .add(AppGlobals.userId ?? '');
+
+                                            ReprtedAccount reprtedAccount =
+                                                ReprtedAccount(
+                                              userId: widget.userId,
+                                              username: userUsername,
+                                              user_already_reported:
+                                                  userAlreadyReported,
+                                              no_reports: 1,
+                                              fraudulent: 0,
+                                              bullying: 1,
+                                              unethical: 0,
+                                              IDontLike: 0,
+                                            );
+                                            FirebaseFirestore.instance
+                                                .collection("admin")
+                                                .doc("reportes")
+                                                .collection("ReportedAcount")
+                                                .doc(widget.userId)
+                                                .set(reprtedAccount.toJson());
+                                            Navigator.pop(context);
+                                          },
+                                        ),
+                                        TextButton(
+                                          child: Text(
+                                            "fraudulent",
+                                            style: TextStyle(fontSize: 16),
+                                          ),
+                                          style: TextButton.styleFrom(
+                                            primary: Color(0xFFeb6d44),
+                                            backgroundColor: Colors.white,
+                                            //side: BorderSide(color: Colors.deepOrange, width: 1),
+                                            elevation: 0,
+                                            //minimumSize: Size(100, 50),
+                                            //shadowColor: Colors.red,
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(10)),
+                                          ),
+                                          onPressed: () {
+                                            userAlreadyReported
+                                                .add(AppGlobals.userId ?? '');
+
+                                            ReprtedAccount reprtedAccount =
+                                                ReprtedAccount(
+                                              userId: widget.userId,
+                                              username: userUsername,
+                                              user_already_reported:
+                                                  userAlreadyReported,
+                                              no_reports: 1,
+                                              fraudulent: 1,
+                                              bullying: 0,
+                                              unethical: 0,
+                                              IDontLike: 0,
+                                            );
+                                            FirebaseFirestore.instance
+                                                .collection("admin")
+                                                .doc("reportes")
+                                                .collection("ReportedAcount")
+                                                .doc(widget.userId)
+                                                .set(reprtedAccount.toJson());
+
+                                            Navigator.pop(context);
+                                          },
+                                        ),
+                                        TextButton(
+                                          child: Text(
+                                            "unethical",
+                                            style: TextStyle(fontSize: 16),
+                                          ),
+                                          style: TextButton.styleFrom(
+                                            primary: Color(0xFFeb6d44),
+                                            backgroundColor: Colors.white,
+                                            elevation: 0,
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(10)),
+                                          ),
+                                          onPressed: () {
+                                            userAlreadyReported
+                                                .add(AppGlobals.userId ?? '');
+
+                                            ReprtedAccount reprtedAccount =
+                                                ReprtedAccount(
+                                              userId: widget.userId,
+                                              username: userUsername,
+                                              user_already_reported:
+                                                  userAlreadyReported,
+                                              no_reports: 1,
+                                              fraudulent: 0,
+                                              bullying: 0,
+                                              unethical: 1,
+                                              IDontLike: 0,
+                                            );
+                                            FirebaseFirestore.instance
+                                                .collection("admin")
+                                                .doc("reportes")
+                                                .collection("ReportedAcount")
+                                                .doc(widget.userId)
+                                                .set(reprtedAccount.toJson());
+
+                                            Navigator.pop(context);
+                                          },
+                                        ),
+                                        TextButton(
+                                          child: Text(
+                                            "I do not Like it",
+                                            style: TextStyle(fontSize: 16),
+                                          ),
+                                          style: TextButton.styleFrom(
+                                            primary: Color(0xFFeb6d44),
+                                            backgroundColor: Colors.white,
+                                            elevation: 0,
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(10)),
+                                          ),
+                                          onPressed: () {
+                                            //----
+                                            userAlreadyReported
+                                                .add(AppGlobals.userId ?? '');
+
+                                            ReprtedAccount reprtedAccount =
+                                                ReprtedAccount(
+                                              userId: widget.userId,
+                                              username: userUsername,
+                                              user_already_reported:
+                                                  userAlreadyReported,
+                                              no_reports: 1,
+                                              fraudulent: 0,
+                                              bullying: 0,
+                                              unethical: 0,
+                                              IDontLike: 1,
+                                            );
+                                            FirebaseFirestore.instance
+                                                .collection("admin")
+                                                .doc("reportes")
+                                                .collection("ReportedAcount")
+                                                .doc(widget.userId)
+                                                .set(reprtedAccount.toJson());
+                                            //----
+
+                                            Navigator.pop(context);
+                                          },
+                                        ),
+                                        ElevatedButton(
+                                            child: const Center(
+                                              child: Padding(
+                                                padding:
+                                                    EdgeInsets.only(left: 30),
+                                                child: Padding(
+                                                  padding: EdgeInsets.symmetric(
+                                                      vertical: 12,
+                                                      horizontal: 10),
+                                                  child: Text(
+                                                    "cancel    ",
+                                                    style:
+                                                        TextStyle(fontSize: 16),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            style: ButtonStyle(
+                                              backgroundColor:
+                                                  MaterialStateProperty.all(
+                                                      Color(0xFFeb6d44)),
+                                            ),
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            }),
+                                      ],
+                                    )))
+                          ],
+                        );
+                      },
+                    );
+
+                    //---------------------------
+
+                  }
+                });
+              },
+              icon: Icon(
+                Icons.flag_outlined,
+                size: 20,
+                color: Colors.white,
+              )),
+        ],
       ),
       body: isLoading
           ? CustomCircularLoader()

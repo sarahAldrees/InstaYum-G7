@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:instayum/constant/app_globals.dart';
 
 import 'package:instayum/model/comment_model.dart';
+import 'package:instayum/model/reported_comment.dart';
 import 'package:instayum/widget/add_recipe/recipe_service.dart';
 import 'package:instayum/widget/recipe_view/user_information_design.dart';
 
@@ -138,8 +139,8 @@ class CommentState extends State<Comments> {
         .collection("comments")
         .doc(commentRef)
         .set(comment.toJson());
-    if (_authorId != AppGlobals.userId)
-      RecipeService().sendNotificationToAuthor(_recipeId, userUsername);
+    // if (_authorId != AppGlobals.userId)
+    // RecipeService().sendNotificationToAuthor(_recipeId, userUsername);
   }
 
   void initState() {
@@ -307,18 +308,12 @@ class CommentListState extends State<CommentList> {
     print("-----------inside method_");
     print(key);
     await FirebaseFirestore.instance
-        // .collection("users")
-        // .doc(widget._authorId)
         .collection("recipes")
         .doc(widget._recipeID)
         .collection("comments")
         .doc(key)
         .delete();
   }
-
-  // deletCommentFromScreen(index) {
-  //   comments.remove(index);
-  // }
 
   Widget reportOrDeleteIcon(CommentModel comment) {
     final FirebaseAuth usId = FirebaseAuth.instance;
@@ -433,208 +428,499 @@ class CommentListState extends State<CommentList> {
       bool isEven = false;
       return IconButton(
           onPressed: () {
-            // List userAlreadyReported = [];
-            // bool isAlreadyReportedOn = false;
-            // bool isUserAlreadyReported = false;
-            // bool isEven = false;
-            // int counter = 0;
-            // databaseRef = FirebaseFirestore.instance
-            //     .collection("users")
-            //     .doc("7DNb5UkMjxVeMmY1Q7vPebXzdk73")
-            //     .collection("ReportedComment");
+            List<String>? userAlreadyReported = [];
 
-            // databaseRef.snapshots().listen((data) {
-            //   data.docs.forEach((doc) {
-            //     if (!isAlreadyReportedOn) {
-            //       //int s = 1;
-            //       print("//---------------------------------------//");
-            //       print(doc["commentRef"] == comment.commentRef);
-            //       if (doc["commentRef"] == comment.commentRef) {
-            //         isAlreadyReportedOn = true;
-            //         print(isAlreadyReportedOn);
-            //         print("ss");
-            //         //==========check if user rated ===============
-            //         userAlreadyReported =
-            //             List.from(doc.data()["user_already_reported"]);
-            //         counter = userAlreadyReported.length;
+            FirebaseFirestore.instance
+                .collection('admin')
+                .doc("reportes")
+                .collection("ReportedComment")
+                .where('commentRef', isEqualTo: comment.commentId)
+                .get()
+                .then((doc) {
+              if (doc != null && doc.docs.length > 0) {
+                Map<String, dynamic>? data = doc.docs[0].data();
+                ReprtedComment reprtedComment = ReprtedComment.fromJson(data);
+                print("------------------------kk-----kk------mk--------");
+                if (!reprtedComment.user_already_reported!
+                    .contains(_currentUser)) {
+                  reprtedComment.user_already_reported!.add(_currentUser);
+                  //-------show dailoge about reson----------------
+                  showDialog<void>(
+                    context: context,
+                    barrierDismissible: false,
+                    builder: (context) {
+                      return AlertDialog(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(8)),
+                        ),
+                        title: Column(
+                          children: [
+                            Text(
+                              'Why are you reporting this?',
+                              style: TextStyle(fontSize: 16),
+                            ),
+                          ],
+                        ),
+                        actions: [
+                          Container(
+                              width: double.infinity,
+                              margin: EdgeInsets.fromLTRB(3, 0, 3, 15),
+                              child: Padding(
+                                  padding: const EdgeInsets.only(
+                                      top: 0, right: 30, left: 30, bottom: 0),
+                                  child: Column(
+                                    children: [
+                                      TextButton(
+                                        child: Text(
+                                          "hurting others or bullying",
+                                          style: TextStyle(fontSize: 16),
+                                        ),
+                                        style: TextButton.styleFrom(
+                                          primary: Color(0xFFeb6d44),
+                                          backgroundColor: Colors.white,
+                                          elevation: 0,
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10)),
+                                        ),
+                                        onPressed: () {
+                                          FirebaseFirestore.instance
+                                              .collection("admin")
+                                              .doc("reportes")
+                                              .collection("ReportedComment")
+                                              .doc(comment.commentId)
+                                              .update({
+                                            "no_reports": reprtedComment
+                                                .user_already_reported!.length,
+                                            "user_already_reported": FieldValue
+                                                .arrayUnion(reprtedComment
+                                                    .user_already_reported!),
+                                            "bullying":
+                                                reprtedComment.bullying! + 1,
+                                          });
+                                          Navigator.pop(context);
+                                        },
+                                      ),
+                                      TextButton(
+                                        child: Text(
+                                          "fraudulent",
+                                          style: TextStyle(fontSize: 16),
+                                        ),
+                                        style: TextButton.styleFrom(
+                                          primary: Color(0xFFeb6d44),
+                                          backgroundColor: Colors.white,
+                                          //side: BorderSide(color: Colors.deepOrange, width: 1),
+                                          elevation: 0,
+                                          //minimumSize: Size(100, 50),
+                                          //shadowColor: Colors.red,
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10)),
+                                        ),
+                                        onPressed: () {
+                                          FirebaseFirestore.instance
+                                              .collection("admin")
+                                              .doc("reportes")
+                                              .collection("ReportedComment")
+                                              .doc(comment.commentId)
+                                              .update({
+                                            "no_reports": reprtedComment
+                                                .user_already_reported!.length,
+                                            "user_already_reported": FieldValue
+                                                .arrayUnion(reprtedComment
+                                                    .user_already_reported!),
+                                            "fraudulent":
+                                                reprtedComment.fraudulent! + 1,
+                                          });
 
-            //         print(isAlreadyReportedOn);
-            //         for (int i = 0; i < userAlreadyReported.length; i++) {
-            //           if (userAlreadyReported[i] == _currentUser) {
-            //             isUserAlreadyReported = true;
-            //             print(isAlreadyReportedOn);
+                                          Navigator.pop(context);
+                                        },
+                                      ),
+                                      TextButton(
+                                        child: Text(
+                                          "unethical",
+                                          style: TextStyle(fontSize: 16),
+                                        ),
+                                        style: TextButton.styleFrom(
+                                          primary: Color(0xFFeb6d44),
+                                          backgroundColor: Colors.white,
+                                          elevation: 0,
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10)),
+                                        ),
+                                        onPressed: () {
+                                          FirebaseFirestore.instance
+                                              .collection("admin")
+                                              .doc("reportes")
+                                              .collection("ReportedComment")
+                                              .doc(comment.commentId)
+                                              .update({
+                                            "no_reports": reprtedComment
+                                                .user_already_reported!.length,
+                                            "user_already_reported": FieldValue
+                                                .arrayUnion(reprtedComment
+                                                    .user_already_reported!),
+                                            "unethical":
+                                                reprtedComment.unethical! + 1,
+                                          });
 
-            //             break;
-            //           }
-            //         }
-            //         ;
-            //       }
-            //     }
+                                          Navigator.pop(context);
+                                        },
+                                      ),
+                                      TextButton(
+                                        child: Text(
+                                          "I do not Like it",
+                                          style: TextStyle(fontSize: 16),
+                                        ),
+                                        style: TextButton.styleFrom(
+                                          primary: Color(0xFFeb6d44),
+                                          backgroundColor: Colors.white,
+                                          elevation: 0,
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10)),
+                                        ),
+                                        onPressed: () {
+                                          FirebaseFirestore.instance
+                                              .collection("admin")
+                                              .doc("reportes")
+                                              .collection("ReportedComment")
+                                              .doc(comment.commentId)
+                                              .update({
+                                            "no_reports": reprtedComment
+                                                .user_already_reported!.length,
+                                            "user_already_reported": FieldValue
+                                                .arrayUnion(reprtedComment
+                                                    .user_already_reported!),
+                                            "IDontLike":
+                                                reprtedComment.IDontLike! + 1,
+                                          });
 
-            //     print(isAlreadyReportedOn);
-            //   });
+                                          Navigator.pop(context);
+                                        },
+                                      ),
+                                      ElevatedButton(
+                                          child: const Center(
+                                            child: Padding(
+                                              padding:
+                                                  EdgeInsets.only(left: 30),
+                                              child: Padding(
+                                                padding: EdgeInsets.symmetric(
+                                                    vertical: 12,
+                                                    horizontal: 10),
+                                                child: Text(
+                                                  "cancel",
+                                                  style:
+                                                      TextStyle(fontSize: 16),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          style: ButtonStyle(
+                                            backgroundColor:
+                                                MaterialStateProperty.all(
+                                                    Color(0xFFeb6d44)),
+                                          ),
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          }),
+                                    ],
+                                  )))
+                        ],
+                      );
+                    },
+                  );
+                  //-------------------1---------------------
 
-            //   if (isAlreadyReportedOn == false && isEven == false) {
-            //     print("----------------------------------------444");
-            //     print(isAlreadyReportedOn);
-            //     userAlreadyReported.add(_currentUser);
-            //     FirebaseFirestore.instance
-            //         .collection("users")
-            //         .doc("7DNb5UkMjxVeMmY1Q7vPebXzdk73")
-            //         .collection("comments")
-            //         .doc(comment.commentRef)
-            //         .set({
-            //       "commentRef": comment.commentRef,
-            //       "recipeAuther": widget._authorId,
-            //       "recipeId": widget._recipeID,
-            //       "commentOwner": comment.username,
-            //       "imageURLComment": comment.commentImgUrl,
-            //       "commentText": comment.comment,
-            //       "commentDate": comment.date,
-            //       "user_already_reported":
-            //           FieldValue.arrayUnion(userAlreadyReported),
-            //       "no_reports": counter,
-            //     });
+                  //-----------------------------------------------
+                } else {
+                  print("you are reported ");
 
-            //     showDialog<void>(
-            //       context: context,
-            //       barrierDismissible: false,
-            //       builder: (context) {
-            //         return AlertDialog(
-            //           shape: RoundedRectangleBorder(
-            //             borderRadius: BorderRadius.all(Radius.circular(15)),
-            //           ),
-            //           title: Text(' Thank you for report'),
-            //           content: Text(
-            //               ' and Appropriate action will be taken by the support team'),
-            //           actions: [
-            //             Container(
-            //               width: double.infinity,
-            //               margin: EdgeInsets.all(0),
-            //               child: Padding(
-            //                 padding: const EdgeInsets.only(
-            //                     top: 15, right: 0, left: 0, bottom: 0),
-            //                 child: ElevatedButton(
-            //                     child: Padding(
-            //                       padding:
-            //                           const EdgeInsets.symmetric(vertical: 10),
-            //                       child: Text("close"),
-            //                     ),
-            //                     style: ButtonStyle(
-            //                       backgroundColor: MaterialStateProperty.all(
-            //                           Color(0xFFeb6d44)),
-            //                     ),
-            //                     onPressed: () {
-            //                       Navigator.pop(context);
-            //                     }),
-            //               ),
-            //             ),
-            //           ],
-            //         );
-            //       },
-            //     );
-            //   } else {
-            //     if (isUserAlreadyReported == false) {
-            //       print("// in sid if -----------------");
-            //       userAlreadyReported.add(_currentUser);
-            //       FirebaseFirestore.instance
-            //           .collection("users")
-            //           .doc("7DNb5UkMjxVeMmY1Q7vPebXzdk73")
-            //           .collection("ReportedComment")
-            //           .doc(comment.commentRef)
-            //           .set({
-            //         "commentRef": comment.commentRef,
-            //         "recipeAuther": widget._authorId,
-            //         "recipeId": widget._recipeID,
-            //         "commentOwner": comment.username,
-            //         "imageURLComment": comment.commentImgUrl,
-            //         "commentText": comment.comment,
-            //         "commentDate": comment.date,
-            //         "user_already_reported":
-            //             FieldValue.arrayUnion(userAlreadyReported),
-            //       });
-            //       isUserAlreadyReported = true;
-            //       showDialog<void>(
-            //         context: context,
-            //         barrierDismissible: false,
-            //         builder: (context) {
-            //           return AlertDialog(
-            //             shape: RoundedRectangleBorder(
-            //               borderRadius: BorderRadius.all(Radius.circular(15)),
-            //             ),
-            //             title: Text(' Thank you for helping'),
-            //             content: Text(' You have already rated it'),
-            //             actions: [
-            //               Container(
-            //                 width: double.infinity,
-            //                 margin: EdgeInsets.all(0),
-            //                 child: Padding(
-            //                   padding: const EdgeInsets.only(
-            //                       top: 15, right: 0, left: 0, bottom: 0),
-            //                   child: ElevatedButton(
-            //                       child: Padding(
-            //                         padding: const EdgeInsets.symmetric(
-            //                             vertical: 10),
-            //                         child: Text("close"),
-            //                       ),
-            //                       style: ButtonStyle(
-            //                         backgroundColor: MaterialStateProperty.all(
-            //                             Color(0xFFeb6d44)),
-            //                       ),
-            //                       onPressed: () {
-            //                         Navigator.pop(context);
-            //                       }),
-            //                 ),
-            //               ),
-            //             ],
-            //           );
-            //         },
-            //       );
-            //     } else {
-            //       print("inside else");
-            //       if (isUserAlreadyReported) {
-            //         showDialog<void>(
-            //           context: context,
-            //           barrierDismissible: false,
-            //           builder: (context) {
-            //             return AlertDialog(
-            //               shape: RoundedRectangleBorder(
-            //                 borderRadius: BorderRadius.all(Radius.circular(15)),
-            //               ),
-            //               title: Text(' Thank you '),
-            //               content: Text(' You have already rated it'),
-            //               actions: [
-            //                 Container(
-            //                   width: double.infinity,
-            //                   margin: EdgeInsets.all(0),
-            //                   child: Padding(
-            //                     padding: const EdgeInsets.only(
-            //                         top: 15, right: 0, left: 0, bottom: 0),
-            //                     child: ElevatedButton(
-            //                         child: Padding(
-            //                           padding: const EdgeInsets.symmetric(
-            //                               vertical: 10),
-            //                           child: Text("close"),
-            //                         ),
-            //                         style: ButtonStyle(
-            //                           backgroundColor:
-            //                               MaterialStateProperty.all(
-            //                                   Color(0xFFeb6d44)),
-            //                         ),
-            //                         onPressed: () {
-            //                           Navigator.pop(context);
-            //                         }),
-            //                   ),
-            //                 ),
-            //               ],
-            //             );
-            //           },
-            //         );
-            //       }
-            //     }
-            //   }
-            //   isEven = false;
-            // });
+                  //-------show dailoge about reson----------
+                  showDialog<void>(
+                    context: context,
+                    barrierDismissible: false,
+                    builder: (context) {
+                      return AlertDialog(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(8)),
+                        ),
+                        title: Column(
+                          children: [
+                            Text(
+                              'You have already reported !!',
+                              style: TextStyle(fontSize: 16),
+                            ),
+                          ],
+                        ),
+                        actions: [
+                          Container(
+                              width: double.infinity,
+                              margin: EdgeInsets.fromLTRB(3, 0, 3, 15),
+                              child: Padding(
+                                  padding: const EdgeInsets.only(
+                                      top: 0, right: 30, left: 30, bottom: 0),
+                                  child: Column(
+                                    children: [
+                                      ElevatedButton(
+                                          child: const Center(
+                                            child: Padding(
+                                              padding:
+                                                  EdgeInsets.only(left: 30),
+                                              child: Padding(
+                                                padding: EdgeInsets.symmetric(
+                                                    vertical: 12,
+                                                    horizontal: 10),
+                                                child: Text(
+                                                  "OK     ",
+                                                  style:
+                                                      TextStyle(fontSize: 16),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          style: ButtonStyle(
+                                            backgroundColor:
+                                                MaterialStateProperty.all(
+                                                    Color(0xFFeb6d44)),
+                                          ),
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          }),
+                                    ],
+                                  )))
+                        ],
+                      );
+                    },
+                  );
+                  //-----------------------------------------
+                }
+              } else {
+                //-------------------------------
+                showDialog<void>(
+                  context: context,
+                  barrierDismissible: false,
+                  builder: (context) {
+                    return AlertDialog(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(8)),
+                      ),
+                      title: Column(
+                        children: [
+                          Text(
+                            'Why are you reporting this?',
+                            style: TextStyle(fontSize: 16),
+                          ),
+                        ],
+                      ),
+                      actions: [
+                        Container(
+                            width: double.infinity,
+                            margin: EdgeInsets.fromLTRB(3, 0, 3, 15),
+                            child: Padding(
+                                padding: const EdgeInsets.only(
+                                    top: 0, right: 30, left: 30, bottom: 0),
+                                child: Column(
+                                  children: [
+                                    TextButton(
+                                      child: Text(
+                                        "hurting others or bullying",
+                                        style: TextStyle(fontSize: 16),
+                                      ),
+                                      style: TextButton.styleFrom(
+                                        primary: Color(0xFFeb6d44),
+                                        backgroundColor: Colors.white,
+                                        elevation: 0,
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10)),
+                                      ),
+                                      onPressed: () {
+                                        userAlreadyReported.add(_currentUser);
+
+                                        ReprtedComment reprtedComment =
+                                            ReprtedComment(
+                                          commentRef: comment.commentId,
+                                          commentDate: comment.shownDate,
+                                          commentOwner: comment.username,
+                                          commentText: comment.comment,
+                                          recipeId: widget._recipeID,
+                                          user_already_reported:
+                                              userAlreadyReported,
+                                          no_reports: 1,
+                                          fraudulent: 0,
+                                          bullying: 1,
+                                          unethical: 0,
+                                          IDontLike: 0,
+                                        );
+                                        FirebaseFirestore.instance
+                                            .collection("admin")
+                                            .doc("reportes")
+                                            .collection("ReportedComment")
+                                            .doc(comment.commentId)
+                                            .set(reprtedComment.toJson());
+                                        Navigator.pop(context);
+                                      },
+                                    ),
+                                    TextButton(
+                                      child: Text(
+                                        "fraudulent",
+                                        style: TextStyle(fontSize: 16),
+                                      ),
+                                      style: TextButton.styleFrom(
+                                        primary: Color(0xFFeb6d44),
+                                        backgroundColor: Colors.white,
+                                        //side: BorderSide(color: Colors.deepOrange, width: 1),
+                                        elevation: 0,
+                                        //minimumSize: Size(100, 50),
+                                        //shadowColor: Colors.red,
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10)),
+                                      ),
+                                      onPressed: () {
+                                        userAlreadyReported.add(_currentUser);
+                                        ReprtedComment reprtedComment =
+                                            ReprtedComment(
+                                          commentRef: comment.commentId,
+                                          commentDate: comment.shownDate,
+                                          commentOwner: comment.username,
+                                          commentText: comment.comment,
+                                          recipeId: widget._recipeID,
+                                          user_already_reported:
+                                              userAlreadyReported,
+                                          no_reports: 1,
+                                          fraudulent: 1,
+                                          bullying: 0,
+                                          unethical: 0,
+                                          IDontLike: 0,
+                                        );
+                                        FirebaseFirestore.instance
+                                            .collection("admin")
+                                            .doc("reportes")
+                                            .collection("ReportedComment")
+                                            .doc(comment.commentId)
+                                            .set(reprtedComment.toJson());
+
+                                        Navigator.pop(context);
+                                      },
+                                    ),
+                                    TextButton(
+                                      child: Text(
+                                        "unethical",
+                                        style: TextStyle(fontSize: 16),
+                                      ),
+                                      style: TextButton.styleFrom(
+                                        primary: Color(0xFFeb6d44),
+                                        backgroundColor: Colors.white,
+                                        elevation: 0,
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10)),
+                                      ),
+                                      onPressed: () {
+                                        userAlreadyReported.add(_currentUser);
+                                        ReprtedComment reprtedComment =
+                                            ReprtedComment(
+                                          commentRef: comment.commentId,
+                                          commentDate: comment.shownDate,
+                                          commentOwner: comment.username,
+                                          commentText: comment.comment,
+                                          recipeId: widget._recipeID,
+                                          user_already_reported:
+                                              userAlreadyReported,
+                                          no_reports: 1,
+                                          fraudulent: 0,
+                                          bullying: 0,
+                                          unethical: 1,
+                                          IDontLike: 0,
+                                        );
+                                        FirebaseFirestore.instance
+                                            .collection("admin")
+                                            .doc("reportes")
+                                            .collection("ReportedComment")
+                                            .doc(comment.commentId)
+                                            .set(reprtedComment.toJson());
+
+                                        Navigator.pop(context);
+                                      },
+                                    ),
+                                    TextButton(
+                                      child: Text(
+                                        "I do not Like it",
+                                        style: TextStyle(fontSize: 16),
+                                      ),
+                                      style: TextButton.styleFrom(
+                                        primary: Color(0xFFeb6d44),
+                                        backgroundColor: Colors.white,
+                                        elevation: 0,
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10)),
+                                      ),
+                                      onPressed: () {
+                                        //----
+                                        userAlreadyReported.add(_currentUser);
+                                        ReprtedComment reprtedComment =
+                                            ReprtedComment(
+                                          commentRef: comment.commentId,
+                                          commentDate: comment.shownDate,
+                                          commentOwner: comment.username,
+                                          commentText: comment.comment,
+                                          recipeId: widget._recipeID,
+                                          user_already_reported:
+                                              userAlreadyReported,
+                                          no_reports: 1,
+                                          fraudulent: 0,
+                                          bullying: 0,
+                                          unethical: 0,
+                                          IDontLike: 1,
+                                        );
+                                        FirebaseFirestore.instance
+                                            .collection("admin")
+                                            .doc("reportes")
+                                            .collection("ReportedComment")
+                                            .doc(comment.commentId)
+                                            .set(reprtedComment.toJson());
+                                        //----
+
+                                        Navigator.pop(context);
+                                      },
+                                    ),
+                                    ElevatedButton(
+                                        child: const Center(
+                                          child: Padding(
+                                            padding: EdgeInsets.only(left: 30),
+                                            child: Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                  vertical: 12, horizontal: 10),
+                                              child: Text(
+                                                "cancel    ",
+                                                style: TextStyle(fontSize: 16),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        style: ButtonStyle(
+                                          backgroundColor:
+                                              MaterialStateProperty.all(
+                                                  Color(0xFFeb6d44)),
+                                        ),
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        }),
+                                  ],
+                                )))
+                      ],
+                    );
+                  },
+                );
+
+                //---------------------------
+
+              }
+            });
           },
           icon: Icon(
             Icons.flag_outlined,
