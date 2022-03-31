@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:instayum/model/checkbox_state.dart';
 
@@ -61,12 +62,77 @@ class convert extends State<ConvertTocheckBox> {
       controlAffinity: ListTileControlAffinity.leading,
       activeColor: Color(0xFFeb6d44),
       value: checkbox.outvalue,
-      title: Text(checkbox.title!,
-          style: TextStyle(
-            decoration: checkbox.checkedstyle,
-            decorationColor: Color(0xFFeb6d44),
-            decorationThickness: 4,
-          )),
+      title: widget.title == "Dirctions"
+          ? Text(checkbox.title!,
+              style: TextStyle(
+                decoration: checkbox.checkedstyle,
+                decorationColor: Color(0xFFeb6d44),
+                decorationThickness: 4,
+              ))
+          : widget.title == "Ingrediants"
+              ? Row(
+                  children: [
+                    Text(checkbox.title!,
+                        style: TextStyle(
+                          decoration: checkbox.checkedstyle,
+                          decorationColor: Color(0xFFeb6d44),
+                          decorationThickness: 4,
+                        )),
+                    Spacer(),
+                    IconButton(
+                        icon: Icon(Icons.add_shopping_cart_outlined),
+                        onPressed: () {
+                          //checkbox.title
+
+                          showDialog(
+                              barrierDismissible: false,
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  title: Column(
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Container(
+                                            // margin: EdgeInsets.only(left: ),
+                                            // padding: EdgeInsets.only(right: 6),
+                                            child: IconButton(
+                                              onPressed: () =>
+                                                  Navigator.pop(context),
+                                              icon: Icon(
+                                                Icons.arrow_back,
+                                                size: 20,
+                                                color: Colors.orange[800],
+                                              ),
+                                            ),
+                                          ),
+                                          Text('Add to Shoping List'),
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: 20,
+                                      ),
+                                      AddToShoppingList(checkbox.title!),
+                                      SizedBox(
+                                        height: 20,
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              });
+                        }),
+                  ],
+                )
+              : Row(
+                  children: [
+                    Text(checkbox.title!,
+                        style: TextStyle(
+                          decoration: checkbox.checkedstyle,
+                          decorationColor: Color(0xFFeb6d44),
+                          decorationThickness: 4,
+                        )),
+                  ],
+                ),
       onChanged: (value) {
         setState(() {
           checkbox.outvalue = value!;
@@ -77,4 +143,35 @@ class convert extends State<ConvertTocheckBox> {
           }
         });
       });
+
+  Widget AddToShoppingList(String? ingredant) {
+//نشيك ان هل الانقريدات  موجود او لا
+    TextEditingController? textController;
+
+    textController = TextEditingController(text: ingredant);
+
+    return
+        // Row(children: [
+        TextFormField(
+      decoration: InputDecoration(
+          suffixIcon: TextButton(
+        style: TextButton.styleFrom(
+          padding: const EdgeInsets.all(16.0),
+          backgroundColor: Color(0xFFeb6d44),
+          primary: Colors.white,
+          textStyle: const TextStyle(fontSize: 14),
+        ),
+        onPressed: () {
+          Navigator.pop(context);
+        },
+        child: Text("Add"),
+      )),
+      controller: textController,
+      onChanged: (value) {
+        ingredant = textController!.text;
+      },
+    );
+
+    //]);
+  }
 }

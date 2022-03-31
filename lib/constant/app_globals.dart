@@ -5,6 +5,7 @@ class AppGlobals {
   static String? userName;
   static String? userImage;
   // static String? fullName;
+  static List<String?> shoppingList = [];
   static String? email;
   static String? pushToken;
   static List<String?> allFollowing = [];
@@ -39,6 +40,7 @@ class AppGlobals {
     userName = null;
     userImage = null;
     // fullName = null;
+    shoppingList.clear();
     email = null;
     pushToken = null;
     allFollowing.clear();

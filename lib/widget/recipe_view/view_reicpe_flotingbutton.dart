@@ -22,7 +22,7 @@ class _ExpandableFabState extends State<ExpandableFab>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   Animation<double>? _expandAnimation;
-  bool _open = false; //if button clicked or not
+  bool _open = true; //if button clicked or not
 
   @override
   void initState() {
@@ -33,6 +33,7 @@ class _ExpandableFabState extends State<ExpandableFab>
       duration: const Duration(milliseconds: 250),
       vsync: this,
     );
+    //----------------------
     _expandAnimation = CurvedAnimation(
       curve: Curves.fastOutSlowIn,
       reverseCurve: Curves.easeOutQuad,
@@ -100,7 +101,7 @@ class _ExpandableFabState extends State<ExpandableFab>
   List<Widget> _buildExpandingActionButtons() {
     final children = <Widget>[];
     final count = widget.children!.length;
-    final step = 90.0 / (count - 1);
+    final step = 90.0 / (4 - 1);
     for (var i = 0, angleInDegrees = 0.0;
         i < count;
         i++, angleInDegrees += step) {

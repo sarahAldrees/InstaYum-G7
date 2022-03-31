@@ -99,6 +99,7 @@ class _MainState extends State<Main> {
         AppGlobals.email = data['email'];
         AppGlobals.userName = data['username'];
         // AppGlobals.fullName = data['fullName'];
+        AppGlobals.shoppingList = List.from(data['shoppingList']);
         AppGlobals.pushToken = data['pushToken'];
         AppGlobals.userImage = data['image_url'];
         AppGlobals.userId = user.uid;

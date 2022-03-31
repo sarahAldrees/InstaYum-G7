@@ -559,11 +559,7 @@ class _RecipeViewState extends State<RecipeView> {
     //     : NetworkImage(widget._mainImageUrl);
 
     //----titles of buttons that inside floting button-----
-    const _actionTitles = [
-      'Add ingrediants To Shopoing List',
-      'Reating',
-      'Add Comment'
-    ];
+    const _actionTitles = ['Reating', 'Add Comment'];
 
     //-------------
     return Scaffold(
@@ -592,10 +588,6 @@ class _RecipeViewState extends State<RecipeView> {
       floatingActionButton: ExpandableFab(
         distance: 100.0,
         children: [
-          ActionButton(
-            onPressed: () {},
-            icon: const Icon(Icons.shopping_bag),
-          ),
           //---------------to view action button rating and open smale windo to get the rate ---------------------
           RatingRecipe(
             recipeId: widget.recipeid,
