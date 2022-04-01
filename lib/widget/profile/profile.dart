@@ -7,6 +7,7 @@ import 'package:instayum/widget/bookmark/cookbook_recipes.dart';
 import 'package:instayum/widget/follow_and_notification/follow_tile.dart';
 import 'package:instayum/widget/meal_plan/my_mealplans_screen.dart';
 import 'package:instayum/widget/profile/followers_numbers.dart';
+import 'package:instayum/widget/shopping_list/shopping_list_page.dart';
 import '../recipe_view/my_recipes_screen.dart';
 import '../bookmark/bookmarks_recipes_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -41,11 +42,15 @@ class ProfileState extends State<Profile> {
         Map data = userData.data()!;
         AppGlobals.email = data['email'];
         AppGlobals.userName = data['username'];
-        //AppGlobals.fullName = data['fullName'];
+
         AppGlobals.pushToken = data['pushToken'];
         AppGlobals.userImage = data['image_url'];
         AppGlobals.userId = user.uid;
-
+        if (userData.data()!.containsKey("shoppingList")) {
+          AppGlobals.shoppingList = List.from(data['shoppingList']);
+          ShoppingListState.ShoppingList.clear();
+          ShoppingListState.ShoppingList = List.from(data["shoppingList"]);
+        }
         userUsername = data['username'];
         imageURL = data['image_url'];
         uId = user.uid;

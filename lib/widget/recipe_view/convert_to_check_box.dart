@@ -3,6 +3,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:instayum/constant/app_globals.dart';
+import 'package:instayum/main.dart';
 import 'package:instayum/model/checkbox_state.dart';
 import 'package:instayum/widget/shopping_list/shopping_list_page.dart';
 
@@ -454,6 +455,14 @@ class convert extends State<ConvertTocheckBox> {
           if (ShoppingListState.ShoppingList.contains(ingredant) ||
               ingredant == null ||
               ingredant == "") {
+            Navigator.pop(context);
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                  content:
+                      Text("the field is empty or ingredient is already exist"),
+                  backgroundColor: Theme.of(context).errorColor),
+            );
+            print(ingredant);
           } else {
             // -------- Add the ingredant to the shoping list------------
             ShoppingListState.ShoppingList.add(ingredant);
@@ -466,8 +475,13 @@ class convert extends State<ConvertTocheckBox> {
               "shoppingList":
                   FieldValue.arrayUnion(ShoppingListState.ShoppingList)
             });
+            Navigator.pop(context);
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                  content: Text("added succesfuly"),
+                  backgroundColor: Colors.green),
+            );
           }
-          Navigator.pop(context);
         },
         child: Text("Add"),
       )),
