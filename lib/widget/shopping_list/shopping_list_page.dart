@@ -10,7 +10,7 @@ class ShoppingListPage extends StatefulWidget {
 }
 
 class ShoppingListState extends State<ShoppingListPage> {
-  List<String> _ShoppingList = [];
+  static List<String?> ShoppingList = [];
 
   bool outvalue = false; //outvalue is change the state of check list
   var checkedstyle = TextDecoration.none;
@@ -18,11 +18,57 @@ class ShoppingListState extends State<ShoppingListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ConvertTocheckBox(
-        _ShoppingList,
-        "",
-      ),
-    );
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        floatingActionButton: FloatingActionButton.extended(
+          onPressed: () {
+            showDialog(
+                barrierDismissible: false,
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Container(
+                              // margin: EdgeInsets.only(left: ),
+                              // padding: EdgeInsets.only(right: 6),
+                              child: IconButton(
+                                onPressed: () => Navigator.pop(context),
+                                icon: Icon(
+                                  Icons.arrow_back,
+                                  size: 20,
+                                  color: Colors.orange[800],
+                                ),
+                              ),
+                            ),
+                            Text('Add to Shoping List'),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        convert.AddToShoppingList("", context),
+                        SizedBox(
+                          height: 20,
+                        ),
+                      ],
+                    ),
+                  );
+                });
+          },
+          label: Text("Add a new ingrediant"),
+          backgroundColor: Color(0xFFeb6d44),
+          //Color(0xFFeb6d44),
+        ),
+        body: !ShoppingList.isEmpty
+            ? ConvertTocheckBox(
+                ShoppingListState.ShoppingList,
+                "",
+              )
+            : Center(
+                child: Text("the shoping List is empty"),
+              ));
   }
 
   @override
@@ -53,12 +99,12 @@ class ShoppingListState extends State<ShoppingListPage> {
         .doc(AppGlobals.userId)
         .snapshots()
         .listen((data) {
-      if (data["shoppingList"] != null) {
-        _ShoppingList.clear();
-        _ShoppingList = List.from(data["shoppingList"]);
-        print("============== @@@@ ==================");
-        print(data["shoppingList"][0]);
+      if (data.data()!.containsKey("shoppingList")) {
+        ShoppingListState.ShoppingList.clear();
+        ShoppingListState.ShoppingList = List.from(data["shoppingList"]);
       }
+      print("============== @@@@ ==================");
+      // print(data["shoppingList"][0]);
       if (mounted) setState(() {});
     });
   }

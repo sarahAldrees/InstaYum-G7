@@ -50,6 +50,7 @@ dependencies:
   another_flushbar: ^1.10.28
   avatar_glow: ^2.0.2
   speech_to_text: ^5.4.3
+  flutter_speed_dial: ^5.0.0+1
 
 dev_dependencies:
   flutter_test:

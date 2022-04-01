@@ -419,7 +419,7 @@ class appPages extends State<MainPages> {
             BottomNavigationBarItem(
                 icon: Icon(Icons.add_sharp), label: "Add Recipe"),
             BottomNavigationBarItem(
-                icon: Icon(Icons.shopping_bag), label: "Shopping List"),
+                icon: Icon(Icons.shopping_cart), label: "Shopping List"),
             BottomNavigationBarItem(
                 icon: Icon(Icons.account_box_sharp), label: "Profile"),
           ],

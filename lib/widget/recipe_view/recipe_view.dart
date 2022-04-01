@@ -2,29 +2,18 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:instayum/constant/app_globals.dart';
 import 'package:instayum/model/cookbook.dart';
 import 'package:instayum/model/recipe.dart';
 import 'package:instayum/widget/bookmark/bookmarks_recipes_screen.dart';
 import 'package:instayum/widget/bookmark/cookbook_item.dart';
-import 'package:instayum/widget/bookmark/cookbook_recipes.dart';
 import 'package:instayum/widget/profile/circular_loader.dart';
 import 'package:instayum/widget/recipe_view/comment.dart';
 import 'package:instayum/widget/recipe_view/convert_to_check_box.dart';
 import 'package:instayum/widget/recipe_view/rating_recipe.dart';
 import 'package:instayum/widget/recipe_view/user_information_design.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:instayum/widget/recipe_view/view_reicpe_flotingbutton.dart';
-// import 'package:instayum1/widget/bookmark/cookbook_item.dart';
-// import 'package:instayum1/widget/bookmark/cookbook_recipes.dart';
-// import 'package:instayum1/widget/recipe_view/comment.dart';
-// import 'package:instayum1/widget/recipe_view/convert_to_check_box.dart';
-// import 'package:instayum1/widget/recipe_view/rating_recipe.dart';
-// import 'package:instayum1/widget/recipe_view/user_information_design.dart';
-// import 'package:instayum1/widget/recipe_view/view_reicpe_flotingbutton.dart';
-// import 'package:carousel_slider/carousel_slider.dart';
-// import 'package:instayum1/widget/bookmark/bookmarks_recipes_screen.dart';
 
 class RecipeView extends StatefulWidget {
   String? cookbook;
@@ -559,9 +548,7 @@ class _RecipeViewState extends State<RecipeView> {
     //     : NetworkImage(widget._mainImageUrl);
 
     //----titles of buttons that inside floting button-----
-    const _actionTitles = ['Reating', 'Add Comment'];
 
-    //-------------
     return Scaffold(
       // ignore: unnecessary_new
       appBar: new AppBar(
@@ -585,7 +572,60 @@ class _RecipeViewState extends State<RecipeView> {
         ],
       ),
       //--------------------floating button that contain comment and rating button -------------------------
-      floatingActionButton: ExpandableFab(
+      floatingActionButton:
+          // SpeedDial(
+          //   visible: true,
+          //   curve: Curves.bounceInOut,
+          //   overlayOpacity: 0,
+          //   animatedIcon: AnimatedIcons.menu_close,
+          //   //  buttonSize: ,
+          //   spacing: 12,
+          //   spaceBetweenChildren: 12,
+          //   children: [
+          //     SpeedDialChild(
+          //       label: "rating on recipee",
+          //       child:
+          //           //---------------to view action button rating and open smale windo to get the rate ---------------------
+
+          //           RatingRecipe(
+          //         recipeId: widget.recipeid,
+          //         autherId: widget.autherId,
+          //         onRating: (status) {
+          //           print(r'status is $status');
+          //           if (status == true) {
+          //             // referesh the page after rating
+          //             // setState(() {});
+          //             Navigator.pushReplacement(
+          //                 context,
+          //                 MaterialPageRoute(
+          //                   builder: (context) => RecipeView(
+          //                     recipeid: widget.recipeid,
+          //                     autherId: widget.autherId,
+          //                   ),
+          //                 ));
+          //           }
+          //         },
+          //       ),
+          //     ),
+          //     // -------------comments button to open comment page -------------
+
+          //     SpeedDialChild(
+          //       label: "Comment Pag",
+          //       child: ActionButton(
+          //         onPressed: () {
+          //           Navigator.push(
+          //               context,
+          //               MaterialPageRoute(
+          //                   builder: (context) =>
+          //                       Comments(widget.recipeid, widget.autherId)));
+          //         },
+          //         icon: const Icon(Icons.comment_sharp),
+          //       ),
+          //     )
+          //   ],
+          // ),
+
+          ExpandableFab(
         distance: 100.0,
         children: [
           //---------------to view action button rating and open smale windo to get the rate ---------------------
@@ -593,7 +633,7 @@ class _RecipeViewState extends State<RecipeView> {
             recipeId: widget.recipeid,
             autherId: widget.autherId,
             onRating: (status) {
-              print('status is $status');
+              print(r'status is $status');
               if (status == true) {
                 // referesh the page after rating
                 setState(() {});
@@ -623,6 +663,7 @@ class _RecipeViewState extends State<RecipeView> {
           //-------------------------------------------------------
         ],
       ),
+
       body: Container(
         child: isLoading
             ? CustomCircularLoader()
@@ -790,7 +831,7 @@ class GetRatingState extends State<GetRating> {
       print(avg);
       // print("00000---------------------------------------");
       print(numOfRevewis);
-      setState(() {});
+      if (mounted) setState(() {});
     });
   }
 
