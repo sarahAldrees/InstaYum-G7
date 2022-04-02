@@ -39,7 +39,7 @@ class MealPlansState extends State<MealPlans> {
             const SizedBox(
               height: 20,
             ),
-            HorizontalDayList(changeWeekday),
+            //   HorizontalDayList(changeWeekday),
             const SizedBox(
               height: 20,
             ),

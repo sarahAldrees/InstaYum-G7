@@ -188,7 +188,12 @@ class ProfileState extends State<Profile> {
                             : CustomCircularLoader(),
 
                         // ------------ list item 2 tab view bookmarks screen.
-                        my_meal_plans(),
+                        MyMealplanScreen(
+                          isFromUserProfileView: false,
+                          day: "",
+                          typeOfMeal: "",
+                          userID: "",
+                        ),
                         // ------------ list item 3 tab view bookmarks screen.
 
                         BookmarkedRecipes("")
