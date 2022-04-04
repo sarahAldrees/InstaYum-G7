@@ -4,78 +4,22 @@ import 'package:intl/intl.dart';
 
 class HorizontalDayList extends StatefulWidget {
   final Function dayUpdateFunction;
-  bool isFromAddNewMealPlan;
 
-  HorizontalDayList(this.dayUpdateFunction, this.isFromAddNewMealPlan);
+  HorizontalDayList(this.dayUpdateFunction);
 
   @override
   _HorizontalDayListState createState() => _HorizontalDayListState();
 }
 
 class _HorizontalDayListState extends State<HorizontalDayList> {
-  int num = 0;
   @override
   void initState() {
     super.initState();
-
     SchedulerBinding.instance!.addPostFrameCallback((_) {
-      DateTime? date;
-      //   if (widget.isFromAddNewMealPlan) {
-      //  widget.dayUpdateFunction(MealPlansService.chosenMealDay);
-      switch (date.toString()) {
-        case "SUN":
-          {
-            updateDayColor(0);
-          }
-          break;
-        case "MON":
-          {
-            updateDayColor(1);
-          }
-          break;
-        case "TUE":
-          {
-            updateDayColor(2);
-          }
-          break;
-        case "WED":
-          {
-            updateDayColor(3);
-          }
-          break;
-        case "THU":
-          {
-            updateDayColor(4);
-          }
-          break;
-        case "FRI":
-          {
-            updateDayColor(5);
-          }
-          break;
-        case "SAT":
-          {
-            updateDayColor(6);
-          }
-          break;
-      }
-      //  num = 0;
+      DateTime date = DateTime.now();
+      widget.dayUpdateFunction(weekdays[date.weekday - 1]);
+      updateDayColor(date.weekday);
     });
-    //else {
-    //     date = DateTime.now();
-    //     if (date.weekday == 7) {
-    //       num = 0;
-    //       print("num = 0");
-    //     } else {
-    //       num = date.weekday;
-    //       print("nnuumm = ");
-    //       print(num);
-    //     }
-
-    //     widget.dayUpdateFunction(weekdays[num]);
-    //     updateDayColor(num);
-    // //  }
-    // });
   }
 
   List<String> weekdays = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
@@ -136,7 +80,7 @@ class _HorizontalDayListState extends State<HorizontalDayList> {
             child: Container(
               margin: const EdgeInsets.only(left: 5, right: 5, top: 10),
               height: 60,
-              width: 40,
+              width: 46,
               decoration: BoxDecoration(
                   color: cardColorList[index][0],
                   borderRadius: const BorderRadius.all(Radius.circular(10))),
