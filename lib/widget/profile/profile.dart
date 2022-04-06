@@ -5,6 +5,7 @@ import 'package:instayum/model/recipe.dart';
 import 'package:instayum/widget/bookmark/cookbook_item.dart';
 import 'package:instayum/widget/bookmark/cookbook_recipes.dart';
 import 'package:instayum/widget/follow_and_notification/follow_tile.dart';
+import 'package:instayum/widget/meal_plan/meal_plans.dart';
 import 'package:instayum/widget/meal_plan/my_mealplans_screen.dart';
 import 'package:instayum/widget/profile/followers_numbers.dart';
 import 'package:instayum/widget/shopping_list/shopping_list_page.dart';
@@ -188,12 +189,8 @@ class ProfileState extends State<Profile> {
                             : CustomCircularLoader(),
 
                         // ------------ list item 2 tab view bookmarks screen.
-                        // MyMealplanScreen(
-                        //   isFromUserProfileView: false,
-                        //   day: "",
-                        //   typeOfMeal: "",
-                        //   userID: "",
-                        // ),
+                        MyRecipesScreen(userId: uId),
+
                         // ------------ list item 3 tab view bookmarks screen.
 
                         BookmarkedRecipes("")
