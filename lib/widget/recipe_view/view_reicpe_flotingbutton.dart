@@ -147,7 +147,7 @@ class _ExpandableFabState extends State<ExpandableFab>
             backgroundColor: Color(0xFFeb6d44),
             onPressed: _toggle,
             child: const Icon(
-              Icons.add,
+              Icons.menu,
             ),
             //---------------------------------------------------
           ),
