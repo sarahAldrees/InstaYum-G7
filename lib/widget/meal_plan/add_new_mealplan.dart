@@ -7,9 +7,11 @@ import 'package:instayum/constant/app_colors.dart';
 import 'package:instayum/constant/app_globals.dart';
 import 'package:instayum/main_pages.dart';
 import 'package:instayum/widget/meal_plan/horizontal_day_list.dart';
+import 'package:instayum/widget/meal_plan/mealplan_service.dart';
 import 'package:instayum/widget/profile/profile.dart';
 
 import 'meal_grid_view.dart';
+
 import 'meal_title.dart';
 
 class AddNewMealPlan extends StatefulWidget {
@@ -26,7 +28,7 @@ class AddNewMealPlanState extends State<AddNewMealPlan> {
     super.initState();
     WidgetsBinding.instance!.addPostFrameCallback((_) => changeWeekday("SUN"));
 
-    //  MealPlansService.deleteEmptyMealPlans();
+    MealPlansService.deleteEmptyMealPlans();
 
     //we call the method here to get the data immediately when init the page.
   }
@@ -202,8 +204,8 @@ class AddNewMealPlanState extends State<AddNewMealPlan> {
         .collection("users")
         .doc(AppGlobals.userId)
         .collection("mealPlans")
-        // .doc(MealPlansService.mealPlanID)
-        // .collection(day!)
+        .doc(MealPlansService.mealPlanID)
+        .collection(day!)
         .doc(typeOfMeal)
         .get()
         .then((snapshot) {
@@ -375,7 +377,7 @@ class AddNewMealPlanState extends State<AddNewMealPlan> {
     });
   }
 
-  static String weekday = "SUN";
+  static String weekday = MealPlansService.chosenMealDay;
   void changeWeekday(String newDay) {
     setState(() {
       weekday = newDay;
@@ -501,9 +503,36 @@ class AddNewMealPlanState extends State<AddNewMealPlan> {
             width: MediaQuery.of(context).size.width,
             child: Column(
               children: [
-                //  HorizontalDayList(changeWeekday, true),
+                HorizontalDayList(changeWeekday),
                 const SizedBox(
                   height: 20,
+                ),
+                Expanded(
+                  child: Container(
+                    // the white space
+                    child: ListView.builder(
+                      itemCount: mealInformation.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        print('in add new plan _______________________');
+                        print(mealInformation[index][0]);
+                        print(mealInformation[index][1]);
+                        print(mealInformation[index][2]);
+                        return MealTitle(
+                          title: mealInformation[index][0],
+                          mealPlanTypeOfMeal: mealInformation[index][1],
+                          img: mealInformation[index][2],
+                          isFromAddMealplan: true,
+                        );
+                      },
+                    ), // we call the gird view to present them in the white space
+                    width: double.infinity,
+                    decoration: const BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(30),
+                            topRight: Radius.circular(30)),
+                        boxShadow: [BoxShadow(blurRadius: 10.0)]),
+                  ),
                 ),
               ],
             ),
@@ -522,7 +551,7 @@ class AddNewMealPlanState extends State<AddNewMealPlan> {
         // setState(() {
         Navigator.of(context).pop();
 
-        //appPages.showAlertDialogRcipeAdedSuccessfully(context, true);
+        appPages.showAlertDialogRcipeAdedSuccessfully(context);
 
         //});
       },
@@ -618,32 +647,30 @@ class AddNewMealPlanState extends State<AddNewMealPlan> {
                           validMealPlanName = await _checkMealPlanName(
                               mealplanTitleTextFieldController.text);
                           if (validMealPlanName) {
-                            // MealPlansService.addMealPlanTitleAndStatus(
-                            //     mealplanTitleTextFieldController.text,
-                            //     isPublicSwitchBtnAddNewMealplan);
-                            // ProfileState.isPinnedInPublicMealPlans =
-                            //     isPublicSwitchBtnAddNewMealplan;
+                            MealPlansService.addMealPlanTitleAndStatus(
+                                mealplanTitleTextFieldController.text,
+                                isPublicSwitchBtnAddNewMealplan);
 
-                            // if (MealPlansService.countNumOfRecipes == 27) {
-                            //   //check it
-                            //   appPages.showAlertDialogRcipeAdedSuccessfully(
-                            //       context, true);
-                            // } else {
-                            //   showAlertDialogCheckNumOfRecipes(context);
-                            // }
-                            // MealPlansService.makePinnedMealplanAlwaysUp();
-                            // // to open the public or private mealplan list in profile page.
-                            // print(
-                            //     "qoiwhdajnecflkjesbnliufhliesufiuesbfi;suhnfuihesiuhief");
-                            // print(MealPlansService.countNumOfRecipes);
-                            // // appPages.showAlertDialogRcipeAdedSuccessfully(
-                            // //     context, true);
-                            // //to clear all the plan
+                            if (MealPlansService.countNumOfRecipes == 27) {
+                              //check it
+                              appPages.showAlertDialogRcipeAdedSuccessfully(
+                                  context);
+                            } else {
+                              showAlertDialogCheckNumOfRecipes(context);
+                            }
+                            MealPlansService.makePinnedMealplanAlwaysUp();
+                            // to open the public or private mealplan list in profile page.
+                            print(
+                                "qoiwhdajnecflkjesbnliufhliesufiuesbfi;suhnfuihesiuhief");
+                            print(MealPlansService.countNumOfRecipes);
+                            // appPages.showAlertDialogRcipeAdedSuccessfully(
+                            //     context, true);
+                            //to clear all the plan
 
-                            // mealplanTitleTextFieldController.clear();
-                            // MealPlansService.chosenMealDay = 'SUN';
-                            // isPublicSwitchBtnAddNewMealplan = false;
-                            // MealPlansService.hasMealPlanCollection = false;
+                            mealplanTitleTextFieldController.clear();
+                            MealPlansService.chosenMealDay = 'SUN';
+                            isPublicSwitchBtnAddNewMealplan = false;
+                            MealPlansService.hasMealPlanCollection = false;
                             sunMealPlan.clear();
                             monMealPlan.clear();
                             tueMealPlan.clear();

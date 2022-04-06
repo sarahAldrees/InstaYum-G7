@@ -6,6 +6,7 @@ import 'package:instayum/widget/auth/auth_screen.dart';
 import 'package:instayum/widget/add_recipe/add_recipe_page.dart';
 import 'package:instayum/widget/discover/discover_page.dart';
 import 'package:instayum/widget/follow_and_notification/notification_page.dart';
+import 'package:instayum/widget/meal_plan/add_new_mealplan.dart';
 import 'package:instayum/widget/shopping_list/shopping_list_page.dart';
 import 'package:instayum/widget/pickers/recipe_image_picker.dart';
 import 'constant/app_globals.dart';
@@ -165,7 +166,7 @@ class appPages extends State<MainPages> {
     //---------discover page  0-------------
     DiscoverPage(),
     //--------- mealPlaner page 1------------
-    MealPlans(),
+    AddNewMealPlan("", ""),
     //----------add recipe page 2------------
     AddRecipePage(),
     //----------shopping list page 3---------

@@ -5,25 +5,32 @@ import 'package:instayum/constant/app_colors.dart';
 import 'package:instayum/constant/app_globals.dart';
 import 'package:instayum/model/user_model.dart';
 import 'package:instayum/widget/discover/search/custom_dropdown.dart';
-import 'package:instayum/widget/follow_and_notification/follow_tile.dart';
 
 import 'search_recipe.dart';
 import 'search_users.dart';
 
 class SearchPage extends StatefulWidget {
-  SearchPage({Key? key}) : super(key: key);
+  bool isFromMealPlan = false;
+  String? mealDay;
+  String? mealPlanTypeOfMeal;
+  SearchPage(
+      {Key? key,
+      required this.isFromMealPlan,
+      this.mealDay,
+      this.mealPlanTypeOfMeal})
+      : super(key: key);
 
   @override
   State<SearchPage> createState() => _SearchPageState();
 }
 
 class _SearchPageState extends State<SearchPage> {
-  final TextEditingController _searchController = new TextEditingController();
-  final TextEditingController _ingredientsController =
-      new TextEditingController();
+  TextEditingController _searchController = new TextEditingController();
+  TextEditingController _ingredientsController = new TextEditingController();
   final FirebaseFirestore firestoreInstance = FirebaseFirestore.instance;
   List _searchResults = [];
   List<DocumentSnapshot> _allRecipes = [];
+  String searchText = "";
 
   bool isRecipes = true;
   bool showFilter = false;
@@ -53,13 +60,28 @@ class _SearchPageState extends State<SearchPage> {
   final TextEditingController? searchControllerOfCupertinoSearchTextField =
       new TextEditingController();
 
+  searchAppBar() {
+    return AppBar(
+      backgroundColor: Color(0xFFeb6d44),
+      title: Text("Search"),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    if (widget.isFromMealPlan) {
+      setState(() {
+        searchText = 'Search for recipes';
+        print("**************___");
+      });
+    } else {
+      setState(() {
+        searchText = 'Search';
+      });
+      print("________________________________");
+    }
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Color(0xFFeb6d44),
-        title: Text("Search"),
-      ),
+      appBar: widget.isFromMealPlan ? null : searchAppBar(),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
@@ -77,7 +99,7 @@ class _SearchPageState extends State<SearchPage> {
                     margin: const EdgeInsets.only(top: 10, left: 20, right: 5),
                     // padding: EdgeInsets.symmetric(horizontal: AppGlobals.screenWidth * 0.1),
                     child: CupertinoSearchTextField(
-                      // placeholder: searchText,
+                      placeholder: searchText,
                       controller: searchControllerOfCupertinoSearchTextField ??
                           TextEditingController(),
                       itemColor: AppColors
@@ -90,8 +112,8 @@ class _SearchPageState extends State<SearchPage> {
                       style: TextStyle(fontSize: 14, color: AppColors.grey),
                       padding: EdgeInsets.fromLTRB(20, 10, 12, 10),
                       onChanged: onSearchTextChanged,
-                      // suffixIcon: suffixIcon,
                       onSubmitted: onSearchTextChanged,
+                      // suffixIcon: suffixIcon,
                     ),
                   ),
                 ),
@@ -119,74 +141,76 @@ class _SearchPageState extends State<SearchPage> {
                 children: [
                   Column(
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          InkWell(
-                            onTap: () {
-                              _switchRecipes(true);
-                            },
-                            child: Container(
-                              // margin: const EdgeInsets.only(left: 5, right: 5, top: 10),
-                              height: 45,
-                              width: AppGlobals.screenWidth * 0.4,
-                              decoration: BoxDecoration(
-                                color: isRecipes
-                                    ? AppColors.primaryColor
-                                    : Colors.grey[200],
-                                borderRadius: const BorderRadius.all(
-                                  Radius.circular(10),
+                      if (!widget.isFromMealPlan)
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                _switchRecipes(true);
+                              },
+                              child: Container(
+                                // margin: const EdgeInsets.only(left: 5, right: 5, top: 10),
+                                height: 45,
+                                width: AppGlobals.screenWidth * 0.4,
+                                decoration: BoxDecoration(
+                                  color: isRecipes
+                                      ? AppColors.primaryColor
+                                      : Colors.grey[200],
+                                  borderRadius: const BorderRadius.all(
+                                    Radius.circular(10),
+                                  ),
                                 ),
-                              ),
-                              child: Center(
-                                child: Text(
-                                  "RECIPES",
-                                  softWrap: true,
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      color: isRecipes
-                                          ? Colors.white
-                                          : Colors.black87,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                            ),
-                          ),
-                          SizedBox(width: 10),
-                          InkWell(
-                            onTap: () {
-                              _switchRecipes(false);
-                            },
-                            child: Container(
-                              // margin: const EdgeInsets.only(left: 5, right: 5, top: 10),
-                              height: 45,
-                              width: AppGlobals.screenWidth * 0.4,
-                              decoration: BoxDecoration(
-                                color: !isRecipes
-                                    ? AppColors.primaryColor
-                                    : Colors.grey[200],
-                                borderRadius: const BorderRadius.all(
-                                  Radius.circular(10),
-                                ),
-                              ),
-                              child: Center(
-                                child: Text(
-                                  "COOKING\nENTHUSIASTS",
-                                  softWrap: true,
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      color: !isRecipes
-                                          ? Colors.white
-                                          : Colors.black87,
-                                      fontWeight: FontWeight.bold),
+                                child: Center(
+                                  child: Text(
+                                    "RECIPES",
+                                    softWrap: true,
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        color: isRecipes
+                                            ? Colors.white
+                                            : Colors.black87,
+                                        fontWeight: FontWeight.bold),
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
+                            SizedBox(width: 10),
+                            InkWell(
+                              onTap: () {
+                                print("on tap working !!!!!!!!!!!!!");
+                                _switchRecipes(false);
+                              },
+                              child: Container(
+                                // margin: const EdgeInsets.only(left: 5, right: 5, top: 10),
+                                height: 45,
+                                width: AppGlobals.screenWidth * 0.4,
+                                decoration: BoxDecoration(
+                                  color: !isRecipes
+                                      ? AppColors.primaryColor
+                                      : Colors.grey[200],
+                                  borderRadius: const BorderRadius.all(
+                                    Radius.circular(10),
+                                  ),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    "COOKING\nENTHUSIASTS",
+                                    softWrap: true,
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        color: !isRecipes
+                                            ? Colors.white
+                                            : Colors.black87,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       SizedBox(height: 10),
                       Expanded(
                         child: isRecipes
@@ -198,7 +222,6 @@ class _SearchPageState extends State<SearchPage> {
                                 users: List<UserModel>.from(_searchResults),
                                 // _searchResults as List<UserModel>,
                               ),
-                        //),
                       ),
                     ],
                   ),
@@ -213,7 +236,6 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   void _getRecipesData() async {
-    FollowTile.inSearchPage = true;
     _allRecipes.clear();
     await firestoreInstance
         .collection('recipes')
@@ -233,6 +255,12 @@ class _SearchPageState extends State<SearchPage> {
 
   void _searchFromFirestore(String searchkey, String ingredientsList,
       {bool withFilter = false}) async {
+    print("0000000000000000000000000000000");
+    print(searchkey);
+    print(_selectedCategory);
+    print(_selectedTypeOfMeal);
+    print(_selectedCuisine);
+
     if (isRecipes) {
       //// search from recipes
 
@@ -240,9 +268,6 @@ class _SearchPageState extends State<SearchPage> {
       if (showFilter) {
         showFilter = false;
       }
-
-      // List<String> _searchIngredients =
-      //     _ingredientsController.text.trim().toLowerCase().split(',');
 
       _allRecipes.forEach((recipe) {
         Map data = recipe.data() as Map<dynamic, dynamic>;
@@ -254,14 +279,29 @@ class _SearchPageState extends State<SearchPage> {
 
         if (withFilter) {
           if (ingredientsList != "") {
+            print("YEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEES");
+            print(ingredientsList);
+            //لان كان في اللنقث دائما يطلع واحد حتى لو ما كتبت شيء واتوقع السبب هذا لاننا انشئنا اللست
+            //المهم خليته قبل ما ينشئ اللست يشيك اذا اليوزر كتب شيء او لا
+            //طيب وش جابني انا هنا اصلا؟ انا بقولك
+            // لما جيت بحل مشكلة السيرتش باستعمال الفلتر مع التايتل والله مدري وش صار بس اكتشفت هذا اللوجيك ايرور :)ا
+            // المهم فيه ايرور لما ابحث باستعمال المكونات للمره الثانية يطلع ايرور :(ا
+//-----------------------------------
+//تحديث جديد :) حليت الايرور بحيث اني شلت الكنترولر من انبوت المقادير وخليت الاسناد يكون ب اون تشانج
+//الحل له عيب واحد بس ماراح اقول انت اكتشفي والصدق العيب مو مره كبير
             List<String> _searchIngredients =
                 ingredientsList.toLowerCase().split(',');
 
+            //   if (_searchIngredients.isNotEmpty)
+
+            print(_searchIngredients.length);
             var count = 0;
             //search by each ingredient
 
             outerLoop: //number of ingredients in recipe
             for (int si = 0; si < _searchIngredients.length; si++) {
+              //   String _ing = (data['ing$i'] ?? '').toString().toLowerCase();
+
               innerLopp: //number of ingredients in search
 
               for (int i = 1; i <= _ingLength!; i++) {
@@ -324,6 +364,7 @@ class _SearchPageState extends State<SearchPage> {
     _searchResults.clear();
     text = text.trim().toLowerCase();
     _searchController.text = text;
+
     if (text.isEmpty) {
       setState(() {});
       return;
@@ -334,7 +375,7 @@ class _SearchPageState extends State<SearchPage> {
 
   Widget _showFilterDialog() {
     return Container(
-      height: 320, //AppGlobals.screenHeight * 0.3,
+      height: 300, //AppGlobals.screenHeight * 0.3,
       width: 250, //AppGlobals.screenWidth * 0.7,
       margin: EdgeInsets.only(right: 5),
       padding: EdgeInsets.all(10),
@@ -361,11 +402,9 @@ class _SearchPageState extends State<SearchPage> {
                 onChanged: (value) {
                   _ingredientsController.text = value;
                 },
-                // controller: _ingredientsController,
+                //controller: _ingredientsController,
                 decoration: InputDecoration(
                   hintText: "ingredients",
-                  helperText:
-                      "For more than one ingredient\nseparate them by \",\"\ne.g : egg,water... ",
                   hintStyle: TextStyle(color: Colors.grey[800]),
                   filled: true,
                   fillColor: Colors.white70,
@@ -403,6 +442,9 @@ class _SearchPageState extends State<SearchPage> {
             Center(
               child: ElevatedButton(
                 onPressed: () {
+                  print("111111111111111111111111111111");
+                  print(_ingredientsController.text);
+
                   _searchResults.clear();
                   _searchFromFirestore(
                       _searchController.text, _ingredientsController.text,
@@ -419,7 +461,7 @@ class _SearchPageState extends State<SearchPage> {
                 ),
                 child: Center(
                   child: Text(
-                    'Search',
+                    "Search",
                     softWrap: true,
                     textAlign: TextAlign.center,
                     style: TextStyle(
