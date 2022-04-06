@@ -558,6 +558,7 @@ class _RecipeViewState extends State<RecipeView> {
           Row(
             children: [
               bookmarkIcon(),
+              //----------------------share
               IconButton(
                   icon: Icon(
                     Icons.ios_share_outlined,
@@ -572,61 +573,9 @@ class _RecipeViewState extends State<RecipeView> {
         ],
       ),
       //--------------------floating button that contain comment and rating button -------------------------
-      floatingActionButton:
-          // SpeedDial(
-          //   visible: true,
-          //   curve: Curves.bounceInOut,
-          //   overlayOpacity: 0,
-          //   animatedIcon: AnimatedIcons.menu_close,
-          //   //  buttonSize: ,
-          //   spacing: 12,
-          //   spaceBetweenChildren: 12,
-          //   children: [
-          //     SpeedDialChild(
-          //       label: "rating on recipee",
-          //       child:
-          //           //---------------to view action button rating and open smale windo to get the rate ---------------------
-
-          //           RatingRecipe(
-          //         recipeId: widget.recipeid,
-          //         autherId: widget.autherId,
-          //         onRating: (status) {
-          //           print(r'status is $status');
-          //           if (status == true) {
-          //             // referesh the page after rating
-          //             // setState(() {});
-          //             Navigator.pushReplacement(
-          //                 context,
-          //                 MaterialPageRoute(
-          //                   builder: (context) => RecipeView(
-          //                     recipeid: widget.recipeid,
-          //                     autherId: widget.autherId,
-          //                   ),
-          //                 ));
-          //           }
-          //         },
-          //       ),
-          //     ),
-          //     // -------------comments button to open comment page -------------
-
-          //     SpeedDialChild(
-          //       label: "Comment Pag",
-          //       child: ActionButton(
-          //         onPressed: () {
-          //           Navigator.push(
-          //               context,
-          //               MaterialPageRoute(
-          //                   builder: (context) =>
-          //                       Comments(widget.recipeid, widget.autherId)));
-          //         },
-          //         icon: const Icon(Icons.comment_sharp),
-          //       ),
-          //     )
-          //   ],
-          // ),
-
-          ExpandableFab(
-        distance: 100.0,
+      floatingActionButton: ExpandableFab(
+        initialOpen: true,
+        //distance: 120,
         children: [
           //---------------to view action button rating and open smale windo to get the rate ---------------------
           RatingRecipe(

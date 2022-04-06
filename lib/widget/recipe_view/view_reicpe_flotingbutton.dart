@@ -35,8 +35,8 @@ class _ExpandableFabState extends State<ExpandableFab>
     );
     //----------------------
     _expandAnimation = CurvedAnimation(
-      curve: Curves.fastOutSlowIn,
-      reverseCurve: Curves.easeOutQuad,
+      curve: Curves.bounceInOut,
+      reverseCurve: Curves.bounceInOut,
       parent: _controller,
     );
   }
@@ -101,19 +101,28 @@ class _ExpandableFabState extends State<ExpandableFab>
   List<Widget> _buildExpandingActionButtons() {
     final children = <Widget>[];
     final count = widget.children!.length;
-    final step = 90.0 / (4 - 1);
-    for (var i = 0, angleInDegrees = 0.0;
-        i < count;
-        i++, angleInDegrees += step) {
-      children.add(
-        _ExpandingActionButton(
-          directionInDegrees: angleInDegrees,
-          maxDistance: widget.distance,
-          progress: _expandAnimation,
-          child: widget.children![i],
-        ),
-      );
-    }
+    final step = 90;
+    // for (var i = 0, angleInDegrees = 0.0;
+    //     i < count;
+    //     i++, angleInDegrees += step) {
+    children.add(
+      _ExpandingActionButton(
+        directionInDegrees: 0,
+        maxDistance: 60,
+        progress: _expandAnimation,
+        child: widget.children![0],
+      ),
+    );
+
+    children.add(
+      _ExpandingActionButton(
+        directionInDegrees: 0,
+        maxDistance: 120, //betwen icon and flotaing button
+        progress: _expandAnimation,
+        child: widget.children![1],
+      ),
+    );
+    // }
     return children;
   }
 
