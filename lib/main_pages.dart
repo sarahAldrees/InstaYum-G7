@@ -27,46 +27,6 @@ class appPages extends State<MainPages> {
   @override
   void initState() {
     super.initState();
-    createAllBookmarkedRecipes(); // to create a create All Bookmarked Recipes  cookbook for each user when the user create an account
-  }
-
-  void createAllBookmarkedRecipes() async {
-    final FirebaseAuth _auth = FirebaseAuth.instance;
-    final currentUser = await _auth.currentUser;
-
-    DateTime timestamp = DateTime.now();
-    // print("i am in createDefaultCookbook() ^^^^^^^^^^^^^^^^^6");
-    // to check if the cookbook is already exist or not
-    final isDefaultCookbookExist = await FirebaseFirestore.instance
-        .collection("users")
-        .doc(AppGlobals.userId)
-        .collection("cookbooks")
-        .where("cookbook_id", isEqualTo: "All bookmarked recipes")
-        .get();
-
-    if (isDefaultCookbookExist.docs.isEmpty) {
-      // print("The All bookmarked recipes is not exist ^^^^^^^^^^^^^^");
-      //no default exist
-      FirebaseFirestore.instance
-          .collection("users")
-          .doc(AppGlobals.userId)
-          .collection("cookbooks")
-          .doc("All bookmarked recipes")
-          .set({
-        "cookbook_id": "All bookmarked recipes",
-        "cookbook_img_url": "noImage", // to set the default image
-        "timestamp": timestamp,
-        "bookmarkedList": FieldValue.arrayUnion([]),
-      });
-    } else {
-      // print("The All bookmarked recipes is exist ^^^^^^^^^^^^^^^^");
-      FirebaseFirestore.instance
-          .collection("users")
-          .doc(AppGlobals.userId)
-          .collection("cookbooks")
-          .doc("All bookmarked recipes")
-          .update({"timestamp": timestamp});
-    }
   }
 
 //------------------------------Alert meesage for get out of add recipe page-------------------------------

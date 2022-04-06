@@ -29,6 +29,31 @@ class ProfileState extends State<Profile> {
   String? uId = AppGlobals.userId;
   bool isLoading = true;
 
+  @override
+  void initState() {
+    super.initState();
+    //we call the method here to get the data immediately when init the page.
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      getData();
+      updateAllBookmarkedRecipesTimestamp();
+    });
+  }
+
+  void updateAllBookmarkedRecipesTimestamp() async {
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+    final currentUser = await _auth.currentUser;
+
+    DateTime timestamp = DateTime.now();
+
+    // print("The All bookmarked recipes is exist ^^^^^^^^^^^^^^^^");
+    FirebaseFirestore.instance
+        .collection("users")
+        .doc(currentUser!.uid)
+        .collection("cookbooks")
+        .doc("All bookmarked recipes")
+        .update({"timestamp": timestamp});
+  }
+
 //getData() to get the data of users like username, image_url from database
   void getData() async {
     FollowTile.inSearchPage = false;
@@ -61,15 +86,6 @@ class ProfileState extends State<Profile> {
     }
     isLoading = false;
     if (mounted) setState(() {});
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    //we call the method here to get the data immediately when init the page.
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
-      getData();
-    });
   }
 
 //----------------------------------------------------------

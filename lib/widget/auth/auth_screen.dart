@@ -80,6 +80,7 @@ class AuthScreenState extends State<AuthScreen> {
             url = await ref.getDownloadURL();
           }
           // here we put the real values
+          DateTime timestamp = DateTime.now();
           await FirebaseFirestore
               .instance //just to store the username in the database
               .collection("users")
@@ -88,6 +89,17 @@ class AuthScreenState extends State<AuthScreen> {
             "username": username,
             "email": email,
             "image_url": url,
+          });
+          await FirebaseFirestore.instance
+              .collection("users")
+              .doc(authResult.user!.uid)
+              .collection("cookbooks")
+              .doc("All bookmarked recipes")
+              .set({
+            "cookbook_id": "All bookmarked recipes",
+            "cookbook_img_url": "noImage", // to set the default image
+            "timestamp": timestamp,
+            "bookmarkedList": FieldValue.arrayUnion([]),
           });
           //to move the user to the profile page (Mainpages) after he signup successfully
           Navigator.of(context).pushReplacement(
