@@ -420,4 +420,285 @@ class AddNewMealPlanState extends State<AddNewMealPlan> {
     print("in add new meal plan the day issssssssssssssssssssss:");
     print("changed, $weekday");
   }
+
+  static bool isAddMealplanNullFields() {
+    if (mealplanTitleTextFieldController.value.text == "") {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  Future<bool> _checkMealPlanName(String mealplanTitle) async {
+    final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+    User? user = firebaseAuth.currentUser;
+    final result = await FirebaseFirestore.instance
+        .collection("users")
+        .doc(AppGlobals.userId)
+        .collection("mealPlans")
+        .where('mealplan_title', isEqualTo: mealplanTitle)
+        .get();
+    return result.docs.isEmpty;
+  }
+
+  static TextEditingController mealplanTitleTextFieldController =
+      TextEditingController();
+  bool validMealPlanName = true;
+
+  static bool isPublicSwitchBtnAddNewMealplan = false;
+//-------------------------------------------------------------------------------------------
+
+  List<Step> stepList() => [
+        Step(
+          state: activeStepIndex <= 0 ? StepState.editing : StepState.complete,
+          isActive: activeStepIndex >= 0,
+          title: const Text('Title and status'),
+          content: Container(
+            child: Column(
+              children: [
+                TextField(
+                  controller: mealplanTitleTextFieldController,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Mealplan Title',
+                    //  onChanged: (value) {
+                    //     recipeTitle = value;
+                    //   }
+                  ),
+                ),
+                const SizedBox(
+                  height: 8,
+                ),
+                Container(
+                  child: Row(
+                    children: [
+                      Text("      Private"),
+                      Switch(
+                        value: isPublicSwitchBtnAddNewMealplan,
+                        onChanged: (value) {
+                          setState(() {
+                            isPublicSwitchBtnAddNewMealplan = value;
+                          });
+                        },
+                        activeTrackColor: Colors.orange[600],
+                        activeColor: Color(0xFFeb6d44),
+                      ),
+                      Text("Public"),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        Step(
+          state: StepState.complete,
+
+          isActive: activeStepIndex >= 1,
+          title: const Text('Add recipes'),
+          content: SizedBox(
+            height: AppGlobals.screenHeight,
+            width: MediaQuery.of(context).size.width,
+            child: Column(
+              children: [
+                //  HorizontalDayList(changeWeekday, true),
+                const SizedBox(
+                  height: 20,
+                ),
+              ],
+            ),
+          ),
+          // ],
+          // ),
+          // ),
+        )
+      ];
+
+  showAlertDialogCheckNumOfRecipes(BuildContext context) {
+    // set up the button
+    Widget yesButton = RaisedButton(
+      child: Text("Yes"),
+      onPressed: () {
+        // setState(() {
+        Navigator.of(context).pop();
+
+        //appPages.showAlertDialogRcipeAdedSuccessfully(context, true);
+
+        //});
+      },
+    );
+    Widget noButton = RaisedButton(
+      child: Text("No"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text(
+        "Warning",
+        style: TextStyle(
+            fontWeight: FontWeight.bold, color: Theme.of(context).accentColor),
+      ),
+      content: Text(
+        "It seems that you do not enter some recipes \nAre you sure you want to continue to add the plan?",
+        style: TextStyle(color: Color(0xFF444444)),
+      ),
+      actions: [
+        yesButton,
+        noButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Theme(
+        data: ThemeData(
+            accentColor: Color(0xFFeb6d44),
+            // primarySwatch: Color(0xFFeb6d44),
+            colorScheme: ColorScheme.light(primary: Color(0xFFeb6d44))),
+        child: Stepper(
+          type: StepperType.horizontal,
+          currentStep: activeStepIndex,
+          steps: stepList(),
+          onStepContinue: () {
+            if (activeStepIndex < (stepList().length - 1)) {
+              setState(() {
+                print('onStepContinue');
+                print(activeStepIndex);
+                activeStepIndex += 1;
+              });
+            } else {
+              print('Submited');
+            }
+          },
+          onStepCancel: () {
+            if (activeStepIndex == 0) {
+              return;
+            }
+
+            setState(() {
+              activeStepIndex -= 1;
+            });
+          },
+          onStepTapped: (int index) {
+            setState(() {
+              activeStepIndex = index;
+            });
+          },
+          controlsBuilder: (context, ControlsDetails controls) {
+            final isLastStep = activeStepIndex == stepList().length - 1;
+            return Container(
+              child: Row(
+                children: [
+                  Expanded(
+                    child: ElevatedButton(
+                      style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all(Color(0xFFeb6d44)),
+                      ),
+                      onPressed: () async {
+                        if (!isLastStep) {
+                          controls.onStepContinue;
+                          setState(() {
+                            activeStepIndex = 1;
+                          });
+                        } else {
+                          validMealPlanName = await _checkMealPlanName(
+                              mealplanTitleTextFieldController.text);
+                          if (validMealPlanName) {
+                            // MealPlansService.addMealPlanTitleAndStatus(
+                            //     mealplanTitleTextFieldController.text,
+                            //     isPublicSwitchBtnAddNewMealplan);
+                            // ProfileState.isPinnedInPublicMealPlans =
+                            //     isPublicSwitchBtnAddNewMealplan;
+
+                            // if (MealPlansService.countNumOfRecipes == 27) {
+                            //   //check it
+                            //   appPages.showAlertDialogRcipeAdedSuccessfully(
+                            //       context, true);
+                            // } else {
+                            //   showAlertDialogCheckNumOfRecipes(context);
+                            // }
+                            // MealPlansService.makePinnedMealplanAlwaysUp();
+                            // // to open the public or private mealplan list in profile page.
+                            // print(
+                            //     "qoiwhdajnecflkjesbnliufhliesufiuesbfi;suhnfuihesiuhief");
+                            // print(MealPlansService.countNumOfRecipes);
+                            // // appPages.showAlertDialogRcipeAdedSuccessfully(
+                            // //     context, true);
+                            // //to clear all the plan
+
+                            // mealplanTitleTextFieldController.clear();
+                            // MealPlansService.chosenMealDay = 'SUN';
+                            // isPublicSwitchBtnAddNewMealplan = false;
+                            // MealPlansService.hasMealPlanCollection = false;
+                            sunMealPlan.clear();
+                            monMealPlan.clear();
+                            tueMealPlan.clear();
+                            wedMealPlan.clear();
+                            thuMealPlan.clear();
+                            friMealPlan.clear();
+                            satMealPlan.clear();
+                            mealInformation.clear();
+
+                            sunMealPlan.addAll(initiateMealInformation);
+                            monMealPlan.addAll(initiateMealInformation);
+
+                            tueMealPlan.addAll(initiateMealInformation);
+
+                            wedMealPlan.addAll(initiateMealInformation);
+
+                            thuMealPlan.addAll(initiateMealInformation);
+
+                            friMealPlan.addAll(initiateMealInformation);
+
+                            satMealPlan.addAll(initiateMealInformation);
+                          } else {
+                            Flushbar(
+                              backgroundColor: Theme.of(context).errorColor,
+                              message: "The title is already exist",
+                              duration: Duration(seconds: 4),
+                            ).show(context);
+                          }
+                        }
+                      },
+                      child: (isLastStep)
+                          ? const Text('Done')
+                          : const Text('Next'),
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  if (activeStepIndex > 0)
+                    Expanded(
+                      child: ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all(Colors.grey),
+                        ),
+                        onPressed: controls.onStepCancel,
+                        child: const Text('Back'),
+                      ),
+                    )
+                ],
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
 }
