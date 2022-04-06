@@ -21,9 +21,10 @@ class _MealGridViewState extends State<MealGridView> {
       itemCount: widget.mealList.length,
       itemBuilder: (BuildContext context, int index) {
         return MealTitle(
-          widget.mealList[index][0],
-          widget.mealList[index][1],
-        );
+            title: widget.mealList[index][0],
+            mealPlanTypeOfMeal: widget.mealList[index][1],
+            isFromAddMealplan: false,
+            img: widget.mealList[index][2]);
       },
     );
   }

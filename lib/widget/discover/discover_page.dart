@@ -52,7 +52,11 @@ class Discover extends State<DiscoverPage> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => SearchPage(),
+                            builder: (context) => SearchPage(
+                              isFromMealPlan: false,
+                              mealDay: "",
+                              mealPlanTypeOfMeal: "",
+                            ),
                           ));
                     },
                   ),
