@@ -28,23 +28,7 @@ class ShoppingListState extends State<ShoppingListPage> {
                   return AlertDialog(
                     title: Column(
                       children: [
-                        Row(
-                          children: [
-                            Container(
-                              // margin: EdgeInsets.only(left: ),
-                              // padding: EdgeInsets.only(right: 6),
-                              child: IconButton(
-                                onPressed: () => Navigator.pop(context),
-                                icon: Icon(
-                                  Icons.arrow_back,
-                                  size: 20,
-                                  color: Colors.orange[800],
-                                ),
-                              ),
-                            ),
-                            Text('Add to Shoping List'),
-                          ],
-                        ),
+                        Text('Add to the Shopping List'),
                         SizedBox(
                           height: 20,
                         ),

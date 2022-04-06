@@ -248,24 +248,7 @@ class convert extends State<ConvertTocheckBox> {
                                 return AlertDialog(
                                   title: Column(
                                     children: [
-                                      Row(
-                                        children: [
-                                          Container(
-                                            // margin: EdgeInsets.only(left: ),
-                                            // padding: EdgeInsets.only(right: 6),
-                                            child: IconButton(
-                                              onPressed: () =>
-                                                  Navigator.pop(context),
-                                              icon: Icon(
-                                                Icons.arrow_back,
-                                                size: 20,
-                                                color: Colors.orange[800],
-                                              ),
-                                            ),
-                                          ),
-                                          Text('Add to Shoping List'),
-                                        ],
-                                      ),
+                                      Text('Add to the Shopping List'),
                                       SizedBox(
                                         height: 20,
                                       ),
@@ -440,57 +423,80 @@ class convert extends State<ConvertTocheckBox> {
 
     textController = TextEditingController(text: ingredant);
 
-    return
-        // Row(children: [
+    return Column(
+      children: [
         TextFormField(
-      decoration: InputDecoration(
-          suffixIcon: TextButton(
-        style: TextButton.styleFrom(
-          padding: const EdgeInsets.all(16.0),
-          backgroundColor: Color(0xFFeb6d44),
-          primary: Colors.white,
-          textStyle: const TextStyle(fontSize: 14),
+          controller: textController,
+          onChanged: (value) {
+            ingredant = textController!.text;
+          },
         ),
-        onPressed: () {
-          if (ShoppingListState.ShoppingList.contains(ingredant) ||
-              ingredant == null ||
-              ingredant == "") {
-            Navigator.pop(context);
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                  content:
-                      Text("the field is empty or ingredient is already exist"),
-                  backgroundColor: Theme.of(context).errorColor),
-            );
-            print(ingredant);
-          } else {
-            // -------- Add the ingredant to the shoping list------------
-            ShoppingListState.ShoppingList.add(ingredant);
+//--------------------------add or cancel
+        SizedBox(
+          height: 30,
+        ),
+        Row(
+          children: [
+            RaisedButton(
+              color: Colors.white,
+              shape: RoundedRectangleBorder(
+                side:
+                    BorderSide(color: Theme.of(context).accentColor, width: 2),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Text(
+                "Cancel",
+                style: TextStyle(
+                  color: Theme.of(context).accentColor,
+                ),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            SizedBox(
+              width: 5,
+            ),
+            RaisedButton(
+                child: Text(
+                  "Add new cookbook",
+                ),
+                onPressed: () {
+                  if (ShoppingListState.ShoppingList.contains(ingredant) ||
+                      ingredant == null ||
+                      ingredant == "") {
+                    Navigator.pop(context);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                          content: Text(
+                              "the field is empty or ingredient is already exist"),
+                          backgroundColor: Theme.of(context).errorColor),
+                    );
+                    print(ingredant);
+                  } else {
+                    // -------- Add the ingredant to the shoping list------------
+                    ShoppingListState.ShoppingList.add(ingredant);
 
-            // ------ Update the shopping list in the firestore of the user ---------------
-            FirebaseFirestore.instance
-                .collection("users")
-                .doc(AppGlobals.userId)
-                .update({
-              "shoppingList":
-                  FieldValue.arrayUnion(ShoppingListState.ShoppingList)
-            });
-            Navigator.pop(context);
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                  content: Text("added succesfuly"),
-                  backgroundColor: Colors.green),
-            );
-          }
-        },
-        child: Text("Add"),
-      )),
-      controller: textController,
-      onChanged: (value) {
-        ingredant = textController!.text;
-      },
+                    // ------ Update the shopping list in the firestore of the user ---------------
+                    FirebaseFirestore.instance
+                        .collection("users")
+                        .doc(AppGlobals.userId)
+                        .update({
+                      "shoppingList":
+                          FieldValue.arrayUnion(ShoppingListState.ShoppingList)
+                    });
+                    Navigator.pop(context);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                          content: Text("added succesfuly"),
+                          backgroundColor: Colors.green),
+                    );
+                  }
+                }),
+            // ]);
+          ],
+        )
+      ],
     );
-
-    //]);
   }
 }
