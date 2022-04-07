@@ -3,16 +3,18 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:instayum/constant/app_globals.dart';
+import 'package:instayum/main_pages.dart';
 import 'package:instayum/model/cookbook.dart';
 import 'package:instayum/model/recipe.dart';
 import 'package:instayum/widget/bookmark/bookmarks_recipes_screen.dart';
 import 'package:instayum/widget/bookmark/cookbook_item.dart';
 import 'package:instayum/widget/profile/circular_loader.dart';
+import 'package:instayum/widget/profile/profile.dart';
 import 'package:instayum/widget/recipe_view/comment.dart';
 import 'package:instayum/widget/recipe_view/convert_to_check_box.dart';
 import 'package:instayum/widget/recipe_view/rating_recipe.dart';
 import 'package:instayum/widget/recipe_view/user_information_design.dart';
-import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:instayum/widget/recipe_view/view_reicpe_flotingbutton.dart';
 
 class RecipeView extends StatefulWidget {
@@ -61,7 +63,8 @@ class _RecipeViewState extends State<RecipeView> {
   List<String?> dirctions = [];
   List<String?> imageUrls = [];
   bool isLoading = true;
-
+  int bookmarkCounter = 0;
+  int mealPlanCounter = 0;
   //-------------------------------------------------
   bool recipeExist = false;
   bool ishappend = false;
@@ -82,6 +85,7 @@ class _RecipeViewState extends State<RecipeView> {
 
           if (data != null) {
             print("--------------------------------------4444---------");
+
             Cookbook bookmarkedRecipe = Cookbook.fromJson(data);
             print(bookmarkedRecipe.id);
 
@@ -106,7 +110,6 @@ class _RecipeViewState extends State<RecipeView> {
       return IconButton(
           icon: Icon(
             Icons.bookmark,
-            //  Icons.ios_share,
             size: 26,
           ),
           onPressed: () {
@@ -144,7 +147,15 @@ class _RecipeViewState extends State<RecipeView> {
                   return BookmarkedRecipes(widget.recipeid!);
                   // return bookmarked_recipes();
                 });
+
+            FirebaseFirestore.instance
+                .collection("recipes")
+                .doc(widget.recipeid)
+                .update({
+              "bookmarkCounter": bookmarkCounter + 1,
+            });
             setState(() {
+              ++bookmarkCounter;
               recipeExist = true;
             });
 
@@ -413,12 +424,131 @@ class _RecipeViewState extends State<RecipeView> {
           });
         },
       );
-
+      if (bookmarkCounter == 1 &&
+          mealPlanCounter == 0 &&
+          widget.autherId == "user delete this recipe") {
+        FirebaseFirestore.instance
+            .collection("recipes")
+            .doc(widget.recipeid)
+            .delete();
+        Navigator.pop(context);
+      } else {
+        FirebaseFirestore.instance
+            .collection("recipes")
+            .doc(widget.recipeid)
+            .update({
+          "bookmarkCounter": bookmarkCounter - 1,
+        });
+        Navigator.pop(context);
+      }
       setState(() {
+        bookmarkCounter--;
         recipeExist = false;
         _bookmarkedList = [];
       });
     });
+  }
+
+  void deleteRecipe() {
+    if (bookmarkCounter <= 0 && mealPlanCounter <= 0) {
+      FirebaseFirestore.instance
+          .collection("recipes")
+          .doc(widget.recipeid)
+          .delete();
+    } else {
+      FirebaseFirestore.instance
+          .collection("recipes")
+          .doc(widget.recipeid)
+          .update({
+        "user_id": "user delete this recipe",
+        "img1":
+            "https://firebasestorage.googleapis.com/v0/b/instayum-f7a34.appspot.com/o/recpie_image%2FdefaultRecipeImage.png?alt=media&token=f12725db-646b-4692-9ccf-131a99667e43",
+        "image_count": 1,
+      });
+    }
+  }
+
+  AlertDialog deleteRecipeAleart() {
+    return AlertDialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(8)),
+      ),
+      title: Column(
+        children: [
+          Text(
+            'Are you sure to delete the recipe?',
+            style: TextStyle(fontSize: 16),
+          ),
+        ],
+      ),
+      actions: [
+        Container(
+            width: double.infinity,
+            margin: EdgeInsets.fromLTRB(3, 0, 3, 15),
+            child: Padding(
+                padding: const EdgeInsets.only(
+                    top: 0, right: 30, left: 30, bottom: 0),
+                child: Column(
+                  children: [
+                    ElevatedButton(
+                        child: Center(
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 30),
+                            child: Row(
+                              children: [
+                                Center(
+                                    child: Icon(Icons.delete_outline_rounded)),
+                                SizedBox(
+                                  width: 2,
+                                ),
+                                Center(
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 12, horizontal: 10),
+                                    child: Text(
+                                      "Delete ",
+                                      style: TextStyle(fontSize: 16),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all(Color(0xFFeb6d44)),
+                        ),
+                        onPressed: () {
+                          deleteRecipe();
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => MainPages()));
+                        }),
+                    TextButton(
+                      child: Text(
+                        "Cancel",
+                        style: TextStyle(fontSize: 16),
+                      ),
+                      style: TextButton.styleFrom(
+                        primary: Color(0xFFeb6d44),
+                        backgroundColor: Colors.white,
+                        //side: BorderSide(color: Colors.deepOrange, width: 1),
+                        elevation: 0,
+                        //minimumSize: Size(100, 50),
+                        //shadowColor: Colors.red,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10)),
+                      ),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ],
+                )))
+      ],
+    );
   }
 
   void deletFromThisCookbook() {
@@ -489,7 +619,8 @@ class _RecipeViewState extends State<RecipeView> {
           typeOfMeal = recipe.typeOfMeal;
           category = recipe.category;
           cuisine = recipe.cuisine;
-
+          bookmarkCounter = recipe.bookmarkCounter ?? 0;
+          mealPlanCounter = recipe.mealPlanCounter ?? 0;
           widget.autherId = recipe.userId;
           // recipe_image_url = recipe['recipe_image_url'],
 
@@ -568,50 +699,72 @@ class _RecipeViewState extends State<RecipeView> {
                   onPressed: () {
                     //setstat :change the kind of ici=on and add it to bookmark list
                   }),
+
+              widget.autherId == AppGlobals.userId
+                  ? IconButton(
+                      icon: Icon(
+                        Icons.delete,
+                        //  Icons.ios_share,
+                        size: 26,
+                      ),
+                      onPressed: () {
+                        showDialog<void>(
+                          context: context,
+                          barrierDismissible: false,
+                          builder: (context) {
+                            return deleteRecipeAleart();
+                          },
+                        );
+                      }
+                      //setstat :change the kind of ici=on and add it to bookmark list
+                      )
+                  : SizedBox(),
             ],
           ),
         ],
       ),
       //--------------------floating button that contain comment and rating button -------------------------
-      floatingActionButton: ExpandableFab(
-        initialOpen: true,
-        //distance: 120,
-        children: [
-          //---------------to view action button rating and open smale windo to get the rate ---------------------
-          RatingRecipe(
-            recipeId: widget.recipeid,
-            autherId: widget.autherId,
-            onRating: (status) {
-              print(r'status is $status');
-              if (status == true) {
-                // referesh the page after rating
-                setState(() {});
-                Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => RecipeView(
-                        recipeid: widget.recipeid,
-                        autherId: widget.autherId,
-                      ),
-                    ));
-              }
-            },
-          ),
+      floatingActionButton: widget.autherId != "user delete this recipe"
+          ? ExpandableFab(
+              initialOpen: true,
+              //distance: 120,
+              children: [
+                //---------------to view action button rating and open smale windo to get the rate ---------------------
+                RatingRecipe(
+                  recipeId: widget.recipeid,
+                  autherId: widget.autherId,
+                  onRating: (status) {
+                    print(r'status is $status');
+                    if (status == true) {
+                      // referesh the page after rating
+                      setState(() {});
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => RecipeView(
+                              recipeid: widget.recipeid,
+                              autherId: widget.autherId,
+                            ),
+                          ));
+                    }
+                  },
+                ),
 
-          //-------------comments button to open comment page -------------
-          ActionButton(
-            onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          Comments(widget.recipeid, widget.autherId)));
-            },
-            icon: const Icon(Icons.comment_sharp),
-          ),
-          //-------------------------------------------------------
-        ],
-      ),
+                //-------------comments button to open comment page -------------
+                ActionButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                Comments(widget.recipeid, widget.autherId)));
+                  },
+                  icon: const Icon(Icons.comment_sharp),
+                ),
+                //-------------------------------------------------------
+              ],
+            )
+          : null,
 
       body: Container(
         child: isLoading
@@ -843,23 +996,31 @@ class getuserinfoState extends State<getuserinfo> {
   String? _autherimage = "";
   getData() {
     String? _id = widget._autherId; //solve empty exeption
-    FirebaseFirestore.instance
-        .collection("users")
-        .doc("$_id")
-        .get()
-        .then((userData) {
-      Map? user = userData.data();
-      if (user != null)
-        setState(() {
-          _autherName = user['username'];
-          _autherimage = user['image_url'];
-        });
-    });
+    if (widget._autherId != "user delete this recipe") {
+      FirebaseFirestore.instance
+          .collection("users")
+          .doc("$_id")
+          .get()
+          .then((userData) {
+        Map? user = userData.data();
+        if (user != null)
+          setState(() {
+            _autherName = user['username'];
+            _autherimage = user['image_url'];
+          });
+      });
+    } else {
+      setState(() {
+        _autherName = "user delete this recipe";
+        _autherimage = "noImage";
+      });
+    }
   }
 
   @override
   void initState() {
     super.initState();
+
     getData();
     //we call the method here to get the data immediately when init the page.
   }

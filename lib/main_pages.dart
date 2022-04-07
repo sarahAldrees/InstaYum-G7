@@ -166,7 +166,8 @@ class appPages extends State<MainPages> {
     //---------discover page  0-------------
     DiscoverPage(),
     //--------- mealPlaner page 1------------
-    AddNewMealPlan("", ""),
+    // AddNewMealPlan("", ""),
+    Text("data"),
     //----------add recipe page 2------------
     AddRecipePage(),
     //----------shopping list page 3---------

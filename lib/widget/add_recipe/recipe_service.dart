@@ -40,6 +40,8 @@ class RecipeService {
       position: randomNumber,
       lengthOfIngredients: userIngredients.length,
       lengthOfDirections: userDirections.length,
+      bookmarkCounter: 0,
+      mealPlanCounter: 0,
     );
 
     // create a new recipe inside collcetion of recipes

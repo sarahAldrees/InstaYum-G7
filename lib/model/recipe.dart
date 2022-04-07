@@ -18,6 +18,8 @@ class Recipe {
   List<String>? ingredients;
   List<String>? dirctions;
   List<String>? imageUrls;
+  int? bookmarkCounter;
+  int? mealPlanCounter;
 
   // // final Key key; //??
   // final String autherId;
@@ -31,36 +33,38 @@ class Recipe {
   // final List<String> dirctions;
   // final List<String> imageUrls;
 
-  Recipe({
-    // @required this.key,
-    // @required this.autherId,
-    // @required this.id,
-    // @required this.recipeName,
-    // @required this.mainImageURL,
-    // @required this.typeOfMeal,
-    // @required this.category,
-    // @required this.cuisine,
-    // @required this.ingredients,
-    // @required this.dirctions,
-    // @required this.imageUrls,
+  Recipe(
+      {
+      // @required this.key,
+      // @required this.autherId,
+      // @required this.id,
+      // @required this.recipeName,
+      // @required this.mainImageURL,
+      // @required this.typeOfMeal,
+      // @required this.category,
+      // @required this.cuisine,
+      // @required this.ingredients,
+      // @required this.dirctions,
+      // @required this.imageUrls,
 
-    this.lengthOfIngredients,
-    this.lengthOfDirections,
-    this.cuisine,
-    this.recipeTitle,
-    this.userId,
-    this.recipeId,
-    this.isPublicRecipe,
-    this.imageCount,
-    this.category,
-    this.typeOfMeal,
-    this.img1,
-    this.timestamp,
-    this.position,
-    this.dirctions,
-    this.imageUrls,
-    this.ingredients,
-  });
+      this.lengthOfIngredients,
+      this.lengthOfDirections,
+      this.cuisine,
+      this.recipeTitle,
+      this.userId,
+      this.recipeId,
+      this.isPublicRecipe,
+      this.imageCount,
+      this.category,
+      this.typeOfMeal,
+      this.img1,
+      this.timestamp,
+      this.position,
+      this.dirctions,
+      this.imageUrls,
+      this.ingredients,
+      this.bookmarkCounter,
+      this.mealPlanCounter});
 
   Recipe.fromJson(Map<String, dynamic> json) {
     lengthOfIngredients = json['length_of_ingredients'];
@@ -79,6 +83,8 @@ class Recipe {
     dirctions = json['dirctions'];
     imageUrls = json['imageUrls'];
     ingredients = json['ingredients'];
+    bookmarkCounter = json['bookmarkCounter'];
+    mealPlanCounter = json['mealPlanCounter'];
   }
 
   Map<String, dynamic> toJson() {
@@ -97,6 +103,8 @@ class Recipe {
     data['img1'] = this.img1;
     data['timestamp'] = this.timestamp;
     data['position'] = this.position;
+    data['bookmarkCounter'] = this.bookmarkCounter;
+    data['mealPlanCounter'] = this.mealPlanCounter;
     //data['dirctions'] = this.dirctions; // because they are null in the database
     data['imageUrls'] = this.imageUrls;
     //data['ingredients'] = this.ingredients; // because they are null in the database
