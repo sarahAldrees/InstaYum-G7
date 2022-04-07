@@ -461,6 +461,7 @@ class _RecipeViewState extends State<RecipeView> {
           .doc(widget.recipeid)
           .update({
         "user_id": "user delete this recipe",
+        "is_public_recipe": false,
         "img1":
             "https://firebasestorage.googleapis.com/v0/b/instayum-f7a34.appspot.com/o/recpie_image%2FdefaultRecipeImage.png?alt=media&token=f12725db-646b-4692-9ccf-131a99667e43",
         "image_count": 1,
