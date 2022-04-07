@@ -194,7 +194,7 @@ class convert extends State<ConvertTocheckBox> {
                         //print(AppGlobals.shoppingList[0]);
                       },
                       child: Text(
-                        "clear the shoping list ",
+                        "Clear the Shopping List ",
                         style: TextStyle(
                           color: Color(0xFFeb6d44),
                           fontSize: 16,
@@ -292,7 +292,7 @@ class convert extends State<ConvertTocheckBox> {
                                 title: Column(
                                   children: [
                                     Text(
-                                      'Are you sure to delete this ingrediant?',
+                                      'Are you sure to delete this ingredient?',
                                       style: TextStyle(fontSize: 16),
                                     ),
                                   ],
@@ -462,20 +462,23 @@ class convert extends State<ConvertTocheckBox> {
                   "Add new cookbook",
                 ),
                 onPressed: () {
-                  if (ShoppingListState.ShoppingList.contains(ingredant) ||
+                  // check if the ingredient is already exist do not add it to the shooping
+                  if (ShoppingListState.ShoppingList.contains(
+                          ingredant!.toUpperCase()) ||
                       ingredant == null ||
                       ingredant == "") {
                     Navigator.pop(context);
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                           content: Text(
-                              "the field is empty or ingredient is already exist"),
+                              "The field is empty or ingredient is already exist"),
                           backgroundColor: Theme.of(context).errorColor),
                     );
                     print(ingredant);
                   } else {
                     // -------- Add the ingredant to the shoping list------------
-                    ShoppingListState.ShoppingList.add(ingredant);
+                    ShoppingListState.ShoppingList.add(
+                        ingredant!.toUpperCase());
 
                     // ------ Update the shopping list in the firestore of the user ---------------
                     FirebaseFirestore.instance
@@ -488,7 +491,7 @@ class convert extends State<ConvertTocheckBox> {
                     Navigator.pop(context);
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                          content: Text("added succesfuly"),
+                          content: Text("Added successfuly"),
                           backgroundColor: Colors.green),
                     );
                   }

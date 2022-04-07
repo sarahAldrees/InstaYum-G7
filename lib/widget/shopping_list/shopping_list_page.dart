@@ -41,7 +41,7 @@ class ShoppingListState extends State<ShoppingListPage> {
                   );
                 });
           },
-          label: Text("Add a new ingrediant"),
+          label: Text("Add a new ingredient"),
           backgroundColor: Color(0xFFeb6d44),
           //Color(0xFFeb6d44),
         ),
@@ -51,7 +51,7 @@ class ShoppingListState extends State<ShoppingListPage> {
                 "",
               )
             : Center(
-                child: Text("the shoping List is empty"),
+                child: Text("The Shopping List is Empty"),
               ));
   }
 
