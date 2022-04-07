@@ -63,7 +63,7 @@ class _MealTitleState extends State<MealTitle> {
     return GestureDetector(
       onTap: () {
         setState(() {
-          //widget.mealDay = AddNewMealPlanState.weekday;
+          widget.mealDay = AddNewMealPlanState.weekday;
         });
 //in case is from add meal plan
         if (widget.isFromAddMealplan) {
