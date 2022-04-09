@@ -17,10 +17,18 @@ import 'package:instayum/widget/recipe_view/rating_recipe.dart';
 import 'package:instayum/widget/recipe_view/user_information_design.dart';
 import 'package:instayum/widget/recipe_view/view_reicpe_flotingbutton.dart';
 
+import '../../constant/app_colors.dart';
+import '../meal_plan/add_new_mealplan.dart';
+import '../meal_plan/mealplan_service.dart';
+
 class RecipeView extends StatefulWidget {
   String? cookbook;
   String? autherId;
   String? recipeid;
+  bool isFromMealPlan = false;
+  String? mealDay;
+  String? mealPlanTypeOfMeal;
+
   // String _recipeName;
   // String _mainImageUrl;
   // String _typeOfMeal;
@@ -35,6 +43,8 @@ class RecipeView extends StatefulWidget {
     this.cookbook,
     this.autherId,
     required this.recipeid,
+    String? mealDay,
+    String? mealPlanTypeOfMeal,
     // this._recipeName,
     // this._mainImageUrl,
     // this._typeOfMeal,
@@ -601,6 +611,29 @@ class _RecipeViewState extends State<RecipeView> {
     super.initState();
     getData();
     //we call the method here to get the data immediately when init the page.
+    if (widget.isFromMealPlan) {
+      setState(() {
+        MealPlansService.checkRecipeIsAdded(
+                mealDay: widget.mealDay,
+                mealPlanTypeOfMeal: widget.mealPlanTypeOfMeal,
+                recipeID: widget.recipeid)
+            .then((value) {
+          if (value) {
+            setState(() {
+              addRecipeToMealPlanButtonStatus =
+                  "Remove the recipe to my mealplans";
+              addRecipeToMealPlanButtonColor = AppColors.lightGrey;
+            });
+          } else {
+            setState(() {
+              addRecipeToMealPlanButtonStatus =
+                  "Add the recipe to my mealplans";
+              addRecipeToMealPlanButtonColor = AppColors.primaryColor;
+            });
+          }
+        });
+      });
+    }
   }
 
   getData() async {
@@ -669,6 +702,139 @@ class _RecipeViewState extends State<RecipeView> {
     // print(_bookmarkedList[0]);
   }
 
+  String addRecipeToMealPlanButtonStatus = "Add the recipe to my mealplans";
+  Color addRecipeToMealPlanButtonColor = AppColors.primaryColor;
+  Widget buttonAddRecipeToMealPlan() {
+    return
+//  FloatingActionButtonLocation.centerFloat,
+
+        isAddRecipeToMealPlanLoading
+            ? Padding(
+                padding: const EdgeInsets.only(top: 10),
+                child: CircularProgressIndicator(
+                  backgroundColor: Color(0xFFeb6d44),
+                  color: Colors.white,
+                ),
+              )
+            : FloatingActionButton.extended(
+                onPressed: () {
+                  //_________________________________________________________________
+//Add implementation
+                  //_________________________________________________________________
+                  setState(() {
+                    isAddRecipeToMealPlanLoading = true;
+                    setState(() {
+                      MealPlansService.checkRecipeIsAdded(
+                              mealDay: widget.mealDay,
+                              mealPlanTypeOfMeal: widget.mealPlanTypeOfMeal,
+                              recipeID: widget.recipeid)
+                          .then((value) {
+                        if (!value) {
+//MealPlansService.addRecipeToMealPlanDatabase()
+                          MealPlansService.addRecipeToMealPlanDatabase(
+                                  mealDay: widget.mealDay,
+                                  mealPlanTypeOfMeal: widget.mealPlanTypeOfMeal,
+                                  recipeID: widget.recipeid)
+                              .then((value) => {
+                                    isAddRecipeToMealPlanLoading = false,
+
+                                    AddNewMealPlanState.activeStepIndex = 1,
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => MainPages())),
+                                    // Navigator.pushAndRemoveUntil(
+                                    //   context,
+                                    //   MaterialPageRoute(
+                                    //       builder: (context) =>
+                                    //           AddNewMealPlan("", "")),
+                                    //   (Route<dynamic> route) => false,
+                                    // ),
+                                    // Navigator.of(context)
+                                    //     .popUntil((_) => count++ >= 2)
+                                  });
+
+                          AddNewMealPlanState.getRecipeIDAfterAddRecipe(
+                            day: widget.mealDay!,
+                            typeOfMeal: widget.mealPlanTypeOfMeal!,
+                          );
+
+                          setState(() {
+                            addRecipeToMealPlanButtonStatus =
+                                "Remove the recipe to my mealplans";
+                            addRecipeToMealPlanButtonColor =
+                                AppColors.lightGrey;
+                          });
+                        } else {
+                          MealPlansService.deleteRecipeFromMealPlanDatabase(
+                              widget.mealDay,
+                              widget.mealPlanTypeOfMeal,
+                              widget.recipeid);
+                          // delete
+                          setState(() {
+                            isAddRecipeToMealPlanLoading = false;
+                            addRecipeToMealPlanButtonStatus =
+                                "Add the recipe to my mealplans";
+                            addRecipeToMealPlanButtonColor =
+                                AppColors.primaryColor;
+                          });
+                        }
+                      });
+                    });
+                    // if (addRecipeToMealPlanButtonStatus ==
+                    //     "Add the recipe to my mealplans")
+                  });
+                },
+                label: Text(addRecipeToMealPlanButtonStatus),
+                backgroundColor: addRecipeToMealPlanButtonColor
+                //Color(0xFFeb6d44),
+                );
+  }
+
+  bool isAddRecipeToMealPlanLoading = false;
+
+  Widget floatingButtonWithMealCondtion() {
+    return ExpandableFab(
+      initialOpen: false,
+      //distance: 120,
+      children: [
+        //---------------to view action button rating and open smale windo to get the rate ---------------------
+        RatingRecipe(
+          recipeId: widget.recipeid,
+          autherId: widget.autherId,
+          onRating: (status) {
+            print(r'status is $status');
+            if (status == true) {
+              // referesh the page after rating
+              setState(() {});
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => RecipeView(
+                      recipeid: widget.recipeid,
+                      autherId: widget.autherId,
+                    ),
+                  ));
+            }
+          },
+        ),
+
+        //-------------comments button to open comment page -------------
+        ActionButton(
+          onPressed: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        Comments(widget.recipeid, widget.autherId)));
+          },
+          icon: const Icon(Icons.comment_sharp),
+        ),
+        //-------------------------------------------------------
+      ],
+    );
+  }
+
 //------------
   @override
   Widget build(BuildContext context) {
@@ -689,18 +855,17 @@ class _RecipeViewState extends State<RecipeView> {
         actions: [
           Row(
             children: [
-              bookmarkIcon(),
-              //----------------------share
-              IconButton(
-                  icon: Icon(
-                    Icons.ios_share_outlined,
-                    //  Icons.ios_share,
-                    size: 26,
-                  ),
-                  onPressed: () {
-                    //setstat :change the kind of ici=on and add it to bookmark list
-                  }),
-
+              if (!widget.isFromMealPlan) bookmarkIcon(),
+              if (!widget.isFromMealPlan)
+                IconButton(
+                    icon: Icon(
+                      Icons.ios_share_outlined,
+                      //  Icons.ios_share,
+                      size: 26,
+                    ),
+                    onPressed: () {
+                      //setstat :change the kind of ici=on and add it to bookmark list
+                    }),
               widget.autherId == AppGlobals.userId
                   ? IconButton(
                       icon: Icon(
@@ -727,7 +892,7 @@ class _RecipeViewState extends State<RecipeView> {
       //--------------------floating button that contain comment and rating button -------------------------
       floatingActionButton: widget.autherId != "user delete this recipe"
           ? ExpandableFab(
-              initialOpen: true,
+              initialOpen: false,
               //distance: 120,
               children: [
                 //---------------to view action button rating and open smale windo to get the rate ---------------------
