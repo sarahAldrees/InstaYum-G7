@@ -5,6 +5,7 @@ import 'package:instayum/constant/app_colors.dart';
 import 'package:instayum/constant/app_globals.dart';
 import 'package:instayum/model/user_model.dart';
 import 'package:instayum/widget/discover/search/custom_dropdown.dart';
+import 'package:instayum/widget/follow_and_notification/follow_tile.dart';
 
 import 'search_recipe.dart';
 import 'search_users.dart';
@@ -236,6 +237,7 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   void _getRecipesData() async {
+    FollowTile.inSearchPage = true;
     _allRecipes.clear();
     await firestoreInstance
         .collection('recipes')
