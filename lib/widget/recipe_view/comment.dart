@@ -139,8 +139,8 @@ class CommentState extends State<Comments> {
         .collection("comments")
         .doc(commentRef)
         .set(comment.toJson());
-    // if (_authorId != AppGlobals.userId)
-    // RecipeService().sendNotificationToAuthor(_recipeId, userUsername);
+    if (_authorId != AppGlobals.userId)
+      RecipeService().sendNotificationToAuthor(_recipeId, userUsername);
   }
 
   void initState() {
