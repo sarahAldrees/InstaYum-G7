@@ -16,15 +16,18 @@ class _MealGridViewState extends State<MealGridView> {
     return ListView.builder(
       itemCount: widget.mealList.length,
       itemBuilder: (BuildContext context, int index) {
-        // print("in gride view class^^^^^^^^^^^^^^^^^^^^^^^^^^^");
-        // print(widget.mealList[index][0]);
-        // print(widget.mealList[index][1]);
-        // print(widget.mealList[index][2]);
+        print("in gride view class^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+        print(widget.mealList[index][0]);
+        print(widget.mealList[index][1]);
+        print(widget.mealList[index][2]);
+        print(widget.mealList[index][3]);
         return MealTile(
-            title: widget.mealList[index][0],
-            mealPlanTypeOfMeal: widget.mealList[index][1],
-            isFromAddMealplan: false,
-            img: widget.mealList[index][2]);
+          title: widget.mealList[index][0],
+          mealPlanTypeOfMeal: widget.mealList[index][1],
+          isFromAddMealplan: false,
+          img: widget.mealList[index][2],
+          recipeID: widget.mealList[index][3],
+        );
       },
     );
   }

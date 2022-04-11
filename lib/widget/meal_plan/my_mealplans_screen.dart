@@ -440,6 +440,12 @@ class MyMealplanScreenState extends State<MyMealplanScreen> {
                     heightFactor: 10,
                     child: Text("No private mealplans available!"))
                 : getUserPublicOrPrivateMealplans(),
+
+        // if (widget.isFromUserProfileView)
+        //   Center(
+        //     heightFactor: 10,
+        //     child: Text("No mealplans available!"),
+        //   )
       ],
     );
   }

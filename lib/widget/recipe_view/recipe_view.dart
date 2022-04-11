@@ -616,6 +616,9 @@ class _RecipeViewState extends State<RecipeView> {
   void initState() {
     super.initState();
     getData();
+    print('================================');
+    print(recipeName);
+    print('================================');
     //we call the method here to get the data immediately when init the page.
     if (widget.isFromMealPlan) {
       setState(() {
@@ -809,7 +812,7 @@ class _RecipeViewState extends State<RecipeView> {
           recipeId: widget.recipeid,
           autherId: widget.autherId,
           onRating: (status) {
-            print(r'status is $status');
+            print('status is $status');
             if (status == true) {
               // referesh the page after rating
               setState(() {});
@@ -1078,6 +1081,7 @@ class GetRatingState extends State<GetRating> {
   void initState() {
     super.initState();
     getData();
+
     //we call the method here to get the data immediately when init the page.
   }
 

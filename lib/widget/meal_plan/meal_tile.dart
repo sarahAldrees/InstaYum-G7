@@ -75,6 +75,10 @@ class _MealTileState extends State<MealTile> {
             ),
           );
         } else {
+          print('@@@@@@@@@@@@@@@ID@@@@@@@@@@@@@@@@@@@@');
+          print(widget.recipeID);
+          print('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
+
           Navigator.push(
             context,
             MaterialPageRoute(
