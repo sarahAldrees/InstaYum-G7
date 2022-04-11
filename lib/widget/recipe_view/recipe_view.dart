@@ -739,6 +739,10 @@ class _RecipeViewState extends State<RecipeView> {
                               recipeID: widget.recipeid)
                           .then((value) {
                         if (!value) {
+                          setState(() {
+                            mealPlanCounter++;
+                          });
+
 //MealPlansService.addRecipeToMealPlanDatabase()
                           MealPlansService.addRecipeToMealPlanDatabase(
                                   mealDay: widget.mealDay,
@@ -775,6 +779,10 @@ class _RecipeViewState extends State<RecipeView> {
                                 AppColors.lightGrey;
                           });
                         } else {
+                          setState(() {
+                            mealPlanCounter--;
+                          });
+
                           MealPlansService.deleteRecipeFromMealPlanDatabase(
                               widget.mealDay,
                               widget.mealPlanTypeOfMeal,
