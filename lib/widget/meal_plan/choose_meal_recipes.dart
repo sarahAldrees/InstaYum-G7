@@ -94,9 +94,9 @@ class ChooseMealRecipesState extends State<ChooseMealRecipes> {
                         uId != null
                             ? MyRecipesScreen(
                                 userId: uId,
-                                // isFromMealPlan: true,
-                                // mealDay: widget.mealDay,
-                                // mealPlanTypeOfMeal: widget.mealPlanTypeOfMeal,
+                                isFromMealPlan: true,
+                                mealDay: widget.mealDay,
+                                mealPlanTypeOfMeal: widget.mealPlanTypeOfMeal,
                               )
                             : CustomCircularLoader(),
 
@@ -104,11 +104,11 @@ class ChooseMealRecipesState extends State<ChooseMealRecipes> {
 
                         // ------------ list item 3 tab view bookmarks screen.
 
-                        BookmarkedRecipes(""
-                            // isFromMealPlan: true,
-                            // mealDay: widget.mealDay,
-                            // mealPlanTypeOfMeal: widget.mealPlanTypeOfMeal,
-                            ),
+                        BookmarkedRecipes(
+                          isFromMealPlan: true,
+                          mealDay: widget.mealDay,
+                          mealPlanTypeOfMeal: widget.mealPlanTypeOfMeal,
+                        ),
                         SearchPage(
                           isFromMealPlan: true,
                           mealDay: widget.mealDay,

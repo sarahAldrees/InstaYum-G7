@@ -43,8 +43,9 @@ class RecipeView extends StatefulWidget {
     this.cookbook,
     this.autherId,
     required this.recipeid,
-    String? mealDay,
-    String? mealPlanTypeOfMeal,
+    required this.isFromMealPlan,
+    this.mealDay,
+    this.mealPlanTypeOfMeal,
     // this._recipeName,
     // this._mainImageUrl,
     // this._typeOfMeal,
@@ -154,7 +155,12 @@ class _RecipeViewState extends State<RecipeView> {
                 ),
                 context: context,
                 builder: (context) {
-                  return BookmarkedRecipes(widget.recipeid!);
+                  return BookmarkedRecipes(
+                    recipeId: widget.recipeid!,
+                    isFromMealPlan: false,
+                    mealDay: "",
+                    mealPlanTypeOfMeal: "",
+                  );
                   // return bookmarked_recipes();
                 });
 
@@ -813,6 +819,7 @@ class _RecipeViewState extends State<RecipeView> {
                     builder: (context) => RecipeView(
                       recipeid: widget.recipeid,
                       autherId: widget.autherId,
+                      isFromMealPlan: widget.isFromMealPlan,
                     ),
                   ));
             }
@@ -890,48 +897,13 @@ class _RecipeViewState extends State<RecipeView> {
         ],
       ),
       //--------------------floating button that contain comment and rating button -------------------------
-      floatingActionButton: widget.autherId != "user delete this recipe"
-          ? ExpandableFab(
-              initialOpen: false,
-              //distance: 120,
-              children: [
-                //---------------to view action button rating and open smale windo to get the rate ---------------------
-                RatingRecipe(
-                  recipeId: widget.recipeid,
-                  autherId: widget.autherId,
-                  onRating: (status) {
-                    print(r'status is $status');
-                    if (status == true) {
-                      // referesh the page after rating
-                      setState(() {});
-                      Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => RecipeView(
-                              recipeid: widget.recipeid,
-                              autherId: widget.autherId,
-                            ),
-                          ));
-                    }
-                  },
-                ),
 
-                //-------------comments button to open comment page -------------
-                ActionButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                Comments(widget.recipeid, widget.autherId)));
-                  },
-                  icon: const Icon(Icons.comment_sharp),
-                ),
-                //-------------------------------------------------------
-              ],
-            )
-          : null,
-
+      floatingActionButtonLocation: widget.isFromMealPlan
+          ? FloatingActionButtonLocation.centerFloat
+          : FloatingActionButtonLocation.endFloat,
+      floatingActionButton: widget.isFromMealPlan
+          ? buttonAddRecipeToMealPlan()
+          : floatingButtonWithMealCondtion(),
       body: Container(
         child: isLoading
             ? CustomCircularLoader()

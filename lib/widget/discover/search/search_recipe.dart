@@ -6,7 +6,17 @@ import 'package:instayum/widget/discover/search/recipe_tile.dart';
 import 'package:instayum/widget/recipe_view/recipe_view.dart';
 
 class SearchRecipe extends StatelessWidget {
-  SearchRecipe({Key? key, this.recipes = const []}) : super(key: key);
+  bool isFromMealPlan;
+  String? mealDay;
+  String? mealPlanTypeOfMeal;
+
+  SearchRecipe(
+      {Key? key,
+      this.recipes = const [],
+      required this.isFromMealPlan,
+      required this.mealDay,
+      required this.mealPlanTypeOfMeal})
+      : super(key: key);
   final List<DocumentSnapshot> recipes;
 
   // final FollowUserService followUserService = FollowUserService();
@@ -42,7 +52,12 @@ class SearchRecipe extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (conetxt) => RecipeView(recipeid: rid),
+                  builder: (conetxt) => RecipeView(
+                    recipeid: rid,
+                    isFromMealPlan: isFromMealPlan,
+                    mealDay: mealDay,
+                    mealPlanTypeOfMeal: mealPlanTypeOfMeal,
+                  ),
                 ),
               );
             },

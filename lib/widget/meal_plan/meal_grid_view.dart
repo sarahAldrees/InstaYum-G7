@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import "meal_title.dart";
+import 'meal_tile.dart';
 
 class MealGridView extends StatefulWidget {
   List<List<String>> mealList;
@@ -14,13 +14,13 @@ class _MealGridViewState extends State<MealGridView> {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      // gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-      //   crossAxisCount: 1,
-
-      // ),
       itemCount: widget.mealList.length,
       itemBuilder: (BuildContext context, int index) {
-        return MealTitle(
+        // print("in gride view class^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+        // print(widget.mealList[index][0]);
+        // print(widget.mealList[index][1]);
+        // print(widget.mealList[index][2]);
+        return MealTile(
             title: widget.mealList[index][0],
             mealPlanTypeOfMeal: widget.mealList[index][1],
             isFromAddMealplan: false,

@@ -5,6 +5,7 @@ import 'package:flutter/rendering.dart';
 import 'package:instayum/constant/app_colors.dart';
 import 'package:instayum/constant/app_globals.dart';
 import 'package:instayum/model/recipe.dart';
+import 'package:instayum/widget/meal_plan/add_new_mealplan.dart';
 import 'package:instayum/widget/profile/circular_loader.dart';
 
 import 'recipe_item.dart';
@@ -12,10 +13,15 @@ import 'recipe_item.dart';
 // import '../bookmark/data.dart';
 
 class MyRecipesScreen extends StatefulWidget {
-  // String autherName;
-  // String autherImage;
+  bool isFromMealPlan = false;
   String? userId;
-  MyRecipesScreen({this.userId});
+  String? mealDay;
+  String? mealPlanTypeOfMeal;
+  MyRecipesScreen(
+      {this.userId,
+      required this.isFromMealPlan,
+      this.mealDay,
+      this.mealPlanTypeOfMeal});
 
   // my_recipes(this.autherName, this.autherImage, this.autherId);
 
@@ -151,8 +157,6 @@ class _MyRecipesScreenState extends State<MyRecipesScreen> {
     }
   }
 
-  void updateRecipesScreen() {}
-
   Widget getUserPublicOrPrivateRecipes() {
     return Expanded(
       child: GridView.count(
@@ -165,46 +169,56 @@ class _MyRecipesScreenState extends State<MyRecipesScreen> {
           // map all available cookbooks and list them in Gridviwe.
           children: isPublicRecipes
               ? userPublicRecpiesList
-                  .map((e) => RecipeItem(
-                      "",
-                      //  e.key,
-                      // widget.autherName,
-                      // widget.autherImage,
-                      e.userId,
-                      e.recipeId,
-                      e.recipeTitle,
-                      e.img1,
-                      e.typeOfMeal,
-                      e.category,
-                      e.cuisine,
-                      e.ingredients,
-                      e.dirctions,
-                      e.imageUrls
-                      // e.ingredients,
-                      // e.dirctions,
-                      // e.imageUrls,
-                      ))
+                  .map(
+                    (e) => RecipeItem(
+                        "",
+                        //  e.key,
+                        // widget.autherName,
+                        // widget.autherImage,
+                        e.userId,
+                        e.recipeId,
+                        e.recipeTitle,
+                        e.img1,
+                        e.typeOfMeal,
+                        e.category,
+                        e.cuisine,
+                        e.ingredients,
+                        e.dirctions,
+                        e.imageUrls,
+                        widget.isFromMealPlan,
+                        widget.mealDay!,
+                        widget.mealPlanTypeOfMeal!
+                        // e.ingredients,
+                        // e.dirctions,
+                        // e.imageUrls,
+                        ),
+                  )
                   .toList()
               : userPrivateRecpiesList
-                  .map((e) => RecipeItem(
-                      "",
-                      //  e.key,
-                      // widget.autherName,
-                      // widget.autherImage,
-                      e.userId,
-                      e.recipeId,
-                      e.recipeTitle,
-                      e.img1,
-                      e.typeOfMeal,
-                      e.category,
-                      e.cuisine,
-                      e.ingredients,
-                      e.dirctions,
-                      e.imageUrls
-                      // e.ingredients,
-                      // e.dirctions,
-                      // e.imageUrls,
-                      ))
+                  .map(
+                    (e) => RecipeItem(
+                        "",
+                        //  e.key,
+                        // widget.autherName,
+                        // widget.autherImage,
+                        e.userId,
+                        e.recipeId,
+                        e.recipeTitle,
+                        e.img1,
+                        e.typeOfMeal,
+                        e.category,
+                        e.cuisine,
+                        e.ingredients,
+                        e.dirctions,
+                        e.imageUrls,
+                        widget.isFromMealPlan,
+                        widget.mealDay!,
+                        widget.mealPlanTypeOfMeal!
+                        // e.ingredients,
+                        // e.dirctions,
+                        // e.imageUrls,
+                        ),
+                  )
                   .toList()),
     );
   }
@@ -245,7 +259,10 @@ class _MyRecipesScreenState extends State<MyRecipesScreen> {
                                 e.cuisine,
                                 e.ingredients,
                                 e.dirctions,
-                                e.imageUrls
+                                e.imageUrls,
+                                widget.isFromMealPlan,
+                                widget.mealDay!,
+                                widget.mealPlanTypeOfMeal!
                                 // e.ingredients,
                                 // e.dirctions,
                                 // e.imageUrls,
@@ -287,37 +304,41 @@ class _MyRecipesScreenState extends State<MyRecipesScreen> {
                         ),
                       ),
                       SizedBox(width: 10),
-                      InkWell(
-                        onTap: () {
-                          _switchbetweenPublicAndPrivateRecipes(false);
-                        },
-                        child: Container(
-                          // margin: const EdgeInsets.only(left: 5, right: 5, top: 10),
-                          height: 40,
-                          width: AppGlobals.screenWidth * 0.4,
-                          decoration: BoxDecoration(
-                            color: !isPublicRecipes
-                                ? Colors.grey[200]
-                                : Colors.white,
-                            borderRadius: const BorderRadius.all(
-                              Radius.circular(10),
-                            ),
-                          ),
-                          child: Center(
-                            child: IconButton(
-                              icon: Icon(
-                                Icons.lock,
-                                color: !isPublicRecipes
-                                    ? AppColors.primaryColor
-                                    : Colors.grey[600],
-                              ),
-                              onPressed: () {
+                      (AddNewMealPlanState.isPublicSwitchBtnAddNewMealplan &&
+                              widget.isFromMealPlan)
+                          ? Container()
+                          : InkWell(
+                              onTap: () {
                                 _switchbetweenPublicAndPrivateRecipes(false);
                               },
+                              child: Container(
+                                // margin: const EdgeInsets.only(left: 5, right: 5, top: 10),
+                                height: 40,
+                                width: AppGlobals.screenWidth * 0.4,
+                                decoration: BoxDecoration(
+                                  color: !isPublicRecipes
+                                      ? Colors.grey[200]
+                                      : Colors.white,
+                                  borderRadius: const BorderRadius.all(
+                                    Radius.circular(10),
+                                  ),
+                                ),
+                                child: Center(
+                                  child: IconButton(
+                                    icon: Icon(
+                                      Icons.lock,
+                                      color: !isPublicRecipes
+                                          ? AppColors.primaryColor
+                                          : Colors.grey[600],
+                                    ),
+                                    onPressed: () {
+                                      _switchbetweenPublicAndPrivateRecipes(
+                                          false);
+                                    },
+                                  ),
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
-                      ),
                     ],
                   ),
             getUserPublicOrPrivateRecipes(),

@@ -8,6 +8,9 @@ class CookbookItem extends StatefulWidget {
   State<CookbookItem> createState() => CookbookItemState();
   final String? cookbookID;
   // final String cookbookName;
+  bool isFromMealPlan;
+  String? mealDay;
+  String? mealPlanTypeOfMeal;
 
   final String? imageURLCookbook;
   static bool isBrowse = true;
@@ -19,11 +22,13 @@ class CookbookItem extends StatefulWidget {
   // final VoidCallback onClicked;
 
   CookbookItem(
-    // Key key,
-    this.cookbookID,
-    // this.cookbookName,
-    this.imageURLCookbook,
-  );
+      // Key key,
+      this.cookbookID,
+      // this.cookbookName,
+      this.imageURLCookbook,
+      this.isFromMealPlan,
+      this.mealDay,
+      this.mealPlanTypeOfMeal);
 }
 
 class CookbookItemState extends State<CookbookItem> {
@@ -78,10 +83,16 @@ class CookbookItemState extends State<CookbookItem> {
                 //print(widget.cookbookID);
               } else {
                 Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            CookbookRecipes(widget.cookbookID!)));
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => CookbookRecipes(
+                      cookbookID: widget.cookbookID!,
+                      isFromMealPlan: widget.isFromMealPlan,
+                      mealDay: widget.mealDay,
+                      mealPlanTypeOfMeal: widget.mealPlanTypeOfMeal,
+                    ),
+                  ),
+                );
 
 //-------------------------------------------------------
 

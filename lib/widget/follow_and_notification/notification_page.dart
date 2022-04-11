@@ -204,6 +204,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
                                   MaterialPageRoute(
                                     builder: (conetxt) => RecipeView(
                                       recipeid: notifications[index].recipeId,
+                                      isFromMealPlan: false,
                                     ),
                                   ));
                             }

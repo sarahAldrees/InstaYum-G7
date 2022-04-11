@@ -16,9 +16,16 @@ import 'package:instayum/widget/bookmark/cookbook_item.dart';
 class BookmarkedRecipes extends StatefulWidget {
   static bool Saved = false;
   //String autherId;
-  String recipeId;
+  String? recipeId;
+  bool isFromMealPlan = false;
+  String mealDay;
+  String mealPlanTypeOfMeal;
 
-  BookmarkedRecipes(this.recipeId);
+  BookmarkedRecipes(
+      {this.recipeId,
+      required this.isFromMealPlan,
+      required this.mealDay,
+      required this.mealPlanTypeOfMeal});
 
 //----------------Alert dialog------------------------------
 
@@ -254,7 +261,7 @@ class BookmarkedRecipesState extends State<BookmarkedRecipes> {
     });
   }
 
-  GridView showingData() {
+  GridView showingData(bool isFromMealplan) {
     return GridView.count(
       crossAxisCount: 2, // 2 items in each row
       padding: EdgeInsets.all(25),
@@ -262,11 +269,14 @@ class BookmarkedRecipesState extends State<BookmarkedRecipes> {
       children: Cookbooks_List.map((c) =>
               //if (CookbookItem.isBrowse) {
               CookbookItem(
-                // Key,
-                c.id,
-                c.imageURLCookbook,
-                // c.colorOfCircule=Colors.grey.shade300,
-              )
+                  // Key,
+                  c.id,
+                  c.imageURLCookbook,
+                  widget.isFromMealPlan,
+                  widget.mealDay,
+                  widget.mealPlanTypeOfMeal
+                  // c.colorOfCircule=Colors.grey.shade300,
+                  )
           // }
           ).toList(),
     );
@@ -358,7 +368,7 @@ class BookmarkedRecipesState extends State<BookmarkedRecipes> {
                     }
                   });
                   //--------------------------------------
-                  b2.add(widget.recipeId);
+                  b2.add(widget.recipeId!);
                   FirebaseFirestore.instance
                       .collection("users")
                       .doc(FirebaseAuth.instance.currentUser!.uid)
@@ -386,7 +396,7 @@ class BookmarkedRecipesState extends State<BookmarkedRecipes> {
                   }
                 });
                 //--------------------------------------
-                b2.add(widget.recipeId);
+                b2.add(widget.recipeId!);
                 FirebaseFirestore.instance
                     .collection("users")
                     .doc(FirebaseAuth.instance.currentUser!.uid)
@@ -428,22 +438,29 @@ class BookmarkedRecipesState extends State<BookmarkedRecipes> {
           child: Icon(Icons.add),
         ),
         // here the list of grid view
-        body: showingData(),
+        body: showingData(widget.isFromMealPlan),
       );
     } else {
-      return Scaffold(
-        // build the button to add a new cookbook
-        floatingActionButton: FloatingActionButton(
-          backgroundColor: Color(0xFFeb6d44),
-          onPressed: () {
-            showAlertDialogOfAddCookbook(context);
-            // add new cookbook
-          },
-          child: Icon(Icons.add),
-        ),
-        // here the list of grid view
-        body: showingData(),
-      );
+      return widget.isFromMealPlan
+          ? Scaffold(
+              // build the button to add a new cookbook
+
+              // here the list of grid view
+              body: showingData(widget.isFromMealPlan),
+            )
+          : Scaffold(
+              // build the button to add a new cookbook
+              floatingActionButton: FloatingActionButton(
+                backgroundColor: Color(0xFFeb6d44),
+                onPressed: () {
+                  showAlertDialogOfAddCookbook(context);
+                  // add new cookbook
+                },
+                child: Icon(Icons.add),
+              ),
+              // here the list of grid view
+              body: showingData(widget.isFromMealPlan),
+            );
     }
   }
 

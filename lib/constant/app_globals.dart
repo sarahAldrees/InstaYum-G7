@@ -9,6 +9,7 @@ class AppGlobals {
   static String? email;
   static String? pushToken;
   static List<String?> allFollowing = [];
+  static String pinedMealPlanID = "";
   //-----------------------dropdown list for classification-----------------
   static final recipeType = ['Breakfast', 'Lunch', 'Dinner'];
 

@@ -12,7 +12,7 @@ import 'package:instayum/widget/profile/profile.dart';
 
 import 'meal_grid_view.dart';
 
-import 'meal_title.dart';
+import 'meal_tile.dart';
 
 class AddNewMealPlan extends StatefulWidget {
   String? typeOfMeal;
@@ -503,7 +503,7 @@ class AddNewMealPlanState extends State<AddNewMealPlan> {
             width: MediaQuery.of(context).size.width,
             child: Column(
               children: [
-                HorizontalDayList(changeWeekday),
+                HorizontalDayList(changeWeekday, true),
                 const SizedBox(
                   height: 20,
                 ),
@@ -517,7 +517,7 @@ class AddNewMealPlanState extends State<AddNewMealPlan> {
                         print(mealInformation[index][0]);
                         print(mealInformation[index][1]);
                         print(mealInformation[index][2]);
-                        return MealTitle(
+                        return MealTile(
                           title: mealInformation[index][0],
                           mealPlanTypeOfMeal: mealInformation[index][1],
                           img: mealInformation[index][2],
@@ -551,7 +551,7 @@ class AddNewMealPlanState extends State<AddNewMealPlan> {
         // setState(() {
         Navigator.of(context).pop();
 
-        appPages.showAlertDialogRcipeAdedSuccessfully(context);
+        appPages.showAlertDialogRcipeAdedSuccessfully(context, true);
 
         //});
       },
@@ -650,11 +650,13 @@ class AddNewMealPlanState extends State<AddNewMealPlan> {
                             MealPlansService.addMealPlanTitleAndStatus(
                                 mealplanTitleTextFieldController.text,
                                 isPublicSwitchBtnAddNewMealplan);
+                            ProfileState.isPinnedInPublicMealPlans =
+                                isPublicSwitchBtnAddNewMealplan;
 
                             if (MealPlansService.countNumOfRecipes == 27) {
                               //check it
                               appPages.showAlertDialogRcipeAdedSuccessfully(
-                                  context);
+                                  context, true);
                             } else {
                               showAlertDialogCheckNumOfRecipes(context);
                             }

@@ -5,6 +5,7 @@ import 'package:instayum/model/recipe.dart';
 import 'package:instayum/widget/bookmark/cookbook_item.dart';
 import 'package:instayum/widget/bookmark/cookbook_recipes.dart';
 import 'package:instayum/widget/follow_and_notification/follow_tile.dart';
+import 'package:instayum/widget/meal_plan/add_new_mealplan.dart';
 import 'package:instayum/widget/meal_plan/meal_plans.dart';
 import 'package:instayum/widget/meal_plan/my_mealplans_screen.dart';
 import 'package:instayum/widget/profile/followers_numbers.dart';
@@ -22,6 +23,8 @@ class Profile extends StatefulWidget {
 }
 
 class ProfileState extends State<Profile> {
+  static bool isPinnedInPublicMealPlans = true;
+  static int selectedPage = 0;
   // ---------------- Database -------------------------
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   String? userUsername = AppGlobals.userName;
@@ -36,6 +39,9 @@ class ProfileState extends State<Profile> {
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       getData();
       updateAllBookmarkedRecipesTimestamp();
+      setState(() {
+        AddNewMealPlanState.activeStepIndex = 0;
+      });
     });
   }
 
@@ -201,15 +207,26 @@ class ProfileState extends State<Profile> {
                         //This list is the content of each tab.
                         // ------------ list item 1 tab view bookmarks screen.
                         uId != null
-                            ? MyRecipesScreen(userId: uId)
+                            ? MyRecipesScreen(
+                                userId: uId,
+                                isFromMealPlan: false,
+                                mealDay: "",
+                                mealPlanTypeOfMeal: "",
+                              )
                             : CustomCircularLoader(),
 
                         // ------------ list item 2 tab view bookmarks screen.
-                        MyRecipesScreen(userId: uId),
-
+                        MyMealplanScreen(
+                            day: "",
+                            typeOfMeal: "",
+                            isFromUserProfileView: false),
                         // ------------ list item 3 tab view bookmarks screen.
 
-                        BookmarkedRecipes("")
+                        BookmarkedRecipes(
+                          isFromMealPlan: false,
+                          mealDay: "",
+                          mealPlanTypeOfMeal: "",
+                        )
                       ],
                     ),
                   ),

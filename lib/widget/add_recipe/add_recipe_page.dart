@@ -318,7 +318,7 @@ class addRecipe extends State<AddRecipePage> {
         isloading = false;
       });
     // we put it in mainpages because navigitor,push not work
-    appPages.showAlertDialogRcipeAdedSuccessfully(context);
+    appPages.showAlertDialogRcipeAdedSuccessfully(context, false);
   }
 
 //_______ The two methods below is used to create a dynamic TextFormFeild for Ingredients__________________

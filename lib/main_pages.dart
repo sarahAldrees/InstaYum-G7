@@ -7,6 +7,7 @@ import 'package:instayum/widget/add_recipe/add_recipe_page.dart';
 import 'package:instayum/widget/discover/discover_page.dart';
 import 'package:instayum/widget/follow_and_notification/notification_page.dart';
 import 'package:instayum/widget/meal_plan/add_new_mealplan.dart';
+import 'package:instayum/widget/meal_plan/mealplan_service.dart';
 import 'package:instayum/widget/shopping_list/shopping_list_page.dart';
 import 'package:instayum/widget/pickers/recipe_image_picker.dart';
 import 'constant/app_globals.dart';
@@ -111,10 +112,212 @@ class appPages extends State<MainPages> {
       },
     );
   }
+//*****************************************MEALPLAN***************************************************************** */
 
-  //----------------------------------------------------------------------------
+  showAlertDialogGetOutOfAddMealplanPage(
+      BuildContext context, int indexOfNewPage) {
+    // set up the button
+    Widget okButton = RaisedButton(
+        color: Colors.white,
+        shape: RoundedRectangleBorder(
+          side: BorderSide(color: Theme.of(context).accentColor, width: 2),
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Text(
+          "Yes",
+          style: TextStyle(
+            color: Theme.of(context).accentColor,
+          ),
+        ),
+        onPressed: () {
+          // we will first clear the form
+
+          // addRecipe.recipeTitle = '';
+          AddNewMealPlanState.mealplanTitleTextFieldController.text = "";
+
+          MealPlansService.chosenMealDay = 'SUN';
+          MealPlansService.hasMealPlanCollection = false;
+          AddNewMealPlanState.sunMealPlan.clear();
+          AddNewMealPlanState.monMealPlan.clear();
+          AddNewMealPlanState.tueMealPlan.clear();
+          AddNewMealPlanState.wedMealPlan.clear();
+          AddNewMealPlanState.thuMealPlan.clear();
+          AddNewMealPlanState.friMealPlan.clear();
+          AddNewMealPlanState.satMealPlan.clear();
+          AddNewMealPlanState.mealInformation.clear();
+
+          AddNewMealPlanState.sunMealPlan
+              .addAll(AddNewMealPlanState.initiateMealInformation);
+          AddNewMealPlanState.monMealPlan
+              .addAll(AddNewMealPlanState.initiateMealInformation);
+          AddNewMealPlanState.tueMealPlan
+              .addAll(AddNewMealPlanState.initiateMealInformation);
+          AddNewMealPlanState.wedMealPlan
+              .addAll(AddNewMealPlanState.initiateMealInformation);
+          AddNewMealPlanState.thuMealPlan
+              .addAll(AddNewMealPlanState.initiateMealInformation);
+          AddNewMealPlanState.friMealPlan
+              .addAll(AddNewMealPlanState.initiateMealInformation);
+          AddNewMealPlanState.satMealPlan
+              .addAll(AddNewMealPlanState.initiateMealInformation);
+
+          //then we will move the user to the required page
+          indexOfPages = indexOfNewPage;
+          if (indexOfNewPage == 0)
+            appBarTitel = "Discover Page";
+          else if (indexOfNewPage == 3)
+            appBarTitel = "Shopping List";
+          else if (indexOfNewPage == 2)
+            appBarTitel = "Add Recipe";
+          else if (indexOfNewPage == 1)
+            appBarTitel = "Meal Plan";
+          else
+            appBarTitel = "Profile";
+
+          setState(() {});
+          Navigator.of(context).pop(); // to close the alert dialog
+        });
+
+    Widget cancelButton = RaisedButton(
+        child: Text("Cancel"),
+        onPressed: () {
+          Navigator.of(context)
+              .pop(); //just close the alert dialog and stay in the same page
+        });
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Center(
+        child: Text(
+          "Warning",
+          style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Theme.of(context).accentColor),
+        ),
+      ),
+      content: Text(
+        "Are you sure you want to leave add mealplan page? \nYou will lose all of your data!",
+        style: TextStyle(color: Color(0xFF444444)),
+      ),
+      actions: [
+        okButton,
+        cancelButton,
+      ],
+    );
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  Future updatePinConditionToTrue(String mealplanID) async {
+    final FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+
+    //and make all other mealplans the pin condition is false;
+
+    await firebaseFirestore
+        .collection("users")
+        .doc(AppGlobals.userId)
+        .collection("mealPlans")
+        .get()
+        .then((snapshot) {
+      snapshot.docs.forEach((doc) {
+        firebaseFirestore
+            .collection("users")
+            .doc(AppGlobals.userId)
+            .collection("mealPlans")
+            .doc(doc.id)
+            .update({"is_pinned": false});
+      });
+    }).then((value) async {
+      Timestamp? timestamp = Timestamp.now();
+      AppGlobals.pinedMealPlanID = mealplanID;
+
+      await firebaseFirestore
+          .collection("users")
+          .doc(AppGlobals.userId)
+          .collection("mealPlans")
+          .doc(mealplanID)
+          .update({"timestamp": timestamp, "is_pinned": true});
+    });
+  }
+
+  showAlertDialogPinConfirmationMessage(
+      BuildContext context, String? mealplanID) {
+    // set up the button
+    Widget okButton = RaisedButton(
+        color: Colors.white,
+        shape: RoundedRectangleBorder(
+          side: BorderSide(color: Theme.of(context).accentColor, width: 2),
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Text(
+          "Yes",
+          style: TextStyle(
+            color: Theme.of(context).accentColor,
+          ),
+        ),
+        onPressed: () {
+          // MealPlanCardState.isPinProcessLoading = true;
+          indexOfPages = 4;
+          appBarTitel = "Profile";
+          Navigator.of(context).pop();
+          ProfileState.selectedPage = 1;
+          ProfileState.isPinnedInPublicMealPlans =
+              ProfileState.isPinnedInPublicMealPlans;
+
+          updatePinConditionToTrue(mealplanID!);
+
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => MainPages()),
+          );
+
+          // to close the alert dialog
+        });
+
+    Widget cancelButton = RaisedButton(
+        child: Text("Cancel"),
+        onPressed: () {
+          Navigator.of(context)
+              .pop(); //just close the alert dialog and stay in the same page
+        });
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Center(
+        child: Text(
+          "Pin this Meal plan",
+          style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Theme.of(context).accentColor),
+        ),
+      ),
+      content: Text(
+        "This will appear at the top of your mealsplan and replcase and previously pinned meal plan. Are you sure?",
+        style: TextStyle(color: Color(0xFF444444)),
+      ),
+      actions: [
+        okButton,
+        cancelButton,
+      ],
+    );
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  //*****************************************MEALPLAN***************************************************************** */
 // this message appear after added a seccfull recipe, and we put in this class because navigator.push not work
-  static showAlertDialogRcipeAdedSuccessfully(BuildContext context) {
+  static showAlertDialogRcipeAdedSuccessfully(
+      BuildContext context, bool isFromMealPlan) {
     // set up the button
     Widget okButton = RaisedButton(
         child: Text("OK"),
@@ -126,10 +329,20 @@ class appPages extends State<MainPages> {
           addRecipe.isloading = false;
           indexOfPages = 4;
           appBarTitel = "Profile";
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => MainPages()),
-          );
+
+          if (isFromMealPlan) {
+            //to make the tab bar point to my mealplans
+            ProfileState.selectedPage = 1;
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => MainPages()),
+            );
+          } else {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => MainPages()),
+            );
+          }
         });
 
     // set up the AlertDialog
@@ -189,6 +402,25 @@ class appPages extends State<MainPages> {
 
 // if the user not in the add recipe page and want to move to any another page it will do it directly without confirmation message
         if (indexOfPreviousPage != 2) {
+          indexOfPages = index;
+
+          if (index == 0)
+            appBarTitel = "Discover Page";
+          else if (index == 3)
+            appBarTitel = "Shopping List";
+          else if (index == 2)
+            appBarTitel = "Add Recipe";
+          else if (index == 1)
+            appBarTitel = "Meal Plan";
+          else
+            appBarTitel = "Profile";
+        }
+      } else if (indexOfPreviousPage == 1 &&
+          index != 1 &&
+          !AddNewMealPlanState.isAddMealplanNullFields()) {
+        showAlertDialogGetOutOfAddMealplanPage(context, index);
+
+        if (indexOfPreviousPage != 1) {
           indexOfPages = index;
 
           if (index == 0)

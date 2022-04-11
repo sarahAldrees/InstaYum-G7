@@ -3,6 +3,8 @@ import 'package:instayum/constant/app_globals.dart';
 import 'package:instayum/model/cookbook.dart';
 import 'package:instayum/widget/pickers/cookbook_image_picker.dart';
 
+import 'mealplan_card.dart';
+
 class MealPlansService {
   static final FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
   static String? mealPlanID;

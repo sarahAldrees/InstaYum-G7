@@ -7,6 +7,7 @@ import 'package:instayum/model/reported_account.dart';
 import 'package:instayum/model/user_model.dart';
 import 'package:instayum/widget/discover/search/search_users.dart';
 import 'package:instayum/widget/follow_and_notification/follow_user_service.dart';
+import 'package:instayum/widget/meal_plan/my_mealplans_screen.dart';
 import 'package:instayum/widget/profile/circular_loader.dart';
 import 'package:instayum/widget/profile/followers_numbers.dart';
 import 'package:instayum/widget/profile/followers_page.dart';
@@ -31,6 +32,8 @@ class UserProfileViewState extends State<UserProfileView> {
   final FollowUserService followUserService = FollowUserService();
   bool isFollowed = false;
   late UserModel user;
+  int selectedTab = 0;
+  TabController? controller;
 //getData() to get the data of users like username, image_url from database
   void getData() async {
     if (widget.userId != null) {
@@ -741,24 +744,102 @@ class UserProfileViewState extends State<UserProfileView> {
                       padding: EdgeInsets.only(top: 10),
                       child: Divider(color: Colors.grey)),
                   // User recipes heading
-                  Row(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Icon(Icons.assignment_outlined),
+                  // Row(
+                  //   children: [
+                  //     Padding(
+                  //       padding: const EdgeInsets.all(8.0),
+                  //       child: Icon(Icons.assignment_outlined),
+                  //     ),
+                  //     Text(
+                  //       "${userUsername ?? ''}\'s recipes",
+                  //     )
+                  //   ],
+                  // ),
+
+                  // //Showing user recipes
+                  // Expanded(
+                  //   child: uId != null
+                  //       ? MyRecipesScreen(userId: uId)
+                  //       : CustomCircularLoader(),
+                  // ),
+//=========================================NEW DESIGN=====================================
+
+                  DefaultTabController(
+                    initialIndex: selectedTab,
+                    length: 2,
+
+                    // allows you to build a list of elements that would be scrolled away till the body reached the top
+
+                    // You tab view goes here and its bar view
+                    // child: Column(
+                    //   children: <Widget>[
+                    child:
+
+                        //Container(
+                        //   child: Row(
+                        //     children: [
+                        //       buildImage(),
+                        //       if (uId != null) FollowersNumbers(userId: uId),
+                        //     ],
+                        //   ),
+                        // ),
+
+                        // Container(
+                        //   margin: EdgeInsets.only(right: 270),
+                        //   child: Text(
+                        //     "@${userUsername ?? ''}",
+                        //     style:
+                        //         TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                        //   ),
+                        // ),
+
+                        //------------------------------------------
+                        SizedBox(
+                      height: AppGlobals.screenHeight * 0.4,
+                      child: Column(
+                        children: [
+                          TabBar(
+                            controller: controller,
+                            labelStyle: TextStyle(
+                                fontSize: 13, fontWeight: FontWeight.bold),
+                            labelColor: Color(0xFFeb6d44),
+                            tabs: [
+                              Tab(
+                                  icon: Icon(Icons.assignment_outlined),
+                                  text: ("Recipes")),
+                              Tab(
+                                  icon: Icon(Icons.table_view),
+                                  text: ("Meal plans")),
+                            ],
+                          ),
+                          Expanded(
+                            child: TabBarView(
+                              children: [
+                                // ------------ list item 1 tab view bookmarks screen.
+
+                                MyRecipesScreen(
+                                  userId: uId,
+                                  isFromMealPlan: false,
+                                  mealDay: "",
+                                  mealPlanTypeOfMeal: "",
+                                ),
+
+                                // ------------ list item 2 tab view bookmarks screen.
+                                MyMealplanScreen(
+                                  day: "",
+                                  typeOfMeal: "",
+                                  isFromUserProfileView: true,
+                                  userID: uId,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
-                      Text(
-                        "${userUsername ?? ''}\'s recipes",
-                      )
-                    ],
+                    ),
                   ),
 
-                  //Showing user recipes
-                  Expanded(
-                    child: uId != null
-                        ? MyRecipesScreen(userId: uId)
-                        : CustomCircularLoader(),
-                  ),
+//=========================================NEW DESIGN=====================================
                 ],
               ),
             ),

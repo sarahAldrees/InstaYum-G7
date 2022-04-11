@@ -1,24 +1,82 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:instayum/widget/meal_plan/mealplan_service.dart';
 import 'package:intl/intl.dart';
+
+import 'add_new_mealplan.dart';
 
 class HorizontalDayList extends StatefulWidget {
   final Function dayUpdateFunction;
+  bool isFromAddNewMealPlan;
 
-  HorizontalDayList(this.dayUpdateFunction);
+  HorizontalDayList(this.dayUpdateFunction, this.isFromAddNewMealPlan);
 
   @override
   _HorizontalDayListState createState() => _HorizontalDayListState();
 }
 
 class _HorizontalDayListState extends State<HorizontalDayList> {
+  int num = 0;
   @override
   void initState() {
     super.initState();
+
     SchedulerBinding.instance!.addPostFrameCallback((_) {
-      DateTime date = DateTime.now();
-      widget.dayUpdateFunction(weekdays[date.weekday - 1]);
-      updateDayColor(date.weekday);
+      DateTime? date;
+      if (widget.isFromAddNewMealPlan) {
+        widget.dayUpdateFunction(MealPlansService.chosenMealDay);
+        switch (MealPlansService.chosenMealDay) {
+          case "SUN":
+            {
+              updateDayColor(0);
+            }
+            break;
+          case "MON":
+            {
+              updateDayColor(1);
+            }
+            break;
+          case "TUE":
+            {
+              updateDayColor(2);
+            }
+            break;
+          case "WED":
+            {
+              updateDayColor(3);
+            }
+            break;
+          case "THU":
+            {
+              updateDayColor(4);
+            }
+            break;
+          case "FRI":
+            {
+              updateDayColor(5);
+            }
+            break;
+          case "SAT":
+            {
+              updateDayColor(6);
+            }
+            break;
+        }
+        //  num = 0;
+      } else {
+        date = DateTime.now();
+        if (date.weekday == 7) {
+          num = 0;
+          print("num = 0");
+        } else {
+          num = date.weekday;
+          print("nnuumm = ");
+          print(num);
+        }
+
+        widget.dayUpdateFunction(weekdays[num]);
+        updateDayColor(num);
+      }
     });
   }
 
@@ -80,7 +138,7 @@ class _HorizontalDayListState extends State<HorizontalDayList> {
             child: Container(
               margin: const EdgeInsets.only(left: 5, right: 5, top: 10),
               height: 60,
-              width: 46,
+              width: 40,
               decoration: BoxDecoration(
                   color: cardColorList[index][0],
                   borderRadius: const BorderRadius.all(Radius.circular(10))),

@@ -119,6 +119,7 @@ class _RecipeCardState extends State<RecipeCard> {
                             cookbook: "",
                             recipeid: widget.RecipeId,
                             autherId: widget.autherId,
+                            isFromMealPlan: false,
                           )));
             }, //what happend after clicking image
           ),

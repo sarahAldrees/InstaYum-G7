@@ -8,11 +8,18 @@ import 'package:instayum/widget/recipe_view/recipe_item.dart';
 
 class CookbookRecipes extends StatefulWidget {
   @override
-  String cookbookID;
+  String? cookbookID;
   bool flag = true;
   static bool isNeedUpdate = true;
+  bool isFromMealPlan;
+  String? mealDay;
+  String? mealPlanTypeOfMeal;
 
-  CookbookRecipes(this.cookbookID);
+  CookbookRecipes(
+      {this.cookbookID,
+      required this.isFromMealPlan,
+      this.mealDay,
+      this.mealPlanTypeOfMeal});
 
   State<CookbookRecipes> createState() => CookbookRecipesState();
 }
@@ -174,49 +181,103 @@ class CookbookRecipesState extends State<CookbookRecipes> {
   @override
   Widget build(BuildContext context) {
     print(autherId);
-    return Scaffold(
-      appBar: new AppBar(
-        title: Text(widget.cookbookID + " cookbook"),
-        backgroundColor: Color(0xFFeb6d44),
-        actions: [
-          if (widget.cookbookID != 'All bookmarked recipes')
-            Row(
-              children: [
-                IconButton(
-                    icon: Icon(
-                      Icons.delete_outline_outlined,
-                      //  Icons.ios_share,
-                      size: 30,
-                    ),
-                    onPressed: () {
-                      showAlertDialogDeleteCookbook(context);
-                    }),
-              ],
-            ),
-        ],
-      ),
-      body: GridView.count(
-          crossAxisCount: 2, // 2 items in each row
-          crossAxisSpacing: 20,
-          padding: EdgeInsets.all(20),
-          mainAxisSpacing: 10,
-          children: [
-            ...recpiesList
-                .map((e) => RecipeItem(
-                    widget.cookbookID,
-                    e.userId,
-                    e.recipeId,
-                    e.recipeTitle,
-                    e.img1,
-                    e.typeOfMeal,
-                    e.category,
-                    e.cuisine,
-                    e.ingredients,
-                    e.dirctions,
-                    e.imageUrls))
-                .toList(),
-          ]),
-    );
+    if (widget.isFromMealPlan) {
+      return Scaffold(
+        appBar: new AppBar(
+          title: Text(widget.cookbookID! + " cookbook"),
+          backgroundColor: Color(0xFFeb6d44),
+          actions: [
+            if (widget.cookbookID != 'All bookmarked recipes')
+              Row(
+                children: [
+                  IconButton(
+                      icon: Icon(
+                        Icons.delete_outline_outlined,
+                        //  Icons.ios_share,
+                        size: 30,
+                      ),
+                      onPressed: () {
+                        showAlertDialogDeleteCookbook(context);
+                      }),
+                ],
+              ),
+          ],
+        ),
+        body: GridView.count(
+            crossAxisCount: 2, // 2 items in each row
+            crossAxisSpacing: 20,
+            padding: EdgeInsets.all(20),
+            mainAxisSpacing: 10,
+            children: [
+              ...recpiesList
+                  .map(
+                    (e) => RecipeItem(
+                        widget.cookbookID,
+                        e.userId,
+                        e.recipeId,
+                        e.recipeTitle,
+                        e.img1,
+                        e.typeOfMeal,
+                        e.category,
+                        e.cuisine,
+                        e.ingredients,
+                        e.dirctions,
+                        e.imageUrls,
+                        widget.isFromMealPlan,
+                        widget.mealDay!,
+                        widget.mealPlanTypeOfMeal!),
+                  )
+                  .toList(),
+            ]),
+      );
+    } else {
+      return Scaffold(
+        appBar: new AppBar(
+          title: Text(widget.cookbookID! + " cookbook"),
+          backgroundColor: Color(0xFFeb6d44),
+          actions: [
+            if (widget.cookbookID != 'All bookmarked recipes')
+              Row(
+                children: [
+                  IconButton(
+                      icon: Icon(
+                        Icons.delete_outline_outlined,
+                        //  Icons.ios_share,
+                        size: 30,
+                      ),
+                      onPressed: () {
+                        showAlertDialogDeleteCookbook(context);
+                      }),
+                ],
+              ),
+          ],
+        ),
+        body: GridView.count(
+            crossAxisCount: 2, // 2 items in each row
+            crossAxisSpacing: 20,
+            padding: EdgeInsets.all(20),
+            mainAxisSpacing: 10,
+            children: [
+              ...recpiesList
+                  .map((e) => RecipeItem(
+                      widget.cookbookID,
+                      e.userId,
+                      e.recipeId,
+                      e.recipeTitle,
+                      e.img1,
+                      e.typeOfMeal,
+                      e.category,
+                      e.cuisine,
+                      e.ingredients,
+                      e.dirctions,
+                      e.imageUrls,
+                      widget.isFromMealPlan,
+                      widget.mealDay!,
+                      widget.mealPlanTypeOfMeal!))
+                  .toList(),
+            ]),
+      );
+    }
     // } else {
     //widget.flag = true;
     // return Scaffold(

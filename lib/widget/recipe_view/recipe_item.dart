@@ -16,22 +16,26 @@ class RecipeItem extends StatelessWidget {
   final List<String?>? ingredients;
   final List<String?>? dirctions;
   final List<String?>? imageUrls;
-
+  bool isFromMealPlan = false;
+  String mealDay;
+  String mealPlanTypeOfMeal;
   RecipeItem(
-    // Key key,
-    // this.autherName,
-    this.cookbookitme,
-    this.autherId,
-    this.RecipeId,
-    this.recipeName,
-    this.mainImageURL,
-    this.typeOfMeal,
-    this.category,
-    this.cuisine,
-    this.ingredients,
-    this.dirctions,
-    this.imageUrls,
-  );
+      // Key key,
+      // this.autherName,
+      this.cookbookitme,
+      this.autherId,
+      this.RecipeId,
+      this.recipeName,
+      this.mainImageURL,
+      this.typeOfMeal,
+      this.category,
+      this.cuisine,
+      this.ingredients,
+      this.dirctions,
+      this.imageUrls,
+      this.isFromMealPlan,
+      this.mealDay,
+      this.mealPlanTypeOfMeal);
 
   @override
   Widget build(BuildContext context) {
@@ -68,6 +72,9 @@ class RecipeItem extends StatelessWidget {
                               cookbook: cookbookitme,
                               autherId: autherId,
                               recipeid: RecipeId,
+                              isFromMealPlan: isFromMealPlan,
+                              mealDay: mealDay,
+                              mealPlanTypeOfMeal: mealPlanTypeOfMeal,
                             )));
               }, //what happend after clicking image
 

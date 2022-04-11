@@ -218,6 +218,9 @@ class _SearchPageState extends State<SearchPage> {
                             ? SearchRecipe(
                                 recipes:
                                     List<DocumentSnapshot>.from(_searchResults),
+                                isFromMealPlan: widget.isFromMealPlan,
+                                mealDay: widget.mealDay,
+                                mealPlanTypeOfMeal: widget.mealPlanTypeOfMeal,
                               )
                             : SearchUsers(
                                 users: List<UserModel>.from(_searchResults),

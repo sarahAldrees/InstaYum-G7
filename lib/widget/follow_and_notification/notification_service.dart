@@ -249,8 +249,10 @@ void notificationNavigation(NotificationModel? messageData) {
       if (messageData.recipeId != null) {
         navigatorKey.currentState!.push(PageRouteBuilder(
           opaque: false,
-          pageBuilder: (BuildContext context, _, __) =>
-              RecipeView(recipeid: messageData.recipeId),
+          pageBuilder: (BuildContext context, _, __) => RecipeView(
+            recipeid: messageData.recipeId,
+            isFromMealPlan: false,
+          ),
         ));
       }
     }
