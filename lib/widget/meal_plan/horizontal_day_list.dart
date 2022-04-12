@@ -138,7 +138,7 @@ class _HorizontalDayListState extends State<HorizontalDayList> {
             child: Container(
               margin: const EdgeInsets.only(left: 5, right: 5, top: 10),
               height: 60,
-              width: 40,
+              width: widget.isFromAddNewMealPlan ? 40 : 48,
               decoration: BoxDecoration(
                   color: cardColorList[index][0],
                   borderRadius: const BorderRadius.all(Radius.circular(10))),

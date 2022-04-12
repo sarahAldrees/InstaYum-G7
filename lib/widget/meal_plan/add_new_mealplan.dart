@@ -452,7 +452,7 @@ class AddNewMealPlanState extends State<AddNewMealPlan> {
 
   List<Step> stepList() => [
         Step(
-          state: activeStepIndex <= 0 ? StepState.editing : StepState.complete,
+          state: activeStepIndex <= 0 ? StepState.indexed : StepState.indexed,
           isActive: activeStepIndex >= 0,
           title: const Text('Title and status'),
           content: Container(
@@ -494,7 +494,7 @@ class AddNewMealPlanState extends State<AddNewMealPlan> {
           ),
         ),
         Step(
-          state: StepState.complete,
+          state: StepState.indexed,
 
           isActive: activeStepIndex >= 1,
           title: const Text('Add recipes'),
