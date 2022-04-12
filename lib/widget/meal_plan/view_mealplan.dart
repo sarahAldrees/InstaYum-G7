@@ -375,17 +375,23 @@ class ViewMealplanState extends State<ViewMealplan> {
                   switch (typeOfMeals[j]) {
                     case "Breakfast":
                       {
-                        tueMealPlan[0] = oneDayMeal;
+                        setState(() {
+                          tueMealPlan[0] = oneDayMeal;
+                        });
                       }
                       break;
                     case "Lunch":
                       {
-                        tueMealPlan[1] = oneDayMeal;
+                        setState(() {
+                          tueMealPlan[1] = oneDayMeal;
+                        });
                       }
                       break;
                     case "Dinner":
                       {
-                        tueMealPlan[2] = oneDayMeal;
+                        setState(() {
+                          tueMealPlan[2] = oneDayMeal;
+                        });
                       }
                       break;
                   }
@@ -401,12 +407,16 @@ class ViewMealplanState extends State<ViewMealplan> {
                       break;
                     case "Lunch":
                       {
-                        wedMealPlan[1] = oneDayMeal;
+                        setState(() {
+                          wedMealPlan[1] = oneDayMeal;
+                        });
                       }
                       break;
                     case "Dinner":
                       {
-                        wedMealPlan[2] = oneDayMeal;
+                        setState(() {
+                          wedMealPlan[2] = oneDayMeal;
+                        });
                       }
                       break;
                   }
@@ -415,17 +425,23 @@ class ViewMealplanState extends State<ViewMealplan> {
                   switch (typeOfMeals[j]) {
                     case "Breakfast":
                       {
-                        thuMealPlan[0] = oneDayMeal;
+                        setState(() {
+                          thuMealPlan[0] = oneDayMeal;
+                        });
                       }
                       break;
                     case "Lunch":
                       {
-                        thuMealPlan[1] = oneDayMeal;
+                        setState(() {
+                          thuMealPlan[1] = oneDayMeal;
+                        });
                       }
                       break;
                     case "Dinner":
                       {
-                        thuMealPlan[2] = oneDayMeal;
+                        setState(() {
+                          thuMealPlan[2] = oneDayMeal;
+                        });
                       }
                       break;
                   }
@@ -434,17 +450,23 @@ class ViewMealplanState extends State<ViewMealplan> {
                   switch (typeOfMeals[j]) {
                     case "Breakfast":
                       {
-                        friMealPlan[0] = oneDayMeal;
+                        setState(() {
+                          friMealPlan[0] = oneDayMeal;
+                        });
                       }
                       break;
                     case "Lunch":
                       {
-                        friMealPlan[1] = oneDayMeal;
+                        setState(() {
+                          friMealPlan[1] = oneDayMeal;
+                        });
                       }
                       break;
                     case "Dinner":
                       {
-                        friMealPlan[2] = oneDayMeal;
+                        setState(() {
+                          friMealPlan[2] = oneDayMeal;
+                        });
                       }
                       break;
                   }
@@ -453,17 +475,23 @@ class ViewMealplanState extends State<ViewMealplan> {
                   switch (typeOfMeals[j]) {
                     case "Breakfast":
                       {
-                        satMealPlan[0] = oneDayMeal;
+                        setState(() {
+                          satMealPlan[0] = oneDayMeal;
+                        });
                       }
                       break;
                     case "Lunch":
                       {
-                        satMealPlan[1] = oneDayMeal;
+                        setState(() {
+                          satMealPlan[1] = oneDayMeal;
+                        });
                       }
                       break;
                     case "Dinner":
                       {
-                        satMealPlan[2] = oneDayMeal;
+                        setState(() {
+                          satMealPlan[2] = oneDayMeal;
+                        });
                       }
                       break;
                   }
