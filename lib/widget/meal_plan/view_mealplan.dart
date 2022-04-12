@@ -322,21 +322,23 @@ class ViewMealplanState extends State<ViewMealplan> {
                     switch (typeOfMeals[j]) {
                       case "Breakfast":
                         {
-                          sunMealPlan[0] = oneDayMeal;
-                          print("4444444444444444444444444444444");
-                          print("Sunday breakfast");
+                          setState(() {
+                            sunMealPlan[0] = oneDayMeal;
+                          });
                         }
                         break;
                       case "Lunch":
                         {
-                          sunMealPlan[1] = oneDayMeal;
-                          print("4444444444444444444444444444444");
-                          print("Sunday Lunch");
+                          setState(() {
+                            sunMealPlan[1] = oneDayMeal;
+                          });
                         }
                         break;
                       case "Dinner":
                         {
-                          sunMealPlan[2] = oneDayMeal;
+                          setState(() {
+                            sunMealPlan[2] = oneDayMeal;
+                          });
                         }
                         break;
                     }
@@ -347,23 +349,23 @@ class ViewMealplanState extends State<ViewMealplan> {
                     switch (typeOfMeals[j]) {
                       case "Breakfast":
                         {
-                          monMealPlan[0] = oneDayMeal;
-                          print("4444444444444444444444444444444");
-                          print("Monday Breakfast is ");
-                          print(monMealPlan[0]);
-
-                          print("onDayMeal in monday Breakfast is: ");
-                          print(oneDayMeal);
+                          setState(() {
+                            monMealPlan[0] = oneDayMeal;
+                          });
                         }
                         break;
                       case "Lunch":
                         {
-                          monMealPlan[1] = oneDayMeal;
+                          setState(() {
+                            monMealPlan[1] = oneDayMeal;
+                          });
                         }
                         break;
                       case "Dinner":
                         {
-                          monMealPlan[2] = oneDayMeal;
+                          setState(() {
+                            monMealPlan[2] = oneDayMeal;
+                          });
                         }
                         break;
                     }
@@ -392,7 +394,9 @@ class ViewMealplanState extends State<ViewMealplan> {
                   switch (typeOfMeals[j]) {
                     case "Breakfast":
                       {
-                        wedMealPlan[0] = oneDayMeal;
+                        setState(() {
+                          wedMealPlan[0] = oneDayMeal;
+                        });
                       }
                       break;
                     case "Lunch":
