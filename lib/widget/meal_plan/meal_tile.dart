@@ -32,8 +32,9 @@ class _MealTileState extends State<MealTile> {
   @override
   Widget build(BuildContext context) {
     setState(() {
-      if (widget.img ==
-          "https://firebasestorage.googleapis.com/v0/b/instayum-f7a34.appspot.com/o/cookbook_image%2FScreenshot%20(828).png?alt=media&token=b9f92769-47cd-4bb2-b88b-9ccbe5626a95")
+      if (!widget.isFromAddMealplan &&
+          widget.img ==
+              "https://firebasestorage.googleapis.com/v0/b/instayum-f7a34.appspot.com/o/cookbook_image%2FScreenshot%20(828).png?alt=media&token=b9f92769-47cd-4bb2-b88b-9ccbe5626a95")
         image =
             "https://firebasestorage.googleapis.com/v0/b/instayum-f7a34.appspot.com/o/cookbook_image%2FScreenshot%20(939).png?alt=media&token=da0640f8-ea4d-4b5a-a370-ef12d368e60b";
       else
