@@ -810,9 +810,9 @@ class _RecipeViewState extends State<RecipeView> {
 
   bool isAddRecipeToMealPlanLoading = false;
 
-  Widget floatingButtonWithMealCondtion() {
+  Widget floatingButtonWithoutMealCondtion() {
     return ExpandableFab(
-      initialOpen: false,
+      initialOpen: true,
       //distance: 120,
       children: [
         //---------------to view action button rating and open smale windo to get the rate ---------------------
@@ -914,7 +914,7 @@ class _RecipeViewState extends State<RecipeView> {
           : FloatingActionButtonLocation.endFloat,
       floatingActionButton: widget.isFromMealPlan
           ? buttonAddRecipeToMealPlan()
-          : floatingButtonWithMealCondtion(),
+          : floatingButtonWithoutMealCondtion(),
       body: Container(
         child: isLoading
             ? CustomCircularLoader()
