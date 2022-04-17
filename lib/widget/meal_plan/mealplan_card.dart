@@ -878,12 +878,12 @@ class MealPlanCardState extends State<MealPlanCard> {
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
       title: Text(
-        "Transfer",
+        "Cpoy Meal Plan",
         style: TextStyle(
             fontWeight: FontWeight.bold, color: Theme.of(context).accentColor),
       ),
       content: Text(
-        "Are you sure you want to tansfer this mealplan to your account?",
+        "Are you sure you want to copy this meal plan to your account?",
         style: TextStyle(color: Color(0xFF444444)),
       ),
       actions: [
@@ -948,7 +948,7 @@ class MealPlanCardState extends State<MealPlanCard> {
                   widget.isFromUserProfileView!
                       ? ElevatedButton(
                           child: Text(
-                            "Transfer",
+                            "Copy meal plan",
                             style: TextStyle(color: Color(0xFFeb6d44)),
                           ),
                           style: ElevatedButton.styleFrom(

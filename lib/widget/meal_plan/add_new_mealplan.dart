@@ -462,7 +462,7 @@ class AddNewMealPlanState extends State<AddNewMealPlan> {
                   controller: mealplanTitleTextFieldController,
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
-                    labelText: 'Mealplan Title',
+                    labelText: 'Enter meal plan title',
                     //  onChanged: (value) {
                     //     recipeTitle = value;
                     //   }
