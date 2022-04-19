@@ -630,14 +630,16 @@ class _RecipeViewState extends State<RecipeView> {
           if (value) {
             setState(() {
               addRecipeToMealPlanButtonStatus =
-                  "Remove the recipe to my mealplans";
+                  "Remove the recipe from meal plan";
               addRecipeToMealPlanButtonColor = AppColors.lightGrey;
+              textColor = Colors.white;
             });
           } else {
             setState(() {
               addRecipeToMealPlanButtonStatus =
-                  "Add the recipe to my mealplans";
-              addRecipeToMealPlanButtonColor = AppColors.primaryColor;
+                  "Add the recipe to my meal plan";
+              Colors.grey[200]!;
+              textColor = Color(0xFFeb6d44);
             });
           }
         });
@@ -712,7 +714,8 @@ class _RecipeViewState extends State<RecipeView> {
   }
 
   String addRecipeToMealPlanButtonStatus = "Add the recipe to my mealplans";
-  Color addRecipeToMealPlanButtonColor = AppColors.primaryColor;
+  Color addRecipeToMealPlanButtonColor = Colors.grey[200]!;
+  Color textColor = Color(0xFFeb6d44);
   Widget buttonAddRecipeToMealPlan() {
     return
 //  FloatingActionButtonLocation.centerFloat,
@@ -774,9 +777,10 @@ class _RecipeViewState extends State<RecipeView> {
 
                           setState(() {
                             addRecipeToMealPlanButtonStatus =
-                                "Remove the recipe to my mealplans";
+                                "Remove the recipe from meal plan";
                             addRecipeToMealPlanButtonColor =
                                 AppColors.lightGrey;
+                            textColor = Colors.white;
                           });
                         } else {
                           setState(() {
@@ -791,9 +795,9 @@ class _RecipeViewState extends State<RecipeView> {
                           setState(() {
                             isAddRecipeToMealPlanLoading = false;
                             addRecipeToMealPlanButtonStatus =
-                                "Add the recipe to my mealplans";
-                            addRecipeToMealPlanButtonColor =
-                                AppColors.primaryColor;
+                                "Add the recipe to my meal plan";
+                            addRecipeToMealPlanButtonColor = Colors.grey[200]!;
+                            textColor = Color(0xFFeb6d44);
                           });
                         }
                       });
@@ -802,10 +806,17 @@ class _RecipeViewState extends State<RecipeView> {
                     //     "Add the recipe to my mealplans")
                   });
                 },
-                label: Text(addRecipeToMealPlanButtonStatus),
-                backgroundColor: addRecipeToMealPlanButtonColor
+                label: Text(
+                  addRecipeToMealPlanButtonStatus,
+                  style: TextStyle(
+                      color: textColor,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15),
+                ),
+                backgroundColor: addRecipeToMealPlanButtonColor,
+                elevation: 10,
                 //Color(0xFFeb6d44),
-                );
+              );
   }
 
   bool isAddRecipeToMealPlanLoading = false;
