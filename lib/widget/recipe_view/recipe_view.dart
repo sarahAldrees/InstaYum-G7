@@ -18,6 +18,7 @@ import 'package:instayum/widget/recipe_view/user_information_design.dart';
 import 'package:instayum/widget/recipe_view/view_reicpe_flotingbutton.dart';
 
 import '../../constant/app_colors.dart';
+import '../discover/top_recipes/top_recipe_service.dart';
 import '../meal_plan/add_new_mealplan.dart';
 import '../meal_plan/mealplan_service.dart';
 
@@ -170,6 +171,10 @@ class _RecipeViewState extends State<RecipeView> {
                 .update({
               "bookmarkCounter": bookmarkCounter + 1,
             });
+            TopRecipeService().addToWeeklyTopBookmarks(
+              recipeId: widget.recipeid,
+              userId: AppGlobals.userId,
+            );
             setState(() {
               ++bookmarkCounter;
               recipeExist = true;
@@ -440,6 +445,7 @@ class _RecipeViewState extends State<RecipeView> {
           });
         },
       );
+
       if (bookmarkCounter == 1 &&
           mealPlanCounter == 0 &&
           widget.autherId == "user delete this recipe") {
@@ -455,8 +461,14 @@ class _RecipeViewState extends State<RecipeView> {
             .update({
           "bookmarkCounter": bookmarkCounter - 1,
         });
+
+        TopRecipeService().removeFromWeeklyTopBookmarks(
+          recipeId: widget.recipeid,
+          userId: AppGlobals.userId,
+        );
         Navigator.pop(context);
       }
+
       setState(() {
         bookmarkCounter--;
         recipeExist = false;

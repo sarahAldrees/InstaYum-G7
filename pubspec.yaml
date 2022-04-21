@@ -48,6 +48,7 @@ dependencies:
   dialogflow_flutter: ^1.0.0
   bubble: ^1.2.1
   another_flushbar: ^1.10.28
+  shimmer: ^2.0.0
   avatar_glow: ^2.0.2
   speech_to_text: ^5.4.3
   

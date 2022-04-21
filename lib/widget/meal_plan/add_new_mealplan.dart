@@ -210,22 +210,14 @@ class AddNewMealPlanState extends State<AddNewMealPlan> {
         .get()
         .then((snapshot) {
       recipeID = snapshot.data()!["recipe_id"];
-      print("9999999999999999999999999999999999999999999999999999");
-      print(recipeID);
-      print("9999999999999999999999999999999999999999999999999999");
+
       FirebaseFirestore.instance
           .collection("recipes")
           .doc(recipeID)
           .snapshots()
           .listen((recipeData) {
-        print("11111111111111111111111111111111111111111111");
-        print(recipeData.data()!["recipe_title"]);
-        print(recipeData.data()!["img1"]);
-
         recipeTitle = recipeData.data()!["recipe_title"];
         recipeImage = recipeData.data()!["img1"];
-        print("11111111111111111111111111111111111111111111");
-        // String dayAndTypeOfMeal = day + "-" + typeOfMeal!;
         oneDayMeals = [
           // dayAndTypeOfMeal,
           recipeData.data()!["recipe_title"],
@@ -419,7 +411,6 @@ class AddNewMealPlanState extends State<AddNewMealPlan> {
           break;
       }
     });
-    print("in add new meal plan the day issssssssssssssssssssss:");
     print("changed, $weekday");
   }
 
@@ -644,63 +635,61 @@ class AddNewMealPlanState extends State<AddNewMealPlan> {
                             activeStepIndex = 1;
                           });
                         } else {
-                          validMealPlanName = await _checkMealPlanName(
-                              mealplanTitleTextFieldController.text);
-                          if (validMealPlanName) {
-                            MealPlansService.addMealPlanTitleAndStatus(
-                                mealplanTitleTextFieldController.text,
-                                isPublicSwitchBtnAddNewMealplan);
-                            ProfileState.isPinnedInPublicMealPlans =
-                                isPublicSwitchBtnAddNewMealplan;
+                          //    if (validMealPlanName) {
+                          MealPlansService.addMealPlanTitleAndStatus(
+                              mealplanTitleTextFieldController.text,
+                              isPublicSwitchBtnAddNewMealplan);
+                          ProfileState.isPinnedInPublicMealPlans =
+                              isPublicSwitchBtnAddNewMealplan;
 
-                            if (MealPlansService.countNumOfRecipes == 27) {
-                              //check it
-                              appPages.showAlertDialogRcipeAdedSuccessfully(
-                                  context, true);
-                            } else {
-                              showAlertDialogCheckNumOfRecipes(context);
-                            }
-                            MealPlansService.makePinnedMealplanAlwaysUp();
-                            // to open the public or private mealplan list in profile page.
-                            print(
-                                "qoiwhdajnecflkjesbnliufhliesufiuesbfi;suhnfuihesiuhief");
-                            print(MealPlansService.countNumOfRecipes);
-                            // appPages.showAlertDialogRcipeAdedSuccessfully(
-                            //     context, true);
-                            //to clear all the plan
-
-                            mealplanTitleTextFieldController.clear();
-                            MealPlansService.chosenMealDay = 'SUN';
-                            isPublicSwitchBtnAddNewMealplan = false;
-                            MealPlansService.hasMealPlanCollection = false;
-                            sunMealPlan.clear();
-                            monMealPlan.clear();
-                            tueMealPlan.clear();
-                            wedMealPlan.clear();
-                            thuMealPlan.clear();
-                            friMealPlan.clear();
-                            satMealPlan.clear();
-                            mealInformation.clear();
-
-                            sunMealPlan.addAll(initiateMealInformation);
-                            monMealPlan.addAll(initiateMealInformation);
-
-                            tueMealPlan.addAll(initiateMealInformation);
-
-                            wedMealPlan.addAll(initiateMealInformation);
-
-                            thuMealPlan.addAll(initiateMealInformation);
-
-                            friMealPlan.addAll(initiateMealInformation);
-
-                            satMealPlan.addAll(initiateMealInformation);
+                          if (MealPlansService.countNumOfRecipes == 27) {
+                            //check it
+                            appPages.showAlertDialogRcipeAdedSuccessfully(
+                                context, true);
                           } else {
-                            Flushbar(
-                              backgroundColor: Theme.of(context).errorColor,
-                              message: "The title is already exist",
-                              duration: Duration(seconds: 4),
-                            ).show(context);
+                            showAlertDialogCheckNumOfRecipes(context);
                           }
+                          MealPlansService.makePinnedMealplanAlwaysUp();
+                          // to open the public or private mealplan list in profile page.
+
+                          print(MealPlansService.countNumOfRecipes);
+                          // appPages.showAlertDialogRcipeAdedSuccessfully(
+                          //     context, true);
+                          //to clear all the plan
+
+                          mealplanTitleTextFieldController.clear();
+                          MealPlansService.chosenMealDay = 'SUN';
+                          isPublicSwitchBtnAddNewMealplan = false;
+                          MealPlansService.hasMealPlanCollection = false;
+                          sunMealPlan.clear();
+                          monMealPlan.clear();
+                          tueMealPlan.clear();
+                          wedMealPlan.clear();
+                          thuMealPlan.clear();
+                          friMealPlan.clear();
+                          satMealPlan.clear();
+                          mealInformation.clear();
+
+                          sunMealPlan.addAll(initiateMealInformation);
+                          monMealPlan.addAll(initiateMealInformation);
+
+                          tueMealPlan.addAll(initiateMealInformation);
+
+                          wedMealPlan.addAll(initiateMealInformation);
+
+                          thuMealPlan.addAll(initiateMealInformation);
+
+                          friMealPlan.addAll(initiateMealInformation);
+
+                          satMealPlan.addAll(initiateMealInformation);
+                          //     }
+                          // else {
+                          //   Flushbar(
+                          //     backgroundColor: Theme.of(context).errorColor,
+                          //     message: "The title is already exist",
+                          //     duration: Duration(seconds: 4),
+                          //   ).show(context);
+                          // }
                         }
                       },
                       child: (isLastStep)

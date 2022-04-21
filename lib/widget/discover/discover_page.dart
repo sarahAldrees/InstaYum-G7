@@ -1,9 +1,14 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:instayum/widget/discover/chatbot/dialog_flow.dart';
 import 'package:instayum/widget/recipe_view/my_recipes_screen.dart';
 import 'package:flutter/cupertino.dart';
+import '../../model/recipe.dart';
 import '../recipe_view/my_recipes_screen.dart';
 import 'search/search_page.dart';
+import 'top_recipes/custom_widget.dart';
+import 'top_recipes/top_recipe_service.dart';
+import 'top_recipes/top_recipes_list.dart';
 
 //import 'package:flutter/material.dart';
 
@@ -14,6 +19,18 @@ class DiscoverPage extends StatefulWidget {
 
 class Discover extends State<DiscoverPage> {
   bool value = false;
+  bool _fetchTopRecipes = false;
+
+  List<DocumentSnapshot> _allRecipes = [];
+  List<Recipe> _bookmarkRecipes = [];
+  final FirebaseFirestore firestoreInstance = FirebaseFirestore.instance;
+
+  @override
+  void initState() {
+    super.initState();
+    _getAllRecipes();
+  }
+
   //final cookingEnthusist = UserPreferences.myCooking_Enthusiast;
   @override
   Widget build(BuildContext context) {
@@ -63,40 +80,42 @@ class Discover extends State<DiscoverPage> {
                 ],
               ),
             ),
+            _fetchTopRecipes
+                ? TopWeeklyRecipes(recipes: _bookmarkRecipes)
+                : const CustomShimmerWidget(isTopRecipes: true),
+            // _fetchTopRecipes
+            //     ? NewRecipesForU(recipes: _allRecipes)
+            //     : const CustomShimmerWidget(isTopRecipes: false)
           ],
         ),
       ),
-      //: ListView(
-      //   children: [
-      //     Container(
-      //       margin: EdgeInsets.only(top: 10, left: 20, right: 30),
-      //       child: TextField(
-      //         decoration: InputDecoration(
-      //           prefixIcon: Icon(
-      //             Icons.search,
-      //             color: Colors.grey[800],
-      //           ),
-      //           labelText: 'Search',
-      //           labelStyle: TextStyle(
-      //             color: Colors.grey[800],
-      //             //fontSize: 16,
-      //           ),
-      //           enabledBorder: OutlineInputBorder(
-      //             borderSide: BorderSide(
-      //               color: Colors.grey,
-      //             ),
-      //           ),
-      //           focusedBorder: OutlineInputBorder(
-      //             borderSide: BorderSide(
-      //               color: Color(0xFFeb6d44),
-      //               width: 2,
-      //             ),
-      //           ),
-      //         ),
-      //       ),
-      //     ),
-      //   ],
-      // ),
     );
+  }
+
+  void _getAllRecipes() async {
+    // Get all recipes
+    _allRecipes.clear();
+    _bookmarkRecipes.clear();
+
+    await firestoreInstance
+        .collection('recipes')
+        // .where('is_public_recipe', isEqualTo: true)
+        .orderBy('timestamp',
+            descending:
+                true) // we have to choose ethier the most recent add recipes -> timestamp or random -> position if here we need to implement a simple method to reassign the position a new random number.
+        .get()
+        .then((recipesSnapshot) async {
+      if (recipesSnapshot.docs.isNotEmpty) {
+        _allRecipes = recipesSnapshot.docs;
+        _bookmarkRecipes =
+            await TopRecipeService().fetchAndCalculateTopRecipes();
+        _fetchTopRecipes = true;
+        setState(() {});
+      }
+    }).then((nothing) async {
+      await Future.delayed(const Duration(milliseconds: 900), () {});
+
+      setState(() {});
+    });
   }
 }

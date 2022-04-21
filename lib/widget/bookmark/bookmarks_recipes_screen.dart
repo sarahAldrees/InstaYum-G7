@@ -8,6 +8,7 @@ import 'package:instayum/widget/pickers/cookbook_image_picker.dart';
 import 'package:instayum/model/cookbook.dart';
 import 'package:instayum/widget/bookmark/add_new_cookbook.dart';
 import 'package:instayum/widget/pickers/cookbook_image_picker.dart';
+import '../discover/top_recipes/top_recipe_service.dart';
 import 'add_new_cookbook.dart';
 import 'package:instayum/widget/bookmark/cookbook_item.dart';
 import 'package:another_flushbar/flushbar.dart';
@@ -343,6 +344,9 @@ class BookmarkedRecipesState extends State<BookmarkedRecipes> {
               ),
               onPressed: () {
                 DateTime timestamp = DateTime.now();
+                String userId = FirebaseAuth.instance.currentUser!
+                    .uid; // used in counter of weekly bookmarks
+
                 for (int i = 0;
                     i < CookbookItem.selectedCookbooks.length;
                     i++) {
@@ -376,6 +380,7 @@ class BookmarkedRecipesState extends State<BookmarkedRecipes> {
                       .doc(CookbookItem.selectedCookbooks[i])
                       .update({"bookmarkedList": FieldValue.arrayUnion(b2)});
                 }
+
                 List<String> b2 = [];
                 //----------------------------------
                 FirebaseFirestore.instance
@@ -414,7 +419,8 @@ class BookmarkedRecipesState extends State<BookmarkedRecipes> {
                 //   // "autherId": widget.autherId,
                 //   "recipeId": widget.recipeId,
                 // });
-
+                TopRecipeService().addToWeeklyTopBookmarks(
+                    userId: userId, recipeId: widget.recipeId);
                 CookbookItem.isBrowse = true;
                 //RecipeViewState.ishappen = false;
 

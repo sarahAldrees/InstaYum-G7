@@ -10,6 +10,7 @@ import 'package:instayum/widget/meal_plan/meal_plans.dart';
 import 'package:instayum/widget/meal_plan/my_mealplans_screen.dart';
 import 'package:instayum/widget/profile/followers_numbers.dart';
 import 'package:instayum/widget/shopping_list/shopping_list_page.dart';
+import '../discover/top_recipes/top_recipe_service.dart';
 import '../recipe_view/my_recipes_screen.dart';
 import '../bookmark/bookmarks_recipes_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -42,6 +43,7 @@ class ProfileState extends State<Profile> {
       setState(() {
         AddNewMealPlanState.activeStepIndex = 0;
       });
+      TopRecipeService().fetchAndCalculateTopRecipes();
     });
   }
 
