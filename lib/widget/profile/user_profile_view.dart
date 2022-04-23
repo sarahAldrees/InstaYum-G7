@@ -169,6 +169,7 @@ class UserProfileViewState extends State<UserProfileView> {
                                                   .collection("ReportedAcount")
                                                   .doc(widget.userId)
                                                   .update({
+                                                "Ignore": false,
                                                 "no_reports": reprtedAccount
                                                     .user_already_reported!
                                                     .length,
@@ -206,6 +207,7 @@ class UserProfileViewState extends State<UserProfileView> {
                                                   .collection("ReportedAcount")
                                                   .doc(widget.userId)
                                                   .update({
+                                                "Ignore": false,
                                                 "no_reports": reprtedAccount
                                                     .user_already_reported!
                                                     .length,
@@ -241,6 +243,7 @@ class UserProfileViewState extends State<UserProfileView> {
                                                   .collection("ReportedAcount")
                                                   .doc(widget.userId)
                                                   .update({
+                                                "Ignore": false,
                                                 "no_reports": reprtedAccount
                                                     .user_already_reported!
                                                     .length,
@@ -276,6 +279,7 @@ class UserProfileViewState extends State<UserProfileView> {
                                                   .collection("ReportedAcount")
                                                   .doc(widget.userId)
                                                   .update({
+                                                "Ignore": false,
                                                 "no_reports": reprtedAccount
                                                     .user_already_reported!
                                                     .length,
@@ -442,6 +446,7 @@ class UserProfileViewState extends State<UserProfileView> {
                                               username: userUsername,
                                               user_already_reported:
                                                   userAlreadyReported,
+                                              Ignore: false,
                                               no_reports: 1,
                                               fraudulent: 0,
                                               bullying: 1,
@@ -488,6 +493,7 @@ class UserProfileViewState extends State<UserProfileView> {
                                               bullying: 0,
                                               unethical: 0,
                                               IDontLike: 0,
+                                              Ignore: false,
                                             );
                                             FirebaseFirestore.instance
                                                 .collection("admin")
@@ -527,6 +533,7 @@ class UserProfileViewState extends State<UserProfileView> {
                                               bullying: 0,
                                               unethical: 1,
                                               IDontLike: 0,
+                                              Ignore: false,
                                             );
                                             FirebaseFirestore.instance
                                                 .collection("admin")
@@ -567,6 +574,7 @@ class UserProfileViewState extends State<UserProfileView> {
                                               bullying: 0,
                                               unethical: 0,
                                               IDontLike: 1,
+                                              Ignore: false,
                                             );
                                             FirebaseFirestore.instance
                                                 .collection("admin")
