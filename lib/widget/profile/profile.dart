@@ -9,6 +9,7 @@ import 'package:instayum/widget/meal_plan/add_new_mealplan.dart';
 import 'package:instayum/widget/meal_plan/meal_plans.dart';
 import 'package:instayum/widget/meal_plan/my_mealplans_screen.dart';
 import 'package:instayum/widget/profile/followers_numbers.dart';
+// import 'package:instayum/widget/recipe_view/share_recipe.dart';
 import 'package:instayum/widget/shopping_list/shopping_list_page.dart';
 import '../discover/top_recipes/top_recipe_service.dart';
 import '../recipe_view/my_recipes_screen.dart';
@@ -36,6 +37,7 @@ class ProfileState extends State<Profile> {
   @override
   void initState() {
     super.initState();
+    // ShareRecipeService().initDynamicLinks(context); //path of user
     //we call the method here to get the data immediately when init the page.
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       getData();

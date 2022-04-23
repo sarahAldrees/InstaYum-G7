@@ -11,6 +11,8 @@ import 'package:instayum/widget/bookmark/bookmarks_recipes_screen.dart';
 import 'package:instayum/widget/bookmark/cookbook_item.dart';
 import 'package:instayum/widget/profile/circular_loader.dart';
 import 'package:instayum/widget/profile/profile.dart';
+// import 'package:instayum/widget/recipe_view/share_recipe.dart';
+// import 'package:share_plus/share_plus.dart';
 import 'package:instayum/widget/recipe_view/comment.dart';
 import 'package:instayum/widget/recipe_view/convert_to_check_box.dart';
 import 'package:instayum/widget/recipe_view/rating_recipe.dart';
@@ -74,6 +76,12 @@ class _RecipeViewState extends State<RecipeView> {
   List<String?> ingredients = [];
   List<String?> dirctions = [];
   List<String?> imageUrls = [];
+  //------------text for sharing--------
+  // String RTitle == recipe name
+  String sharedIngredients = "";
+  String sharedDirctions = "";
+  //-------------------------------------------------
+
   bool isLoading = true;
   int bookmarkCounter = 0;
   int mealPlanCounter = 0;
@@ -126,7 +134,7 @@ class _RecipeViewState extends State<RecipeView> {
           ),
           onPressed: () {
             //------------------delete from bookmark recipe--------------
-            unBookmarkRecipe();
+            removeBookmarkedRecipes();
 
             //-----------------------------------------------------------
           });
@@ -186,15 +194,7 @@ class _RecipeViewState extends State<RecipeView> {
   }
 
 //---------------------------------------- try 1 unbookmark -----------------------------------------------
-  void unBookmarkRecipe() {
-    // // List b2 = [];
-
-    // if (widget.cookbook == "All bookmarked recipes" || widget.cookbook == "") {
-    //  // deletFromAllCookbooks();
-
-    // } else {
-    //   deletFromThisCookbook();
-    // }
+  void removeBookmarkedRecipes() {
     recipeExist = false;
     if (widget.cookbook == "All bookmarked recipes" || widget.cookbook == "") {
       //delet from all(okay ,cancel)
@@ -266,10 +266,7 @@ class _RecipeViewState extends State<RecipeView> {
                               style: TextButton.styleFrom(
                                 primary: Color(0xFFeb6d44),
                                 backgroundColor: Colors.white,
-                                //side: BorderSide(color: Colors.deepOrange, width: 1),
                                 elevation: 0,
-                                //minimumSize: Size(100, 50),
-                                //shadowColor: Colors.red,
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(10)),
                               ),
@@ -305,7 +302,7 @@ class _RecipeViewState extends State<RecipeView> {
             title: Column(
               children: [
                 Text(
-                  'Are you sure to delete the recipe?',
+                  'Are you sure to remove the recipe?',
                   style: TextStyle(fontSize: 16),
                 ),
               ],
@@ -453,6 +450,7 @@ class _RecipeViewState extends State<RecipeView> {
             .collection("recipes")
             .doc(widget.recipeid)
             .delete();
+
         Navigator.pop(context);
       } else {
         FirebaseFirestore.instance
@@ -466,7 +464,8 @@ class _RecipeViewState extends State<RecipeView> {
           recipeId: widget.recipeid,
           userId: AppGlobals.userId,
         );
-        Navigator.pop(context);
+
+        if (widget.cookbook != "") Navigator.pop(context);
       }
 
       setState(() {
@@ -612,7 +611,7 @@ class _RecipeViewState extends State<RecipeView> {
         }
       }
     });
-
+    Navigator.pop(context);
     setState(() {
       recipeExist = false;
       _bookmarkedList = [];
@@ -684,12 +683,16 @@ class _RecipeViewState extends State<RecipeView> {
           lengthOfIngredients = recipe.lengthOfIngredients;
           lengthOfDirections = recipe.lengthOfDirections;
           lengthOfImages = recipe.imageCount;
+          sharedIngredients = "";
+          sharedDirctions = "";
 
           for (int i = 0; i < lengthOfIngredients!; i++) {
             ingredients.add(data['ing${i + 1}']);
+            sharedIngredients + "-" + data['ing${i + 1}'] + "\n";
           }
           for (int i = 0; i < lengthOfDirections!; i++) {
             dirctions.add(data['dir${i + 1}']);
+            sharedDirctions = sharedDirctions + data['dir${i + 1}'] + "\n";
           }
           for (int i = 0; i < lengthOfImages!; i++) {
             imageUrls.add(data['img${i + 1}']);
@@ -697,32 +700,9 @@ class _RecipeViewState extends State<RecipeView> {
         }
       }
     });
-    // FirebaseFirestore.instance
-    //     .collection("users")
-    //     .doc(FirebaseAuth.instance.currentUser!.uid)
-    //     .collection("cookbooks")
-    //     .doc("All bookmarked recipes")
-    //     .get()
-    //     .then((document) {
-    //   if (document != null) {
-    //     // print('rating data: ${document.data()}');
-    //     //usersAlredyRate.clear();
-    //     Map<String, dynamic>? data = document.data();
 
-    //     if (data != null) {
-    //       print("--------------------------------------4444---------");
-    //       Cookbook bookmarkedRecipe = Cookbook.fromJson(data);
-    //       print(bookmarkedRecipe.id);
-
-    //       _bookmarkedList = List.from(bookmarkedRecipe.bookmarkedList!);
-    //       print(_bookmarkedList[0]);
-    //     }
-    //   }
-    // });
     isLoading = false;
     setState(() {});
-    print("//-----------------------------3333333----------------------------");
-    // print(_bookmarkedList[0]);
   }
 
   String addRecipeToMealPlanButtonStatus = "Add the recipe to my mealplans";
@@ -905,7 +885,13 @@ class _RecipeViewState extends State<RecipeView> {
                       size: 26,
                     ),
                     onPressed: () {
-                      //setstat :change the kind of ici=on and add it to bookmark list
+                      //  ShareRecipeService().createAndShareLink(
+                      //     title: recipeName,
+                      //     ingredients: sharedIngredients,
+                      //     dirctions: sharedDirctions,
+                      //     recipeId: widget.recipeid,
+                      //     userId: widget.autherId,
+                      //   );
                     }),
               widget.autherId == AppGlobals.userId
                   ? IconButton(

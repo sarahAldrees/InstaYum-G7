@@ -61,22 +61,6 @@ class ShoppingListState extends State<ShoppingListPage> {
     getShoppingListIngredients(); // to create a create All Bookmarked Recipes  cookbook for each user when the user create an account
   }
 
-  deleteFromShoppingListIngredients() async {
-    await FirebaseFirestore.instance
-        .collection("users")
-        .doc(AppGlobals.userId)
-        .snapshots()
-        .listen((data) {
-      if (data["shoppingList"] != null) {
-        // for(){}
-        // // _ShoppingList.clear();
-        // // _ShoppingList = List(data["shoppingList"]);
-        // // print("============== @@@@ ==================");
-        // // print(data["shoppingList"][0]);
-      }
-    });
-  }
-
   getShoppingListIngredients() async {
     await FirebaseFirestore.instance
         .collection("users")
