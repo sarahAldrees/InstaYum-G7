@@ -150,7 +150,7 @@ class UserProfileViewState extends State<UserProfileView> {
                                         children: [
                                           TextButton(
                                             child: Text(
-                                              "hurting others or bullying",
+                                              "Hurting others or bullying",
                                               style: TextStyle(fontSize: 16),
                                             ),
                                             style: TextButton.styleFrom(
@@ -185,7 +185,7 @@ class UserProfileViewState extends State<UserProfileView> {
                                           ),
                                           TextButton(
                                             child: Text(
-                                              "fraudulent",
+                                              "Fraudulent",
                                               style: TextStyle(fontSize: 16),
                                             ),
                                             style: TextButton.styleFrom(
@@ -224,7 +224,7 @@ class UserProfileViewState extends State<UserProfileView> {
                                           ),
                                           TextButton(
                                             child: Text(
-                                              "unethical",
+                                              "Unethical",
                                               style: TextStyle(fontSize: 16),
                                             ),
                                             style: TextButton.styleFrom(
@@ -260,7 +260,7 @@ class UserProfileViewState extends State<UserProfileView> {
                                           ),
                                           TextButton(
                                             child: Text(
-                                              "I do not Like it",
+                                              "I don't like it",
                                               style: TextStyle(fontSize: 16),
                                             ),
                                             style: TextButton.styleFrom(
@@ -425,7 +425,7 @@ class UserProfileViewState extends State<UserProfileView> {
                                       children: [
                                         TextButton(
                                           child: Text(
-                                            "hurting others or bullying",
+                                            "Hurting others or bullying",
                                             style: TextStyle(fontSize: 16),
                                           ),
                                           style: TextButton.styleFrom(
@@ -464,7 +464,7 @@ class UserProfileViewState extends State<UserProfileView> {
                                         ),
                                         TextButton(
                                           child: Text(
-                                            "fraudulent",
+                                            "Fraudulent",
                                             style: TextStyle(fontSize: 16),
                                           ),
                                           style: TextButton.styleFrom(
@@ -507,7 +507,7 @@ class UserProfileViewState extends State<UserProfileView> {
                                         ),
                                         TextButton(
                                           child: Text(
-                                            "unethical",
+                                            "Unethical",
                                             style: TextStyle(fontSize: 16),
                                           ),
                                           style: TextButton.styleFrom(
@@ -547,7 +547,7 @@ class UserProfileViewState extends State<UserProfileView> {
                                         ),
                                         TextButton(
                                           child: Text(
-                                            "I do not Like it",
+                                            "I don't like it",
                                             style: TextStyle(fontSize: 16),
                                           ),
                                           style: TextButton.styleFrom(
