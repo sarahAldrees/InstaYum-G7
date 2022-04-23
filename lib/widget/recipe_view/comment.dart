@@ -490,6 +490,7 @@ class CommentListState extends State<CommentList> {
                                               .collection("ReportedComment")
                                               .doc(comment.commentId)
                                               .update({
+                                            "Ignore": false,
                                             "no_reports": reprtedComment
                                                 .user_already_reported!.length,
                                             "user_already_reported": FieldValue
@@ -524,6 +525,7 @@ class CommentListState extends State<CommentList> {
                                               .collection("ReportedComment")
                                               .doc(comment.commentId)
                                               .update({
+                                            "Ignore": false,
                                             "no_reports": reprtedComment
                                                 .user_already_reported!.length,
                                             "user_already_reported": FieldValue
@@ -556,6 +558,7 @@ class CommentListState extends State<CommentList> {
                                               .collection("ReportedComment")
                                               .doc(comment.commentId)
                                               .update({
+                                            "Ignore": false,
                                             "no_reports": reprtedComment
                                                 .user_already_reported!.length,
                                             "user_already_reported": FieldValue
@@ -588,6 +591,7 @@ class CommentListState extends State<CommentList> {
                                               .collection("ReportedComment")
                                               .doc(comment.commentId)
                                               .update({
+                                            "Ignore": false,
                                             "no_reports": reprtedComment
                                                 .user_already_reported!.length,
                                             "user_already_reported": FieldValue
@@ -753,6 +757,7 @@ class CommentListState extends State<CommentList> {
                                           bullying: 1,
                                           unethical: 0,
                                           IDontLike: 0,
+                                          Ignore: false,
                                         );
                                         FirebaseFirestore.instance
                                             .collection("admin")
@@ -795,6 +800,7 @@ class CommentListState extends State<CommentList> {
                                           bullying: 0,
                                           unethical: 0,
                                           IDontLike: 0,
+                                          Ignore: false,
                                         );
                                         FirebaseFirestore.instance
                                             .collection("admin")
@@ -835,6 +841,7 @@ class CommentListState extends State<CommentList> {
                                           bullying: 0,
                                           unethical: 1,
                                           IDontLike: 0,
+                                          Ignore: false,
                                         );
                                         FirebaseFirestore.instance
                                             .collection("admin")
@@ -876,6 +883,7 @@ class CommentListState extends State<CommentList> {
                                           bullying: 0,
                                           unethical: 0,
                                           IDontLike: 1,
+                                          Ignore: false,
                                         );
                                         FirebaseFirestore.instance
                                             .collection("admin")

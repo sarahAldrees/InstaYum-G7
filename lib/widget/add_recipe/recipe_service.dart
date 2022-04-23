@@ -202,6 +202,7 @@ class RecipeService {
     }
   }
 
+// ---------- Push notification for comments --------------------
   Future sendNotificationToAuthor(String? recipeId, String? username) async {
     String? userId, token, recipeTitle;
 

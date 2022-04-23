@@ -10,6 +10,8 @@ class ReprtedAccount {
   int? IDontLike;
   int? no_reports;
   List<String>? user_already_reported;
+  bool? Ignore;
+
   ReprtedAccount({
     this.username,
     this.userId,
@@ -19,6 +21,7 @@ class ReprtedAccount {
     this.IDontLike,
     this.no_reports,
     this.user_already_reported,
+    this.Ignore,
   });
 
   ReprtedAccount.fromJson(Map<String, dynamic> json) {
@@ -30,6 +33,7 @@ class ReprtedAccount {
     IDontLike = json['IDontLike'];
     no_reports = json['no_reports'];
     user_already_reported = json['user_already_reported'].cast<String>();
+    Ignore = json['Ignore'];
   }
 
   Map<String, dynamic> toJson() {
@@ -42,6 +46,8 @@ class ReprtedAccount {
     data['IDontLike'] = this.IDontLike;
     data['no_reports'] = this.no_reports;
     data['user_already_reported'] = this.user_already_reported;
+    data['Ignore'] = this.Ignore;
+
     return data;
   }
 }

@@ -459,7 +459,7 @@ class convert extends State<ConvertTocheckBox> {
             ),
             RaisedButton(
                 child: Text(
-                  "Add new cookbook",
+                  "Add a new ingredient",
                 ),
                 onPressed: () {
                   // check if the ingredient is already exist do not add it to the shooping
