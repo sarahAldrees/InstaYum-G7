@@ -11,8 +11,8 @@ import 'package:instayum/widget/bookmark/bookmarks_recipes_screen.dart';
 import 'package:instayum/widget/bookmark/cookbook_item.dart';
 import 'package:instayum/widget/profile/circular_loader.dart';
 import 'package:instayum/widget/profile/profile.dart';
-// import 'package:instayum/widget/recipe_view/share_recipe.dart';
-// import 'package:share_plus/share_plus.dart';
+import 'package:instayum/widget/recipe_view/share_recipe.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:instayum/widget/recipe_view/comment.dart';
 import 'package:instayum/widget/recipe_view/convert_to_check_box.dart';
 import 'package:instayum/widget/recipe_view/rating_recipe.dart';
@@ -885,13 +885,13 @@ class _RecipeViewState extends State<RecipeView> {
                       size: 26,
                     ),
                     onPressed: () {
-                      //  ShareRecipeService().createAndShareLink(
-                      //     title: recipeName,
-                      //     ingredients: sharedIngredients,
-                      //     dirctions: sharedDirctions,
-                      //     recipeId: widget.recipeid,
-                      //     userId: widget.autherId,
-                      //   );
+                      ShareRecipeService().createAndShareLink(
+                        title: recipeName,
+                        ingredients: sharedIngredients,
+                        dirctions: sharedDirctions,
+                        recipeId: widget.recipeid,
+                        userId: widget.autherId,
+                      );
                     }),
               widget.autherId == AppGlobals.userId
                   ? IconButton(
