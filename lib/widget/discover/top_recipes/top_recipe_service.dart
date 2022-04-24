@@ -7,6 +7,7 @@ class TopRecipeService {
   // add To Weekly Top Bookmarks
   Future<void> addToWeeklyTopBookmarks(
       {String? recipeId, String? userId}) async {
+    int weekly_bookmark_counter = 0;
     if (recipeId != null && userId != null) {
       FirebaseFirestore.instance
           .collection("recipes")
@@ -14,8 +15,7 @@ class TopRecipeService {
           .get()
           .then((recipeDoc) {
         if (recipeDoc.exists) {
-          int weekly_bookmark_counter =
-              recipeDoc.data()!["weeklyBookmarkCount"];
+          weekly_bookmark_counter = recipeDoc.data()!["weeklyBookmarkCount"];
 
           weekly_bookmark_counter = weekly_bookmark_counter + 1;
 
@@ -31,6 +31,7 @@ class TopRecipeService {
   // remove From Weekly Top Bookmarks
   Future<void> removeFromWeeklyTopBookmarks(
       {String? recipeId, String? userId}) async {
+    int weekly_bookmark_counter = 0;
     if (recipeId != null && userId != null) {
       FirebaseFirestore.instance
           .collection("recipes")
@@ -38,8 +39,7 @@ class TopRecipeService {
           .get()
           .then((recipeDoc) {
         if (recipeDoc.exists) {
-          int weekly_bookmark_counter =
-              recipeDoc.data()!["weeklyBookmarkCount"];
+          weekly_bookmark_counter = recipeDoc.data()!["weeklyBookmarkCount"];
 
           weekly_bookmark_counter = weekly_bookmark_counter - 1;
 

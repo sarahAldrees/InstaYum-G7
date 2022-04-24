@@ -467,12 +467,12 @@ class _RecipeViewState extends State<RecipeView> {
 
         if (widget.cookbook != "") Navigator.pop(context);
       }
-
-      setState(() {
-        bookmarkCounter--;
-        recipeExist = false;
-        _bookmarkedList = [];
-      });
+      if (mounted)
+        setState(() {
+          bookmarkCounter--;
+          recipeExist = false;
+          _bookmarkedList = [];
+        });
     });
   }
 

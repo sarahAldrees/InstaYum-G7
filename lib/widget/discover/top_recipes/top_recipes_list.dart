@@ -50,6 +50,7 @@ class TopWeeklyRecipes extends StatelessWidget {
                                 builder: (context) => RecipeView(
                                   recipeid: recipes[index].recipeId,
                                   isFromMealPlan: false,
+                                  cookbook: "",
                                 ),
                               ));
                         },

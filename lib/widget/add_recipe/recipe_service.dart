@@ -30,19 +30,19 @@ class RecipeService {
     int randomNumber = random.nextInt(1000000);
 
     Recipe recipe = Recipe(
-      userId: userId,
-      timestamp: timestamp,
-      recipeTitle: recipeTitle,
-      isPublicRecipe: isPublic,
-      cuisine: currentSelectedCuisine,
-      category: currentSelectedCategory,
-      typeOfMeal: currentSelectedTypeOfMeal,
-      position: randomNumber,
-      lengthOfIngredients: userIngredients.length,
-      lengthOfDirections: userDirections.length,
-      bookmarkCounter: 0,
-      mealPlanCounter: 0,
-    );
+        userId: userId,
+        timestamp: timestamp,
+        recipeTitle: recipeTitle,
+        isPublicRecipe: isPublic,
+        cuisine: currentSelectedCuisine,
+        category: currentSelectedCategory,
+        typeOfMeal: currentSelectedTypeOfMeal,
+        position: randomNumber,
+        lengthOfIngredients: userIngredients.length,
+        lengthOfDirections: userDirections.length,
+        bookmarkCounter: 0,
+        mealPlanCounter: 0,
+        weeklyBookmarkCount: 0);
 
     // create a new recipe inside collcetion of recipes
     await firebaseFirestore

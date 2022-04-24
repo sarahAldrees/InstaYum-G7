@@ -20,6 +20,7 @@ class Recipe {
   List<String>? imageUrls;
   int? bookmarkCounter;
   int? mealPlanCounter;
+  int? weeklyBookmarkCount;
 
   // // final Key key; //??
   // final String autherId;
@@ -64,7 +65,8 @@ class Recipe {
       this.imageUrls,
       this.ingredients,
       this.bookmarkCounter,
-      this.mealPlanCounter});
+      this.mealPlanCounter,
+      this.weeklyBookmarkCount});
 
   Recipe.fromJson(Map<String, dynamic> json) {
     lengthOfIngredients = json['length_of_ingredients'];
@@ -85,6 +87,7 @@ class Recipe {
     ingredients = json['ingredients'];
     bookmarkCounter = json['bookmarkCounter'];
     mealPlanCounter = json['mealPlanCounter'];
+    weeklyBookmarkCount = json['weeklyBookmarkCount'];
   }
 
   Map<String, dynamic> toJson() {
@@ -107,6 +110,7 @@ class Recipe {
     data['mealPlanCounter'] = this.mealPlanCounter;
     //data['dirctions'] = this.dirctions; // because they are null in the database
     data['imageUrls'] = this.imageUrls;
+    data['weeklyBookmarkCount'] = this.weeklyBookmarkCount;
     //data['ingredients'] = this.ingredients; // because they are null in the database
 
     return data;

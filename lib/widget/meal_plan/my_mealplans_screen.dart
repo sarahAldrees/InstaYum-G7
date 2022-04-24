@@ -250,7 +250,7 @@ class MyMealplanScreenState extends State<MyMealplanScreen> {
               thuMealPlan: thuMealPlan,
               friMealPlan: friMealPlan,
               satMealPlan: satMealPlan));
-          setState(() {});
+          if (mounted) setState(() {});
         }
         // mealplansList.add(MealPlan(
         //     mealplanID: mealPlanID,

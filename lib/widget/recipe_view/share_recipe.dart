@@ -41,7 +41,7 @@ class ShareRecipeService {
 
     Future.delayed(Duration.zero, () {
       Share.share(
-          "Check out this recipe.👇\n$_link \n\"The link just available for Android palteform until now.\"\n-------------------------------\nRecipe name: $title. \n\nIngredients: \n$ingredients \n Dirctions: \n$dirctions \n ");
+          "Check out this recipe.👇\n$_link \n\n\"The link just available for Android palteform until now.\"\n-------------------------------\nRecipe name: $title. \n\nIngredients: \n$ingredients \n Dirctions: \n$dirctions \n ");
     });
     return _link;
   }
