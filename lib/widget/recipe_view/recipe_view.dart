@@ -814,46 +814,48 @@ class _RecipeViewState extends State<RecipeView> {
   bool isAddRecipeToMealPlanLoading = false;
 
   Widget floatingButtonWithoutMealCondtion() {
-    return ExpandableFab(
-      initialOpen: true,
-      //distance: 120,
-      children: [
-        //---------------to view action button rating and open smale windo to get the rate ---------------------
-        RatingRecipe(
-          recipeId: widget.recipeid,
-          autherId: widget.autherId,
-          onRating: (status) {
-            print('status is $status');
-            if (status == true) {
-              // referesh the page after rating
-              setState(() {});
-              Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => RecipeView(
-                      recipeid: widget.recipeid,
-                      autherId: widget.autherId,
-                      isFromMealPlan: widget.isFromMealPlan,
-                    ),
-                  ));
-            }
-          },
-        ),
+    return widget.autherId != "user delete this recipe"
+        ? ExpandableFab(
+            initialOpen: true,
+            //distance: 120,
+            children: [
+              //---------------to view action button rating and open smale windo to get the rate ---------------------
+              RatingRecipe(
+                recipeId: widget.recipeid,
+                autherId: widget.autherId,
+                onRating: (status) {
+                  print('status is $status');
+                  if (status == true) {
+                    // referesh the page after rating
+                    setState(() {});
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => RecipeView(
+                            recipeid: widget.recipeid,
+                            autherId: widget.autherId,
+                            isFromMealPlan: widget.isFromMealPlan,
+                          ),
+                        ));
+                  }
+                },
+              ),
 
-        //-------------comments button to open comment page -------------
-        ActionButton(
-          onPressed: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        Comments(widget.recipeid, widget.autherId)));
-          },
-          icon: const Icon(Icons.comment_sharp),
-        ),
-        //-------------------------------------------------------
-      ],
-    );
+              //-------------comments button to open comment page -------------
+              ActionButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              Comments(widget.recipeid, widget.autherId)));
+                },
+                icon: const Icon(Icons.comment_sharp),
+              ),
+              //-------------------------------------------------------
+            ],
+          )
+        : SizedBox();
   }
 
 //------------
