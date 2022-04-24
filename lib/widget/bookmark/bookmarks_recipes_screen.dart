@@ -419,8 +419,8 @@ class BookmarkedRecipesState extends State<BookmarkedRecipes> {
                 //   // "autherId": widget.autherId,
                 //   "recipeId": widget.recipeId,
                 // });
-                TopRecipeService().addToWeeklyTopBookmarks(
-                    userId: userId, recipeId: widget.recipeId);
+                // TopRecipeService().addToWeeklyTopBookmarks(
+                //     userId: userId, recipeId: widget.recipeId);
                 CookbookItem.isBrowse = true;
                 //RecipeViewState.ishappen = false;
 
