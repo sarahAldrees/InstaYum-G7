@@ -86,6 +86,7 @@ flutter:
      - assets/instayum-chatbot-6077955177de.json
      - assets/images/InstaYum_chatbot.png
      - assets/images/defalut_image_chatbot.jpg
+     - assets/images/search128.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
   # For details regarding adding assets from package dependencies, see

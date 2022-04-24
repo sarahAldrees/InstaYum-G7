@@ -7,6 +7,7 @@ import '../../model/recipe.dart';
 import '../recipe_view/my_recipes_screen.dart';
 import 'search/search_page.dart';
 import 'top_recipes/custom_widget.dart';
+import 'top_recipes/new_recipes_list.dart';
 import 'top_recipes/top_recipe_service.dart';
 import 'top_recipes/top_recipes_list.dart';
 
@@ -53,18 +54,20 @@ class Discover extends State<DiscoverPage> {
             Padding(
               padding: const EdgeInsets.all(20.0),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                // mainAxisAlignment: MainAxisAlignment.,
                 children: [
                   Text(
-                    'Discover',
+                    'Search',
                     style: TextStyle(
                         fontSize: 28,
                         fontWeight: FontWeight.bold,
                         color: Colors.black),
                   ),
-                  IconButton(
-                    icon: Icon(Icons.search, size: 30),
-                    onPressed: () {
+                  SizedBox(
+                    width: 10,
+                  ),
+                  GestureDetector(
+                    onTap: () {
                       //Go to search page
                       Navigator.push(
                           context,
@@ -75,17 +78,39 @@ class Discover extends State<DiscoverPage> {
                               mealPlanTypeOfMeal: "",
                             ),
                           ));
-                    },
-                  ),
+                    }, // Image tapped
+                    child: Image.asset(
+                      'assets/images/search128.png',
+                      fit: BoxFit.cover, // Fixes border issues
+                      // width: 110.0,
+                      height: 40,
+                    ),
+                  )
+
+                  // IconButton(
+                  //   icon: Icon(Icons.search, size: 30),
+                  //   onPressed: () {
+                  //     //Go to search page
+                  //     Navigator.push(
+                  //         context,
+                  //         MaterialPageRoute(
+                  //           builder: (context) => SearchPage(
+                  //             isFromMealPlan: false,
+                  //             mealDay: "",
+                  //             mealPlanTypeOfMeal: "",
+                  //           ),
+                  //         ));
+                  //   },
+                  // ),
                 ],
               ),
             ),
             _fetchTopRecipes
                 ? TopWeeklyRecipes(recipes: _bookmarkRecipes)
                 : const CustomShimmerWidget(isTopRecipes: true),
-            // _fetchTopRecipes
-            //     ? NewRecipesForU(recipes: _allRecipes)
-            //     : const CustomShimmerWidget(isTopRecipes: false)
+            _fetchTopRecipes
+                ? NewRecipesForU(recipes: _allRecipes)
+                : const CustomShimmerWidget(isTopRecipes: false)
           ],
         ),
       ),
