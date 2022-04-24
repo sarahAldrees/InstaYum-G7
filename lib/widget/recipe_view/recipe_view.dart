@@ -690,7 +690,8 @@ class _RecipeViewState extends State<RecipeView> {
 
           for (int i = 0; i < lengthOfIngredients!; i++) {
             ingredients.add(data['ing${i + 1}']);
-            sharedIngredients + "-" + data['ing${i + 1}'] + "\n";
+            sharedIngredients =
+                sharedIngredients + "-" + data['ing${i + 1}'] + "\n";
           }
           for (int i = 0; i < lengthOfDirections!; i++) {
             dirctions.add(data['dir${i + 1}']);
