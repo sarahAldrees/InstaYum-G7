@@ -196,7 +196,9 @@ class _RecipeViewState extends State<RecipeView> {
 //---------------------------------------- try 1 unbookmark -----------------------------------------------
   void removeBookmarkedRecipes() {
     recipeExist = false;
-    if (widget.cookbook == "All bookmarked recipes" || widget.cookbook == "") {
+    if (widget.cookbook == "All bookmarked recipes" ||
+        widget.cookbook == "" ||
+        widget.cookbook == null) {
       //delet from all(okay ,cancel)
 
       showDialog<void>(

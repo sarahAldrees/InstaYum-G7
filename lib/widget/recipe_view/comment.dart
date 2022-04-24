@@ -956,15 +956,7 @@ class CommentListState extends State<CommentList> {
                     child: Text(comment.shownDate ?? '',
                         style: TextStyle(color: Colors.grey, fontSize: 12))),
                 //************************************ */
-                SizedBox(
-                  width: 0,
-                ),
-                // InkWell(
-                //     onTap: () {},
-                //     child: Icon(
-                //       Icons.flag_outlined,
-                //       color: Colors.black,
-                //     )),
+                Spacer(),
 
                 reportOrDeleteIcon(comment),
 
