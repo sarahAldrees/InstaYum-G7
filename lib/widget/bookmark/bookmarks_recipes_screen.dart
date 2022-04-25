@@ -372,7 +372,7 @@ class BookmarkedRecipesState extends State<BookmarkedRecipes> {
                     }
                   });
                   //--------------------------------------
-                  b2.add(widget.recipeId!);
+                  if (!b2.contains(widget.recipeId!)) b2.add(widget.recipeId!);
                   FirebaseFirestore.instance
                       .collection("users")
                       .doc(FirebaseAuth.instance.currentUser!.uid)
@@ -401,7 +401,7 @@ class BookmarkedRecipesState extends State<BookmarkedRecipes> {
                   }
                 });
                 //--------------------------------------
-                b2.add(widget.recipeId!);
+                if (!b2.contains(widget.recipeId!)) b2.add(widget.recipeId!);
                 FirebaseFirestore.instance
                     .collection("users")
                     .doc(FirebaseAuth.instance.currentUser!.uid)

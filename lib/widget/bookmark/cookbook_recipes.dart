@@ -25,7 +25,7 @@ class CookbookRecipes extends StatefulWidget {
 }
 
 class CookbookRecipesState extends State<CookbookRecipes> {
-  static List<Recipe> recpiesList = [];
+  List<Recipe> recpiesList = [];
 
   List<String> ingredientsList = [];
 
@@ -87,6 +87,7 @@ class CookbookRecipesState extends State<CookbookRecipes> {
               doc.data()?['img${i + 1}'],
             );
           }
+
           recpiesList.add(Recipe(
             userId: autherId,
             recipeId: doc.id,
