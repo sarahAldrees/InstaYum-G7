@@ -27,7 +27,7 @@ class SearchRecipe extends StatelessWidget {
     // print('users list: $list');
 
     if (recipes.length == 0)
-      return Center(child: Text('No Recipe Found!'));
+      return Center(child: Text('No Recipes Found!'));
     else {
       return ListView.builder(
         itemCount: recipes.length,

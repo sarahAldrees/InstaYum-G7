@@ -341,7 +341,16 @@ class _MyRecipesScreenState extends State<MyRecipesScreen> {
                             ),
                     ],
                   ),
-            getUserPublicOrPrivateRecipes(),
+            (isPublicRecipes && userPublicRecpiesList.isEmpty)
+                ? Center(
+                    heightFactor: 10,
+                    child: Text("No public recipes available!"),
+                  )
+                : (!isPublicRecipes && userPrivateRecpiesList.isEmpty)
+                    ? Center(
+                        heightFactor: 10,
+                        child: Text("No private recipes available!"))
+                    : getUserPublicOrPrivateRecipes(),
           ]);
   }
 }
