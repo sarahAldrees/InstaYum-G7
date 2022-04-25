@@ -546,6 +546,34 @@ class AddNewMealPlanState extends State<AddNewMealPlan> {
 
         appPages.showAlertDialogRcipeAdedSuccessfully(context, true);
 
+        //to clear all the plan
+
+        mealplanTitleTextFieldController.clear();
+        MealPlansService.chosenMealDay = 'SUN';
+        isPublicSwitchBtnAddNewMealplan = false;
+        MealPlansService.hasMealPlanCollection = false;
+        sunMealPlan.clear();
+        monMealPlan.clear();
+        tueMealPlan.clear();
+        wedMealPlan.clear();
+        thuMealPlan.clear();
+        friMealPlan.clear();
+        satMealPlan.clear();
+        mealInformation.clear();
+
+        sunMealPlan.addAll(initiateMealInformation);
+        monMealPlan.addAll(initiateMealInformation);
+
+        tueMealPlan.addAll(initiateMealInformation);
+
+        wedMealPlan.addAll(initiateMealInformation);
+
+        thuMealPlan.addAll(initiateMealInformation);
+
+        friMealPlan.addAll(initiateMealInformation);
+
+        satMealPlan.addAll(initiateMealInformation);
+
         //});
       },
     );
@@ -655,10 +683,38 @@ class AddNewMealPlanState extends State<AddNewMealPlan> {
                             ProfileState.isPinnedInPublicMealPlans =
                                 isPublicSwitchBtnAddNewMealplan;
 
-                            if (MealPlansService.countNumOfRecipes == 27) {
+                            if (MealPlansService.countNumOfRecipes == 21) {
                               //check it
                               appPages.showAlertDialogRcipeAdedSuccessfully(
                                   context, true);
+
+                              //to clear all the plan
+
+                              mealplanTitleTextFieldController.clear();
+                              MealPlansService.chosenMealDay = 'SUN';
+                              isPublicSwitchBtnAddNewMealplan = false;
+                              MealPlansService.hasMealPlanCollection = false;
+                              sunMealPlan.clear();
+                              monMealPlan.clear();
+                              tueMealPlan.clear();
+                              wedMealPlan.clear();
+                              thuMealPlan.clear();
+                              friMealPlan.clear();
+                              satMealPlan.clear();
+                              mealInformation.clear();
+
+                              sunMealPlan.addAll(initiateMealInformation);
+                              monMealPlan.addAll(initiateMealInformation);
+
+                              tueMealPlan.addAll(initiateMealInformation);
+
+                              wedMealPlan.addAll(initiateMealInformation);
+
+                              thuMealPlan.addAll(initiateMealInformation);
+
+                              friMealPlan.addAll(initiateMealInformation);
+
+                              satMealPlan.addAll(initiateMealInformation);
                             } else {
                               showAlertDialogCheckNumOfRecipes(context);
                             }
@@ -668,33 +724,7 @@ class AddNewMealPlanState extends State<AddNewMealPlan> {
                             print(MealPlansService.countNumOfRecipes);
                             // appPages.showAlertDialogRcipeAdedSuccessfully(
                             //     context, true);
-                            //to clear all the plan
 
-                            mealplanTitleTextFieldController.clear();
-                            MealPlansService.chosenMealDay = 'SUN';
-                            isPublicSwitchBtnAddNewMealplan = false;
-                            MealPlansService.hasMealPlanCollection = false;
-                            sunMealPlan.clear();
-                            monMealPlan.clear();
-                            tueMealPlan.clear();
-                            wedMealPlan.clear();
-                            thuMealPlan.clear();
-                            friMealPlan.clear();
-                            satMealPlan.clear();
-                            mealInformation.clear();
-
-                            sunMealPlan.addAll(initiateMealInformation);
-                            monMealPlan.addAll(initiateMealInformation);
-
-                            tueMealPlan.addAll(initiateMealInformation);
-
-                            wedMealPlan.addAll(initiateMealInformation);
-
-                            thuMealPlan.addAll(initiateMealInformation);
-
-                            friMealPlan.addAll(initiateMealInformation);
-
-                            satMealPlan.addAll(initiateMealInformation);
                             //     }
                             // else {
                             //   Flushbar(

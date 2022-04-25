@@ -140,7 +140,7 @@ class Discover extends State<DiscoverPage> {
     }).then((nothing) async {
       await Future.delayed(const Duration(milliseconds: 900), () {});
 
-      setState(() {});
+      if (mounted) (() {});
     });
   }
 }
