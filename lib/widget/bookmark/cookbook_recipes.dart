@@ -53,58 +53,61 @@ class CookbookRecipesState extends State<CookbookRecipes> {
         .snapshots()
         .listen((document) {
       recpiesList.clear();
+
       Map<String, dynamic>? data = document.data();
-      Cookbook bookmarkedRecipe = Cookbook.fromJson(data!);
+      if (data != null) {
+        Cookbook bookmarkedRecipe = Cookbook.fromJson(data!);
 
-      for (int i = 0; i < bookmarkedRecipe.bookmarkedList!.length; i++) {
+        for (int i = 0; i < bookmarkedRecipe.bookmarkedList!.length; i++) {
 //----------------------------------------------------------------
-        FirebaseFirestore.instance
-            .collection("recipes")
-            .doc(bookmarkedRecipe.bookmarkedList![i])
-            .get()
-            .then((doc) {
-          ingredientsList = [];
-          dirctionsList = [];
-          imageUrlsList = [];
-          lengthOfIngredients = doc.data()?['length_of_ingredients'];
-          lengthOfDirections = doc.data()?['length_of_directions'];
-          lengthOfImages = doc.data()?['image_count'];
+          FirebaseFirestore.instance
+              .collection("recipes")
+              .doc(bookmarkedRecipe.bookmarkedList![i])
+              .get()
+              .then((doc) {
+            ingredientsList = [];
+            dirctionsList = [];
+            imageUrlsList = [];
+            lengthOfIngredients = doc.data()?['length_of_ingredients'];
+            lengthOfDirections = doc.data()?['length_of_directions'];
+            lengthOfImages = doc.data()?['image_count'];
 
-          for (int i = 0; i < lengthOfIngredients!; i++) {
-            {
-              ingredientsList.add(
-                doc.data()?['ing${i + 1}'],
+            for (int i = 0; i < lengthOfIngredients!; i++) {
+              {
+                ingredientsList.add(
+                  doc.data()?['ing${i + 1}'],
+                );
+              }
+            }
+            for (int i = 0; i < lengthOfDirections!; i++) {
+              dirctionsList.add(
+                doc.data()?['dir${i + 1}'],
               );
             }
-          }
-          for (int i = 0; i < lengthOfDirections!; i++) {
-            dirctionsList.add(
-              doc.data()?['dir${i + 1}'],
-            );
-          }
-          for (int i = 0; i < lengthOfImages!; i++) {
-            imageUrlsList.add(
-              doc.data()?['img${i + 1}'],
-            );
-          }
+            for (int i = 0; i < lengthOfImages!; i++) {
+              imageUrlsList.add(
+                doc.data()?['img${i + 1}'],
+              );
+            }
 
-          recpiesList.add(Recipe(
-            userId: autherId,
-            recipeId: doc.id,
-            recipeTitle: doc.data()!['recipe_title'],
-            typeOfMeal: doc.data()!['type_of_meal'],
-            category: doc.data()!['category'],
-            cuisine: doc.data()!['cuisine'],
-            img1: doc.data()!["img1"],
-            dirctions: dirctionsList,
-            ingredients: ingredientsList,
-            imageUrls: imageUrlsList,
-          ));
-          if (mounted)
-            setState(() {
-              recpiesList = recpiesList;
-            });
-        });
+            recpiesList.add(Recipe(
+              userId: autherId,
+              recipeId: doc.id,
+              recipeTitle: doc.data()!['recipe_title'],
+              typeOfMeal: doc.data()!['type_of_meal'],
+              category: doc.data()!['category'],
+              cuisine: doc.data()!['cuisine'],
+              img1: doc.data()!["img1"],
+              dirctions: dirctionsList,
+              ingredients: ingredientsList,
+              imageUrls: imageUrlsList,
+            ));
+            if (mounted)
+              setState(() {
+                recpiesList = recpiesList;
+              });
+          });
+        }
       }
       if (mounted) setState(() {});
     });
