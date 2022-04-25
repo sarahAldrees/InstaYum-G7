@@ -84,6 +84,7 @@ class _RecipeTileState extends State<RecipeTile> {
   }
 
   Widget _showRatingAndCount() {
+    getData();
     return Row(
       children: [
         //create stars for rating
