@@ -37,8 +37,9 @@ class _MealTileState extends State<MealTile> {
               "https://firebasestorage.googleapis.com/v0/b/instayum-f7a34.appspot.com/o/cookbook_image%2FScreenshot%20(828).png?alt=media&token=b9f92769-47cd-4bb2-b88b-9ccbe5626a95")
         image =
             "https://firebasestorage.googleapis.com/v0/b/instayum-f7a34.appspot.com/o/cookbook_image%2FScreenshot%20(939).png?alt=media&token=da0640f8-ea4d-4b5a-a370-ef12d368e60b";
-      else
+      else {
         image = widget.img!;
+      }
     });
 
     Padding _buildTitleSection() {
@@ -90,7 +91,7 @@ class _MealTileState extends State<MealTile> {
           if (widget.img ==
               "https://firebasestorage.googleapis.com/v0/b/instayum-f7a34.appspot.com/o/cookbook_image%2FScreenshot%20(828).png?alt=media&token=b9f92769-47cd-4bb2-b88b-9ccbe5626a95") {
             print("the photo is different!!!!!!!!");
-          } else
+          } else {
             Navigator.push(
               context,
               MaterialPageRoute(
@@ -98,6 +99,7 @@ class _MealTileState extends State<MealTile> {
                     isFromMealPlan: false, recipeid: widget.recipeID),
               ),
             );
+          }
         }
       },
       child: Padding(
@@ -116,8 +118,13 @@ class _MealTileState extends State<MealTile> {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(20),
                       child: Image(
-                        image: NetworkImage(image),
-                      ),
+                          image: NetworkImage(image),
+                          fit: (image ==
+                                      "https://firebasestorage.googleapis.com/v0/b/instayum-f7a34.appspot.com/o/cookbook_image%2FScreenshot%20(828).png?alt=media&token=b9f92769-47cd-4bb2-b88b-9ccbe5626a95" ||
+                                  image ==
+                                      "https://firebasestorage.googleapis.com/v0/b/instayum-f7a34.appspot.com/o/cookbook_image%2FScreenshot%20(939).png?alt=media&token=da0640f8-ea4d-4b5a-a370-ef12d368e60b")
+                              ? BoxFit.contain
+                              : BoxFit.cover),
                     ),
                   ),
                 ],
