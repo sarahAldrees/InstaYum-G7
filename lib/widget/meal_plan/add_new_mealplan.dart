@@ -539,7 +539,17 @@ class AddNewMealPlanState extends State<AddNewMealPlan> {
   showAlertDialogCheckNumOfRecipes(BuildContext context) {
     // set up the button
     Widget yesButton = RaisedButton(
-      child: Text("Yes"),
+      color: Color(0xFFeb6d44),
+      shape: RoundedRectangleBorder(
+        side: BorderSide(color: Theme.of(context).accentColor, width: 2),
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Text(
+        "Yes",
+        style: TextStyle(
+          color: Colors.white,
+        ),
+      ),
       onPressed: () {
         // setState(() {
         Navigator.of(context).pop();
@@ -578,7 +588,17 @@ class AddNewMealPlanState extends State<AddNewMealPlan> {
       },
     );
     Widget noButton = RaisedButton(
-      child: Text("No"),
+      color: Colors.white,
+      shape: RoundedRectangleBorder(
+        side: BorderSide(color: Theme.of(context).accentColor, width: 2),
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Text(
+        "No",
+        style: TextStyle(
+          color: Theme.of(context).accentColor,
+        ),
+      ),
       onPressed: () {
         Navigator.of(context).pop();
       },

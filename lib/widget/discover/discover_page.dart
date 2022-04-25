@@ -124,7 +124,7 @@ class Discover extends State<DiscoverPage> {
 
     await firestoreInstance
         .collection('recipes')
-        // .where('is_public_recipe', isEqualTo: true)
+        .where('is_public_recipe', isEqualTo: true)
         .orderBy('timestamp',
             descending:
                 true) // we have to choose ethier the most recent add recipes -> timestamp or random -> position if here we need to implement a simple method to reassign the position a new random number.
@@ -139,7 +139,7 @@ class Discover extends State<DiscoverPage> {
       }
     }).then((nothing) async {
       await Future.delayed(const Duration(milliseconds: 900), () {});
-
+      setState(() {});
       if (mounted) (() {});
     });
   }

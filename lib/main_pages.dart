@@ -39,17 +39,7 @@ class appPages extends State<MainPages> {
       BuildContext context, int indexOfNewPage) {
     // set up the button
     Widget okButton = RaisedButton(
-        color: Colors.white,
-        shape: RoundedRectangleBorder(
-          side: BorderSide(color: Theme.of(context).accentColor, width: 2),
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: Text(
-          "Yes",
-          style: TextStyle(
-            color: Theme.of(context).accentColor,
-          ),
-        ),
+        child: Text("Yes"),
         onPressed: () {
           // we will first clear the form
 
@@ -81,7 +71,17 @@ class appPages extends State<MainPages> {
         });
 
     Widget cancelButton = RaisedButton(
-        child: Text("Cancel"),
+        color: Colors.white,
+        shape: RoundedRectangleBorder(
+          side: BorderSide(color: Theme.of(context).accentColor, width: 2),
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Text(
+          "Cancel",
+          style: TextStyle(
+            color: Theme.of(context).accentColor,
+          ),
+        ),
         onPressed: () {
           Navigator.of(context)
               .pop(); //just close the alert dialog and stay in the same page
@@ -102,8 +102,8 @@ class appPages extends State<MainPages> {
         style: TextStyle(color: Color(0xFF444444)),
       ),
       actions: [
-        okButton,
         cancelButton,
+        okButton,
       ],
     );
     // show the dialog
@@ -120,17 +120,7 @@ class appPages extends State<MainPages> {
       BuildContext context, int indexOfNewPage) {
     // set up the button
     Widget okButton = RaisedButton(
-        color: Colors.white,
-        shape: RoundedRectangleBorder(
-          side: BorderSide(color: Theme.of(context).accentColor, width: 2),
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: Text(
-          "Yes",
-          style: TextStyle(
-            color: Theme.of(context).accentColor,
-          ),
-        ),
+        child: Text("Yes"),
         onPressed: () {
           // we will first clear the form
 
@@ -181,7 +171,17 @@ class appPages extends State<MainPages> {
         });
 
     Widget cancelButton = RaisedButton(
-        child: Text("Cancel"),
+        color: Colors.white,
+        shape: RoundedRectangleBorder(
+          side: BorderSide(color: Theme.of(context).accentColor, width: 2),
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Text(
+          "No",
+          style: TextStyle(
+            color: Theme.of(context).accentColor,
+          ),
+        ),
         onPressed: () {
           Navigator.of(context)
               .pop(); //just close the alert dialog and stay in the same page
@@ -202,8 +202,8 @@ class appPages extends State<MainPages> {
         style: TextStyle(color: Color(0xFF444444)),
       ),
       actions: [
-        okButton,
         cancelButton,
+        okButton,
       ],
     );
     // show the dialog
