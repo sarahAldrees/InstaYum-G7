@@ -540,7 +540,7 @@ class appPages extends State<MainPages> {
     );
   }
 
-  bool isMealPlanClicked = false;
+  static bool isMealPlanClicked = false;
 
   @override
   Widget build(BuildContext context) {
