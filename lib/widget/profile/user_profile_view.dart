@@ -305,7 +305,7 @@ class UserProfileViewState extends State<UserProfileView> {
                                                             vertical: 12,
                                                             horizontal: 10),
                                                     child: Text(
-                                                      "cancel",
+                                                      "Cancel",
                                                       style: TextStyle(
                                                           fontSize: 16),
                                                     ),
@@ -597,7 +597,7 @@ class UserProfileViewState extends State<UserProfileView> {
                                                       vertical: 12,
                                                       horizontal: 10),
                                                   child: Text(
-                                                    "cancel    ",
+                                                    "Cancel      ",
                                                     style:
                                                         TextStyle(fontSize: 16),
                                                   ),
@@ -803,7 +803,7 @@ class UserProfileViewState extends State<UserProfileView> {
 
                         //------------------------------------------
                         SizedBox(
-                      height: AppGlobals.screenHeight * 0.4,
+                      height: AppGlobals.screenHeight * 0.59,
                       child: Column(
                         children: [
                           TabBar(
@@ -816,7 +816,7 @@ class UserProfileViewState extends State<UserProfileView> {
                                   icon: Icon(Icons.assignment_outlined),
                                   text: ("Recipes")),
                               Tab(
-                                  icon: Icon(Icons.table_view),
+                                  icon: Icon(Icons.calendar_month),
                                   text: ("Meal plans")),
                             ],
                           ),

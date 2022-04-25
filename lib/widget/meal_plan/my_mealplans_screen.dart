@@ -208,21 +208,7 @@ class MyMealplanScreenState extends State<MyMealplanScreen> {
         isPublicMealplans = doc.data()['is_public_mealplan'];
         isPinned = doc.data()['is_pinned'];
 
-        // if (isPinned) {
-        //   DateTime timestamp = DateTime.now();
-
-        //   await firebaseFirestore
-        //       .collection("users")
-        //       .doc(userID)
-        //       .collection("mealPlans")
-        //       .doc(doc.id)
-        //       .update({"timestamp": timestamp});
-        // }
-
         if (isPublicMealplans) {
-          print("tttttttttttttttttttttttttttttttttt");
-          print("I am in public mealplan list");
-
           userPublicMealplanList.add(MealPlan(
               mealplanID: mealPlanID,
               mealplanTitle: mealPlanTitle,
@@ -236,9 +222,6 @@ class MyMealplanScreenState extends State<MyMealplanScreen> {
               satMealPlan: satMealPlan));
           setState(() {});
         } else {
-          print("tttttttttttttttttttttttttttttttttt");
-
-          print("I am in private mealplan list");
           userPrivateMealplanList.add(MealPlan(
               mealplanID: mealPlanID,
               mealplanTitle: mealPlanTitle,
@@ -252,20 +235,9 @@ class MyMealplanScreenState extends State<MyMealplanScreen> {
               satMealPlan: satMealPlan));
           if (mounted) setState(() {});
         }
-        // mealplansList.add(MealPlan(
-        //     mealplanID: mealPlanID,
-        //     mealplanTitle: mealPlanTitle,
-        //     sunMealPlan: sunMealPlan,
-        //     monMealPlan: monMealPlan,
-        //     tueMealPlan: tueMealPlan,
-        //     wedMealPlan: wedMealPlan,
-        //     thuMealPlan: thuMealPlan,
-        //     friMealPlan: friMealPlan,
-        //     satMealPlan: satMealPlan));
-        // setState(() {});
       });
     });
-    // }//);
+
     if (userPublicMealplanList.isEmpty) {
       isPublicMealplanListEmpty = true;
       setState(() {
@@ -358,10 +330,6 @@ class MyMealplanScreenState extends State<MyMealplanScreen> {
       isPrivateMealplanListEmpty}) {
     return Column(
       children: [
-        // SizedBox(
-        //   height: 5,
-        //   width: 100,
-        // ),
         widget.isFromUserProfileView
             ? Container()
             : Row(
@@ -372,7 +340,6 @@ class MyMealplanScreenState extends State<MyMealplanScreen> {
                       _switchbetweenPublicAndPrivateMealplans(true);
                     },
                     child: Container(
-                      // margin: const EdgeInsets.only(left: 5, right: 5, top: 10),
                       height: 40,
                       width: AppGlobals.screenWidth * 0.4,
                       decoration: BoxDecoration(
@@ -440,12 +407,6 @@ class MyMealplanScreenState extends State<MyMealplanScreen> {
                     heightFactor: 10,
                     child: Text("No private mealplans available!"))
                 : getUserPublicOrPrivateMealplans(),
-
-        // if (widget.isFromUserProfileView)
-        //   Center(
-        //     heightFactor: 10,
-        //     child: Text("No mealplans available!"),
-        //   )
       ],
     );
   }
