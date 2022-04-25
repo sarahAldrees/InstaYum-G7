@@ -187,22 +187,6 @@ class CookbookRecipesState extends State<CookbookRecipes> {
         appBar: new AppBar(
           title: Text(widget.cookbookID! + " cookbook"),
           backgroundColor: Color(0xFFeb6d44),
-          actions: [
-            if (widget.cookbookID != 'All bookmarked recipes')
-              Row(
-                children: [
-                  IconButton(
-                      icon: Icon(
-                        Icons.delete_outline_outlined,
-                        //  Icons.ios_share,
-                        size: 30,
-                      ),
-                      onPressed: () {
-                        showAlertDialogDeleteCookbook(context);
-                      }),
-                ],
-              ),
-          ],
         ),
         body: GridView.count(
             crossAxisCount: 2, // 2 items in each row

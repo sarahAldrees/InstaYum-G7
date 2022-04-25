@@ -630,8 +630,8 @@ class appPages extends State<MainPages> {
                     ? new Image.asset("assets/images/orangeCalendar.png")
                     : new Image.asset(
                         "assets/images/grayCalender.png",
-                        height: 24,
-                        width: 24,
+                        height: 22,
+                        width: 22,
                       ),
                 label: "Meal Plan"),
             BottomNavigationBarItem(

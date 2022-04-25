@@ -200,7 +200,7 @@ class ProfileState extends State<Profile> {
                           icon: Icon(Icons.assignment_outlined),
                           text: ("My recipes")),
                       Tab(
-                          icon: Icon(Icons.table_view),
+                          icon: Icon(Icons.calendar_month),
                           text: ("My meal plans")),
                       Tab(icon: Icon(Icons.bookmark), text: ("Bookmarks")),
                     ],

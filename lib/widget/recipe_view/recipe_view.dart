@@ -898,25 +898,26 @@ class _RecipeViewState extends State<RecipeView> {
                         userId: widget.autherId,
                       );
                     }),
-              widget.autherId == AppGlobals.userId
-                  ? IconButton(
-                      icon: Icon(
-                        Icons.delete,
-                        //  Icons.ios_share,
-                        size: 26,
-                      ),
-                      onPressed: () {
-                        showDialog<void>(
-                          context: context,
-                          barrierDismissible: false,
-                          builder: (context) {
-                            return deleteRecipeAleart();
-                          },
-                        );
-                      }
-                      //setstat :change the kind of ici=on and add it to bookmark list
-                      )
-                  : SizedBox(),
+              if (!widget.isFromMealPlan)
+                widget.autherId == AppGlobals.userId
+                    ? IconButton(
+                        icon: Icon(
+                          Icons.delete,
+                          //  Icons.ios_share,
+                          size: 26,
+                        ),
+                        onPressed: () {
+                          showDialog<void>(
+                            context: context,
+                            barrierDismissible: false,
+                            builder: (context) {
+                              return deleteRecipeAleart();
+                            },
+                          );
+                        }
+                        //setstat :change the kind of ici=on and add it to bookmark list
+                        )
+                    : SizedBox(),
             ],
           ),
         ],
