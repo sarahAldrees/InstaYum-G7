@@ -326,14 +326,22 @@ class appPages extends State<MainPages> {
       BuildContext context, bool isFromMealPlan) {
     // set up the button
     Widget okButton = RaisedButton(
-        child: Text("OK"),
+        color: Color(0xFFeb6d44),
+        shape: RoundedRectangleBorder(
+          side: BorderSide(color: Theme.of(context).accentColor, width: 2),
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Text(
+          "Ok",
+          style: TextStyle(color: Colors.white),
+        ),
         onPressed: () {
-          print("ok is clicked");
-
           // print("Set state in ok button work");
           //to remove the progress bar
           addRecipe.isloading = false;
           indexOfPages = 4;
+          appPages.isMealPlanClicked = false;
+
           appBarTitel = "Profile";
 
           if (isFromMealPlan) {
@@ -353,10 +361,13 @@ class appPages extends State<MainPages> {
 
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
-      title: Text(
-        "Added successfully",
-        style: TextStyle(
-            fontWeight: FontWeight.bold, color: Theme.of(context).accentColor),
+      title: Center(
+        child: Text(
+          "Added successfully",
+          style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Theme.of(context).accentColor),
+        ),
       ),
       content: Text(
         "The add operation was done successfully... ",
