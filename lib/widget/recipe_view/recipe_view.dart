@@ -651,7 +651,7 @@ class _RecipeViewState extends State<RecipeView> {
             setState(() {
               addRecipeToMealPlanButtonStatus =
                   "Add the recipe to my meal plan";
-              Colors.grey[200]!;
+
               textColor = Color(0xFFeb6d44);
             });
           }
@@ -709,7 +709,7 @@ class _RecipeViewState extends State<RecipeView> {
   }
 
   String addRecipeToMealPlanButtonStatus = "Add the recipe to my meal plan";
-  Color addRecipeToMealPlanButtonColor = Colors.grey[200]!;
+  Color addRecipeToMealPlanButtonColor = Colors.grey[350]!;
   Color textColor = Color(0xFFeb6d44);
   Widget buttonAddRecipeToMealPlan() {
     return
@@ -793,7 +793,7 @@ class _RecipeViewState extends State<RecipeView> {
                             addRecipeToMealPlanButtonStatus =
                                 "Add the recipe to my meal plan";
                             appPages.isMealPlanClicked = true;
-                            addRecipeToMealPlanButtonColor = Colors.grey[200]!;
+                            addRecipeToMealPlanButtonColor = Colors.grey[350]!;
                             textColor = Color(0xFFeb6d44);
                           });
                         }

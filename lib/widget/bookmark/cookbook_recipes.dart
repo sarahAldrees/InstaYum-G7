@@ -56,7 +56,7 @@ class CookbookRecipesState extends State<CookbookRecipes> {
 
       Map<String, dynamic>? data = document.data();
       if (data != null) {
-        Cookbook bookmarkedRecipe = Cookbook.fromJson(data!);
+        Cookbook bookmarkedRecipe = Cookbook.fromJson(data);
 
         for (int i = 0; i < bookmarkedRecipe.bookmarkedList!.length; i++) {
 //----------------------------------------------------------------

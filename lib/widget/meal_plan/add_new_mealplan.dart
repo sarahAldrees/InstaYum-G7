@@ -692,12 +692,7 @@ class AddNewMealPlanState extends State<AddNewMealPlan> {
                                 : Color(0xFFeb6d44)),
                       ),
                       onPressed: () async {
-                        print("--------------------------------------");
-                        print("activeStepIndex");
-                        print(activeStepIndex);
-                        print("--------------------------------------");
                         if (isBackAllowed || activeStepIndex > 0) {
-                          print("the condtion is met");
                           if (activeStepIndex == 0) {
                             return;
                           }
@@ -706,14 +701,8 @@ class AddNewMealPlanState extends State<AddNewMealPlan> {
                           });
                           controls.onStepCancel;
                         } else if (!isLastStep && activeStepIndex == 0) {
-                          print('-----------------***************-----------');
-                          print(isBackAllowed);
-                          print(activeStepIndex);
-                          print('-----------------***************-----------');
                           if (activeStepIndex < (stepList().length - 1)) {
                             setState(() {
-                              print('onStepContinue');
-                              print(activeStepIndex);
                               activeStepIndex += 1;
                             });
                           } else {

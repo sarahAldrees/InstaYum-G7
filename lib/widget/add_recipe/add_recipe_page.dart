@@ -122,7 +122,7 @@ class addRecipe extends State<AddRecipePage> {
             fontWeight: FontWeight.bold, color: Theme.of(context).accentColor),
       ),
       content: Text(
-        "It seems that your recipe does not contain any standard measurements \n Are you sure you want to continue to add the recipe?  ",
+        "It seems that your recipe does not contain any standard measurements \nAre you sure you want to continue to add the recipe?  ",
         style: TextStyle(color: Color(0xFF444444)),
       ),
       actions: [
