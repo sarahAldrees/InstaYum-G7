@@ -630,6 +630,7 @@ class AddNewMealPlanState extends State<AddNewMealPlan> {
     );
   }
 
+  bool isBackAllowed = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -643,6 +644,10 @@ class AddNewMealPlanState extends State<AddNewMealPlan> {
           currentStep: activeStepIndex,
           steps: stepList(),
           onStepContinue: () {
+            print('-----------------***************-----------');
+            print(isBackAllowed);
+            print(activeStepIndex);
+            print('-----------------***************-----------');
             if (activeStepIndex < (stepList().length - 1)) {
               setState(() {
                 print('onStepContinue');
@@ -652,12 +657,18 @@ class AddNewMealPlanState extends State<AddNewMealPlan> {
             } else {
               print('Submited');
             }
+
+            setState(() {
+              isBackAllowed = true;
+            });
           },
           onStepCancel: () {
             if (activeStepIndex == 0) {
               return;
             }
-
+            print('^^^^^^^^^^^^^^');
+            print(activeStepIndex);
+            print('^^^^^^^^^^^^^^');
             setState(() {
               activeStepIndex -= 1;
             });
@@ -675,16 +686,63 @@ class AddNewMealPlanState extends State<AddNewMealPlan> {
                   Expanded(
                     child: ElevatedButton(
                       style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all(Color(0xFFeb6d44)),
+                        backgroundColor: MaterialStateProperty.all(
+                            (activeStepIndex > 0)
+                                ? (Colors.grey)
+                                : Color(0xFFeb6d44)),
                       ),
                       onPressed: () async {
-                        if (!isLastStep) {
+                        print("--------------------------------------");
+                        print("activeStepIndex");
+                        print(activeStepIndex);
+                        print("--------------------------------------");
+                        if (isBackAllowed || activeStepIndex > 0) {
+                          print("the condtion is met");
+                          if (activeStepIndex == 0) {
+                            return;
+                          }
+                          setState(() {
+                            activeStepIndex -= 1;
+                          });
+                          controls.onStepCancel;
+                        } else if (!isLastStep && activeStepIndex == 0) {
+                          print('-----------------***************-----------');
+                          print(isBackAllowed);
+                          print(activeStepIndex);
+                          print('-----------------***************-----------');
+                          if (activeStepIndex < (stepList().length - 1)) {
+                            setState(() {
+                              print('onStepContinue');
+                              print(activeStepIndex);
+                              activeStepIndex += 1;
+                            });
+                          } else {
+                            print('Submited');
+                          }
+
                           controls.onStepContinue;
                           setState(() {
                             activeStepIndex = 1;
                           });
-                        } else {
+                        }
+                      },
+                      child: (activeStepIndex > 0)
+                          ? const Text('Back')
+                          : const Text('Next'),
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  if (isLastStep)
+                    Expanded(
+                      child: ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all(Color(0xFFeb6d44)),
+                        ),
+                        onPressed: () async {
+// else {
                           if (mealplanTitleTextFieldController.text.isEmpty ||
                               mealplanTitleTextFieldController.text == "") {
                             setState(() {
@@ -760,25 +818,9 @@ class AddNewMealPlanState extends State<AddNewMealPlan> {
                               duration: Duration(seconds: 4),
                             ).show(context);
                           }
-                        }
-                      },
-                      child: (isLastStep)
-                          ? const Text('Done')
-                          : const Text('Next'),
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  if (activeStepIndex > 0)
-                    Expanded(
-                      child: ElevatedButton(
-                        style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all(Colors.grey),
-                        ),
-                        onPressed: controls.onStepCancel,
-                        child: const Text('Back'),
+                          //   }
+                        },
+                        child: const Text('Done'),
                       ),
                     )
                 ],

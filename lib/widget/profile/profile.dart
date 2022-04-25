@@ -129,6 +129,7 @@ class ProfileState extends State<Profile> {
       body: isLoading
           ? CustomCircularLoader()
           : DefaultTabController(
+              initialIndex: selectedPage,
               length: 3,
 
               // allows you to build a list of elements that would be scrolled away till the body reached the top
