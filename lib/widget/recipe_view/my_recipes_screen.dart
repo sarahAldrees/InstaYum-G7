@@ -341,12 +341,16 @@ class _MyRecipesScreenState extends State<MyRecipesScreen> {
                             ),
                     ],
                   ),
-            (isPublicRecipes && userPublicRecpiesList.isEmpty)
+            (isPublicRecipes &&
+                    userPublicRecpiesList.isEmpty &&
+                    widget.userId == AppGlobals.userId)
                 ? Center(
                     heightFactor: 10,
                     child: Text("No public recipes available!"),
                   )
-                : (!isPublicRecipes && userPrivateRecpiesList.isEmpty)
+                : (!isPublicRecipes &&
+                        userPrivateRecpiesList.isEmpty &&
+                        widget.userId == AppGlobals.userId)
                     ? Center(
                         heightFactor: 10,
                         child: Text("No private recipes available!"))
