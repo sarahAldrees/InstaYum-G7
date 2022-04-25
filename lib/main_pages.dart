@@ -249,17 +249,11 @@ class appPages extends State<MainPages> {
       BuildContext context, String? mealplanID) {
     // set up the button
     Widget okButton = RaisedButton(
-        color: Colors.white,
         shape: RoundedRectangleBorder(
           side: BorderSide(color: Theme.of(context).accentColor, width: 2),
           borderRadius: BorderRadius.circular(20),
         ),
-        child: Text(
-          "Yes",
-          style: TextStyle(
-            color: Theme.of(context).accentColor,
-          ),
-        ),
+        child: Text("Yes"),
         onPressed: () {
           // MealPlanCardState.isPinProcessLoading = true;
           indexOfPages = 4;
@@ -280,7 +274,17 @@ class appPages extends State<MainPages> {
         });
 
     Widget cancelButton = RaisedButton(
-        child: Text("Cancel"),
+        color: Colors.white,
+        shape: RoundedRectangleBorder(
+          side: BorderSide(color: Theme.of(context).accentColor, width: 2),
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Text(
+          "Cancel",
+          style: TextStyle(
+            color: Theme.of(context).accentColor,
+          ),
+        ),
         onPressed: () {
           Navigator.of(context)
               .pop(); //just close the alert dialog and stay in the same page
@@ -301,8 +305,8 @@ class appPages extends State<MainPages> {
         style: TextStyle(color: Color(0xFF444444)),
       ),
       actions: [
-        okButton,
         cancelButton,
+        okButton,
       ],
     );
     // show the dialog
@@ -390,6 +394,16 @@ class appPages extends State<MainPages> {
   ];
 
   void change(int index) {
+    if (index == 1) {
+      // 1 = add meal plan
+      setState(() {
+        isMealClicked = true;
+      });
+    } else {
+      setState(() {
+        isMealClicked = false;
+      });
+    }
     //this fun will change  app bar titel depend on sent
     // index and will change current page
     setState(() {
@@ -524,6 +538,8 @@ class appPages extends State<MainPages> {
     );
   }
 
+  bool isMealClicked = false;
+
   @override
   Widget build(BuildContext context) {
     AppGlobals.screenHeight = MediaQuery.of(context).size.height;
@@ -610,7 +626,14 @@ class appPages extends State<MainPages> {
             BottomNavigationBarItem(
                 icon: Icon(Icons.saved_search_sharp), label: "Discover"),
             BottomNavigationBarItem(
-                icon: Icon(Icons.table_view), label: "Meal Plan"),
+                icon: isMealClicked
+                    ? new Image.asset("assets/images/orangeCalendar.png")
+                    : new Image.asset(
+                        "assets/images/grayCalender.png",
+                        height: 24,
+                        width: 24,
+                      ),
+                label: "Meal Plan"),
             BottomNavigationBarItem(
                 icon: Icon(Icons.add_sharp), label: "Add Recipe"),
             BottomNavigationBarItem(

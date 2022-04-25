@@ -188,17 +188,11 @@ class MealPlanCardState extends State<MealPlanCard> {
   showAlertDialogUnpinConfirmationMessage(BuildContext context) {
     // set up the button
     Widget okButton = RaisedButton(
-        color: Colors.white,
         shape: RoundedRectangleBorder(
           side: BorderSide(color: Theme.of(context).accentColor, width: 2),
           borderRadius: BorderRadius.circular(20),
         ),
-        child: Text(
-          "Yes",
-          style: TextStyle(
-            color: Theme.of(context).accentColor,
-          ),
-        ),
+        child: Text("Yes"),
         onPressed: () {
           MealPlansService.updatePinConditionToFalse(widget.mealplanID);
           setState(() {
@@ -210,7 +204,17 @@ class MealPlanCardState extends State<MealPlanCard> {
         });
 
     Widget cancelButton = RaisedButton(
-        child: Text("Cancel"),
+        color: Colors.white,
+        shape: RoundedRectangleBorder(
+          side: BorderSide(color: Theme.of(context).accentColor, width: 2),
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Text(
+          "Cancel",
+          style: TextStyle(
+            color: Theme.of(context).accentColor,
+          ),
+        ),
         onPressed: () {
           Navigator.of(context)
               .pop(); //just close the alert dialog and stay in the same page
@@ -220,7 +224,7 @@ class MealPlanCardState extends State<MealPlanCard> {
     AlertDialog alert = AlertDialog(
       title: Center(
         child: Text(
-          "Unpin this Meal plan",
+          "Unpin this meal plan",
           style: TextStyle(
               fontWeight: FontWeight.bold,
               color: Theme.of(context).accentColor),
@@ -231,8 +235,8 @@ class MealPlanCardState extends State<MealPlanCard> {
         style: TextStyle(color: Color(0xFF444444)),
       ),
       actions: [
-        okButton,
         cancelButton,
+        okButton,
       ],
     );
     // show the dialog
