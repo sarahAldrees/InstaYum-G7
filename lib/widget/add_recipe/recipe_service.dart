@@ -103,18 +103,19 @@ class RecipeService {
     );
 
     //create new collcetion of recipes inside user document to save all of the user's recipes
-    await firebaseFirestore
-        .collection("recipes")
-        .doc(recipe_id)
-        .collection("rating")
-        .doc("recipeRating")
-        .set(
-          recipeRating.toJson(),
-          // { "sum_of_all_rating": 0,
-          // "num_of_reviews": 0,
-          // "average_rating": 0.0,
-          // "user_already_review": FieldValue.arrayUnion([]), }
-        );
+    if (recipe_id != null || recipe.category != null)
+      await firebaseFirestore
+          .collection("recipes")
+          .doc(recipe_id)
+          .collection("rating")
+          .doc("recipeRating")
+          .set(
+            recipeRating.toJson(),
+            // { "sum_of_all_rating": 0,
+            // "num_of_reviews": 0,
+            // "average_rating": 0.0,
+            // "user_already_review": FieldValue.arrayUnion([]), }
+          );
     if (isPublic) {
       //send notification to my followers
       await sendNotificationToFollowers(userId,
