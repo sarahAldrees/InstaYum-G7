@@ -234,41 +234,44 @@ class _MyRecipesScreenState extends State<MyRecipesScreen> {
               width: 100,
             ),
             (widget.userId != AppGlobals.userId)
-                ? Expanded(
-                    flex: 500,
-                    child: GridView.count(
-                        shrinkWrap: true,
-                        physics: BouncingScrollPhysics(),
-                        crossAxisCount: 2, // 2 items in each row
-                        crossAxisSpacing: 20,
-                        // padding: EdgeInsets.all(20),
-                        mainAxisSpacing: 10,
-                        // map all available cookbooks and list them in Gridviwe.
-                        children: recpiesList
-                            .map((e) => RecipeItem(
-                                "",
-                                //  e.key,
-                                // widget.autherName,
-                                // widget.autherImage,
-                                e.userId,
-                                e.recipeId,
-                                e.recipeTitle,
-                                e.img1,
-                                e.typeOfMeal,
-                                e.category,
-                                e.cuisine,
-                                e.ingredients,
-                                e.dirctions,
-                                e.imageUrls,
-                                widget.isFromMealPlan,
-                                widget.mealDay!,
-                                widget.mealPlanTypeOfMeal!
-                                // e.ingredients,
-                                // e.dirctions,
-                                // e.imageUrls,
-                                ))
-                            .toList()),
-                  )
+                ? recpiesList.isEmpty
+                    ? Center(
+                        heightFactor: 10, child: Text("No recipes available!"))
+                    : Expanded(
+                        flex: 500,
+                        child: GridView.count(
+                            shrinkWrap: true,
+                            physics: BouncingScrollPhysics(),
+                            crossAxisCount: 2, // 2 items in each row
+                            crossAxisSpacing: 20,
+                            // padding: EdgeInsets.all(20),
+                            mainAxisSpacing: 10,
+                            // map all available cookbooks and list them in Gridviwe.
+                            children: recpiesList
+                                .map((e) => RecipeItem(
+                                    "",
+                                    //  e.key,
+                                    // widget.autherName,
+                                    // widget.autherImage,
+                                    e.userId,
+                                    e.recipeId,
+                                    e.recipeTitle,
+                                    e.img1,
+                                    e.typeOfMeal,
+                                    e.category,
+                                    e.cuisine,
+                                    e.ingredients,
+                                    e.dirctions,
+                                    e.imageUrls,
+                                    widget.isFromMealPlan,
+                                    widget.mealDay!,
+                                    widget.mealPlanTypeOfMeal!
+                                    // e.ingredients,
+                                    // e.dirctions,
+                                    // e.imageUrls,
+                                    ))
+                                .toList()),
+                      )
                 : Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
