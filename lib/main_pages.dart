@@ -21,10 +21,9 @@ import 'widget/profile/profile.dart';
 //********************************************************************
 //********************************************************************
 class MainPages extends StatefulWidget {
-  bool? isFromMealPlan;
   @override
   State<StatefulWidget> createState() => appPages();
-  MainPages({this.isFromMealPlan});
+  MainPages();
 }
 
 class appPages extends State<MainPages> {

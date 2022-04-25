@@ -634,7 +634,7 @@ class UserProfileViewState extends State<UserProfileView> {
       body: isLoading
           ? CustomCircularLoader()
           : Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(6),
               child: Column(
                 children: <Widget>[
                   Row(
@@ -749,7 +749,7 @@ class UserProfileViewState extends State<UserProfileView> {
                   ),
 //------------------------------------------
                   Padding(
-                      padding: EdgeInsets.only(top: 10),
+                      padding: EdgeInsets.only(top: 6),
                       child: Divider(color: Colors.grey)),
                   // User recipes heading
                   // Row(
@@ -802,6 +802,7 @@ class UserProfileViewState extends State<UserProfileView> {
                         // ),
 
                         //------------------------------------------
+
                         SizedBox(
                       height: AppGlobals.screenHeight * 0.59,
                       child: Column(
@@ -819,6 +820,9 @@ class UserProfileViewState extends State<UserProfileView> {
                                   icon: Icon(Icons.calendar_month),
                                   text: ("Meal plans")),
                             ],
+                          ),
+                          SizedBox(
+                            height: 10,
                           ),
                           Expanded(
                             child: TabBarView(
