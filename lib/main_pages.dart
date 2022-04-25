@@ -21,8 +21,10 @@ import 'widget/profile/profile.dart';
 //********************************************************************
 //********************************************************************
 class MainPages extends StatefulWidget {
+  bool? isFromMealPlan;
   @override
   State<StatefulWidget> createState() => appPages();
+  MainPages({this.isFromMealPlan});
 }
 
 class appPages extends State<MainPages> {
@@ -397,11 +399,11 @@ class appPages extends State<MainPages> {
     if (index == 1) {
       // 1 = add meal plan
       setState(() {
-        isMealClicked = true;
+        isMealPlanClicked = true;
       });
     } else {
       setState(() {
-        isMealClicked = false;
+        isMealPlanClicked = false;
       });
     }
     //this fun will change  app bar titel depend on sent
@@ -538,7 +540,7 @@ class appPages extends State<MainPages> {
     );
   }
 
-  bool isMealClicked = false;
+  bool isMealPlanClicked = false;
 
   @override
   Widget build(BuildContext context) {
@@ -626,7 +628,7 @@ class appPages extends State<MainPages> {
             BottomNavigationBarItem(
                 icon: Icon(Icons.saved_search_sharp), label: "Discover"),
             BottomNavigationBarItem(
-                icon: isMealClicked
+                icon: isMealPlanClicked
                     ? new Image.asset("assets/images/orangeCalendar.png")
                     : new Image.asset(
                         "assets/images/grayCalender.png",
