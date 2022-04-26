@@ -452,20 +452,15 @@ class MealPlanCardState extends State<MealPlanCard> {
     // set up the button
     Widget yesButton = RaisedButton(
       child: Text("Yes"),
-      onPressed: () {
+      onPressed: () async {
         MealPlansService.makePinnedMealplanAlwaysUp();
-
-        // MealPlansService.updatePinConditionToTrue(
-        //     MealPlansService.pinedMealPlanID);
-
-        getMealPlanRecipes();
-
         final FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
 
         DateTime timestamp = DateTime.now();
 
         var newMealplanID;
 
+        String recipeID = "";
         newMealplanID = firebaseFirestore
             .collection('users')
             .doc(AppGlobals.userId)
@@ -476,393 +471,375 @@ class MealPlanCardState extends State<MealPlanCard> {
           "is_pinned": false,
           "timestamp": timestamp
         }).then((value) {
-          String recipeID = "";
+          newMealplanID = value.id;
+
           List<String> oneDayMeal = [];
           for (int i = 0; weekdays.length > i; i++) {
             for (int j = 0; typeOfMeals.length > j; j++) {
               firebaseFirestore
                   .collection("users")
-                  .doc(AppGlobals.userId)
+                  .doc(widget.anotherUserID)
                   .collection("mealPlans")
                   .doc(widget.mealplanID)
                   .collection(weekdays[i])
                   .doc(typeOfMeals[j])
                   .get()
-                  .then((snapshot) {
+                  .then((snapshot) async {
                 recipeID = "";
                 if (snapshot.exists) {
                   recipeID = snapshot.data()!["recipe_id"];
-                  print("2222222222222222222222222222222222222");
-                  print("recipe id is: ");
-                  print(recipeID);
                 }
-                // }).then((value) async {
+
                 if (recipeID != "") {
-                  // oneDayMeal = getOneDayMeals(recipeID, typeOfMeals[j]);
-                  print("333333333333333333333333333333333333333");
-                  print("recipe id is not null");
-                  FirebaseFirestore.instance
-                      .collection("recipes")
-                      .doc(recipeID)
-                      .get()
-                      .then((recipeData) {
-                    oneDayMeal = [
-                      recipeData.data()!["recipe_title"],
-                      typeOfMeals[j],
-                      recipeData.data()!["img1"],
-                      snapshot.data()!["recipe_id"]
-                    ];
-                  }).then((value) {
-                    switch (weekdays[i]) {
-                      case "SUN":
-                        {
-                          switch (typeOfMeals[j]) {
-                            case "Breakfast":
-                              {
-                                firebaseFirestore
-                                    .collection('users')
-                                    .doc(AppGlobals.userId)
-                                    .collection('mealPlans')
-                                    .doc(newMealplanID)
-                                    .collection("SUN")
-                                    .doc("Breakfast")
-                                    .set({
-                                  "recipe_id": recipeID,
-                                  "type_of_meal": "Breakfast"
-                                });
-                              }
-                              break;
-                            case "Lunch":
-                              {
-                                firebaseFirestore
-                                    .collection('users')
-                                    .doc(AppGlobals.userId)
-                                    .collection('mealPlans')
-                                    .doc(newMealplanID)
-                                    .collection("SUN")
-                                    .doc("Lunch")
-                                    .set({
-                                  "recipe_id": recipeID,
-                                  "type_of_meal": "Lunch"
-                                });
-                              }
-                              break;
-                            case "Dinner":
-                              {
-                                firebaseFirestore
-                                    .collection('users')
-                                    .doc(AppGlobals.userId)
-                                    .collection('mealPlans')
-                                    .doc(newMealplanID)
-                                    .collection("SUN")
-                                    .doc("Dinner")
-                                    .set({
-                                  "recipe_id": recipeID,
-                                  "type_of_meal": "Dinner"
-                                });
-                              }
-                              break;
+                  switch (weekdays[i]) {
+                    case "SUN":
+                      {
+                        switch (typeOfMeals[j]) {
+                          case "Breakfast":
+                            {
+                              firebaseFirestore
+                                  .collection('users')
+                                  .doc(AppGlobals.userId)
+                                  .collection('mealPlans')
+                                  .doc(newMealplanID)
+                                  .collection("SUN")
+                                  .doc("Breakfast")
+                                  .set({
+                                "recipe_id": recipeID,
+                                "type_of_meal": "Breakfast"
+                              });
+                            }
+                            break;
+                          case "Lunch":
+                            {
+                              firebaseFirestore
+                                  .collection('users')
+                                  .doc(AppGlobals.userId)
+                                  .collection('mealPlans')
+                                  .doc(newMealplanID)
+                                  .collection("SUN")
+                                  .doc("Lunch")
+                                  .set({
+                                "recipe_id": recipeID,
+                                "type_of_meal": "Lunch"
+                              });
+                            }
+                            break;
+                          case "Dinner":
+                            {
+                              await firebaseFirestore
+                                  .collection('users')
+                                  .doc(AppGlobals.userId)
+                                  .collection('mealPlans')
+                                  .doc(newMealplanID)
+                                  .collection("SUN")
+                                  .doc("Dinner")
+                                  .set({
+                                "recipe_id": recipeID,
+                                "type_of_meal": "Dinner"
+                              });
+                            }
+                            break;
+                        }
+                      }
+                      break;
+                    case "MON":
+                      {
+                        switch (typeOfMeals[j]) {
+                          case "Breakfast":
+                            {
+                              firebaseFirestore
+                                  .collection('users')
+                                  .doc(AppGlobals.userId)
+                                  .collection('mealPlans')
+                                  .doc(newMealplanID)
+                                  .collection("MON")
+                                  .doc("Breakfast")
+                                  .set({
+                                "recipe_id": recipeID,
+                                "type_of_meal": "Breakfast"
+                              });
+                            }
+                            break;
+                          case "Lunch":
+                            {
+                              firebaseFirestore
+                                  .collection('users')
+                                  .doc(AppGlobals.userId)
+                                  .collection('mealPlans')
+                                  .doc(newMealplanID)
+                                  .collection("MON")
+                                  .doc("Lunch")
+                                  .set({
+                                "recipe_id": recipeID,
+                                "type_of_meal": "Lunch"
+                              });
+                            }
+                            break;
+                          case "Dinner":
+                            {
+                              firebaseFirestore
+                                  .collection('users')
+                                  .doc(AppGlobals.userId)
+                                  .collection('mealPlans')
+                                  .doc(newMealplanID)
+                                  .collection("MON")
+                                  .doc("Dinner")
+                                  .set({
+                                "recipe_id": recipeID,
+                                "type_of_meal": "Dinner"
+                              });
+                            }
+                            break;
+                        }
+                      }
+                      break;
+                    case "TUE":
+                      switch (typeOfMeals[j]) {
+                        case "Breakfast":
+                          {
+                            firebaseFirestore
+                                .collection('users')
+                                .doc(AppGlobals.userId)
+                                .collection('mealPlans')
+                                .doc(newMealplanID)
+                                .collection("TUE")
+                                .doc("Breakfast")
+                                .set({
+                              "recipe_id": recipeID,
+                              "type_of_meal": "Breakfast"
+                            });
                           }
-                        }
-                        break;
-                      case "MON":
-                        {
-                          switch (typeOfMeals[j]) {
-                            case "Breakfast":
-                              {
-                                firebaseFirestore
-                                    .collection('users')
-                                    .doc(AppGlobals.userId)
-                                    .collection('mealPlans')
-                                    .doc(newMealplanID)
-                                    .collection("MON")
-                                    .doc("Breakfast")
-                                    .set({
-                                  "recipe_id": recipeID,
-                                  "type_of_meal": "Breakfast"
-                                });
-                              }
-                              break;
-                            case "Lunch":
-                              {
-                                firebaseFirestore
-                                    .collection('users')
-                                    .doc(AppGlobals.userId)
-                                    .collection('mealPlans')
-                                    .doc(newMealplanID)
-                                    .collection("MON")
-                                    .doc("Lunch")
-                                    .set({
-                                  "recipe_id": recipeID,
-                                  "type_of_meal": "Lunch"
-                                });
-                              }
-                              break;
-                            case "Dinner":
-                              {
-                                firebaseFirestore
-                                    .collection('users')
-                                    .doc(AppGlobals.userId)
-                                    .collection('mealPlans')
-                                    .doc(newMealplanID)
-                                    .collection("MON")
-                                    .doc("Dinner")
-                                    .set({
-                                  "recipe_id": recipeID,
-                                  "type_of_meal": "Dinner"
-                                });
-                              }
-                              break;
+                          break;
+                        case "Lunch":
+                          {
+                            firebaseFirestore
+                                .collection('users')
+                                .doc(AppGlobals.userId)
+                                .collection('mealPlans')
+                                .doc(newMealplanID)
+                                .collection("TUE")
+                                .doc("Lunch")
+                                .set({
+                              "recipe_id": recipeID,
+                              "type_of_meal": "Lunch"
+                            });
                           }
-                        }
-                        break;
-                      case "TUE":
-                        switch (typeOfMeals[j]) {
-                          case "Breakfast":
-                            {
-                              firebaseFirestore
-                                  .collection('users')
-                                  .doc(AppGlobals.userId)
-                                  .collection('mealPlans')
-                                  .doc(newMealplanID)
-                                  .collection("TUE")
-                                  .doc("Breakfast")
-                                  .set({
-                                "recipe_id": recipeID,
-                                "type_of_meal": "Breakfast"
-                              });
-                            }
-                            break;
-                          case "Lunch":
-                            {
-                              firebaseFirestore
-                                  .collection('users')
-                                  .doc(AppGlobals.userId)
-                                  .collection('mealPlans')
-                                  .doc(newMealplanID)
-                                  .collection("TUE")
-                                  .doc("Lunch")
-                                  .set({
-                                "recipe_id": recipeID,
-                                "type_of_meal": "Lunch"
-                              });
-                            }
-                            break;
-                          case "Dinner":
-                            {
-                              firebaseFirestore
-                                  .collection('users')
-                                  .doc(AppGlobals.userId)
-                                  .collection('mealPlans')
-                                  .doc(newMealplanID)
-                                  .collection("TUE")
-                                  .doc("Dinner")
-                                  .set({
-                                "recipe_id": recipeID,
-                                "type_of_meal": "Dinner"
-                              });
-                            }
-                            break;
-                        }
-                        break;
-                      case "WED":
-                        switch (typeOfMeals[j]) {
-                          case "Breakfast":
-                            {
-                              firebaseFirestore
-                                  .collection('users')
-                                  .doc(AppGlobals.userId)
-                                  .collection('mealPlans')
-                                  .doc(newMealplanID)
-                                  .collection("WED")
-                                  .doc("Breakfast")
-                                  .set({
-                                "recipe_id": recipeID,
-                                "type_of_meal": "Breakfast"
-                              });
-                            }
-                            break;
-                          case "Lunch":
-                            {
-                              firebaseFirestore
-                                  .collection('users')
-                                  .doc(AppGlobals.userId)
-                                  .collection('mealPlans')
-                                  .doc(newMealplanID)
-                                  .collection("WED")
-                                  .doc("Lunch")
-                                  .set({
-                                "recipe_id": recipeID,
-                                "type_of_meal": "Lunch"
-                              });
-                            }
-                            break;
-                          case "Dinner":
-                            {
-                              firebaseFirestore
-                                  .collection('users')
-                                  .doc(AppGlobals.userId)
-                                  .collection('mealPlans')
-                                  .doc(newMealplanID)
-                                  .collection("WED")
-                                  .doc("Dinner")
-                                  .set({
-                                "recipe_id": recipeID,
-                                "type_of_meal": "Dinner"
-                              });
-                            }
-                            break;
-                        }
-                        break;
-                      case "THU":
-                        switch (typeOfMeals[j]) {
-                          case "Breakfast":
-                            {
-                              firebaseFirestore
-                                  .collection('users')
-                                  .doc(AppGlobals.userId)
-                                  .collection('mealPlans')
-                                  .doc(newMealplanID)
-                                  .collection("THU")
-                                  .doc("Breakfast")
-                                  .set({
-                                "recipe_id": recipeID,
-                                "type_of_meal": "Breakfast"
-                              });
-                            }
-                            break;
-                          case "Lunch":
-                            {
-                              firebaseFirestore
-                                  .collection('users')
-                                  .doc(AppGlobals.userId)
-                                  .collection('mealPlans')
-                                  .doc(newMealplanID)
-                                  .collection("THU")
-                                  .doc("Lunch")
-                                  .set({
-                                "recipe_id": recipeID,
-                                "type_of_meal": "Lunch"
-                              });
-                            }
-                            break;
-                          case "Dinner":
-                            {
-                              firebaseFirestore
-                                  .collection('users')
-                                  .doc(AppGlobals.userId)
-                                  .collection('mealPlans')
-                                  .doc(newMealplanID)
-                                  .collection("THU")
-                                  .doc("Dinner")
-                                  .set({
-                                "recipe_id": recipeID,
-                                "type_of_meal": "Dinner"
-                              });
-                            }
-                            break;
-                        }
-                        break;
-                      case "FRI":
-                        switch (typeOfMeals[j]) {
-                          case "Breakfast":
-                            {
-                              firebaseFirestore
-                                  .collection('users')
-                                  .doc(AppGlobals.userId)
-                                  .collection('mealPlans')
-                                  .doc(newMealplanID)
-                                  .collection("FRI")
-                                  .doc("Breakfast")
-                                  .set({
-                                "recipe_id": recipeID,
-                                "type_of_meal": "Breakfast"
-                              });
-                            }
-                            break;
-                          case "Lunch":
-                            {
-                              firebaseFirestore
-                                  .collection('users')
-                                  .doc(AppGlobals.userId)
-                                  .collection('mealPlans')
-                                  .doc(newMealplanID)
-                                  .collection("FRI")
-                                  .doc("Lunch")
-                                  .set({
-                                "recipe_id": recipeID,
-                                "type_of_meal": "Lunch"
-                              });
-                            }
-                            break;
-                          case "Dinner":
-                            {
-                              firebaseFirestore
-                                  .collection('users')
-                                  .doc(AppGlobals.userId)
-                                  .collection('mealPlans')
-                                  .doc(newMealplanID)
-                                  .collection("FRI")
-                                  .doc("Dinner")
-                                  .set({
-                                "recipe_id": recipeID,
-                                "type_of_meal": "Dinner"
-                              });
-                            }
-                            break;
-                        }
-                        break;
-                      case "SAT":
-                        switch (typeOfMeals[j]) {
-                          case "Breakfast":
-                            {
-                              firebaseFirestore
-                                  .collection('users')
-                                  .doc(AppGlobals.userId)
-                                  .collection('mealPlans')
-                                  .doc(newMealplanID)
-                                  .collection("SAT")
-                                  .doc("Breakfast")
-                                  .set({
-                                "recipe_id": recipeID,
-                                "type_of_meal": "Breakfast"
-                              });
-                            }
-                            break;
-                          case "Lunch":
-                            {
-                              firebaseFirestore
-                                  .collection('users')
-                                  .doc(AppGlobals.userId)
-                                  .collection('mealPlans')
-                                  .doc(newMealplanID)
-                                  .collection("SAT")
-                                  .doc("Lunch")
-                                  .set({
-                                "recipe_id": recipeID,
-                                "type_of_meal": "Lunch"
-                              });
-                            }
-                            break;
-                          case "Dinner":
-                            {
-                              firebaseFirestore
-                                  .collection('users')
-                                  .doc(AppGlobals.userId)
-                                  .collection('mealPlans')
-                                  .doc(newMealplanID)
-                                  .collection("SAT")
-                                  .doc("Dinner")
-                                  .set({
-                                "recipe_id": recipeID,
-                                "type_of_meal": "Dinner"
-                              });
-                            }
-                            break;
-                        }
-                        break;
-                    }
-                  });
+                          break;
+                        case "Dinner":
+                          {
+                            firebaseFirestore
+                                .collection('users')
+                                .doc(AppGlobals.userId)
+                                .collection('mealPlans')
+                                .doc(newMealplanID)
+                                .collection("TUE")
+                                .doc("Dinner")
+                                .set({
+                              "recipe_id": recipeID,
+                              "type_of_meal": "Dinner"
+                            });
+                          }
+                          break;
+                      }
+                      break;
+                    case "WED":
+                      switch (typeOfMeals[j]) {
+                        case "Breakfast":
+                          {
+                            firebaseFirestore
+                                .collection('users')
+                                .doc(AppGlobals.userId)
+                                .collection('mealPlans')
+                                .doc(newMealplanID)
+                                .collection("WED")
+                                .doc("Breakfast")
+                                .set({
+                              "recipe_id": recipeID,
+                              "type_of_meal": "Breakfast"
+                            });
+                          }
+                          break;
+                        case "Lunch":
+                          {
+                            firebaseFirestore
+                                .collection('users')
+                                .doc(AppGlobals.userId)
+                                .collection('mealPlans')
+                                .doc(newMealplanID)
+                                .collection("WED")
+                                .doc("Lunch")
+                                .set({
+                              "recipe_id": recipeID,
+                              "type_of_meal": "Lunch"
+                            });
+                          }
+                          break;
+                        case "Dinner":
+                          {
+                            firebaseFirestore
+                                .collection('users')
+                                .doc(AppGlobals.userId)
+                                .collection('mealPlans')
+                                .doc(newMealplanID)
+                                .collection("WED")
+                                .doc("Dinner")
+                                .set({
+                              "recipe_id": recipeID,
+                              "type_of_meal": "Dinner"
+                            });
+                          }
+                          break;
+                      }
+                      break;
+                    case "THU":
+                      switch (typeOfMeals[j]) {
+                        case "Breakfast":
+                          {
+                            firebaseFirestore
+                                .collection('users')
+                                .doc(AppGlobals.userId)
+                                .collection('mealPlans')
+                                .doc(newMealplanID)
+                                .collection("THU")
+                                .doc("Breakfast")
+                                .set({
+                              "recipe_id": recipeID,
+                              "type_of_meal": "Breakfast"
+                            });
+                          }
+                          break;
+                        case "Lunch":
+                          {
+                            firebaseFirestore
+                                .collection('users')
+                                .doc(AppGlobals.userId)
+                                .collection('mealPlans')
+                                .doc(newMealplanID)
+                                .collection("THU")
+                                .doc("Lunch")
+                                .set({
+                              "recipe_id": recipeID,
+                              "type_of_meal": "Lunch"
+                            });
+                          }
+                          break;
+                        case "Dinner":
+                          {
+                            firebaseFirestore
+                                .collection('users')
+                                .doc(AppGlobals.userId)
+                                .collection('mealPlans')
+                                .doc(newMealplanID)
+                                .collection("THU")
+                                .doc("Dinner")
+                                .set({
+                              "recipe_id": recipeID,
+                              "type_of_meal": "Dinner"
+                            });
+                          }
+                          break;
+                      }
+                      break;
+                    case "FRI":
+                      switch (typeOfMeals[j]) {
+                        case "Breakfast":
+                          {
+                            firebaseFirestore
+                                .collection('users')
+                                .doc(AppGlobals.userId)
+                                .collection('mealPlans')
+                                .doc(newMealplanID)
+                                .collection("FRI")
+                                .doc("Breakfast")
+                                .set({
+                              "recipe_id": recipeID,
+                              "type_of_meal": "Breakfast"
+                            });
+                          }
+                          break;
+                        case "Lunch":
+                          {
+                            firebaseFirestore
+                                .collection('users')
+                                .doc(AppGlobals.userId)
+                                .collection('mealPlans')
+                                .doc(newMealplanID)
+                                .collection("FRI")
+                                .doc("Lunch")
+                                .set({
+                              "recipe_id": recipeID,
+                              "type_of_meal": "Lunch"
+                            });
+                          }
+                          break;
+                        case "Dinner":
+                          {
+                            firebaseFirestore
+                                .collection('users')
+                                .doc(AppGlobals.userId)
+                                .collection('mealPlans')
+                                .doc(newMealplanID)
+                                .collection("FRI")
+                                .doc("Dinner")
+                                .set({
+                              "recipe_id": recipeID,
+                              "type_of_meal": "Dinner"
+                            });
+                          }
+                          break;
+                      }
+                      break;
+                    case "SAT":
+                      switch (typeOfMeals[j]) {
+                        case "Breakfast":
+                          {
+                            firebaseFirestore
+                                .collection('users')
+                                .doc(AppGlobals.userId)
+                                .collection('mealPlans')
+                                .doc(newMealplanID)
+                                .collection("SAT")
+                                .doc("Breakfast")
+                                .set({
+                              "recipe_id": recipeID,
+                              "type_of_meal": "Breakfast"
+                            });
+                          }
+                          break;
+                        case "Lunch":
+                          {
+                            firebaseFirestore
+                                .collection('users')
+                                .doc(AppGlobals.userId)
+                                .collection('mealPlans')
+                                .doc(newMealplanID)
+                                .collection("SAT")
+                                .doc("Lunch")
+                                .set({
+                              "recipe_id": recipeID,
+                              "type_of_meal": "Lunch"
+                            });
+                          }
+                          break;
+                        case "Dinner":
+                          {
+                            firebaseFirestore
+                                .collection('users')
+                                .doc(AppGlobals.userId)
+                                .collection('mealPlans')
+                                .doc(newMealplanID)
+                                .collection("SAT")
+                                .doc("Dinner")
+                                .set({
+                              "recipe_id": recipeID,
+                              "type_of_meal": "Dinner"
+                            });
+                          }
+                          break;
+                      }
+                      break;
+                  }
                 }
               });
             }
@@ -873,7 +850,17 @@ class MealPlanCardState extends State<MealPlanCard> {
       },
     );
     Widget noButton = RaisedButton(
-      child: Text("No"),
+      color: Colors.white,
+      shape: RoundedRectangleBorder(
+        side: BorderSide(color: Theme.of(context).accentColor, width: 2),
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Text(
+        "No",
+        style: TextStyle(
+          color: Theme.of(context).accentColor,
+        ),
+      ),
       onPressed: () {
         Navigator.of(context).pop();
       },
