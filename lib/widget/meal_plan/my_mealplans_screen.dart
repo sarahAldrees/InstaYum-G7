@@ -286,7 +286,7 @@ class MyMealplanScreenState extends State<MyMealplanScreen> {
 
   Widget getUserPublicOrPrivateMealplans() {
     return Expanded(
-        child: isPublicMealplans
+        child: (isPublicMealplans || widget.isFromUserProfileView)
             ? ListView.builder(
                 itemCount: userPublicMealplanList.length,
                 itemBuilder: (BuildContext context, int index) {
@@ -397,12 +397,16 @@ class MyMealplanScreenState extends State<MyMealplanScreen> {
                   ),
                 ],
               ),
-        (isPublicMealplans && isPublicMealplanListEmpty)
+        (isPublicMealplans &&
+                isPublicMealplanListEmpty &&
+                !widget.isFromUserProfileView)
             ? Center(
                 heightFactor: 10,
                 child: Text("No public mealplans available!"),
               )
-            : (!isPublicMealplans && isPrivateMealplanListEmpty)
+            : (!isPublicMealplans &&
+                    isPrivateMealplanListEmpty &&
+                    !widget.isFromUserProfileView)
                 ? Center(
                     heightFactor: 10,
                     child: Text("No private mealplans available!"))
