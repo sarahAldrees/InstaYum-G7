@@ -266,22 +266,17 @@ class convert extends State<ConvertTocheckBox> {
                 )
               : Row(
                   children: [
-                    Expanded(
-                      child: Text(checkbox.title!,
-                          style: TextStyle(
-                            decoration: checkbox.checkedstyle,
-                            decorationColor: Color(0xFFeb6d44),
-                            decorationThickness: 4,
-                          )),
-                    ),
+                    Text(checkbox.title!,
+                        style: TextStyle(
+                          decoration: checkbox.checkedstyle,
+                          decorationColor: Color(0xFFeb6d44),
+                          decorationThickness: 4,
+                        )),
                     Spacer(),
                     IconButton(
                         icon: Icon(Icons.close),
                         onPressed: () {
-                          // setState(() {
-                          //  });
 //-------------- to remove ingrediant from shoping list-----------------------------
-                          //print(AppGlobals.shoppingList[0]);
                           showDialog<void>(
                             context: context,
                             barrierDismissible: false,
@@ -461,7 +456,7 @@ class convert extends State<ConvertTocheckBox> {
             ),
             RaisedButton(
                 child: Text(
-                  "Add a new ingredient",
+                  "Add ingredient",
                 ),
                 onPressed: () {
                   // check if the ingredient is already exist do not add it to the shooping

@@ -321,23 +321,13 @@ class _RecipeViewState extends State<RecipeView> {
                           ElevatedButton(
                               child: Center(
                                 child: Padding(
-                                  padding: const EdgeInsets.only(left: 30),
+                                  padding: const EdgeInsets.only(left: 20),
                                   child: Row(
                                     children: [
                                       Center(
-                                          child: Icon(
-                                              Icons.delete_outline_rounded)),
-                                      SizedBox(
-                                        width: 2,
-                                      ),
-                                      Center(
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              vertical: 12, horizontal: 9),
-                                          child: Text(
-                                            "All cookbooks",
-                                            style: TextStyle(fontSize: 16),
-                                          ),
+                                        child: Text(
+                                          "From All cookbooks",
+                                          style: TextStyle(fontSize: 16),
                                         ),
                                       ),
                                     ],
@@ -1178,7 +1168,7 @@ class getuserinfoState extends State<getuserinfo> {
       });
     } else {
       setState(() {
-        _autherName = "User deleted the recipe";
+        _autherName = "user delete this recipe";
         _autherimage = "noImage";
       });
     }

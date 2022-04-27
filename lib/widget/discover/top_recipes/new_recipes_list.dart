@@ -35,59 +35,12 @@ class NewRecipesForU extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 10),
-
           SearchRecipe(
             recipes: _newRecipes,
             isFromMealPlan: false,
             mealDay: '',
             mealPlanTypeOfMeal: '',
           ),
-          // recipes.isNotEmpty
-          //     ? SizedBox(
-          //         height: AppGlobals.screenHeight * 0.35,
-          //         child: ListView.builder(
-          //           // reverse: true,
-          //           shrinkWrap: true,
-          //           scrollDirection: Axis.horizontal,
-          //           physics: const BouncingScrollPhysics(),
-          //           itemCount: recipes.length > 10 ? 10 : recipes.length,
-          //           itemBuilder: (BuildContext context, int index) {
-          //             // return RecipeTile(
-          //             //   recipeID: rid,
-          //             //   name: recipe.recipeTitle,
-          //             //   type: recipe.typeOfMeal,
-          //             //   category: recipe.category,
-          //             //   cuisine: recipe.cuisine,
-          //             //   image: recipe.img1,
-          //             //   count: recipe.lengthOfIngredients,
-          //             //   onTap: () {
-          //             //     Navigator.push(
-          //             //       context,
-          //             //       MaterialPageRoute(
-          //             //         builder: (conetxt) => RecipeView(recipeid: rid),
-          //             //       ),
-          //             //     );
-          //             //   },
-          //             // );
-          //             return TopRecipeCard(
-          //               index: index,
-          //               title: recipes[index].recipeTitle,
-          //               recipeId: recipes[index].recipeId,
-          //               image: recipes[index].img1,
-          //               onTap: () {
-          //                 Navigator.push(
-          //                     context,
-          //                     MaterialPageRoute(
-          //                       builder: (context) => RecipeView(
-          //                         recipeid: recipes[index].recipeId,
-          //                       ),
-          //                     ));
-          //               },
-          //             );
-          //           },
-          //         ),
-          //       )
-          //     : const Text("No recipes found"),
         ],
       ),
     );
