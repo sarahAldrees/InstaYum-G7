@@ -1,13 +1,10 @@
-import 'dart:io';
-import 'dart:convert';
-import 'dart:developer';
-import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:http/http.dart';
+import 'package:instayum/constant/app_globals.dart';
 import 'package:instayum/main.dart';
+import 'package:instayum/main_pages.dart';
 import 'package:instayum/model/notification_model.dart';
-
 import 'package:instayum/widget/profile/user_profile_view.dart';
 import 'package:instayum/widget/recipe_view/recipe_view.dart';
 import 'package:overlay_support/overlay_support.dart';
@@ -17,7 +14,7 @@ class NotificationService {
   final FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
   // late final FirebaseMessaging _messaging;
   // PushNotification? messageData;
-  PushNotification notification = new PushNotification();
+  PushNotification notification = PushNotification();
 
   Future<void> registerNotification() async {
     try {
@@ -46,7 +43,7 @@ class NotificationService {
         // For handling the received notifications inApp
         FirebaseMessaging.onMessage.listen(
           (RemoteMessage? message) {
-            print("onMessage: ${message}");
+            print("onMessage: $message");
             if (message != null) {
               print("onMessage: ${message.notification}");
               print("message data: ${message.data}");
@@ -69,8 +66,7 @@ class NotificationService {
 
               print("parsedMessage: $parsedMessage");
               messageData = NotificationModel.fromJson(parsedMessage);
-              String msgString =
-                  "${messageData.body ?? notification.body ?? ''}";
+              String msgString = messageData.body ?? notification.body ?? '';
 
               if (messageData != null) {
                 print('in app notif data: $msgString');
@@ -81,7 +77,7 @@ class NotificationService {
                       msgString,
                       maxLines: 2,
                       softWrap: true,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
                         color: Colors.white,
@@ -94,7 +90,7 @@ class NotificationService {
                   ),
                   slideDismissDirection: DismissDirection.up,
                   background: Colors.green,
-                  duration: Duration(seconds: 3),
+                  duration: const Duration(seconds: 3),
                 );
               }
             }
@@ -105,7 +101,7 @@ class NotificationService {
         // but not terminated
         FirebaseMessaging.onMessageOpenedApp.listen(
           (RemoteMessage? message) {
-            print('Message clicked onMessageOpenedApp! ${message}');
+            print('Message clicked onMessageOpenedApp! $message');
 
             if (message != null) {
               print("onMessageOpenedApp: ${message.notification}");
@@ -129,8 +125,7 @@ class NotificationService {
 
               print("parsedMessage: $parsedMessage");
               messageData = NotificationModel.fromJson(parsedMessage);
-              String msgString =
-                  "${messageData.body ?? notification.body ?? ''}";
+              String msgString = messageData.body ?? notification.body ?? '';
               print('bg app notif data: $msgString');
 
               notificationNavigation(messageData);
@@ -178,7 +173,7 @@ class NotificationService {
 
       print("parsedMessage: $parsedMessage");
       messageData = NotificationModel.fromJson(parsedMessage);
-      String msgString = "${messageData.body ?? notification.body ?? ''}";
+      String msgString = messageData.body ?? notification.body ?? '';
       print('bg app notif data: $msgString');
 
       notificationNavigation(messageData);
@@ -228,7 +223,7 @@ Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
   print("parsedMessage: $parsedMessage");
   messageData = NotificationModel.fromJson(parsedMessage);
-  String msgString = "${messageData.body ?? notification?.body ?? ''}";
+  String msgString = messageData.body ?? notification?.body ?? '';
   print('bgs app notif data: $msgString');
 
   notificationNavigation(messageData);
@@ -237,13 +232,16 @@ Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 // check and handle condition for navigation
 void notificationNavigation(NotificationModel? messageData) {
   if (messageData != null) {
+    //resetNotificationsCount();
+    // print(messageData.userId);
     if (messageData.type == 'follow') {
       //navigate to user profile page
-      navigatorKey.currentState!.push(PageRouteBuilder(
-        opaque: false,
-        pageBuilder: (BuildContext context, _, __) =>
-            UserProfileView(userId: messageData.userId),
-      ));
+      if (navigatorKey.currentState != null)
+        navigatorKey.currentState!.push(PageRouteBuilder(
+          opaque: false,
+          pageBuilder: (BuildContext context, _, __) =>
+              UserProfileView(userId: messageData.userId),
+        ));
     } else {
       //navigate to view recipe page
       if (messageData.recipeId != null) {
@@ -256,6 +254,18 @@ void notificationNavigation(NotificationModel? messageData) {
         ));
       }
     }
+  }
+}
+
+void resetNotificationsCount() {
+  MainPages.notificationCounter = 0;
+  if (AppGlobals.userId != null) {
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(AppGlobals.userId)
+        .update(
+      {'notificationsCount': 0},
+    ); // SetOptions(merge: true));
   }
 }
 

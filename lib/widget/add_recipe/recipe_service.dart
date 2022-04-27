@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:instayum/constant/app_globals.dart';
+import 'package:instayum/main_pages.dart';
 import 'package:instayum/model/notification_model.dart';
 import 'package:instayum/model/recipe.dart';
 import 'package:instayum/model/recipe_rating.dart';
@@ -11,6 +12,10 @@ import 'package:instayum/widget/pickers/recipe_image_picker.dart';
 
 class RecipeService {
   static final FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+  static final CollectionReference recipesCollection =
+      firebaseFirestore.collection('recipes');
+  static final CollectionReference usersCollection =
+      firebaseFirestore.collection('users');
 
   static Future addRecipeToDatabase({
     // String? userId,
@@ -25,60 +30,53 @@ class RecipeService {
   }) async {
     Timestamp timestamp = Timestamp.now();
     String? userId = AppGlobals.userId;
-    String? recipe_id;
-    Random random = new Random();
+    String? recipeId;
+    Random random = Random();
     int randomNumber = random.nextInt(1000000);
 
     Recipe recipe = Recipe(
-        userId: userId,
-        timestamp: timestamp,
-        recipeTitle: recipeTitle,
-        isPublicRecipe: isPublic,
-        cuisine: currentSelectedCuisine,
-        category: currentSelectedCategory,
-        typeOfMeal: currentSelectedTypeOfMeal,
-        position: randomNumber,
-        lengthOfIngredients: userIngredients.length,
-        lengthOfDirections: userDirections.length,
-        bookmarkCounter: 0,
-        mealPlanCounter: 0,
-        weeklyBookmarkCount: 0);
+      userId: userId,
+      timestamp: timestamp,
+      recipeTitle: recipeTitle,
+      isPublicRecipe: isPublic,
+      cuisine: currentSelectedCuisine,
+      category: currentSelectedCategory,
+      typeOfMeal: currentSelectedTypeOfMeal,
+      position: randomNumber,
+      lengthOfIngredients: userIngredients.length,
+      lengthOfDirections: userDirections.length,
+      bookmarkCounter: 0,
+      mealPlanCounter: 0,
+    );
 
     // create a new recipe inside collcetion of recipes
-    await firebaseFirestore
-        .collection("recipes")
+    await recipesCollection
         // .doc(recipe_id)
         // .set(
         .add(recipe.toJson())
         .then((value) {
-      recipe_id = value.id;
+      recipeId = value.id;
     });
-    print('recipeid: $recipe_id');
+    print('recipeid: $recipeId');
 
     // to save the ingredients
     int ci = 0;
     for (var ing in userIngredients) {
       ci++;
-      await firebaseFirestore
-          .collection("recipes")
-          .doc(recipe_id)
-          .update({'ing$ci': ing});
+      await recipesCollection.doc(recipeId).update({'ing$ci': ing});
     }
     // to save the directions
     int cd = 0;
     for (var dir in userDirections) {
       cd++;
-      await firebaseFirestore
-          .collection("recipes")
-          .doc(recipe_id)
-          .update({'dir$cd': '${cd}- ' + dir!});
+      await recipesCollection.doc(recipeId).update({'dir$cd': '$cd- ' + dir!});
     }
     // to save the classification
     // String recipe_image_url = RecipeImagePickerState.uploadedFileURL;
     //if (recipe_image_url == null) recipe_image_url = 'noImageUrl';
 
     if (RecipeImagePickerState.imagesURLs.isEmpty) {
-      await firebaseFirestore.collection("recipes").doc(recipe_id).update({
+      await recipesCollection.doc(recipeId).update({
         'img1': "noImageUrl",
         'image_count': 0,
       });
@@ -87,7 +85,7 @@ class RecipeService {
       for (var url in RecipeImagePickerState.imagesURLs) {
         print(url);
         countImage++;
-        await firebaseFirestore.collection("recipes").doc(recipe_id).update({
+        await recipesCollection.doc(recipeId).update({
           'img$countImage': url,
           'image_count': countImage,
         });
@@ -103,10 +101,9 @@ class RecipeService {
     );
 
     //create new collcetion of recipes inside user document to save all of the user's recipes
-    if (recipe_id != null || recipe.category != null)
-      await firebaseFirestore
-          .collection("recipes")
-          .doc(recipe_id)
+    if (recipeId != null || recipe.category != null)
+      await recipesCollection
+          .doc(recipeId)
           .collection("rating")
           .doc("recipeRating")
           .set(
@@ -119,14 +116,14 @@ class RecipeService {
     if (isPublic) {
       //send notification to my followers
       await sendNotificationToFollowers(userId,
-          recipeId: recipe_id, recipeTitle: recipeTitle);
+          recipeId: recipeId, recipeTitle: recipeTitle);
     }
   }
 
   static Future sendNotificationToFollowers(String? userId,
       {String? recipeId, String? recipeTitle}) async {
     List<String?> allTokens = [];
-    List<String> allIds = [];
+    List<String?> allIds = [];
 
     UserModel currentUser = UserModel().getCurrentUserData();
     String name = '${currentUser.username}';
@@ -168,36 +165,38 @@ class RecipeService {
 
       if (allIds.isNotEmpty) {
         // get pushToken of each user / save and send notification
-        for (String uid in allIds) {
-          firebaseFirestore.collection('users').doc("$uid").get().then(
-            (document) {
-              Map data = document.data() as Map<String, dynamic>;
-              String token = data['pushToken'];
-              // allTokens.add(data['pushToken']);
+        for (String? uid in allIds) {
+          if (uid != null) {
+            usersCollection.doc(uid).get().then(
+              (document) {
+                Map data = document.data() as Map<String, dynamic>;
+                String token = data['pushToken'];
+                // allTokens.add(data['pushToken']);
 
-              //send notification to follower
-              NotificationApi.SendNotification(
-                token: token,
-                title1: name,
-                title2: recipeTitle,
-                recipeId: recipeId,
-                timestamp: timestamp,
-                type: 'recipe',
-                desc: desc,
-                name: name,
-                userId: currentUser.userId,
-                imageUrl: currentUser.imageUrl,
-                body: '$name $desc $recipeTitle',
-              );
-            },
-          );
+                //send notification to follower
+                NotificationApi.SendNotification(
+                  token: token,
+                  title1: name,
+                  title2: recipeTitle,
+                  recipeId: recipeId,
+                  timestamp: timestamp,
+                  type: 'recipe',
+                  desc: desc,
+                  name: name,
+                  otherUserId: uid,
+                  userId: currentUser.userId,
+                  imageUrl: currentUser.imageUrl,
+                  body: '$name $desc $recipeTitle',
+                );
+              },
+            );
 
-          // Add notification to other user notifications list
-          firebaseFirestore
-              .collection('users/$uid/notifications')
-              .add(notification.toJson());
-          // .catchError((error) => print('Notifications failed: $error'));
-
+            // Add notification to other user notifications list
+            firebaseFirestore
+                .collection('users/$uid/notifications')
+                .add(notification.toJson());
+            // .catchError((error) => print('Notifications failed: $error'));
+          }
         }
       }
     }
@@ -208,23 +207,15 @@ class RecipeService {
     String? userId, token, recipeTitle;
 
     // get the user id of the recipe's author
-    await firebaseFirestore
-        .collection("recipes")
-        .doc(recipeId)
-        .get()
-        .then((snapshot) {
-      Map data = snapshot.data()!;
+    await recipesCollection.doc(recipeId).get().then((snapshot) {
+      Map data = snapshot.data() as Map<String, dynamic>;
       userId = data['user_id'];
       recipeTitle = data['recipe_title'];
     });
 
     //get the user's push token
-    await firebaseFirestore
-        .collection("users")
-        .doc(userId)
-        .get()
-        .then((snapshot) {
-      Map data = snapshot.data()!;
+    await usersCollection.doc(userId).get().then((snapshot) {
+      Map data = snapshot.data() as Map<String, dynamic>;
       token = data['pushToken'];
     });
 
@@ -232,6 +223,8 @@ class RecipeService {
     String name = '${currentUser.username}';
     String desc = 'commented on your recipe';
     Timestamp timestamp = Timestamp.now();
+
+    ;
 
     NotificationModel notification = NotificationModel(
       date: timestamp,
@@ -259,6 +252,7 @@ class RecipeService {
       desc: desc,
       name: name,
       type: 'comment',
+      otherUserId: userId,
       userId: currentUser.userId,
       imageUrl: currentUser.imageUrl,
       body: '$username $desc $recipeTitle',

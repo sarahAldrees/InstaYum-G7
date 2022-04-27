@@ -3,7 +3,9 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:instayum/constant/app_colors.dart';
 import 'package:instayum/constant/app_globals.dart';
+import 'package:instayum/main_pages.dart';
 import 'package:instayum/model/notification_model.dart';
+import 'package:instayum/widget/follow_and_notification/notification_service.dart';
 import 'package:instayum/widget/follow_and_notification/notification_tile.dart';
 import 'package:instayum/widget/profile/circular_loader.dart';
 import 'package:instayum/widget/profile/user_profile_view.dart';
@@ -28,8 +30,10 @@ class _NotificationsPageState extends State<NotificationsPage> {
 
   //getData() to get the data of users notifications from database
   void getData() async {
-    notifications.clear();
+    MainPages.notificationCounter = 0;
 
+    notifications.clear();
+    resetNotificationsCount();
     // Get docs from collection reference
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance
         .collection("users/")
@@ -48,7 +52,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
           .toList();
     }
     isLoading = false;
-    setState(() {});
+    if (mounted) setState(() {});
   }
 
   @override
@@ -56,6 +60,12 @@ class _NotificationsPageState extends State<NotificationsPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColors.primaryColor,
+        leading: IconButton(
+            onPressed: () {
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => MainPages()));
+            },
+            icon: Icon(Icons.arrow_back)),
         title: Text('Activities'),
         actions: [
           TextButton(

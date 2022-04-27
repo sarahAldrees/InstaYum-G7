@@ -1,17 +1,12 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:instayum/constant/app_globals.dart';
-import 'package:instayum/model/recipe.dart';
-import 'package:instayum/widget/bookmark/cookbook_item.dart';
-import 'package:instayum/widget/bookmark/cookbook_recipes.dart';
+import 'package:instayum/widget/discover/top_recipes/top_recipe_service.dart';
 import 'package:instayum/widget/follow_and_notification/follow_tile.dart';
 import 'package:instayum/widget/meal_plan/add_new_mealplan.dart';
-import 'package:instayum/widget/meal_plan/meal_plans.dart';
 import 'package:instayum/widget/meal_plan/my_mealplans_screen.dart';
 import 'package:instayum/widget/profile/followers_numbers.dart';
 import 'package:instayum/widget/recipe_view/share_recipe.dart';
 import 'package:instayum/widget/shopping_list/shopping_list_page.dart';
-import '../discover/top_recipes/top_recipe_service.dart';
 import '../recipe_view/my_recipes_screen.dart';
 import '../bookmark/bookmarks_recipes_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -20,6 +15,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'circular_loader.dart';
 
 class Profile extends StatefulWidget {
+  Function(bool?)? onData;
+  Profile({this.onData});
   @override
   State<StatefulWidget> createState() => ProfileState();
 }
@@ -69,7 +66,7 @@ class ProfileState extends State<Profile> {
     FollowTile.inSearchPage = false;
     User? user = _firebaseAuth.currentUser;
     if (user != null && AppGlobals.userId == null) {
-      print('get User data ${AppGlobals.userId}');
+      print('get User data 1 ${AppGlobals.userId}');
       await FirebaseFirestore.instance
           .collection("users")
           .doc(user.uid)
@@ -87,6 +84,9 @@ class ProfileState extends State<Profile> {
           ShoppingListState.ShoppingList.clear();
           ShoppingListState.ShoppingList = List.from(data["shoppingList"]);
         }
+        // Callback function to update the data
+        if (widget.onData != null) widget.onData!(true);
+
         userUsername = data['username'];
         imageURL = data['image_url'];
         uId = user.uid;

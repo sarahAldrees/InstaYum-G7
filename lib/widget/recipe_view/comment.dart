@@ -107,11 +107,12 @@ class CommentState extends State<Comments> {
         .doc(_currentUser.uid)
         .snapshots()
         .listen((userData) {
-      setState(() {
-        Map user = userData.data()!;
-        userUsername = user['username'];
-        imageURL = user['image_url'];
-      });
+      if (mounted)
+        setState(() {
+          Map user = userData.data()!;
+          userUsername = user['username'];
+          imageURL = user['image_url'];
+        });
     });
   }
 

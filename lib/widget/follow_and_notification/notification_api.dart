@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:http/http.dart' as http;
+import 'package:instayum/main_pages.dart';
 import 'package:instayum/model/notification_model.dart';
 
 class NotificationApi {
@@ -11,6 +12,7 @@ class NotificationApi {
     String? desc,
     String? userId,
     String? recipeId,
+    String? otherUserId,
     String? type,
     String? name,
     String? token,
@@ -32,6 +34,8 @@ class NotificationApi {
     );
 
     // Replace with server token from firebase console settings.
+    // increase the notification count for other user
+    increaseNotificationCount(otherUserId);
 
     await http
         .post(Uri.parse(
@@ -62,5 +66,16 @@ class NotificationApi {
         print(onError.message);
       },
     );
+  }
+
+  static void increaseNotificationCount(String? userId) {
+    print("-----------------------------------------------------");
+    print(userId);
+    MainPages.notificationCounter = MainPages.notificationCounter! + 1;
+    if (userId != null) {
+      FirebaseFirestore.instance.collection('users').doc(userId).update(
+        {'notificationsCount': FieldValue.increment(1)},
+      ); // SetOptions(merge: true));
+    }
   }
 }

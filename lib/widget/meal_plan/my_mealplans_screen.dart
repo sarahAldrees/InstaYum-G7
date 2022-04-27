@@ -240,9 +240,10 @@ class MyMealplanScreenState extends State<MyMealplanScreen> {
 
     if (userPublicMealplanList.isEmpty) {
       isPublicMealplanListEmpty = true;
-      setState(() {
-        isLoading = false;
-      });
+      if (mounted)
+        setState(() {
+          isLoading = false;
+        });
     } else {
       isPublicMealplanListEmpty = false;
     }

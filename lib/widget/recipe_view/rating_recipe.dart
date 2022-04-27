@@ -63,7 +63,7 @@ class Rating extends State<RatingRecipe> {
         }
         // print("numOfRevewis===============");
         // print(numOfReviews);
-        setState(() {});
+        if (mounted) setState(() {});
       }
     });
   }

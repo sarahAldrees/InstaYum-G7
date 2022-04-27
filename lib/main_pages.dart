@@ -21,15 +21,17 @@ import 'widget/profile/profile.dart';
 //********************************************************************
 //********************************************************************
 class MainPages extends StatefulWidget {
+  static int? notificationCounter = 0;
   @override
   State<StatefulWidget> createState() => appPages();
-  MainPages();
 }
 
 class appPages extends State<MainPages> {
   @override
   void initState() {
     super.initState();
+    onData(true);
+    listOfPagesContent.last = Profile(onData: onData);
   }
 
 //------------------------------Alert meesage for get out of add recipe page-------------------------------
@@ -391,6 +393,9 @@ class appPages extends State<MainPages> {
   static int indexOfPages = 4;
   static int indexOfPreviousPage = 4;
 
+  final CollectionReference _usersCollection =
+      FirebaseFirestore.instance.collection('users');
+
   List<Widget> listOfPagesContent = [
     //---------discover page  0-------------
     DiscoverPage(),
@@ -410,6 +415,7 @@ class appPages extends State<MainPages> {
       // 1 = add meal plan
       setState(() {
         isMealPlanClicked = true;
+        MainPages.notificationCounter;
       });
     } else {
       setState(() {
@@ -419,6 +425,7 @@ class appPages extends State<MainPages> {
     //this fun will change  app bar titel depend on sent
     // index and will change current page
     setState(() {
+      MainPages.notificationCounter;
       indexOfPreviousPage = indexOfPages;
 
       if (indexOfPreviousPage == 2 && index != 2 && !addRecipe.isNullFields()) {
@@ -550,27 +557,87 @@ class appPages extends State<MainPages> {
     );
   }
 
+  void onData(bool? isSuccess) {
+    if (isSuccess == true) {
+      _listenNotificationsCount();
+    }
+  }
+
+  void _listenNotificationsCount() {
+    if (AppGlobals.userId != null) {
+      _usersCollection.doc(AppGlobals.userId).snapshots().listen((snapshot) {
+        if (snapshot.exists) {
+          Map<String, dynamic>? data = snapshot.data() as Map<String, dynamic>?;
+          print("data is $data");
+          // if (data != null) {
+          print(data!["notificationsCount"]);
+          MainPages.notificationCounter = data["notificationsCount"];
+          print("notificationCounter is ${MainPages.notificationCounter}");
+          setState(() {
+            MainPages.notificationCounter;
+          });
+          // }
+        }
+      });
+    }
+  }
+
+  Widget _notifictionsIcon({int? count}) {
+    print("count: $count");
+    print("notificationCounter: ${MainPages.notificationCounter}");
+    return InkWell(
+      child: Stack(
+        alignment: Alignment.center,
+        clipBehavior: Clip.none,
+        children: [
+          const Icon(Icons.notifications_none),
+          if ((count ?? 0) > 0)
+            Positioned(
+              top: 1,
+              right: -5,
+              child: Container(
+                padding: const EdgeInsets.all(5),
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.green,
+                ),
+                child: Text(
+                  '${count ?? ''}',
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+        ],
+      ),
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const NotificationsPage(),
+            ));
+      },
+    );
+    //   },
+    // );
+  }
+
   static bool isMealPlanClicked = false;
 
   @override
   Widget build(BuildContext context) {
     AppGlobals.screenHeight = MediaQuery.of(context).size.height;
     AppGlobals.screenWidth = MediaQuery.of(context).size.width;
+    int? count = MainPages.notificationCounter;
     return DefaultTabController(
       length: 5,
       child: Scaffold(
         appBar: AppBar(
           actions: [
-            IconButton(
-              icon: Icon(Icons.notifications_none),
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => NotificationsPage(),
-                    ));
-              },
-            ),
+            _notifictionsIcon(count: count),
             PopupMenuButton(
               icon: Icon(
                 Icons.more_vert,
@@ -592,34 +659,7 @@ class appPages extends State<MainPages> {
               onSelected: (dynamic val) {
                 showAlertDialog(context);
               },
-            ),
-            // DropdownButton(
-            //   icon: Icon(
-            //     Icons.more_vert,
-            //     color: Theme.of(context).primaryIconTheme.color,
-            //   ),
-            //   items: [
-            //     DropdownMenuItem(
-            //       child: Container(
-            //         child: Row(
-            //           children: <Widget>[
-            //             Icon(Icons.exit_to_app,
-            //                 color: Colors.black), // change the color
-            //             SizedBox(width: 2),
-            //             Text("Logout"),
-            //           ],
-            //         ),
-            //       ),
-            //       value: "logout",
-            //     ),
-            //   ],
-            //   onChanged: (itemIdentifier) {
-            //     if (itemIdentifier == "logout") {
-            //       print("cliked in logout");
-            //       showAlertDialog(context);
-            //     }
-            //   },
-            // )
+            )
           ],
           leading: Container(
               //color: Colors.white,
