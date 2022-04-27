@@ -31,23 +31,23 @@ class RecipeService {
     Timestamp timestamp = Timestamp.now();
     String? userId = AppGlobals.userId;
     String? recipeId;
-    Random random = Random();
+    Random random = new Random();
     int randomNumber = random.nextInt(1000000);
 
     Recipe recipe = Recipe(
-      userId: userId,
-      timestamp: timestamp,
-      recipeTitle: recipeTitle,
-      isPublicRecipe: isPublic,
-      cuisine: currentSelectedCuisine,
-      category: currentSelectedCategory,
-      typeOfMeal: currentSelectedTypeOfMeal,
-      position: randomNumber,
-      lengthOfIngredients: userIngredients.length,
-      lengthOfDirections: userDirections.length,
-      bookmarkCounter: 0,
-      mealPlanCounter: 0,
-    );
+        userId: userId,
+        timestamp: timestamp,
+        recipeTitle: recipeTitle,
+        isPublicRecipe: isPublic,
+        cuisine: currentSelectedCuisine,
+        category: currentSelectedCategory,
+        typeOfMeal: currentSelectedTypeOfMeal,
+        position: randomNumber,
+        lengthOfIngredients: userIngredients.length,
+        lengthOfDirections: userDirections.length,
+        bookmarkCounter: 0,
+        mealPlanCounter: 0,
+        weeklyBookmarkCount: 0);
 
     // create a new recipe inside collcetion of recipes
     await recipesCollection
@@ -169,25 +169,27 @@ class RecipeService {
           if (uid != null) {
             usersCollection.doc(uid).get().then(
               (document) {
-                Map data = document.data() as Map<String, dynamic>;
-                String token = data['pushToken'];
-                // allTokens.add(data['pushToken']);
+                if (document.data() != null) {
+                  Map data = document.data() as Map<String, dynamic>;
+                  String token = data['pushToken'];
+                  // allTokens.add(data['pushToken']);
 
-                //send notification to follower
-                NotificationApi.SendNotification(
-                  token: token,
-                  title1: name,
-                  title2: recipeTitle,
-                  recipeId: recipeId,
-                  timestamp: timestamp,
-                  type: 'recipe',
-                  desc: desc,
-                  name: name,
-                  otherUserId: uid,
-                  userId: currentUser.userId,
-                  imageUrl: currentUser.imageUrl,
-                  body: '$name $desc $recipeTitle',
-                );
+                  //send notification to follower
+                  NotificationApi.SendNotification(
+                    token: token,
+                    title1: name,
+                    title2: recipeTitle,
+                    recipeId: recipeId,
+                    timestamp: timestamp,
+                    type: 'recipe',
+                    desc: desc,
+                    name: name,
+                    otherUserId: uid,
+                    userId: currentUser.userId,
+                    imageUrl: currentUser.imageUrl,
+                    body: '$name $desc $recipeTitle',
+                  );
+                }
               },
             );
 
