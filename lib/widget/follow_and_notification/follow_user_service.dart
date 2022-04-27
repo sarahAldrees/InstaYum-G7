@@ -24,13 +24,13 @@ class FollowUserService {
         if (docSnapshot != null) {
           print(' followUserData: ${docSnapshot.data()}');
           Map data = docSnapshot.data() as Map<String, dynamic>;
-          email = data['email'];
+          // email = data['email'];
           username = data['username'];
           imageUrl = data['image_url'];
           pushToken = data['pushToken'];
         }
         UserModel followUser = UserModel(
-          email: email,
+          //email: email,
           userId: followId,
           username: username,
           imageUrl: imageUrl,

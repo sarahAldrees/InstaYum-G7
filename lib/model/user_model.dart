@@ -1,7 +1,7 @@
 import 'package:instayum/constant/app_globals.dart';
 
 class UserModel {
-  String? email;
+  //String? email;
   // String? fullName;
   String? imageUrl;
   String? pushToken;
@@ -10,7 +10,7 @@ class UserModel {
   bool? isFollowed;
 
   UserModel({
-    this.email,
+    // this.email,
     // this.fullName,
     this.imageUrl,
     this.pushToken,
@@ -20,7 +20,7 @@ class UserModel {
   });
 
   UserModel.fromJson(Map<String, dynamic> json) {
-    email = json['email'];
+    // email = json['email'];
     // fullName = json['fullName'];
     imageUrl = json['image_url'];
     pushToken = json['pushToken'];
@@ -32,7 +32,7 @@ class UserModel {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
 
-    data['email'] = this.email;
+    //data['email'] = this.email;
     // data['fullName'] = this.fullName;
     data['image_url'] = this.imageUrl;
     data['pushToken'] = this.pushToken;
@@ -44,7 +44,7 @@ class UserModel {
 
   UserModel getCurrentUserData() {
     UserModel currentUser = UserModel(
-      email: AppGlobals.email,
+      // email: AppGlobals.email,
       userId: AppGlobals.userId,
       username: AppGlobals.userName,
       // fullName: AppGlobals.fullName,

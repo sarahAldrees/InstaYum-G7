@@ -93,15 +93,15 @@ class RecipeService {
     }
 
     //--------------------creat collection of reating with zeros----------
-    RecipeRating recipeRating = RecipeRating(
-      numOfReviews: 0,
-      sumOfAllRating: 0,
-      averageRating: 0.0,
-      userAlreadyReview: [],
-    );
 
     //create new collcetion of recipes inside user document to save all of the user's recipes
-    if (recipeId != null || recipe.category != null)
+    if (recipeId != null && recipeId != "") {
+      RecipeRating recipeRating = RecipeRating(
+        numOfReviews: 0,
+        sumOfAllRating: 0,
+        averageRating: 0.0,
+        userAlreadyReview: [],
+      );
       await recipesCollection
           .doc(recipeId)
           .collection("rating")
@@ -113,6 +113,7 @@ class RecipeService {
             // "average_rating": 0.0,
             // "user_already_review": FieldValue.arrayUnion([]), }
           );
+    }
     if (isPublic) {
       //send notification to my followers
       await sendNotificationToFollowers(userId,

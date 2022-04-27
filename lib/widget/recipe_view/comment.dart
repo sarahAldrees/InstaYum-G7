@@ -134,14 +134,16 @@ class CommentState extends State<Comments> {
       timestamp: timestamp,
       shownDate: DateFormat(formatter).format(now),
     );
-    await firebaseFirestore
-        .collection("recipes")
-        .doc(_recipeId)
-        .collection("comments")
-        .doc(commentRef)
-        .set(comment.toJson());
-    if (_authorId != AppGlobals.userId)
-      RecipeService().sendNotificationToAuthor(_recipeId, userUsername);
+    if (_recipeId != null && _recipeId != "") {
+      await firebaseFirestore
+          .collection("recipes")
+          .doc(_recipeId)
+          .collection("comments")
+          .doc(commentRef)
+          .set(comment.toJson());
+      if (_authorId != AppGlobals.userId)
+        RecipeService().sendNotificationToAuthor(_recipeId, userUsername);
+    }
   }
 
   void initState() {
