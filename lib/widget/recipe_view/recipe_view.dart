@@ -1178,7 +1178,7 @@ class getuserinfoState extends State<getuserinfo> {
       });
     } else {
       setState(() {
-        _autherName = "user delete this recipe";
+        _autherName = "User deleted the recipe";
         _autherimage = "noImage";
       });
     }

@@ -57,7 +57,10 @@ class UserInformationDesignState extends State<UserInformationDesign> {
             padding: const EdgeInsets.only(left: 10),
             child: Text(
               widget.userName ?? '',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+              style: TextStyle(
+                  fontSize:
+                      widget.autherId == "user delete this recipe" ? 14 : 18,
+                  fontWeight: FontWeight.w500),
             ),
           ),
         ],
