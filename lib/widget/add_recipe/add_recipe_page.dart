@@ -126,8 +126,8 @@ class addRecipe extends State<AddRecipePage> {
         style: TextStyle(color: Color(0xFF444444)),
       ),
       actions: [
-        yesButton,
         noButton,
+        yesButton,
       ],
     );
 

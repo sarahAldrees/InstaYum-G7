@@ -66,8 +66,6 @@ class convert extends State<ConvertTocheckBox> {
                     ),
                     TextButton(
                       onPressed: () {
-                        //-----------------------------------------------
-
                         showDialog<void>(
                           context: context,
                           barrierDismissible: false,
@@ -77,117 +75,68 @@ class convert extends State<ConvertTocheckBox> {
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(8)),
                               ),
-                              title: Column(
-                                children: [
-                                  Text(
-                                    'Are you sure to delete all ingrediants ?',
-                                    style: TextStyle(fontSize: 16),
-                                  ),
-                                ],
+                              title: Text(
+                                'Delete the ingredient ',
+                                style: TextStyle(
+                                    fontSize: 19,
+                                    color: Theme.of(context).accentColor),
+                              ),
+                              content: Text(
+                                'Are you sure to delete all ingredients?',
+                                style: TextStyle(fontSize: 16),
                               ),
                               actions: [
-                                Container(
-                                    width: double.infinity,
-                                    margin: EdgeInsets.fromLTRB(3, 0, 3, 15),
-                                    child: Padding(
-                                        padding: const EdgeInsets.only(
-                                            top: 0,
-                                            right: 30,
-                                            left: 30,
-                                            bottom: 0),
-                                        child: Column(
-                                          children: [
-                                            ElevatedButton(
-                                                child: Center(
-                                                  child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            left: 30),
-                                                    child: Row(
-                                                      children: [
-                                                        Center(
-                                                            child: Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                      .only(
-                                                                  left: 20),
-                                                          child: Icon(Icons
-                                                              .delete_outline_rounded),
-                                                        )),
-                                                        SizedBox(
-                                                          width: 2,
-                                                        ),
-                                                        Center(
-                                                          child: Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                        .only(
-                                                                    left: 5),
-                                                            child: Text(
-                                                              "Clear",
-                                                              style: TextStyle(
-                                                                  fontSize: 16),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ),
-                                                style: ButtonStyle(
-                                                  backgroundColor:
-                                                      MaterialStateProperty.all(
-                                                          Color(0xFFeb6d44)),
-                                                ),
-                                                onPressed: () {
-                                                  //-------------delete all ingrediant in shoping list -----
-                                                  FirebaseFirestore.instance
-                                                      .collection("users")
-                                                      .doc(AppGlobals.userId)
-                                                      .update({
-                                                    "shoppingList":
-                                                        FieldValue.delete(),
-                                                  });
-                                                  setState(() {
-                                                    ShoppingListState
-                                                        .ShoppingList.clear();
-                                                  });
+                                RaisedButton(
+                                  color: Colors.white,
+                                  shape: RoundedRectangleBorder(
+                                    side: BorderSide(
+                                        color: Theme.of(context).accentColor,
+                                        width: 2),
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  child: Text(
+                                    "No",
+                                    style: TextStyle(
+                                      color: Theme.of(context).accentColor,
+                                    ),
+                                  ),
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                ),
+                                RaisedButton(
+                                  color: Color(0xFFeb6d44),
+                                  child: Text(
+                                    "Yes",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  onPressed: () {
+                                    //-------------delete all ingrediant in shoping list -----
+                                    FirebaseFirestore.instance
+                                        .collection("users")
+                                        .doc(AppGlobals.userId)
+                                        .update({
+                                      "shoppingList": FieldValue.delete(),
+                                    });
+                                    setState(() {
+                                      ShoppingListState.ShoppingList.clear();
+                                    });
 
-                                                  //--------------------
+                                    //--------------------
 
-                                                  Navigator.pop(context);
-                                                }),
-                                            TextButton(
-                                              child: Text(
-                                                "Cancel",
-                                                style: TextStyle(fontSize: 16),
-                                              ),
-                                              style: TextButton.styleFrom(
-                                                primary: Color(0xFFeb6d44),
-                                                backgroundColor: Colors.white,
-                                                //side: BorderSide(color: Colors.deepOrange, width: 1),
-                                                elevation: 0,
-                                                //minimumSize: Size(100, 50),
-                                                //shadowColor: Colors.red,
-                                                shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10)),
-                                              ),
-                                              onPressed: () {
-                                                Navigator.pop(context);
-                                              },
-                                            ),
-                                          ],
-                                        )))
+                                    Navigator.pop(context);
+                                  },
+                                ),
                               ],
                             );
                           },
                         );
-                        //-------------------------------------------
-                        // setState(() {
+                        //-----------------------------------------------
 
-                        //  });
+                        //-------------------------------------------
+
 //-------------- to remove ingrediant from shoping list-----------------------------
                         //print(AppGlobals.shoppingList[0]);
                       },
@@ -266,12 +215,14 @@ class convert extends State<ConvertTocheckBox> {
                 )
               : Row(
                   children: [
-                    Text(checkbox.title!,
-                        style: TextStyle(
-                          decoration: checkbox.checkedstyle,
-                          decorationColor: Color(0xFFeb6d44),
-                          decorationThickness: 4,
-                        )),
+                    Expanded(
+                      child: Text(checkbox.title!,
+                          style: TextStyle(
+                            decoration: checkbox.checkedstyle,
+                            decorationColor: Color(0xFFeb6d44),
+                            decorationThickness: 4,
+                          )),
+                    ),
                     Spacer(),
                     IconButton(
                         icon: Icon(Icons.close),
@@ -286,115 +237,62 @@ class convert extends State<ConvertTocheckBox> {
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(8)),
                                 ),
-                                title: Column(
-                                  children: [
-                                    Text(
-                                      'Are you sure to delete this ingredient?',
-                                      style: TextStyle(fontSize: 16),
-                                    ),
-                                  ],
+                                title: Text(
+                                  'Delete the ingredient ',
+                                  style: TextStyle(
+                                      fontSize: 19,
+                                      color: Theme.of(context).accentColor),
+                                ),
+                                content: Text(
+                                  'Are you sure to delete this ingredient?',
+                                  style: TextStyle(fontSize: 16),
                                 ),
                                 actions: [
-                                  Container(
-                                      width: double.infinity,
-                                      margin: EdgeInsets.fromLTRB(3, 0, 3, 15),
-                                      child: Padding(
-                                          padding: const EdgeInsets.only(
-                                              top: 0,
-                                              right: 30,
-                                              left: 30,
-                                              bottom: 0),
-                                          child: Column(
-                                            children: [
-                                              ElevatedButton(
-                                                  child: Center(
-                                                    child: Padding(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              left: 30),
-                                                      child: Row(
-                                                        children: [
-                                                          Center(
-                                                              child: Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                        .only(
-                                                                    left: 20),
-                                                            child: Icon(Icons
-                                                                .delete_outline_rounded),
-                                                          )),
-                                                          SizedBox(
-                                                            width: 2,
-                                                          ),
-                                                          Center(
-                                                            child: Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                          .only(
-                                                                      left: 5),
-                                                              child: Text(
-                                                                "delete",
-                                                                style: TextStyle(
-                                                                    fontSize:
-                                                                        16),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  style: ButtonStyle(
-                                                    backgroundColor:
-                                                        MaterialStateProperty
-                                                            .all(Color(
-                                                                0xFFeb6d44)),
-                                                  ),
-                                                  onPressed: () {
-                                                    //-------------delete all ingrediant in shoping list -----
-                                                    FirebaseFirestore.instance
-                                                        .collection("users")
-                                                        .doc(AppGlobals.userId)
-                                                        .update({
-                                                      "shoppingList": FieldValue
-                                                          .arrayRemove(
-                                                              [checkbox.title])
-                                                    });
-                                                    setState(() {
-                                                      ShoppingListState
-                                                              .ShoppingList
-                                                          .remove(
-                                                              checkbox.title);
-                                                    });
+                                  RaisedButton(
+                                    color: Colors.white,
+                                    shape: RoundedRectangleBorder(
+                                      side: BorderSide(
+                                          color: Theme.of(context).accentColor,
+                                          width: 2),
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                    child: Text(
+                                      "No",
+                                      style: TextStyle(
+                                        color: Theme.of(context).accentColor,
+                                      ),
+                                    ),
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                  RaisedButton(
+                                    color: Color(0xFFeb6d44),
+                                    child: Text(
+                                      "Yes",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    onPressed: () {
+                                      //-------------delete all ingrediant in shoping list -----
+                                      FirebaseFirestore.instance
+                                          .collection("users")
+                                          .doc(AppGlobals.userId)
+                                          .update({
+                                        "shoppingList": FieldValue.arrayRemove(
+                                            [checkbox.title])
+                                      });
+                                      setState(() {
+                                        ShoppingListState.ShoppingList.remove(
+                                            checkbox.title);
+                                      });
 
-                                                    //--------------------
+                                      //--------------------
 
-                                                    Navigator.pop(context);
-                                                  }),
-                                              TextButton(
-                                                child: Text(
-                                                  "Cancel",
-                                                  style:
-                                                      TextStyle(fontSize: 16),
-                                                ),
-                                                style: TextButton.styleFrom(
-                                                  primary: Color(0xFFeb6d44),
-                                                  backgroundColor: Colors.white,
-                                                  //side: BorderSide(color: Colors.deepOrange, width: 1),
-                                                  elevation: 0,
-                                                  //minimumSize: Size(100, 50),
-                                                  //shadowColor: Colors.red,
-                                                  shape: RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              10)),
-                                                ),
-                                                onPressed: () {
-                                                  Navigator.pop(context);
-                                                },
-                                              ),
-                                            ],
-                                          )))
+                                      Navigator.pop(context);
+                                    },
+                                  ),
                                 ],
                               );
                             },

@@ -338,85 +338,46 @@ class CommentListState extends State<CommentList> {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(8)),
                   ),
-                  title: Column(
-                    children: [
-                      Text(
-                        'Are you sure to delete the recipe?',
-                        style: TextStyle(fontSize: 16),
-                      ),
-                    ],
+                  title: Text(
+                    'Delete the comment ',
+                    style: TextStyle(
+                        fontSize: 19, color: Theme.of(context).accentColor),
+                  ),
+                  content: Text(
+                    'Are you sure to delete the comment?',
+                    style: TextStyle(fontSize: 16),
                   ),
                   actions: [
-                    Container(
-                        width: double.infinity,
-                        margin: EdgeInsets.fromLTRB(3, 0, 3, 15),
-                        child: Padding(
-                            padding: const EdgeInsets.only(
-                                top: 0, right: 30, left: 30, bottom: 0),
-                            child: Column(
-                              children: [
-                                ElevatedButton(
-                                    child: Center(
-                                      child: Padding(
-                                        padding:
-                                            const EdgeInsets.only(left: 30),
-                                        child: Row(
-                                          children: [
-                                            Center(
-                                                child: Icon(Icons
-                                                    .delete_outline_rounded)),
-                                            SizedBox(
-                                              width: 2,
-                                            ),
-                                            Center(
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        vertical: 12,
-                                                        horizontal: 10),
-                                                child: Text(
-                                                  "Delete ",
-                                                  style:
-                                                      TextStyle(fontSize: 16),
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    style: ButtonStyle(
-                                      backgroundColor:
-                                          MaterialStateProperty.all(
-                                              Color(0xFFeb6d44)),
-                                    ),
-                                    onPressed: () {
-                                      _DeletFirestoreComment(
-                                          comment.commentId!);
-                                      Navigator.pop(context);
-                                    }),
-                                TextButton(
-                                  child: Text(
-                                    "Cancel",
-                                    style: TextStyle(fontSize: 16),
-                                  ),
-                                  style: TextButton.styleFrom(
-                                    primary: Color(0xFFeb6d44),
-                                    backgroundColor: Colors.white,
-                                    //side: BorderSide(color: Colors.deepOrange, width: 1),
-                                    elevation: 0,
-                                    //minimumSize: Size(100, 50),
-                                    //shadowColor: Colors.red,
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(10)),
-                                  ),
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                ),
-                              ],
-                            )))
+                    RaisedButton(
+                      color: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        side: BorderSide(
+                            color: Theme.of(context).accentColor, width: 2),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Text(
+                        "No",
+                        style: TextStyle(
+                          color: Theme.of(context).accentColor,
+                        ),
+                      ),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                    RaisedButton(
+                      color: Color(0xFFeb6d44),
+                      child: Text(
+                        "Yes",
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                      onPressed: () {
+                        _DeletFirestoreComment(comment.commentId!);
+                        Navigator.pop(context);
+                      },
+                    ),
                   ],
                 );
               },

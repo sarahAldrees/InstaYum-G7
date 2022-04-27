@@ -616,8 +616,8 @@ class AddNewMealPlanState extends State<AddNewMealPlan> {
         style: TextStyle(color: Color(0xFF444444)),
       ),
       actions: [
-        yesButton,
         noButton,
+        yesButton,
       ],
     );
 

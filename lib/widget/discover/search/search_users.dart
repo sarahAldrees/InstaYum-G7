@@ -74,80 +74,48 @@ class _SearchUsersState extends State<SearchUsers> {
                               borderRadius:
                                   BorderRadius.all(Radius.circular(8)),
                             ),
-                            title: Column(
-                              children: [
-                                Text(
-                                  'Are you sure to unfollow ?',
-                                  style: TextStyle(fontSize: 16),
-                                ),
-                              ],
+                            title: Text(
+                              'Unfollow cooking enthusiast ',
+                              style: TextStyle(
+                                  fontSize: 19,
+                                  color: Theme.of(context).accentColor),
+                            ),
+                            content: Text(
+                              'Are you sure to unfollow?',
+                              style: TextStyle(fontSize: 16),
                             ),
                             actions: [
-                              Container(
-                                  width: double.infinity,
-                                  margin: EdgeInsets.fromLTRB(3, 0, 3, 15),
-                                  child: Padding(
-                                      padding: const EdgeInsets.only(
-                                          top: 0,
-                                          right: 30,
-                                          left: 30,
-                                          bottom: 0),
-                                      child: Column(
-                                        children: [
-                                          TextButton(
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 60,
-                                                      vertical: 5),
-                                              child: Text(
-                                                "Yes",
-                                                style: TextStyle(
-                                                    fontSize: 16,
-                                                    color: Colors.white),
-                                              ),
-                                            ),
-                                            style: TextButton.styleFrom(
-                                              backgroundColor:
-                                                  Color(0xFFeb6d44),
-                                              //side: BorderSide(color: Colors.deepOrange, width: 1),
-                                              elevation: 0,
-                                              //minimumSize: Size(100, 50),
-                                              //shadowColor: Colors.red,
-                                              shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          10)),
-                                            ),
-                                            onPressed: () {
-                                              _unFollowUser(uid, index, true);
-
-                                              Navigator.pop(context);
-                                            },
-                                          ),
-                                          TextButton(
-                                            child: Text(
-                                              "Cancel",
-                                              style: TextStyle(fontSize: 16),
-                                            ),
-                                            style: TextButton.styleFrom(
-                                              primary: Color(0xFFeb6d44),
-                                              backgroundColor: Colors.white,
-                                              //side: BorderSide(color: Colors.deepOrange, width: 1),
-                                              elevation: 0,
-                                              //minimumSize: Size(100, 50),
-                                              //shadowColor: Colors.red,
-                                              shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          10)),
-                                            ),
-                                            onPressed: () {
-                                              Navigator.pop(context);
-                                            },
-                                          ),
-                                        ],
-                                      )))
+                              RaisedButton(
+                                color: Colors.white,
+                                shape: RoundedRectangleBorder(
+                                  side: BorderSide(
+                                      color: Theme.of(context).accentColor,
+                                      width: 2),
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                child: Text(
+                                  "No",
+                                  style: TextStyle(
+                                    color: Theme.of(context).accentColor,
+                                  ),
+                                ),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                              ),
+                              RaisedButton(
+                                color: Color(0xFFeb6d44),
+                                child: Text(
+                                  "Yes",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                onPressed: () {
+                                  _unFollowUser(uid, index, true);
+                                  Navigator.pop(context);
+                                },
+                              ),
                             ],
                           );
                         },
@@ -163,84 +131,51 @@ class _SearchUsersState extends State<SearchUsers> {
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(8)),
                               ),
-                              title: Column(
-                                children: [
-                                  Text(
-                                    'Are you sure to unfollow ?',
-                                    style: TextStyle(fontSize: 16),
-                                  ),
-                                ],
+                              title: Text(
+                                'Unfollow cooking enthusiast ',
+                                style: TextStyle(
+                                    fontSize: 19,
+                                    color: Theme.of(context).accentColor),
+                              ),
+                              content: Text(
+                                'Are you sure to unfollow?',
+                                style: TextStyle(fontSize: 16),
                               ),
                               actions: [
-                                Container(
-                                    width: double.infinity,
-                                    margin: EdgeInsets.fromLTRB(3, 0, 3, 15),
-                                    child: Padding(
-                                        padding: const EdgeInsets.only(
-                                            top: 0,
-                                            right: 30,
-                                            left: 30,
-                                            bottom: 0),
-                                        child: Column(
-                                          children: [
-                                            TextButton(
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal: 60,
-                                                        vertical: 5),
-                                                child: Text(
-                                                  "Yes",
-                                                  style: TextStyle(
-                                                      fontSize: 16,
-                                                      color: Colors.white),
-                                                ),
-                                              ),
-                                              style: TextButton.styleFrom(
-                                                backgroundColor:
-                                                    Color(0xFFeb6d44),
-                                                //side: BorderSide(color: Colors.deepOrange, width: 1),
-                                                elevation: 0,
-                                                //minimumSize: Size(100, 50),
-                                                //shadowColor: Colors.red,
-                                                shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10)),
-                                              ),
-                                              onPressed: () {
-                                                _unFollowUser(
-                                                    uid, index, false);
-                                                widget.users[index].isFollowed =
-                                                    false;
+                                RaisedButton(
+                                  color: Colors.white,
+                                  shape: RoundedRectangleBorder(
+                                    side: BorderSide(
+                                        color: Theme.of(context).accentColor,
+                                        width: 2),
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  child: Text(
+                                    "No",
+                                    style: TextStyle(
+                                      color: Theme.of(context).accentColor,
+                                    ),
+                                  ),
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                ),
+                                RaisedButton(
+                                  color: Color(0xFFeb6d44),
+                                  child: Text(
+                                    "Yes",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  onPressed: () {
+                                    _unFollowUser(uid, index, false);
+                                    widget.users[index].isFollowed = false;
 
-                                                setState(() {});
-                                                Navigator.pop(context);
-                                              },
-                                            ),
-                                            TextButton(
-                                              child: Text(
-                                                "Cancel",
-                                                style: TextStyle(fontSize: 16),
-                                              ),
-                                              style: TextButton.styleFrom(
-                                                primary: Color(0xFFeb6d44),
-                                                backgroundColor: Colors.white,
-                                                //side: BorderSide(color: Colors.deepOrange, width: 1),
-                                                elevation: 0,
-                                                //minimumSize: Size(100, 50),
-                                                //shadowColor: Colors.red,
-                                                shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10)),
-                                              ),
-                                              onPressed: () {
-                                                Navigator.pop(context);
-                                              },
-                                            ),
-                                          ],
-                                        )))
+                                    setState(() {});
+                                    Navigator.pop(context);
+                                  },
+                                ),
                               ],
                             );
                           },
