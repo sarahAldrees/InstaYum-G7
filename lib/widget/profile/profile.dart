@@ -186,7 +186,7 @@ class ProfileState extends State<Profile> {
                     child: Text(
                       "@${userUsername ?? ''}",
                       style:
-                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                          TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
                     ),
                   ),
 

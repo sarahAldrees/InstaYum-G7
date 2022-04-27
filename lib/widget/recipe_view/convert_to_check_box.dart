@@ -46,15 +46,13 @@ class convert extends State<ConvertTocheckBox> {
                   color: Color(0xFFeb6d44),
                   borderRadius: BorderRadius.circular(5),
                 ),
-                child: Center(
-                  child: Text(
-                    widget.title,
-                    style: TextStyle(
-                      //backgroundColor: Colors.grey[50],
-                      fontSize: 17,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
+                child: Text(
+                  widget.title,
+                  style: TextStyle(
+                    //backgroundColor: Colors.grey[50],
+                    fontSize: 17,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
                   ),
                 ),
               )
@@ -228,12 +226,14 @@ class convert extends State<ConvertTocheckBox> {
           : widget.title == "Ingrediants"
               ? Row(
                   children: [
-                    Text(checkbox.title!,
-                        style: TextStyle(
-                          decoration: checkbox.checkedstyle,
-                          decorationColor: Color(0xFFeb6d44),
-                          decorationThickness: 4,
-                        )),
+                    Expanded(
+                      child: Text(checkbox.title!,
+                          style: TextStyle(
+                            decoration: checkbox.checkedstyle,
+                            decorationColor: Color(0xFFeb6d44),
+                            decorationThickness: 4,
+                          )),
+                    ),
                     Spacer(),
                     IconButton(
                         padding: EdgeInsets.only(right: 20),
@@ -266,12 +266,14 @@ class convert extends State<ConvertTocheckBox> {
                 )
               : Row(
                   children: [
-                    Text(checkbox.title!,
-                        style: TextStyle(
-                          decoration: checkbox.checkedstyle,
-                          decorationColor: Color(0xFFeb6d44),
-                          decorationThickness: 4,
-                        )),
+                    Expanded(
+                      child: Text(checkbox.title!,
+                          style: TextStyle(
+                            decoration: checkbox.checkedstyle,
+                            decorationColor: Color(0xFFeb6d44),
+                            decorationThickness: 4,
+                          )),
+                    ),
                     Spacer(),
                     IconButton(
                         icon: Icon(Icons.close),

@@ -104,7 +104,7 @@ class RecipeItem extends StatelessWidget {
                   alignment: Alignment.topCenter,
                   child: Text(
                     recipeName!,
-                    style: TextStyle(fontSize: 14),
+                    style: TextStyle(fontSize: 16),
                   ),
                 )),
           ),
