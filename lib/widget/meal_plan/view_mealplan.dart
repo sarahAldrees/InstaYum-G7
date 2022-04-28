@@ -7,6 +7,7 @@ import 'package:instayum/model/recipe.dart';
 import 'package:instayum/widget/meal_plan/horizontal_day_list.dart';
 import 'package:instayum/widget/meal_plan/my_mealplans_screen.dart';
 
+import '../../main_pages.dart';
 import 'add_new_mealplan.dart';
 import 'choose_meal_recipes.dart';
 import 'meal_grid_view.dart';
@@ -561,11 +562,21 @@ class ViewMealplanState extends State<ViewMealplan> {
       child: Text("Yes"),
       onPressed: () {
         deleteMealplan();
-        Navigator.of(context).pop();
+        setState(() {});
       },
     );
     Widget noButton = RaisedButton(
-      child: Text("No"),
+      color: Colors.white,
+      shape: RoundedRectangleBorder(
+        side: BorderSide(color: Theme.of(context).accentColor, width: 2),
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Text(
+        "No",
+        style: TextStyle(
+          color: Theme.of(context).accentColor,
+        ),
+      ),
       onPressed: () {
         Navigator.of(context).pop();
       },
@@ -579,12 +590,12 @@ class ViewMealplanState extends State<ViewMealplan> {
             fontWeight: FontWeight.bold, color: Theme.of(context).accentColor),
       ),
       content: Text(
-        "Are you sure you want to delete this plan?  ",
+        "Are you sure you want to delete this plan?",
         style: TextStyle(color: Color(0xFF444444)),
       ),
       actions: [
-        yesButton,
         noButton,
+        yesButton,
       ],
     );
 
@@ -599,22 +610,24 @@ class ViewMealplanState extends State<ViewMealplan> {
 
   void deleteMealplan() {
     print("inside delete method***************************");
+    print(AppGlobals.userId);
+    print(widget.mealplanID);
+    print("------------------------------------------------");
     FirebaseFirestore.instance
         .collection("users")
         .doc(AppGlobals.userId)
         .collection("mealPlans")
         .doc(widget.mealplanID)
         .delete();
-    Navigator.of(context).pop();
+    Navigator.pop(context);
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => MainPages()));
     // Navigator.push(
     //   context,
     //   MaterialPageRoute(
     //     builder: (conetxt) => MyMealplanScreen(isFromUserProfileView: false),
     //   ),
     // );
-    setState(() {
-      print("After navigitor****************************");
-    });
   }
 
   @override
