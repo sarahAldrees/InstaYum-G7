@@ -70,7 +70,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
         actions: [
           TextButton(
               onPressed: () {
-                if (notifications.isEmpty) {
+                if (!notifications.isEmpty) {
                   showDialog<void>(
                     context: context,
                     barrierDismissible: false,
