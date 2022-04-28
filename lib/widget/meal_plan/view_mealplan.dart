@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:instayum/constant/app_globals.dart';
 import 'package:instayum/model/recipe.dart';
 import 'package:instayum/widget/meal_plan/horizontal_day_list.dart';
+import 'package:instayum/widget/meal_plan/my_mealplans_screen.dart';
 
 import 'add_new_mealplan.dart';
 import 'choose_meal_recipes.dart';
@@ -551,6 +552,70 @@ class ViewMealplanState extends State<ViewMealplan> {
 
     print("changed, $weekday");
   }
+//-----------------------------------------------------Delete the meal plan-------------------------
+
+  //----------------------------------DELETE COOKBOOK-----------------------------
+  showAlertDialogDeleteMealplan(BuildContext context) {
+    // set up the button
+    Widget yesButton = RaisedButton(
+      child: Text("Yes"),
+      onPressed: () {
+        deleteMealplan();
+        Navigator.of(context).pop();
+      },
+    );
+    Widget noButton = RaisedButton(
+      child: Text("No"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text(
+        "Delete Meal Plan",
+        style: TextStyle(
+            fontWeight: FontWeight.bold, color: Theme.of(context).accentColor),
+      ),
+      content: Text(
+        "Are you sure you want to delete this plan?  ",
+        style: TextStyle(color: Color(0xFF444444)),
+      ),
+      actions: [
+        yesButton,
+        noButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  void deleteMealplan() {
+    print("inside delete method***************************");
+    FirebaseFirestore.instance
+        .collection("users")
+        .doc(AppGlobals.userId)
+        .collection("mealPlans")
+        .doc(widget.mealplanID)
+        .delete();
+    Navigator.of(context).pop();
+    // Navigator.push(
+    //   context,
+    //   MaterialPageRoute(
+    //     builder: (conetxt) => MyMealplanScreen(isFromUserProfileView: false),
+    //   ),
+    // );
+    setState(() {
+      print("After navigitor****************************");
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -558,6 +623,26 @@ class ViewMealplanState extends State<ViewMealplan> {
       appBar: AppBar(
         backgroundColor: Color(0xFFeb6d44),
         title: Text(widget.mealplanTitle!),
+        actions: [
+          Row(
+            children: [
+              IconButton(
+                  icon: Icon(
+                    Icons.delete_outline_outlined,
+                    //  Icons.ios_share,
+                    size: 30,
+                  ),
+                  onPressed: () {
+                    showAlertDialogDeleteMealplan(context);
+                    setState(() {
+                      mealInformation;
+                      print(
+                          "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@****************************");
+                    });
+                  }),
+            ],
+          ),
+        ],
       ),
       body: Column(
         children: [
