@@ -455,10 +455,6 @@ class AddNewMealPlanState extends State<AddNewMealPlan> {
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Enter meal plan title',
-
-                    //  onChanged: (value) {
-                    //     recipeTitle = value;
-                    //   }
                   ),
                 ),
                 const SizedBox(
@@ -740,72 +736,96 @@ class AddNewMealPlanState extends State<AddNewMealPlan> {
                           } else {
                             validTitleToSubmit = true;
                           }
+                          if (MealPlansService.countNumOfRecipes == 0) {
+                            print("wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww");
+                            print("enter in == 0");
+                            print("wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww");
 
-                          if (validTitleToSubmit) {
-                            //    if (validMealPlanName) {
-
-                            MealPlansService.addMealPlanTitleAndStatus(
-                                mealplanTitleTextFieldController.text,
-                                isPublicSwitchBtnAddNewMealplan);
-                            ProfileState.isPinnedInPublicMealPlans =
-                                isPublicSwitchBtnAddNewMealplan;
-
-                            if (MealPlansService.countNumOfRecipes == 21) {
-                              //check it
-                              appPages.showAlertDialogRcipeAdedSuccessfully(
-                                  context, true);
-
-                              //to clear all the plan
-
-                              mealplanTitleTextFieldController.clear();
-                              MealPlansService.chosenMealDay = 'SUN';
-                              isPublicSwitchBtnAddNewMealplan = false;
-                              MealPlansService.hasMealPlanCollection = false;
-                              sunMealPlan.clear();
-                              monMealPlan.clear();
-                              tueMealPlan.clear();
-                              wedMealPlan.clear();
-                              thuMealPlan.clear();
-                              friMealPlan.clear();
-                              satMealPlan.clear();
-                              mealInformation.clear();
-
-                              sunMealPlan.addAll(initiateMealInformation);
-                              monMealPlan.addAll(initiateMealInformation);
-
-                              tueMealPlan.addAll(initiateMealInformation);
-
-                              wedMealPlan.addAll(initiateMealInformation);
-
-                              thuMealPlan.addAll(initiateMealInformation);
-
-                              friMealPlan.addAll(initiateMealInformation);
-
-                              satMealPlan.addAll(initiateMealInformation);
-                            } else {
-                              showAlertDialogCheckNumOfRecipes(context);
-                            }
-                            MealPlansService.makePinnedMealplanAlwaysUp();
-                            // to open the public or private mealplan list in profile page.
-
-                            print(MealPlansService.countNumOfRecipes);
-                            // appPages.showAlertDialogRcipeAdedSuccessfully(
-                            //     context, true);
-
-                            //     }
-                            // else {
-                            //   Flushbar(
-                            //     backgroundColor: Theme.of(context).errorColor,
-                            //     message: "The title is already exist",
-                            //     duration: Duration(seconds: 4),
-                            //   ).show(context);
-                            // }
-                          } else {
                             Flushbar(
                               backgroundColor: Theme.of(context).errorColor,
-                              message: "Plases enter a title!",
+                              message:
+                                  "You can not add an empty meal plan without any recipes",
                               duration: Duration(seconds: 4),
                             ).show(context);
+                          } else {
+                            if (validTitleToSubmit) {
+                              //    if (validMealPlanName) {
+
+                              MealPlansService.addMealPlanTitleAndStatus(
+                                  mealplanTitleTextFieldController.text,
+                                  isPublicSwitchBtnAddNewMealplan);
+                              ProfileState.isPinnedInPublicMealPlans =
+                                  isPublicSwitchBtnAddNewMealplan;
+
+                              if (MealPlansService.countNumOfRecipes == 21) {
+                                print(
+                                    "nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn");
+                                print("enter == 21");
+                                print(
+                                    "nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn");
+
+                                //check it
+                                appPages.showAlertDialogRcipeAdedSuccessfully(
+                                    context, true);
+
+                                //to clear all the plan
+
+                                mealplanTitleTextFieldController.clear();
+                                MealPlansService.chosenMealDay = 'SUN';
+                                isPublicSwitchBtnAddNewMealplan = false;
+                                MealPlansService.hasMealPlanCollection = false;
+                                sunMealPlan.clear();
+                                monMealPlan.clear();
+                                tueMealPlan.clear();
+                                wedMealPlan.clear();
+                                thuMealPlan.clear();
+                                friMealPlan.clear();
+                                satMealPlan.clear();
+                                mealInformation.clear();
+
+                                sunMealPlan.addAll(initiateMealInformation);
+                                monMealPlan.addAll(initiateMealInformation);
+
+                                tueMealPlan.addAll(initiateMealInformation);
+
+                                wedMealPlan.addAll(initiateMealInformation);
+
+                                thuMealPlan.addAll(initiateMealInformation);
+
+                                friMealPlan.addAll(initiateMealInformation);
+
+                                satMealPlan.addAll(initiateMealInformation);
+                              } else {
+                                print(
+                                    "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
+                                print("else of 21 ");
+                                print(
+                                    "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
+                                showAlertDialogCheckNumOfRecipes(context);
+                              }
+
+                              MealPlansService.makePinnedMealplanAlwaysUp();
+                              // to open the public or private mealplan list in profile page.
+
+                              print(MealPlansService.countNumOfRecipes);
+                              // appPages.showAlertDialogRcipeAdedSuccessfully(
+                              //     context, true);
+
+                              //     }
+                              // else {
+                              //   Flushbar(
+                              //     backgroundColor: Theme.of(context).errorColor,
+                              //     message: "The title is already exist",
+                              //     duration: Duration(seconds: 4),
+                              //   ).show(context);
+                              // }
+                            } else {
+                              Flushbar(
+                                backgroundColor: Theme.of(context).errorColor,
+                                message: "Plases enter a title!",
+                                duration: Duration(seconds: 4),
+                              ).show(context);
+                            }
                           }
                           //   }
                         },
