@@ -647,11 +647,11 @@ class ViewMealplanState extends State<ViewMealplan> {
                   ),
                   onPressed: () {
                     showAlertDialogDeleteMealplan(context);
-                    setState(() {
-                      mealInformation;
-                      print(
-                          "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@****************************");
-                    });
+                    // setState(() {
+                    //   mealInformation;
+                    //   print(
+                    //       "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@****************************");
+                    // });
                   }),
             ],
           ),
