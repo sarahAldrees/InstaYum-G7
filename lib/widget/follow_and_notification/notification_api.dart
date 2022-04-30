@@ -71,7 +71,7 @@ class NotificationApi {
   static void increaseNotificationCount(String? userId) {
     print("-----------------------------------------------------");
     print(userId);
-    MainPages.notificationCounter = MainPages.notificationCounter! + 1;
+
     if (userId != null) {
       FirebaseFirestore.instance.collection('users').doc(userId).update(
         {'notificationsCount': FieldValue.increment(1)},

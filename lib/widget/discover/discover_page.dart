@@ -86,22 +86,6 @@ class Discover extends State<DiscoverPage> {
                       height: 40,
                     ),
                   )
-
-                  // IconButton(
-                  //   icon: Icon(Icons.search, size: 30),
-                  //   onPressed: () {
-                  //     //Go to search page
-                  //     Navigator.push(
-                  //         context,
-                  //         MaterialPageRoute(
-                  //           builder: (context) => SearchPage(
-                  //             isFromMealPlan: false,
-                  //             mealDay: "",
-                  //             mealPlanTypeOfMeal: "",
-                  //           ),
-                  //         ));
-                  //   },
-                  // ),
                 ],
               ),
             ),
@@ -135,7 +119,7 @@ class Discover extends State<DiscoverPage> {
         _bookmarkRecipes =
             await TopRecipeService().fetchAndCalculateTopRecipes();
         _fetchTopRecipes = true;
-        setState(() {});
+        if (mounted) setState(() {});
       }
     }).then((nothing) async {
       await Future.delayed(const Duration(milliseconds: 900), () {});
