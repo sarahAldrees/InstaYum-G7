@@ -200,87 +200,66 @@ class _RecipeViewState extends State<RecipeView> {
         widget.cookbook == "" ||
         widget.cookbook == null) {
       //delet from all(okay ,cancel)
-
       showDialog<void>(
-          context: context,
-          barrierDismissible: false,
-          builder: (context) {
-            return AlertDialog(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(8)),
+        context: context,
+        barrierDismissible: false,
+        builder: (context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(8)),
+            ),
+            title: Center(
+              child: Text(
+                'Remove the recipe from all cookbooks',
+                style: TextStyle(
+                    fontSize: 19, color: Theme.of(context).accentColor),
               ),
-              title: Column(
-                children: [
-                  Text(
-                    'Are you sure to remove the recipe from all cookbooks?',
-                    style: TextStyle(fontSize: 16),
-                  ),
-                ],
+            ),
+            content: Text(
+              'Are you sure to remove the recipe from all cookbooks',
+              style: TextStyle(fontSize: 16),
+            ),
+            actions: [
+              Center(
+                child: Column(
+                  children: [
+                    RaisedButton(
+                      color: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        side: BorderSide(
+                            color: Theme.of(context).accentColor, width: 2),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Text(
+                        "No",
+                        style: TextStyle(
+                          color: Theme.of(context).accentColor,
+                        ),
+                      ),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                    RaisedButton(
+                      color: Color(0xFFeb6d44),
+                      child: Text(
+                        "Yes",
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                      onPressed: () {
+                        deletFromAllCookbooks();
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ],
+                ),
               ),
-              actions: [
-                Container(
-                    width: double.infinity,
-                    margin: EdgeInsets.fromLTRB(3, 0, 3, 15),
-                    child: Padding(
-                        padding: const EdgeInsets.only(
-                            top: 0, right: 30, left: 30, bottom: 0),
-                        child: Column(
-                          children: [
-                            ElevatedButton(
-                                child: Center(
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(left: 30),
-                                    child: Row(
-                                      children: [
-                                        Center(
-                                            child: Icon(
-                                                Icons.delete_outline_rounded)),
-                                        SizedBox(
-                                          width: 2,
-                                        ),
-                                        Center(
-                                          child: Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                vertical: 12, horizontal: 10),
-                                            child: Text(
-                                              "Remove",
-                                              style: TextStyle(fontSize: 16),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                style: ButtonStyle(
-                                  backgroundColor: MaterialStateProperty.all(
-                                      Color(0xFFeb6d44)),
-                                ),
-                                onPressed: () {
-                                  deletFromAllCookbooks();
-                                  Navigator.pop(context);
-                                }),
-                            TextButton(
-                              child: Text(
-                                "Cancel",
-                                style: TextStyle(fontSize: 16),
-                              ),
-                              style: TextButton.styleFrom(
-                                primary: Color(0xFFeb6d44),
-                                backgroundColor: Colors.white,
-                                elevation: 0,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10)),
-                              ),
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                            ),
-                          ],
-                        )))
-              ],
-            );
-          });
+            ],
+          );
+        },
+      );
       // final messages = await FirebaseFirestore.instance
       //     .collection("users")
       //     .doc(FirebaseAuth.instance.currentUser.uid)
@@ -301,92 +280,77 @@ class _RecipeViewState extends State<RecipeView> {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(8)),
             ),
-            title: Column(
-              children: [
-                Text(
-                  'Are you sure to remove the recipe?',
-                  style: TextStyle(fontSize: 16),
-                ),
-              ],
+            title: Center(
+              child: Text(
+                'Remove the recipe from a cookbook',
+                style: TextStyle(
+                    fontSize: 19, color: Theme.of(context).accentColor),
+              ),
+            ),
+            content: Text(
+              'You want to remove the recipe from',
+              style: TextStyle(fontSize: 16),
             ),
             actions: [
-              Container(
-                  width: double.infinity,
-                  margin: EdgeInsets.fromLTRB(3, 0, 3, 15),
-                  child: Padding(
-                      padding: const EdgeInsets.only(
-                          top: 0, right: 30, left: 30, bottom: 0),
-                      child: Column(
-                        children: [
-                          ElevatedButton(
-                              child: Center(
-                                child: Padding(
-                                  padding: const EdgeInsets.only(left: 20),
-                                  child: Row(
-                                    children: [
-                                      Center(
-                                        child: Text(
-                                          "From All cookbooks",
-                                          style: TextStyle(fontSize: 16),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all(
-                                    Color(0xFFeb6d44)),
-                              ),
-                              onPressed: () {
-                                deletFromAllCookbooks();
-                                Navigator.pop(context);
-                              }),
-                          TextButton(
-                            child: Text(
-                              "This cookbook",
-                              style: TextStyle(fontSize: 16),
-                            ),
-                            style: TextButton.styleFrom(
-                              primary: Color(0xFFeb6d44),
-                              backgroundColor: Colors.white,
-                              //side: BorderSide(color: Colors.deepOrange, width: 1),
-                              elevation: 0,
-                              //minimumSize: Size(100, 50),
-                              //shadowColor: Colors.red,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10)),
-                            ),
-                            onPressed: () {
-                              deletFromThisCookbook();
-                              Navigator.pop(context);
-                            },
-                          ),
-                          TextButton(
-                            child: Text(
-                              "Cancel",
-                              style: TextStyle(fontSize: 16),
-                            ),
-                            style: TextButton.styleFrom(
-                              primary: Color(0xFFeb6d44),
-                              backgroundColor: Colors.white,
-                              //side: BorderSide(color: Colors.deepOrange, width: 1),
-                              elevation: 0,
-                              //minimumSize: Size(100, 50),
-                              //shadowColor: Colors.red,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10)),
-                            ),
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                          ),
-                        ],
-                      )))
+              Center(
+                child: Column(
+                  children: [
+                    RaisedButton(
+                      color: Color(0xFFeb6d44),
+                      child: Text(
+                        "From all cookbooks",
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                      onPressed: () {
+                        deletFromAllCookbooks();
+                        Navigator.pop(context);
+                      },
+                    ),
+                    RaisedButton(
+                      color: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        side: BorderSide(
+                            color: Theme.of(context).accentColor, width: 2),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Text(
+                        "         This cookbook        ",
+                        style: TextStyle(
+                          color: Theme.of(context).accentColor,
+                        ),
+                      ),
+                      onPressed: () {
+                        deletFromThisCookbook();
+                        Navigator.pop(context);
+                      },
+                    ),
+                    RaisedButton(
+                      color: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        side: BorderSide(
+                            color: Theme.of(context).accentColor, width: 2),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Text(
+                        "              cancel               ",
+                        style: TextStyle(
+                          color: Theme.of(context).accentColor,
+                        ),
+                      ),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ],
+                ),
+              ),
             ],
           );
         },
       );
+
       print(widget.cookbook);
     }
   }
