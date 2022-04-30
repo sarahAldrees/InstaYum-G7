@@ -573,9 +573,10 @@ class appPages extends State<MainPages> {
           print(data!["notificationsCount"]);
           MainPages.notificationCounter = data["notificationsCount"];
           print("notificationCounter is ${MainPages.notificationCounter}");
-          setState(() {
-            MainPages.notificationCounter;
-          });
+          if (mounted)
+            setState(() {
+              MainPages.notificationCounter;
+            });
           // }
         }
       });

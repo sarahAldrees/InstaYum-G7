@@ -111,12 +111,12 @@ class FollowUserService {
           imageUrl: currentUser.imageUrl,
         );
 
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('You are now following $username'),
-            backgroundColor: Colors.green,
-          ),
-        );
+        // ScaffoldMessenger.of(context).showSnackBar(
+        //   SnackBar(
+        //     content: Text('You are now following $username'),
+        //     backgroundColor: Colors.green,
+        //   ),
+        // );
       }
     } catch (e) {
       print('FollowUserService : $e');
@@ -175,12 +175,12 @@ class FollowUserService {
             .update({'isFollowed': false});
       }
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Unfollowed successfully'),
-          backgroundColor: Colors.green,
-        ),
-      );
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   SnackBar(
+      //     content: Text('Unfollowed successfully'),
+      //     backgroundColor: Colors.green,
+      //   ),
+      // );
 //----------------------------------------------------------------
       return true;
     } catch (e) {
