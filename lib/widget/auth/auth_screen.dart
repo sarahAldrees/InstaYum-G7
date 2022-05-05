@@ -22,7 +22,6 @@ class AuthScreenState extends State<AuthScreen> {
 
   bool _isLoading = false;
   static bool isAdmin = false;
-  static final String adminEmail = 'admin@admin.admin';
 
   void _submitAuthForm(
     String email,

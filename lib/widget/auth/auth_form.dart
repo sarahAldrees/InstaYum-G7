@@ -127,6 +127,7 @@ class _AuthFormState extends State<AuthForm> {
     }
   }
 
+//to be deleted ########################################################
   Widget condtions() {
     TextStyle defaultStyle = TextStyle(color: Colors.grey, fontSize: 14.0);
     TextStyle linkStyle = TextStyle(
@@ -261,7 +262,7 @@ class _AuthFormState extends State<AuthForm> {
                     SizedBox(
                       height: 12,
                     ),
-                    if (_isSignUp) condtions(),
+                    //   if (_isSignUp) condtions(),
                     SizedBox(
                       height: 12,
                     ),

@@ -57,6 +57,7 @@ class addRecipe extends State<AddRecipePage> {
   String? _currentSelectedCategory = "Appetizers";
   String? _currentSelectedCuisine = "American";
   bool _isPublic = false; //to determin wehther the recipe is public or private
+
   static bool isloading = false;
 
   //-----------------------------------------------------------------------------------
@@ -122,7 +123,7 @@ class addRecipe extends State<AddRecipePage> {
             fontWeight: FontWeight.bold, color: Theme.of(context).accentColor),
       ),
       content: Text(
-        "It seems that your recipe does not contain any standard measurements \nAre you sure you want to continue to add the recipe?  ",
+        "It seems that your recipe does not contain any measurements \nAre you sure you want to continue to add the recipe?  ",
         style: TextStyle(color: Color(0xFF444444)),
       ),
       actions: [
@@ -647,7 +648,7 @@ class addRecipe extends State<AddRecipePage> {
                 children: <Widget>[
                   Container(
                     width: double.infinity,
-                    height: 300,
+                    height: _isPublic ? 340 : 300,
                     margin: EdgeInsets.fromLTRB(10, 15, 30, 10),
                     padding: EdgeInsets.only(bottom: 10, top: 30),
                     decoration: BoxDecoration(
@@ -796,6 +797,10 @@ class addRecipe extends State<AddRecipePage> {
                                 onChanged: (value) {
                                   setState(() {
                                     _isPublic = value;
+                                    // if (_isPublic)
+                                    //   isPublicText = "we will change ";
+                                    // else
+                                    //   isPublicText = "";
                                   });
                                 },
                                 activeTrackColor: Colors.orange[600],
@@ -805,6 +810,19 @@ class addRecipe extends State<AddRecipePage> {
                             ],
                           ),
                         ),
+                        _isPublic
+                            ? Padding(
+                                padding:
+                                    const EdgeInsets.only(left: 15, right: 8),
+                                child: Center(
+                                  child: Text(
+                                      "Anyone who saves your public recipe will be able to keep it even if you delete it.",
+                                      style: TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.bold)),
+                                ),
+                              )
+                            : SizedBox(),
                       ],
                     ),
                   ),
