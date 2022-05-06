@@ -505,7 +505,6 @@ class appPages extends State<MainPages> {
         ),
       ),
       onPressed: () {
-        print("Nooooooooooooooooooooooooo");
         Navigator.of(context).pop();
       },
     );
@@ -535,7 +534,7 @@ class appPages extends State<MainPages> {
       //backgroundColor: Theme.of(context).backgroundColor,
       title: Center(
           child: Text(
-        "Logout",
+        "Log out",
         style: TextStyle(
             fontWeight: FontWeight.bold, color: Theme.of(context).accentColor),
       )),

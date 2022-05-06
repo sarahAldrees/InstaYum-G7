@@ -226,7 +226,7 @@ class Rating extends State<RatingRecipe> {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(15)),
       ),
-      title: Text(' Thank you '),
+      title: Text(' Thank you ', style: TextStyle(color: Color(0xFFeb6d44))),
       content: Text(' You have already rated it'),
       actions: [
         Container(
@@ -238,7 +238,7 @@ class Rating extends State<RatingRecipe> {
             child: ElevatedButton(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10),
-                  child: Text("close"),
+                  child: Text("Close"),
                 ),
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all(Color(0xFFeb6d44)),

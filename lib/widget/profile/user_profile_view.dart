@@ -132,7 +132,7 @@ class UserProfileViewState extends State<UserProfileView> {
                               children: [
                                 Text(
                                   'Why are you reporting this?',
-                                  style: TextStyle(fontSize: 16),
+                                  style: TextStyle(fontSize: 20),
                                 ),
                               ],
                             ),
@@ -294,7 +294,16 @@ class UserProfileViewState extends State<UserProfileView> {
                                               Navigator.pop(context);
                                             },
                                           ),
-                                          ElevatedButton(
+                                          RaisedButton(
+                                              color: Colors.white,
+                                              shape: RoundedRectangleBorder(
+                                                side: BorderSide(
+                                                    color: Theme.of(context)
+                                                        .accentColor,
+                                                    width: 2),
+                                                borderRadius:
+                                                    BorderRadius.circular(20),
+                                              ),
                                               child: const Center(
                                                 child: Padding(
                                                   padding:
@@ -311,11 +320,6 @@ class UserProfileViewState extends State<UserProfileView> {
                                                     ),
                                                   ),
                                                 ),
-                                              ),
-                                              style: ButtonStyle(
-                                                backgroundColor:
-                                                    MaterialStateProperty.all(
-                                                        Color(0xFFeb6d44)),
                                               ),
                                               onPressed: () {
                                                 Navigator.pop(context);

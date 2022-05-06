@@ -210,18 +210,20 @@ class _RecipeViewState extends State<RecipeView> {
             ),
             title: Center(
               child: Text(
-                'Remove the recipe from all cookbooks',
+                'Remove bookmarked recipe',
                 style: TextStyle(
                     fontSize: 19, color: Theme.of(context).accentColor),
               ),
             ),
             content: Text(
-              'Are you sure to remove the recipe from all cookbooks',
+              'Are you sure to remove the recipe from all cookbooks?',
               style: TextStyle(fontSize: 16),
             ),
             actions: [
               Center(
-                child: Column(
+                child: Row(
+                  // crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     RaisedButton(
                       color: Colors.white,
@@ -239,6 +241,9 @@ class _RecipeViewState extends State<RecipeView> {
                       onPressed: () {
                         Navigator.pop(context);
                       },
+                    ),
+                    SizedBox(
+                      width: 10,
                     ),
                     RaisedButton(
                       color: Color(0xFFeb6d44),
@@ -282,7 +287,7 @@ class _RecipeViewState extends State<RecipeView> {
             ),
             title: Center(
               child: Text(
-                'Remove the recipe from a cookbook',
+                'Remove bookmarked recipe',
                 style: TextStyle(
                     fontSize: 19, color: Theme.of(context).accentColor),
               ),
@@ -298,7 +303,7 @@ class _RecipeViewState extends State<RecipeView> {
                     RaisedButton(
                       color: Color(0xFFeb6d44),
                       child: Text(
-                        "From all cookbooks",
+                        "   From all cookbooks   ",
                         style: TextStyle(
                           color: Colors.white,
                         ),
@@ -316,7 +321,7 @@ class _RecipeViewState extends State<RecipeView> {
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Text(
-                        "         This cookbook        ",
+                        "        This cookbook        ",
                         style: TextStyle(
                           color: Theme.of(context).accentColor,
                         ),
@@ -334,7 +339,7 @@ class _RecipeViewState extends State<RecipeView> {
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Text(
-                        "              cancel               ",
+                        "             Cancel               ",
                         style: TextStyle(
                           color: Theme.of(context).accentColor,
                         ),

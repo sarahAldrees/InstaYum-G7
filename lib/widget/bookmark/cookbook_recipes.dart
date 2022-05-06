@@ -72,37 +72,38 @@ class CookbookRecipesState extends State<CookbookRecipes> {
             lengthOfIngredients = doc.data()?['length_of_ingredients'];
             lengthOfDirections = doc.data()?['length_of_directions'];
             lengthOfImages = doc.data()?['image_count'];
-
-            for (int i = 0; i < lengthOfIngredients!; i++) {
-              {
-                ingredientsList.add(
-                  doc.data()?['ing${i + 1}'],
+            if (lengthOfIngredients != null) {
+              for (int i = 0; i < lengthOfIngredients!; i++) {
+                {
+                  ingredientsList.add(
+                    doc.data()?['ing${i + 1}'],
+                  );
+                }
+              }
+              for (int i = 0; i < lengthOfDirections!; i++) {
+                dirctionsList.add(
+                  doc.data()?['dir${i + 1}'],
                 );
               }
-            }
-            for (int i = 0; i < lengthOfDirections!; i++) {
-              dirctionsList.add(
-                doc.data()?['dir${i + 1}'],
-              );
-            }
-            for (int i = 0; i < lengthOfImages!; i++) {
-              imageUrlsList.add(
-                doc.data()?['img${i + 1}'],
-              );
-            }
+              for (int i = 0; i < lengthOfImages!; i++) {
+                imageUrlsList.add(
+                  doc.data()?['img${i + 1}'],
+                );
+              }
 
-            recpiesList.add(Recipe(
-              userId: autherId,
-              recipeId: doc.id,
-              recipeTitle: doc.data()!['recipe_title'],
-              typeOfMeal: doc.data()!['type_of_meal'],
-              category: doc.data()!['category'],
-              cuisine: doc.data()!['cuisine'],
-              img1: doc.data()!["img1"],
-              dirctions: dirctionsList,
-              ingredients: ingredientsList,
-              imageUrls: imageUrlsList,
-            ));
+              recpiesList.add(Recipe(
+                userId: autherId,
+                recipeId: doc.id,
+                recipeTitle: doc.data()!['recipe_title'],
+                typeOfMeal: doc.data()!['type_of_meal'],
+                category: doc.data()!['category'],
+                cuisine: doc.data()!['cuisine'],
+                img1: doc.data()!["img1"],
+                dirctions: dirctionsList,
+                ingredients: ingredientsList,
+                imageUrls: imageUrlsList,
+              ));
+            }
             if (mounted)
               setState(() {
                 recpiesList = recpiesList;
@@ -137,7 +138,17 @@ class CookbookRecipesState extends State<CookbookRecipes> {
       },
     );
     Widget noButton = RaisedButton(
-      child: Text("No"),
+      color: Colors.white,
+      shape: RoundedRectangleBorder(
+        side: BorderSide(color: Theme.of(context).accentColor, width: 2),
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Text(
+        "No",
+        style: TextStyle(
+          color: Theme.of(context).accentColor,
+        ),
+      ),
       onPressed: () {
         Navigator.of(context).pop();
       },
@@ -151,12 +162,12 @@ class CookbookRecipesState extends State<CookbookRecipes> {
             fontWeight: FontWeight.bold, color: Theme.of(context).accentColor),
       ),
       content: Text(
-        " Are you sure you want to delete this cookbook?  ",
+        "Are you sure you want to delete this cookbook?  ",
         style: TextStyle(color: Color(0xFF444444)),
       ),
       actions: [
-        yesButton,
         noButton,
+        yesButton,
       ],
     );
 

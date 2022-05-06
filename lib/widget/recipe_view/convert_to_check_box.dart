@@ -76,7 +76,7 @@ class convert extends State<ConvertTocheckBox> {
                                     BorderRadius.all(Radius.circular(8)),
                               ),
                               title: Text(
-                                'Delete the ingredient ',
+                                'Delete the ingredients ',
                                 style: TextStyle(
                                     fontSize: 19,
                                     color: Theme.of(context).accentColor),
