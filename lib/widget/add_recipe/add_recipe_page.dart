@@ -109,7 +109,17 @@ class addRecipe extends State<AddRecipePage> {
       },
     );
     Widget noButton = RaisedButton(
-      child: Text("No"),
+      color: Colors.white,
+      shape: RoundedRectangleBorder(
+        side: BorderSide(color: Theme.of(context).accentColor, width: 2),
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Text(
+        "No",
+        style: TextStyle(
+          color: Theme.of(context).accentColor,
+        ),
+      ),
       onPressed: () {
         Navigator.of(context).pop();
       },
