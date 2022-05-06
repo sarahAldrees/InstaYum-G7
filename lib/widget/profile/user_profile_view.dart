@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/rendering.dart';
 import 'package:instayum/constant/app_colors.dart';
 import 'package:instayum/constant/app_globals.dart';
 import 'package:instayum/model/reported_account.dart';
@@ -132,7 +133,10 @@ class UserProfileViewState extends State<UserProfileView> {
                               children: [
                                 Text(
                                   'Why are you reporting this?',
-                                  style: TextStyle(fontSize: 20),
+                                  style: TextStyle(
+                                      color: Theme.of(context).accentColor,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold),
                                 ),
                               ],
                             ),
@@ -154,7 +158,8 @@ class UserProfileViewState extends State<UserProfileView> {
                                               style: TextStyle(fontSize: 16),
                                             ),
                                             style: TextButton.styleFrom(
-                                              primary: Color(0xFFeb6d44),
+                                              primary: Color.fromARGB(
+                                                  255, 82, 80, 80),
                                               backgroundColor: Colors.white,
                                               elevation: 0,
                                               shape: RoundedRectangleBorder(
@@ -189,7 +194,8 @@ class UserProfileViewState extends State<UserProfileView> {
                                               style: TextStyle(fontSize: 16),
                                             ),
                                             style: TextButton.styleFrom(
-                                              primary: Color(0xFFeb6d44),
+                                              primary: Color.fromARGB(
+                                                  255, 82, 80, 80),
                                               backgroundColor: Colors.white,
                                               //side: BorderSide(color: Colors.deepOrange, width: 1),
                                               elevation: 0,
@@ -228,7 +234,8 @@ class UserProfileViewState extends State<UserProfileView> {
                                               style: TextStyle(fontSize: 16),
                                             ),
                                             style: TextButton.styleFrom(
-                                              primary: Color(0xFFeb6d44),
+                                              primary: Color.fromARGB(
+                                                  255, 82, 80, 80),
                                               backgroundColor: Colors.white,
                                               elevation: 0,
                                               shape: RoundedRectangleBorder(
@@ -264,7 +271,8 @@ class UserProfileViewState extends State<UserProfileView> {
                                               style: TextStyle(fontSize: 16),
                                             ),
                                             style: TextButton.styleFrom(
-                                              primary: Color(0xFFeb6d44),
+                                              primary: Color.fromARGB(
+                                                  255, 82, 80, 80),
                                               backgroundColor: Colors.white,
                                               elevation: 0,
                                               shape: RoundedRectangleBorder(
@@ -295,7 +303,8 @@ class UserProfileViewState extends State<UserProfileView> {
                                             },
                                           ),
                                           RaisedButton(
-                                              color: Colors.white,
+                                              color:
+                                                  Theme.of(context).accentColor,
                                               shape: RoundedRectangleBorder(
                                                 side: BorderSide(
                                                     color: Theme.of(context)
@@ -304,10 +313,10 @@ class UserProfileViewState extends State<UserProfileView> {
                                                 borderRadius:
                                                     BorderRadius.circular(20),
                                               ),
-                                              child: const Center(
+                                              child: Center(
                                                 child: Padding(
                                                   padding:
-                                                      EdgeInsets.only(left: 30),
+                                                      EdgeInsets.only(left: 0),
                                                   child: Padding(
                                                     padding:
                                                         EdgeInsets.symmetric(
@@ -316,7 +325,9 @@ class UserProfileViewState extends State<UserProfileView> {
                                                     child: Text(
                                                       "Cancel",
                                                       style: TextStyle(
-                                                          fontSize: 16),
+                                                        color: Colors.white,
+                                                        fontSize: 16,
+                                                      ),
                                                     ),
                                                   ),
                                                 ),
@@ -387,7 +398,8 @@ class UserProfileViewState extends State<UserProfileView> {
                                               style: ButtonStyle(
                                                 backgroundColor:
                                                     MaterialStateProperty.all(
-                                                        Color(0xFFeb6d44)),
+                                                        Color.fromARGB(
+                                                            255, 82, 80, 80)),
                                               ),
                                               onPressed: () {
                                                 Navigator.pop(context);
@@ -414,7 +426,10 @@ class UserProfileViewState extends State<UserProfileView> {
                             children: [
                               Text(
                                 'Why are you reporting this?',
-                                style: TextStyle(fontSize: 16),
+                                style: TextStyle(
+                                    color: Theme.of(context).accentColor,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold),
                               ),
                             ],
                           ),
@@ -433,7 +448,8 @@ class UserProfileViewState extends State<UserProfileView> {
                                             style: TextStyle(fontSize: 16),
                                           ),
                                           style: TextButton.styleFrom(
-                                            primary: Color(0xFFeb6d44),
+                                            primary:
+                                                Color.fromARGB(255, 82, 80, 80),
                                             backgroundColor: Colors.white,
                                             elevation: 0,
                                             shape: RoundedRectangleBorder(
@@ -472,7 +488,8 @@ class UserProfileViewState extends State<UserProfileView> {
                                             style: TextStyle(fontSize: 16),
                                           ),
                                           style: TextButton.styleFrom(
-                                            primary: Color(0xFFeb6d44),
+                                            primary:
+                                                Color.fromARGB(255, 82, 80, 80),
                                             backgroundColor: Colors.white,
                                             //side: BorderSide(color: Colors.deepOrange, width: 1),
                                             elevation: 0,
@@ -515,7 +532,8 @@ class UserProfileViewState extends State<UserProfileView> {
                                             style: TextStyle(fontSize: 16),
                                           ),
                                           style: TextButton.styleFrom(
-                                            primary: Color(0xFFeb6d44),
+                                            primary:
+                                                Color.fromARGB(255, 82, 80, 80),
                                             backgroundColor: Colors.white,
                                             elevation: 0,
                                             shape: RoundedRectangleBorder(
@@ -555,7 +573,8 @@ class UserProfileViewState extends State<UserProfileView> {
                                             style: TextStyle(fontSize: 16),
                                           ),
                                           style: TextButton.styleFrom(
-                                            primary: Color(0xFFeb6d44),
+                                            primary:
+                                                Color.fromARGB(255, 82, 80, 80),
                                             backgroundColor: Colors.white,
                                             elevation: 0,
                                             shape: RoundedRectangleBorder(
@@ -591,27 +610,34 @@ class UserProfileViewState extends State<UserProfileView> {
                                             Navigator.pop(context);
                                           },
                                         ),
-                                        ElevatedButton(
-                                            child: const Center(
+                                        RaisedButton(
+                                            color:
+                                                Theme.of(context).accentColor,
+                                            shape: RoundedRectangleBorder(
+                                              side: BorderSide(
+                                                  color: Theme.of(context)
+                                                      .accentColor,
+                                                  width: 2),
+                                              borderRadius:
+                                                  BorderRadius.circular(20),
+                                            ),
+                                            child: Center(
                                               child: Padding(
                                                 padding:
-                                                    EdgeInsets.only(left: 30),
+                                                    EdgeInsets.only(left: 0),
                                                 child: Padding(
                                                   padding: EdgeInsets.symmetric(
                                                       vertical: 12,
                                                       horizontal: 10),
                                                   child: Text(
-                                                    "Cancel      ",
-                                                    style:
-                                                        TextStyle(fontSize: 16),
+                                                    "Cancel",
+                                                    style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 16,
+                                                    ),
                                                   ),
                                                 ),
                                               ),
-                                            ),
-                                            style: ButtonStyle(
-                                              backgroundColor:
-                                                  MaterialStateProperty.all(
-                                                      Color(0xFFeb6d44)),
                                             ),
                                             onPressed: () {
                                               Navigator.pop(context);

@@ -440,7 +440,8 @@ class CommentListState extends State<CommentList> {
                                           style: TextStyle(fontSize: 16),
                                         ),
                                         style: TextButton.styleFrom(
-                                          primary: Color(0xFFeb6d44),
+                                          primary:
+                                              Color.fromARGB(255, 82, 80, 80),
                                           backgroundColor: Colors.white,
                                           elevation: 0,
                                           shape: RoundedRectangleBorder(
@@ -472,7 +473,8 @@ class CommentListState extends State<CommentList> {
                                           style: TextStyle(fontSize: 16),
                                         ),
                                         style: TextButton.styleFrom(
-                                          primary: Color(0xFFeb6d44),
+                                          primary:
+                                              Color.fromARGB(255, 82, 80, 80),
                                           backgroundColor: Colors.white,
                                           //side: BorderSide(color: Colors.deepOrange, width: 1),
                                           elevation: 0,
@@ -508,7 +510,8 @@ class CommentListState extends State<CommentList> {
                                           style: TextStyle(fontSize: 16),
                                         ),
                                         style: TextButton.styleFrom(
-                                          primary: Color(0xFFeb6d44),
+                                          primary:
+                                              Color.fromARGB(255, 82, 80, 80),
                                           backgroundColor: Colors.white,
                                           elevation: 0,
                                           shape: RoundedRectangleBorder(
@@ -541,7 +544,8 @@ class CommentListState extends State<CommentList> {
                                           style: TextStyle(fontSize: 16),
                                         ),
                                         style: TextButton.styleFrom(
-                                          primary: Color(0xFFeb6d44),
+                                          primary:
+                                              Color.fromARGB(255, 82, 80, 80),
                                           backgroundColor: Colors.white,
                                           elevation: 0,
                                           shape: RoundedRectangleBorder(
@@ -568,27 +572,32 @@ class CommentListState extends State<CommentList> {
                                           Navigator.pop(context);
                                         },
                                       ),
-                                      ElevatedButton(
-                                          child: const Center(
+                                      RaisedButton(
+                                          color: Theme.of(context).accentColor,
+                                          shape: RoundedRectangleBorder(
+                                            side: BorderSide(
+                                                color: Theme.of(context)
+                                                    .accentColor,
+                                                width: 2),
+                                            borderRadius:
+                                                BorderRadius.circular(20),
+                                          ),
+                                          child: Center(
                                             child: Padding(
-                                              padding:
-                                                  EdgeInsets.only(left: 30),
+                                              padding: EdgeInsets.only(left: 0),
                                               child: Padding(
                                                 padding: EdgeInsets.symmetric(
                                                     vertical: 12,
                                                     horizontal: 10),
                                                 child: Text(
-                                                  "cancel",
-                                                  style:
-                                                      TextStyle(fontSize: 16),
+                                                  "Cancel",
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 16,
+                                                  ),
                                                 ),
                                               ),
                                             ),
-                                          ),
-                                          style: ButtonStyle(
-                                            backgroundColor:
-                                                MaterialStateProperty.all(
-                                                    Color(0xFFeb6d44)),
                                           ),
                                           onPressed: () {
                                             Navigator.pop(context);
@@ -678,7 +687,10 @@ class CommentListState extends State<CommentList> {
                         children: [
                           Text(
                             'Why are you reporting this?',
-                            style: TextStyle(fontSize: 16),
+                            style: TextStyle(
+                                color: Theme.of(context).accentColor,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold),
                           ),
                         ],
                       ),
@@ -697,7 +709,8 @@ class CommentListState extends State<CommentList> {
                                         style: TextStyle(fontSize: 16),
                                       ),
                                       style: TextButton.styleFrom(
-                                        primary: Color(0xFFeb6d44),
+                                        primary:
+                                            Color.fromARGB(255, 82, 80, 80),
                                         backgroundColor: Colors.white,
                                         elevation: 0,
                                         shape: RoundedRectangleBorder(
@@ -738,7 +751,8 @@ class CommentListState extends State<CommentList> {
                                         style: TextStyle(fontSize: 16),
                                       ),
                                       style: TextButton.styleFrom(
-                                        primary: Color(0xFFeb6d44),
+                                        primary:
+                                            Color.fromARGB(255, 82, 80, 80),
                                         backgroundColor: Colors.white,
                                         //side: BorderSide(color: Colors.deepOrange, width: 1),
                                         elevation: 0,
@@ -782,7 +796,8 @@ class CommentListState extends State<CommentList> {
                                         style: TextStyle(fontSize: 16),
                                       ),
                                       style: TextButton.styleFrom(
-                                        primary: Color(0xFFeb6d44),
+                                        primary:
+                                            Color.fromARGB(255, 82, 80, 80),
                                         backgroundColor: Colors.white,
                                         elevation: 0,
                                         shape: RoundedRectangleBorder(
@@ -823,7 +838,8 @@ class CommentListState extends State<CommentList> {
                                         style: TextStyle(fontSize: 16),
                                       ),
                                       style: TextButton.styleFrom(
-                                        primary: Color(0xFFeb6d44),
+                                        primary:
+                                            Color.fromARGB(255, 82, 80, 80),
                                         backgroundColor: Colors.white,
                                         elevation: 0,
                                         shape: RoundedRectangleBorder(
@@ -860,24 +876,31 @@ class CommentListState extends State<CommentList> {
                                         Navigator.pop(context);
                                       },
                                     ),
-                                    ElevatedButton(
-                                        child: const Center(
+                                    RaisedButton(
+                                        color: Theme.of(context).accentColor,
+                                        shape: RoundedRectangleBorder(
+                                          side: BorderSide(
+                                              color:
+                                                  Theme.of(context).accentColor,
+                                              width: 2),
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                        ),
+                                        child: Center(
                                           child: Padding(
-                                            padding: EdgeInsets.only(left: 30),
+                                            padding: EdgeInsets.only(left: 0),
                                             child: Padding(
                                               padding: EdgeInsets.symmetric(
                                                   vertical: 12, horizontal: 10),
                                               child: Text(
-                                                "cancel    ",
-                                                style: TextStyle(fontSize: 16),
+                                                "Cancel",
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 16,
+                                                ),
                                               ),
                                             ),
                                           ),
-                                        ),
-                                        style: ButtonStyle(
-                                          backgroundColor:
-                                              MaterialStateProperty.all(
-                                                  Color(0xFFeb6d44)),
                                         ),
                                         onPressed: () {
                                           Navigator.pop(context);
