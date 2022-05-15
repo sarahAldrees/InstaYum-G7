@@ -63,12 +63,13 @@ class ShareRecipeService {
                 String? recipeId = queryParams[
                     'recipeId']; // take recipe Id from the intiated link
                 String? userId = queryParams['userId'];
-
-                _navigateToRecipe(
-                  context,
-                  recipeId,
-                  userId,
-                );
+                if (recipeId != null && userId != null) {
+                  _navigateToRecipe(
+                    context,
+                    recipeId,
+                    userId,
+                  );
+                }
               }
             }
           }
