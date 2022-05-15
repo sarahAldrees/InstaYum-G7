@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:81454507029:android:f50edf920a853b7d87da1c",
         "android_client_info": {
-          "package_name": "com.InstaYumGP.InstaYumApp"
+          "package_name": "com.example.instayum"
         }
       },
       "oauth_client": [
@@ -17,7 +17,7 @@
           "client_id": "81454507029-fnkha5dc0pmifisilha33405ge0q3krj.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.InstaYumGP.InstaYumApp",
+            "package_name": "com.example.instayum",
             "certificate_hash": "9f65a6d4eba4fc11c29d9fcc0fcb3bf1464b3227"
           }
         },

@@ -107,7 +107,7 @@ class ShareRecipeService {
 
   void _navigateToRecipe(
       BuildContext context, String? recipeId, String? userId) {
-    if (recipeId != null) {
+    if (recipeId != null && userId != null) {
       Navigator.push(
         context,
         MaterialPageRoute(

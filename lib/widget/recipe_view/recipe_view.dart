@@ -925,7 +925,7 @@ class _RecipeViewState extends State<RecipeView> {
                         children: [
                           getuserinfo(widget.autherId),
 //------------------------ Rating of recipe -------------------------------------
-                          GetRating(widget.recipeid!, widget.autherId!),
+                          GetRating(widget.recipeid!, widget.autherId),
                         ],
                       ),
                       //-------------------------ginral discription ------------------------------------
