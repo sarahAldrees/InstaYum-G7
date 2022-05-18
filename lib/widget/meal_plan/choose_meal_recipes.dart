@@ -40,10 +40,7 @@ class ChooseMealRecipesState extends State<ChooseMealRecipes> {
   }
 
 //----------------------------------------------------------
-// build a circular user image
 
-  // Children with random heights - You can build your widgets of unknown heights here
-  // I'm just passing the context in case if any widgets built here needs  access to context based data like Theme or MediaQuery
   @override
   Widget build(BuildContext context) {
     if (MealPlansService.hasMealPlanCollection) {
@@ -66,10 +63,6 @@ class ChooseMealRecipesState extends State<ChooseMealRecipes> {
           ? CustomCircularLoader()
           : DefaultTabController(
               length: 3,
-
-              // allows you to build a list of elements that would be scrolled away till the body reached the top
-
-              // You tab view goes here and its bar view
               child: Column(
                 children: <Widget>[
                   //------------------------------------------
@@ -90,7 +83,6 @@ class ChooseMealRecipesState extends State<ChooseMealRecipes> {
                     child: TabBarView(
                       children: [
                         //This list is the content of each tab.
-                        // ------------ list item 1 tab view bookmarks screen.
                         uId != null
                             ? MyRecipesScreen(
                                 userId: uId,
@@ -99,10 +91,6 @@ class ChooseMealRecipesState extends State<ChooseMealRecipes> {
                                 mealPlanTypeOfMeal: widget.mealPlanTypeOfMeal,
                               )
                             : CustomCircularLoader(),
-
-                        // ------------ list item 2 tab view bookmarks screen.
-
-                        // ------------ list item 3 tab view bookmarks screen.
 
                         BookmarkedRecipes(
                           isFromMealPlan: true,

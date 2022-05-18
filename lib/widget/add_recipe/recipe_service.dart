@@ -50,11 +50,7 @@ class RecipeService {
         weeklyBookmarkCount: 0);
 
     // create a new recipe inside collcetion of recipes
-    await recipesCollection
-        // .doc(recipe_id)
-        // .set(
-        .add(recipe.toJson())
-        .then((value) {
+    await recipesCollection.add(recipe.toJson()).then((value) {
       recipeId = value.id;
     });
     print('recipeid: $recipeId');
@@ -71,9 +67,6 @@ class RecipeService {
       cd++;
       await recipesCollection.doc(recipeId).update({'dir$cd': '$cd- ' + dir!});
     }
-    // to save the classification
-    // String recipe_image_url = RecipeImagePickerState.uploadedFileURL;
-    //if (recipe_image_url == null) recipe_image_url = 'noImageUrl';
 
     if (RecipeImagePickerState.imagesURLs.isEmpty) {
       await recipesCollection.doc(recipeId).update({
@@ -108,10 +101,6 @@ class RecipeService {
           .doc("recipeRating")
           .set(
             recipeRating.toJson(),
-            // { "sum_of_all_rating": 0,
-            // "num_of_reviews": 0,
-            // "average_rating": 0.0,
-            // "user_already_review": FieldValue.arrayUnion([]), }
           );
     }
     if (isPublic) {

@@ -193,9 +193,6 @@ class AddNewMealPlanState extends State<AddNewMealPlan> {
   ];
 
   static getRecipeIDAfterAddRecipe({String? day, String? typeOfMeal}) {
-    print("i am in getRecipeIDAfterAddRecipe");
-    print(day);
-    print(typeOfMeal);
     String recipeImage = "";
     String recipeTitle = "";
     List<String> oneDayMeals = [];
@@ -220,7 +217,6 @@ class AddNewMealPlanState extends State<AddNewMealPlan> {
         recipeTitle = recipeData.data()!["recipe_title"];
         recipeImage = recipeData.data()!["img1"];
         oneDayMeals = [
-          // dayAndTypeOfMeal,
           recipeData.data()!["recipe_title"],
           typeOfMeal!,
           recipeData.data()!["img1"]
@@ -412,7 +408,6 @@ class AddNewMealPlanState extends State<AddNewMealPlan> {
           break;
       }
     });
-    print("changed, $weekday");
   }
 
   static bool isAddMealplanNullFields() {
@@ -502,10 +497,6 @@ class AddNewMealPlanState extends State<AddNewMealPlan> {
                     child: ListView.builder(
                       itemCount: mealInformation.length,
                       itemBuilder: (BuildContext context, int index) {
-                        print('in add new plan _______________________');
-                        print(mealInformation[index][0]);
-                        print(mealInformation[index][1]);
-                        print(mealInformation[index][2]);
                         return MealTile(
                           title: mealInformation[index][0],
                           mealPlanTypeOfMeal: mealInformation[index][1],
@@ -547,7 +538,6 @@ class AddNewMealPlanState extends State<AddNewMealPlan> {
         ),
       ),
       onPressed: () {
-        // setState(() {
         Navigator.of(context).pop();
 
         appPages.showAlertDialogRcipeAdedSuccessfully(context, true);
@@ -579,8 +569,6 @@ class AddNewMealPlanState extends State<AddNewMealPlan> {
         friMealPlan.addAll(initiateMealInformation);
 
         satMealPlan.addAll(initiateMealInformation);
-
-        //});
       },
     );
     Widget noButton = RaisedButton(
@@ -633,26 +621,17 @@ class AddNewMealPlanState extends State<AddNewMealPlan> {
       body: Theme(
         data: ThemeData(
             accentColor: Color(0xFFeb6d44),
-            // primarySwatch: Color(0xFFeb6d44),
             colorScheme: ColorScheme.light(primary: Color(0xFFeb6d44))),
         child: Stepper(
           type: StepperType.horizontal,
           currentStep: activeStepIndex,
           steps: stepList(),
           onStepContinue: () {
-            print('-----------------***************-----------');
-            print(isBackAllowed);
-            print(activeStepIndex);
-            print('-----------------***************-----------');
             if (activeStepIndex < (stepList().length - 1)) {
               setState(() {
-                print('onStepContinue');
-                print(activeStepIndex);
                 activeStepIndex += 1;
               });
-            } else {
-              print('Submited');
-            }
+            } else {}
 
             setState(() {
               isBackAllowed = true;
@@ -662,9 +641,7 @@ class AddNewMealPlanState extends State<AddNewMealPlan> {
             if (activeStepIndex == 0) {
               return;
             }
-            print('^^^^^^^^^^^^^^');
-            print(activeStepIndex);
-            print('^^^^^^^^^^^^^^');
+
             setState(() {
               activeStepIndex -= 1;
             });
@@ -701,9 +678,7 @@ class AddNewMealPlanState extends State<AddNewMealPlan> {
                             setState(() {
                               activeStepIndex += 1;
                             });
-                          } else {
-                            print('Submited');
-                          }
+                          } else {}
 
                           controls.onStepContinue;
                           setState(() {
@@ -727,7 +702,6 @@ class AddNewMealPlanState extends State<AddNewMealPlan> {
                               MaterialStateProperty.all(Color(0xFFeb6d44)),
                         ),
                         onPressed: () async {
-// else {
                           if (mealplanTitleTextFieldController.text.isEmpty ||
                               mealplanTitleTextFieldController.text == "") {
                             setState(() {
@@ -737,10 +711,6 @@ class AddNewMealPlanState extends State<AddNewMealPlan> {
                             validTitleToSubmit = true;
                           }
                           if (MealPlansService.countNumOfRecipes == 0) {
-                            print("wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww");
-                            print("enter in == 0");
-                            print("wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww");
-
                             Flushbar(
                               backgroundColor: Theme.of(context).errorColor,
                               message:
@@ -749,8 +719,6 @@ class AddNewMealPlanState extends State<AddNewMealPlan> {
                             ).show(context);
                           } else {
                             if (validTitleToSubmit) {
-                              //    if (validMealPlanName) {
-
                               MealPlansService.addMealPlanTitleAndStatus(
                                   mealplanTitleTextFieldController.text,
                                   isPublicSwitchBtnAddNewMealplan);
@@ -758,13 +726,6 @@ class AddNewMealPlanState extends State<AddNewMealPlan> {
                                   isPublicSwitchBtnAddNewMealplan;
 
                               if (MealPlansService.countNumOfRecipes == 21) {
-                                print(
-                                    "nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn");
-                                print("enter == 21");
-                                print(
-                                    "nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn");
-
-                                //check it
                                 appPages.showAlertDialogRcipeAdedSuccessfully(
                                     context, true);
 
@@ -796,29 +757,12 @@ class AddNewMealPlanState extends State<AddNewMealPlan> {
 
                                 satMealPlan.addAll(initiateMealInformation);
                               } else {
-                                print(
-                                    "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
-                                print("else of 21 ");
-                                print(
-                                    "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
                                 showAlertDialogCheckNumOfRecipes(context);
                               }
 
                               MealPlansService.makePinnedMealplanAlwaysUp();
-                              // to open the public or private mealplan list in profile page.
 
                               print(MealPlansService.countNumOfRecipes);
-                              // appPages.showAlertDialogRcipeAdedSuccessfully(
-                              //     context, true);
-
-                              //     }
-                              // else {
-                              //   Flushbar(
-                              //     backgroundColor: Theme.of(context).errorColor,
-                              //     message: "The title is already exist",
-                              //     duration: Duration(seconds: 4),
-                              //   ).show(context);
-                              // }
                             } else {
                               Flushbar(
                                 backgroundColor: Theme.of(context).errorColor,

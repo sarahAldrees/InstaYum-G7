@@ -68,7 +68,6 @@ class CustomShimmerWidget extends StatelessWidget {
     return SizedBox(
       height: height,
       child: ListView.builder(
-        // reverse: true,
         shrinkWrap: true,
         scrollDirection: Axis.horizontal,
         physics: const BouncingScrollPhysics(),
@@ -100,7 +99,6 @@ class CustomShimmerWidget extends StatelessWidget {
     double cardWidth = AppGlobals.screenWidth * 0.3;
 
     return ListView.builder(
-      // reverse: true,
       shrinkWrap: true,
       physics: const BouncingScrollPhysics(),
       itemCount: 5,

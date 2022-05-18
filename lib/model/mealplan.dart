@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-// test
 class MealPlan {
   String? mealplanTitle;
   String? mealplanID;
@@ -26,18 +25,4 @@ class MealPlan {
       required this.thuMealPlan,
       required this.friMealPlan,
       required this.satMealPlan});
-
-  // MealPlan.fromJson(Map<String, dynamic> json) {
-  //   mealplanTitle = json["mealTitleAndId"];
-  //   mealplanID = json["mealDay"];
-
-  // }
-
-  // Map<String, dynamic> toJson() {
-  //   final Map<String, dynamic> data = new Map<String, dynamic>();
-  //   data["mealTitleAndId"] = this.mealplanTitle;
-  //   data["mealDay"] = this.mealplanID;
-
-  //   return data;
-  // }
 }

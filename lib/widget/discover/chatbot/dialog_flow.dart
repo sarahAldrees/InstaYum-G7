@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dialogflow_flutter/googleAuth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-// import 'package:flutter_dialogflow/dialogflow_v1.dart';
 import 'package:instayum/model/recipe.dart';
 import 'package:instayum/model/bot_suggestion.dart';
 import 'package:instayum/widget/discover/chatbot/message.dart';
@@ -85,8 +84,7 @@ class ChatBotState extends State<ChatBot> {
     var botSuggestions = BotSuggestions(response.getListMessage()!);
     setState(() {
       print(botSuggestions.suggestions);
-      // if (botSuggestions.suggestions[3] !=
-      //     null)
+
       if (botSuggestions.suggestions.length > 3) {
         if (botSuggestions.suggestions[3] != 'Breakfast') {
           suggestListAgent = botSuggestions.suggestions;
@@ -108,10 +106,6 @@ class ChatBotState extends State<ChatBot> {
   }
 
   void _submitQuery(String text) {
-    //user text
-    print('user response in the chatbot***********');
-    print(text);
-
     _textController.clear();
 
     Messages message = new Messages(
@@ -206,8 +200,7 @@ class ChatBotState extends State<ChatBot> {
     } else if (text.toLowerCase().contains('turkey')) {
       userPreferredCuisine = 'Turkish';
     }
-    //  getData();
-  } //method
+  }
 
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
@@ -229,7 +222,6 @@ class ChatBotState extends State<ChatBot> {
     return ActionChip(
       avatar: CircleAvatar(
         backgroundColor: Colors.white,
-        //grey.shade600,
         child: Text(str[0].toUpperCase(),
             style: TextStyle(color: Color(0xFFeb6d44))),
       ),
@@ -261,20 +253,18 @@ class ChatBotState extends State<ChatBot> {
         backgroundColor: Color(0xFFeb6d44),
         elevation: 0,
       ),
-      body: Column(
-          // crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Flexible(
-              child: ListView.builder(
-                padding: EdgeInsets.all(8.0),
-                reverse: true, //To keep the latest messages at the bottom
-                itemBuilder: (_, int index) => messageList[index],
-                itemCount: messageList.length,
-              ),
-            ),
-            dynamicWrapChips(suggestListAgent),
-            _queryInputWidget(context),
-          ]),
+      body: Column(children: <Widget>[
+        Flexible(
+          child: ListView.builder(
+            padding: EdgeInsets.all(8.0),
+            reverse: true, //To keep the latest messages at the bottom
+            itemBuilder: (_, int index) => messageList[index],
+            itemCount: messageList.length,
+          ),
+        ),
+        dynamicWrapChips(suggestListAgent),
+        _queryInputWidget(context),
+      ]),
     );
   }
 }

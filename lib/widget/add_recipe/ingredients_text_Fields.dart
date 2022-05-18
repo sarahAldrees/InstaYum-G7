@@ -47,7 +47,7 @@ class IngredientsTextFieldsState extends State<IngredientsTextFields> {
             ),
           ),
           //---------------------
-          hintText: 'Enter an ingredient'), //errorText: _errorText
+          hintText: 'Enter an ingredient'),
       onChanged: (value) {
         addRecipe.userIngredients[widget.index] = _ingredientController!.text;
       },
@@ -77,7 +77,6 @@ class IngredientsTextFieldsState extends State<IngredientsTextFields> {
                   _ingredientController!.text = value.recognizedWords;
                   addRecipe.userIngredients[widget.index] =
                       value.recognizedWords;
-                  // onResult!(value.recognizedWords);
                 }));
       }
     } else {

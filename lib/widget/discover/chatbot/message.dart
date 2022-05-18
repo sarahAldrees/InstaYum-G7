@@ -27,7 +27,6 @@ class _MessagesState extends State<Messages> {
         ])
       ];
     } else if (widget.text == "Can i have more recipes") {
-      print("ddddddddddddddddddddddddddddddd");
       return <Widget>[
         Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           RecipeCardScreen(),
@@ -38,12 +37,7 @@ class _MessagesState extends State<Messages> {
         Container(
           margin: const EdgeInsets.only(right: 10.0),
           child: CircleAvatar(
-            child:
-                // Padding(
-                //   padding: const EdgeInsets.all(5),
-                //child:
-                Image.asset('assets/images/InstaYum_chatbot.png'),
-            // ),
+            child: Image.asset('assets/images/InstaYum_chatbot.png'),
             backgroundColor: Colors.white,
             radius: 30,
           ),
@@ -52,8 +46,6 @@ class _MessagesState extends State<Messages> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-//            Text(this.name,
-//                style: TextStyle(fontWeight: FontWeight.bold)),
               Card(
                   elevation: 3,
                   shape: RoundedRectangleBorder(
@@ -74,7 +66,7 @@ class _MessagesState extends State<Messages> {
   final userImage = AppGlobals.userImage == "noImage" ||
           AppGlobals.userImage!.isEmpty ||
           AppGlobals.userImage == null
-      ? AssetImage("assets/images/defaultUser.png") // NEW
+      ? AssetImage("assets/images/defaultUser.png")
       : NetworkImage(AppGlobals.userImage!);
 
   List<Widget> userMessage(context) {
@@ -83,7 +75,6 @@ class _MessagesState extends State<Messages> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: <Widget>[
-//            Text(this.name, style: Theme.of(context).textTheme.subhead),
             Card(
                 color: Colors.white,
                 shape: RoundedRectangleBorder(
@@ -112,10 +103,6 @@ class _MessagesState extends State<Messages> {
               ),
             ),
           ),
-
-          // Image.asset(ProfileState.imageURL
-          //     //   'assets/images/defalut_image_chatbot.jpg', // change the image to be the same as the user image (IMPORTANT)
-          //     ),
           backgroundColor: Colors.grey[200],
           radius: 25,
         ),

@@ -19,13 +19,8 @@ class SearchRecipe extends StatelessWidget {
       : super(key: key);
   final List<DocumentSnapshot> recipes;
 
-  // final FollowUserService followUserService = FollowUserService();
-
   @override
   Widget build(BuildContext context) {
-    // List<DocumentSnapshot> list = users;
-    // print('users list: $list');
-
     if (recipes.length == 0)
       return Center(child: Text('No Recipes Found!'));
     else {
@@ -47,8 +42,6 @@ class SearchRecipe extends StatelessWidget {
             image: recipe.img1,
             count: recipe.lengthOfIngredients,
             onTap: () {
-              print('recipeId: $rid recipe: ${recipe.recipeTitle}');
-
               Navigator.push(
                 context,
                 MaterialPageRoute(

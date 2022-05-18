@@ -66,7 +66,6 @@ class AuthScreenState extends State<AuthScreen> {
             // to put the url part in the database with "noImage" if user does not choose an image
           } else {
             // to put the url part in database with user's image url
-            // NEW
             final ref = FirebaseStorage.instance
                 .ref()
                 .child("user_image")
@@ -139,8 +138,7 @@ class AuthScreenState extends State<AuthScreen> {
         _isLoading = false;
       });
       print('catch #1');
-      // print(err);
-      //to handel the error of firebase in case of entring non-valid email or password
+
       var message = "There is an error, please check your credentials!";
 
       if (err.message != null) {
@@ -181,7 +179,6 @@ class AuthScreenState extends State<AuthScreen> {
           );
           break;
         default:
-          // print(err.code);
           ScaffoldMessenger.of(ctx).showSnackBar(
             SnackBar(
                 content: Text("The email or password is invalid try again!"),

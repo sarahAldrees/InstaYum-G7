@@ -19,16 +19,8 @@ class CookbookItem extends StatefulWidget {
   bool isSelected = false;
   static List<String> selectedCookbooks = [];
 
-  // final VoidCallback onClicked;
-
-  CookbookItem(
-      // Key key,
-      this.cookbookID,
-      // this.cookbookName,
-      this.imageURLCookbook,
-      this.isFromMealPlan,
-      this.mealDay,
-      this.mealPlanTypeOfMeal);
+  CookbookItem(this.cookbookID, this.imageURLCookbook, this.isFromMealPlan,
+      this.mealDay, this.mealPlanTypeOfMeal);
 }
 
 class CookbookItemState extends State<CookbookItem> {
@@ -36,9 +28,6 @@ class CookbookItemState extends State<CookbookItem> {
 
   @override
   Widget build(BuildContext context) {
-    // if (!cookbook_item.slectedCookbooks.isEmpty) {
-    //   cookbook_item.slectedCookbooks.clear();
-    // }
     final image = widget.imageURLCookbook == "noImage"
         ? AssetImage("assets/images/defaultCookbookImage.png")
         : NetworkImage(widget.imageURLCookbook!);
@@ -51,12 +40,10 @@ class CookbookItemState extends State<CookbookItem> {
           decoration: BoxDecoration(
             color: widget.colorOfCircule,
           ),
-          // ignore: deprecated_member_use
           child: FlatButton(
             padding: EdgeInsets.all(10),
             onPressed: () {
               if (!CookbookItem.isBrowse) {
-                // debugPrint('add to cookbook');
                 setState(() {
                   widget.isSelected = !widget.isSelected;
                   if (widget.isSelected)
@@ -74,13 +61,9 @@ class CookbookItemState extends State<CookbookItem> {
                       CookbookItem.selectedCookbooks.removeAt(i);
                   }
                 }
-                print("/////////------------");
                 for (int i = 0;
                     i < CookbookItem.selectedCookbooks.length;
-                    i++) {
-                  print(CookbookItem.selectedCookbooks[i]);
-                }
-                //print(widget.cookbookID);
+                    i++) {}
               } else {
                 Navigator.push(
                   context,
@@ -117,7 +100,6 @@ class CookbookItemState extends State<CookbookItem> {
           scrollDirection: Axis.horizontal,
           child: Center(
             child: Text(
-              // cookbookName,
               widget.cookbookID!,
               overflow: TextOverflow.ellipsis,
               maxLines: 1,

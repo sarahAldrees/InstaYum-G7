@@ -32,15 +32,6 @@ class RecipeView extends StatefulWidget {
   String? mealDay;
   String? mealPlanTypeOfMeal;
 
-  // String _recipeName;
-  // String _mainImageUrl;
-  // String _typeOfMeal;
-  // String _category;
-  // String _cuisine;
-  // List<String> _ingredients;
-  // List<String> _dirctions;
-  // List<String> _imageUrls;
-
   RecipeView({
     Key? key,
     this.cookbook,
@@ -49,14 +40,6 @@ class RecipeView extends StatefulWidget {
     required this.isFromMealPlan,
     this.mealDay,
     this.mealPlanTypeOfMeal,
-    // this._recipeName,
-    // this._mainImageUrl,
-    // this._typeOfMeal,
-    // this._category,
-    // this._cuisine,
-    // this._ingredients,
-    // this._dirctions,
-    // this._imageUrls,
   }) : super(key: key);
 
   @override
@@ -77,7 +60,6 @@ class _RecipeViewState extends State<RecipeView> {
   List<String?> dirctions = [];
   List<String?> imageUrls = [];
   //------------text for sharing--------
-  // String RTitle == recipe name
   String sharedIngredients = "";
   String sharedDirctions = "";
   //-------------------------------------------------
@@ -99,22 +81,17 @@ class _RecipeViewState extends State<RecipeView> {
           .get()
           .then((document) {
         if (document != null) {
-          // print('rating data: ${document.data()}');
-          //usersAlredyRate.clear();
           Map<String, dynamic>? data = document.data();
 
           if (data != null) {
-            print("--------------------------------------4444---------");
-
             Cookbook bookmarkedRecipe = Cookbook.fromJson(data);
-            print(bookmarkedRecipe.id);
 
             _bookmarkedList = List.from(bookmarkedRecipe.bookmarkedList!);
-            if (!_bookmarkedList.isEmpty) print(_bookmarkedList[0]);
-            setState(() {
-              _bookmarkedList;
-              ishappend = true;
-            });
+            if (!_bookmarkedList.isEmpty)
+              setState(() {
+                _bookmarkedList;
+                ishappend = true;
+              });
           }
         }
       });
@@ -125,7 +102,6 @@ class _RecipeViewState extends State<RecipeView> {
       });
     }
     print("--------------------ghada------------------------------------");
-    print(recipeExist);
     if (recipeExist) {
       return IconButton(
           icon: Icon(
@@ -148,10 +124,8 @@ class _RecipeViewState extends State<RecipeView> {
             size: 26,
           ),
           onPressed: () {
-            // setState(() {
             CookbookItem.isBrowse = false;
             BookmarkedRecipes.Saved = true;
-            //});
 
             ///------------------bookmark --------
             showModalBottomSheet(
@@ -170,7 +144,6 @@ class _RecipeViewState extends State<RecipeView> {
                     mealDay: "",
                     mealPlanTypeOfMeal: "",
                   );
-                  // return bookmarked_recipes();
                 });
 
             FirebaseFirestore.instance
@@ -187,8 +160,6 @@ class _RecipeViewState extends State<RecipeView> {
               ++bookmarkCounter;
               recipeExist = true;
             });
-
-            //setstat :change the kind of ici=on and add it to bookmark list
           });
     }
   }
@@ -199,7 +170,6 @@ class _RecipeViewState extends State<RecipeView> {
     if (widget.cookbook == "All bookmarked recipes" ||
         widget.cookbook == "" ||
         widget.cookbook == null) {
-      //delet from all(okay ,cancel)
       showDialog<void>(
         context: context,
         barrierDismissible: false,
@@ -222,7 +192,6 @@ class _RecipeViewState extends State<RecipeView> {
             actions: [
               Center(
                 child: Row(
-                  // crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     RaisedButton(
@@ -265,18 +234,7 @@ class _RecipeViewState extends State<RecipeView> {
           );
         },
       );
-      // final messages = await FirebaseFirestore.instance
-      //     .collection("users")
-      //     .doc(FirebaseAuth.instance.currentUser.uid)
-      //     .collection("cookbooks")
-      //     .get();
-
-      // for (var message in messages.docs) {
-      //   print("-------------------------------- L -------------");
-      //   print(message.data());
-      // }
     } else {
-      ////delet from specifec or all( ,cancel)
       showDialog<void>(
         context: context,
         barrierDismissible: false,
@@ -355,8 +313,6 @@ class _RecipeViewState extends State<RecipeView> {
           );
         },
       );
-
-      print(widget.cookbook);
     }
   }
 //---------------deletFromThisCookbook---------
@@ -383,13 +339,10 @@ class _RecipeViewState extends State<RecipeView> {
               if (data != null) {
                 Cookbook bookmarkedRecipe = Cookbook.fromJson(data);
                 if (document.data() != null) {
-                  //b2 = document.data()!["bookmarkedList"];
                   b2 = List.from(bookmarkedRecipe.bookmarkedList!);
                 }
               }
               if (b2.contains(widget.recipeid)) {
-                print("-----------------------------ghada2");
-                print(widget.recipeid);
                 FirebaseFirestore.instance
                     .collection("users")
                     .doc(FirebaseAuth.instance.currentUser!.uid)
@@ -471,13 +424,10 @@ class _RecipeViewState extends State<RecipeView> {
         if (data != null) {
           Cookbook bookmarkedRecipe = Cookbook.fromJson(data);
           if (document.data() != null) {
-            //b2 = document.data()!["bookmarkedList"];
             b2 = List.from(bookmarkedRecipe.bookmarkedList!);
           }
         }
         if (b2.contains(widget.recipeid)) {
-          print("-----------------------------ghada2");
-          print(widget.recipeid);
           FirebaseFirestore.instance
               .collection("users")
               .doc(FirebaseAuth.instance.currentUser!.uid)
@@ -498,16 +448,12 @@ class _RecipeViewState extends State<RecipeView> {
 
 //---------------------------------
 
-  //setState(() {});
-
   //---------------------------------- t1 --------------------------------------------------------------
 
   void initState() {
     super.initState();
     getData();
-    print('================================');
-    print(recipeName);
-    print('================================');
+
     //we call the method here to get the data immediately when init the page.
     if (widget.isFromMealPlan) {
       setState(() {
@@ -541,8 +487,6 @@ class _RecipeViewState extends State<RecipeView> {
     await FirebaseFirestore.instance
         .collection("recipes")
         .doc(widget.recipeid)
-        // .snapshots()
-        // .listen((userData) {
         .get()
         .then((document) {
       if (document != null) {
@@ -556,7 +500,6 @@ class _RecipeViewState extends State<RecipeView> {
           bookmarkCounter = recipe.bookmarkCounter ?? 0;
           mealPlanCounter = recipe.mealPlanCounter ?? 0;
           widget.autherId = recipe.userId;
-          // recipe_image_url = recipe['recipe_image_url'],
 
           lengthOfIngredients = recipe.lengthOfIngredients;
           lengthOfDirections = recipe.lengthOfDirections;
@@ -588,98 +531,85 @@ class _RecipeViewState extends State<RecipeView> {
   Color addRecipeToMealPlanButtonColor = Colors.grey[350]!;
   Color textColor = Color(0xFFeb6d44);
   Widget buttonAddRecipeToMealPlan() {
-    return
-//  FloatingActionButtonLocation.centerFloat,
+    return isAddRecipeToMealPlanLoading
+        ? Padding(
+            padding: const EdgeInsets.only(top: 10),
+            child: CircularProgressIndicator(
+              backgroundColor: Color(0xFFeb6d44),
+              color: Colors.white,
+            ),
+          )
+        : FloatingActionButton.extended(
+            onPressed: () {
+              setState(() {
+                isAddRecipeToMealPlanLoading = true;
+                setState(() {
+                  MealPlansService.checkRecipeIsAdded(
+                          mealDay: widget.mealDay,
+                          mealPlanTypeOfMeal: widget.mealPlanTypeOfMeal,
+                          recipeID: widget.recipeid)
+                      .then((value) {
+                    if (!value) {
+                      setState(() {
+                        mealPlanCounter++;
+                      });
 
-        isAddRecipeToMealPlanLoading
-            ? Padding(
-                padding: const EdgeInsets.only(top: 10),
-                child: CircularProgressIndicator(
-                  backgroundColor: Color(0xFFeb6d44),
-                  color: Colors.white,
-                ),
-              )
-            : FloatingActionButton.extended(
-                onPressed: () {
-                  //_________________________________________________________________
-//Add implementation
-                  //_________________________________________________________________
-                  setState(() {
-                    isAddRecipeToMealPlanLoading = true;
-                    setState(() {
-                      MealPlansService.checkRecipeIsAdded(
+                      MealPlansService.addRecipeToMealPlanDatabase(
                               mealDay: widget.mealDay,
                               mealPlanTypeOfMeal: widget.mealPlanTypeOfMeal,
                               recipeID: widget.recipeid)
-                          .then((value) {
-                        if (!value) {
-                          setState(() {
-                            mealPlanCounter++;
-                          });
+                          .then((value) => {
+                                isAddRecipeToMealPlanLoading = false,
+                                AddNewMealPlanState.activeStepIndex = 1,
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => MainPages())),
+                              });
 
-//MealPlansService.addRecipeToMealPlanDatabase()
-                          MealPlansService.addRecipeToMealPlanDatabase(
-                                  mealDay: widget.mealDay,
-                                  mealPlanTypeOfMeal: widget.mealPlanTypeOfMeal,
-                                  recipeID: widget.recipeid)
-                              .then((value) => {
-                                    isAddRecipeToMealPlanLoading = false,
-                                    AddNewMealPlanState.activeStepIndex = 1,
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => MainPages())),
-                                  });
+                      AddNewMealPlanState.getRecipeIDAfterAddRecipe(
+                        day: widget.mealDay!,
+                        typeOfMeal: widget.mealPlanTypeOfMeal!,
+                      );
 
-                          AddNewMealPlanState.getRecipeIDAfterAddRecipe(
-                            day: widget.mealDay!,
-                            typeOfMeal: widget.mealPlanTypeOfMeal!,
-                          );
-
-                          setState(() {
-                            addRecipeToMealPlanButtonStatus =
-                                "Remove the recipe from meal plan";
-                            addRecipeToMealPlanButtonColor =
-                                AppColors.lightGrey;
-                            textColor = Colors.white;
-                            appPages.isMealPlanClicked = true;
-                          });
-                        } else {
-                          setState(() {
-                            mealPlanCounter--;
-                          });
-
-                          MealPlansService.deleteRecipeFromMealPlanDatabase(
-                              widget.mealDay,
-                              widget.mealPlanTypeOfMeal,
-                              widget.recipeid);
-                          // delete
-                          setState(() {
-                            isAddRecipeToMealPlanLoading = false;
-                            addRecipeToMealPlanButtonStatus =
-                                "Add the recipe to my meal plan";
-                            appPages.isMealPlanClicked = true;
-                            addRecipeToMealPlanButtonColor = Colors.grey[350]!;
-                            textColor = Color(0xFFeb6d44);
-                          });
-                        }
+                      setState(() {
+                        addRecipeToMealPlanButtonStatus =
+                            "Remove the recipe from meal plan";
+                        addRecipeToMealPlanButtonColor = AppColors.lightGrey;
+                        textColor = Colors.white;
+                        appPages.isMealPlanClicked = true;
                       });
-                    });
-                    // if (addRecipeToMealPlanButtonStatus ==
-                    //     "Add the recipe to my mealplans")
+                    } else {
+                      setState(() {
+                        mealPlanCounter--;
+                      });
+
+                      MealPlansService.deleteRecipeFromMealPlanDatabase(
+                          widget.mealDay,
+                          widget.mealPlanTypeOfMeal,
+                          widget.recipeid);
+                      // delete
+                      setState(() {
+                        isAddRecipeToMealPlanLoading = false;
+                        addRecipeToMealPlanButtonStatus =
+                            "Add the recipe to my meal plan";
+                        appPages.isMealPlanClicked = true;
+                        addRecipeToMealPlanButtonColor = Colors.grey[350]!;
+                        textColor = Color(0xFFeb6d44);
+                      });
+                    }
                   });
-                },
-                label: Text(
-                  addRecipeToMealPlanButtonStatus,
-                  style: TextStyle(
-                      color: textColor,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 15),
-                ),
-                backgroundColor: addRecipeToMealPlanButtonColor,
-                elevation: 10,
-                //Color(0xFFeb6d44),
-              );
+                });
+              });
+            },
+            label: Text(
+              addRecipeToMealPlanButtonStatus,
+              style: TextStyle(
+                  color: textColor, fontWeight: FontWeight.bold, fontSize: 15),
+            ),
+            backgroundColor: addRecipeToMealPlanButtonColor,
+            elevation: 10,
+          );
   }
 
   bool isAddRecipeToMealPlanLoading = false;
@@ -688,14 +618,12 @@ class _RecipeViewState extends State<RecipeView> {
     return widget.autherId != "user delete this recipe"
         ? ExpandableFab(
             initialOpen: true,
-            //distance: 120,
             children: [
               //---------------to view action button rating and open smale windo to get the rate ---------------------
               RatingRecipe(
                 recipeId: widget.recipeid,
                 autherId: widget.autherId,
                 onRating: (status) {
-                  print('status is $status');
                   if (status == true) {
                     // referesh the page after rating
                     setState(() {});
@@ -732,15 +660,6 @@ class _RecipeViewState extends State<RecipeView> {
 //------------
   @override
   Widget build(BuildContext context) {
-    // to return the default image if user does not enter an image by puting "noImageUrl" in the database and converting here to an image
-    // final image = widget._mainImageUrl == "noImageUrl" ||
-    //         widget._mainImageUrl.isEmpty ||
-    //         widget._mainImageUrl == null
-    //     ? AssetImage("assets/images/defaultRecipeImage.png")
-    //     : NetworkImage(widget._mainImageUrl);
-
-    //----titles of buttons that inside floting button-----
-
     return Scaffold(
       appBar: new AppBar(
         title: Text(recipeName ?? ''),
@@ -769,7 +688,6 @@ class _RecipeViewState extends State<RecipeView> {
                     ? IconButton(
                         icon: Icon(
                           Icons.delete,
-                          //  Icons.ios_share,
                           size: 26,
                         ),
                         onPressed: () {
@@ -832,9 +750,7 @@ class _RecipeViewState extends State<RecipeView> {
                               );
                             },
                           );
-                        }
-                        //setstat :change the kind of ici=on and add it to bookmark list
-                        )
+                        })
                     : SizedBox(),
             ],
           ),
@@ -872,8 +788,6 @@ class _RecipeViewState extends State<RecipeView> {
                               aspectRatio: 5.0,
                             ),
                             itemBuilder: (context, i, id) {
-                              // print('******************** exception******************');
-                              // print(widget._imageUrls[i]);
                               //for onTap to redirect to another screen
                               return GestureDetector(
                                 child: Container(
@@ -894,7 +808,6 @@ class _RecipeViewState extends State<RecipeView> {
                                 ),
                                 onTap: () {
                                   var url = imageUrls[i]!;
-                                  print(url.toString());
                                 },
                               );
                             },
@@ -975,7 +888,7 @@ class _RecipeViewState extends State<RecipeView> {
   }
 }
 
-//-------this clas to get rating from data base and display it ------------
+//-------this class to get rating from data base and display it ------------
 
 class GetRating extends StatefulWidget {
   String? _recipeId;
@@ -1002,10 +915,6 @@ class GetRatingState extends State<GetRating> {
       Map data = document.data()!;
       numOfRevewis = data["num_of_reviews"];
       avg = data["average_rating"];
-      // print("00000---------------------------------------");
-      print(avg);
-      // print("00000---------------------------------------");
-      print(numOfRevewis);
       if (mounted) setState(() {});
     });
   }
@@ -1101,8 +1010,6 @@ class getuserinfoState extends State<getuserinfo> {
 
   @override
   Widget build(BuildContext context) {
-    print("------------------------------");
-    print(_autherName);
     return UserInformationDesign(widget._autherId, _autherName,
         _autherimage!); // calling this class to design image and user name after get them from database
   }

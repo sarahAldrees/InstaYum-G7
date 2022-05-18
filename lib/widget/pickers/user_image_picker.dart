@@ -17,7 +17,7 @@ class _UserImagePickerState extends State<UserImagePicker> {
     final pickedImageFile = await ImagePicker().pickImage(
       source: ImageSource.gallery,
       maxWidth: 150,
-    ); //we can add imageQuality: 50 to reduce the qulaity if image to half so the size if it will reduce
+    );
 
     if (pickedImageFile != null) {
       File file = File(pickedImageFile.path);

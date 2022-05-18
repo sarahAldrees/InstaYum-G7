@@ -121,8 +121,6 @@ class _RecipeTileState extends State<RecipeTile> {
   getData() async {
     //to get previous rating info from firestor
     await FirebaseFirestore.instance
-        //.collection("users")
-        // .doc(widget.autherId)
         .collection("recipes")
         .doc(widget.recipeID)
         .collection("rating")

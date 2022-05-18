@@ -38,7 +38,6 @@ class BookmarkedRecipesState extends State<BookmarkedRecipes> {
   String? imagePath;
   File? image;
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-  //bool _isEmptyCookbookTitle = false;
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   String cookbookTitle = "";
   bool validCookbookName = true;
@@ -51,7 +50,6 @@ class BookmarkedRecipesState extends State<BookmarkedRecipes> {
   static var Cookbooks_List = [
     Cookbook(
       id: 'All bookmarked recipes',
-      // cookbookName: 'All bookmarked recipes',
       imageURLCookbook:
           'https://lacuisinedegeraldine.fr/wp-content/uploads/2021/06/Pancakes-04483-2-scaled.jpg',
     ),
@@ -125,7 +123,6 @@ class BookmarkedRecipesState extends State<BookmarkedRecipes> {
         });
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
-      //backgroundColor: Theme.of(context).backgroundColor,
       title: Center(
         child: Text(
           "Add cookbook",
@@ -144,17 +141,13 @@ class BookmarkedRecipesState extends State<BookmarkedRecipes> {
               height: 180,
               alignment: Alignment.center,
               child: CookbookImagePicker(),
-              // recipe_id # delete
             ),
             Form(
               key: formKey,
               child: TextFormField(
                 key: ValueKey("cookbook_title"),
                 controller: _CookbookTitleTextFieldController,
-                decoration: InputDecoration(
-                    // errorText:
-                    //     _isEmptyCookbookTitle ? 'title can not be empty' : null,
-                    hintText: "Cookbook title"),
+                decoration: InputDecoration(hintText: "Cookbook title"),
                 validator: (value) {
                   if (value == null || value == '' || value.isEmpty)
                     return 'title can not be empty ';
@@ -203,8 +196,6 @@ class BookmarkedRecipesState extends State<BookmarkedRecipes> {
   }
 
   void getCookbookObjects() {
-    // final FirebaseAuth _auth = FirebaseAuth.instance;
-    // final currentUser = await _auth.currentUser;
     final timestamp =
         DateTime.now(); // to update the time and make the default upper
     FirebaseFirestore.instance
@@ -226,11 +217,6 @@ class BookmarkedRecipesState extends State<BookmarkedRecipes> {
         Cookbooks_List = [];
         querySnapshot.docs.forEach(
           (doc) => {
-            // will delete the arraw
-            // Map data = doc.data(),
-            // Cookbook cookbook = Cookbook.formJson(data  as Map<String, dynamic>),
-            // Cookbooks_List.add(cookbook),
-
             Cookbooks_List.add(
               Cookbook(
                 id: doc.data()['cookbook_id'],
@@ -354,7 +340,7 @@ class BookmarkedRecipesState extends State<BookmarkedRecipes> {
 
                     if (data != null) {
                       Cookbook bookmarkedRecipe = Cookbook.fromJson(data);
-                      print(bookmarkedRecipe.id);
+
                       b2 = List.from(bookmarkedRecipe.bookmarkedList!);
                     }
                   }
@@ -423,6 +409,5 @@ class BookmarkedRecipesState extends State<BookmarkedRecipes> {
 
       body: checking(),
     );
-    // ]);
   }
 }

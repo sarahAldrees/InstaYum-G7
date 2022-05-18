@@ -104,7 +104,6 @@ class FollowTile extends StatelessWidget {
               fontSize: 13,
               fontWeight: FontWeight.bold,
               color: Colors.white,
-              // color: isActive ? Colors.white : Colors.black87,
             ),
           ),
         ),

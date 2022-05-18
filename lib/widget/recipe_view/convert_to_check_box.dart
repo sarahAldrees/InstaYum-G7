@@ -49,7 +49,6 @@ class convert extends State<ConvertTocheckBox> {
                 child: Text(
                   widget.title,
                   style: TextStyle(
-                    //backgroundColor: Colors.grey[50],
                     fontSize: 17,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
@@ -138,7 +137,6 @@ class convert extends State<ConvertTocheckBox> {
                         //-------------------------------------------
 
 //-------------- to remove ingrediant from shoping list-----------------------------
-                        //print(AppGlobals.shoppingList[0]);
                       },
                       child: Text(
                         "Clear the Shopping List ",
@@ -188,8 +186,6 @@ class convert extends State<ConvertTocheckBox> {
                         padding: EdgeInsets.only(right: 20),
                         icon: Icon(Icons.add_shopping_cart_outlined),
                         onPressed: () {
-                          //checkbox.title
-
                           showDialog(
                               barrierDismissible: false,
                               context: context,
@@ -297,8 +293,6 @@ class convert extends State<ConvertTocheckBox> {
                               );
                             },
                           );
-
-                          ///-------ssskkss---------
                         }),
                   ],
                 ),
@@ -369,7 +363,6 @@ class convert extends State<ConvertTocheckBox> {
                               "The field is empty or ingredient is already exist"),
                           backgroundColor: Theme.of(context).errorColor),
                     );
-                    print(ingredant);
                   } else {
                     // -------- Add the ingredant to the shoping list------------
                     ShoppingListState.ShoppingList.add(
@@ -391,7 +384,6 @@ class convert extends State<ConvertTocheckBox> {
                     );
                   }
                 }),
-            // ]);
           ],
         )
       ],

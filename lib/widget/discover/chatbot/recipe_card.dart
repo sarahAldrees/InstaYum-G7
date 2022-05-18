@@ -15,10 +15,6 @@ class RecipeCard extends StatefulWidget {
   final List<String?>? dirctions;
   final List<String?>? imageUrls;
 
-  //final String title;
-  //final String rating; ///LAAAAATTTTTTTTTTTTTTEEEEEEEEEEEEEEEEERRR
-  //final String cookTime;
-  //final String thumbnailUrl;
   RecipeCard(
     this.autherId,
     this.RecipeId,
@@ -30,10 +26,6 @@ class RecipeCard extends StatefulWidget {
     this.ingredients,
     this.dirctions,
     this.imageUrls,
-    // @required this.title,
-    // // @required this.cookTime,
-    // @required this.rating,
-    // @required this.thumbnailUrl,
   );
 
   @override
@@ -48,8 +40,6 @@ class _RecipeCardState extends State<RecipeCard> {
   getData() async {
     //to get previous rating info from firestor
     await FirebaseFirestore.instance
-        //.collection("users")
-        // .doc(widget.autherId)
         .collection("recipes")
         .doc(widget.RecipeId)
         .collection("rating")
@@ -73,10 +63,6 @@ class _RecipeCardState extends State<RecipeCard> {
 
   @override
   Widget build(BuildContext context) {
-    // final List<String> ingredients = ["milk"];
-
-    // final List<String> dirctions = ["1"];
-
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 22, vertical: 10),
       width: AppGlobals.screenWidth / 1.2,
@@ -113,9 +99,6 @@ class _RecipeCardState extends State<RecipeCard> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => new RecipeView(
-                            //key,
-                            // autherName,
-                            // autherImage,
                             cookbook: "",
                             recipeid: widget.RecipeId,
                             autherId: widget.autherId,
@@ -158,9 +141,7 @@ class _RecipeCardState extends State<RecipeCard> {
                       SizedBox(width: 7),
                       Text(
                         rating,
-                        style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.white), // text size ----------
+                        style: TextStyle(fontSize: 14, color: Colors.white),
                       ),
                     ],
                   ),

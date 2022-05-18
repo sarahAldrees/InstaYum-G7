@@ -30,7 +30,6 @@ class NotificationApi {
       userId: userId,
       userName: name,
       userImage: imageUrl,
-      // date: timestamp,
     );
 
     // Replace with server token from firebase console settings.
@@ -58,9 +57,8 @@ class NotificationApi {
                 "data": notification.toJson(),
               },
             ))
-        .then((value) {
-      // print('notification sent');
-    }).catchError(
+        .then((value) {})
+        .catchError(
       (onError) {
         print("sendNotification Err:  $onError");
         print(onError.message);

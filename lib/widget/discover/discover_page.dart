@@ -11,8 +11,6 @@ import 'top_recipes/new_recipes_list.dart';
 import 'top_recipes/top_recipe_service.dart';
 import 'top_recipes/top_recipes_list.dart';
 
-//import 'package:flutter/material.dart';
-
 class DiscoverPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => Discover();
@@ -32,7 +30,6 @@ class Discover extends State<DiscoverPage> {
     _getAllRecipes();
   }
 
-  //final cookingEnthusist = UserPreferences.myCooking_Enthusiast;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,7 +42,6 @@ class Discover extends State<DiscoverPage> {
           'assets/images/InstaYum_chatbot.png',
           height: 300,
         ),
-        //Icon(Icons.support_agent_rounded),
       ),
       body: Container(
         child: ListView(
@@ -54,7 +50,6 @@ class Discover extends State<DiscoverPage> {
             Padding(
               padding: const EdgeInsets.all(20.0),
               child: Row(
-                // mainAxisAlignment: MainAxisAlignment.,
                 children: [
                   Text(
                     'Search',
@@ -78,11 +73,10 @@ class Discover extends State<DiscoverPage> {
                               mealPlanTypeOfMeal: "",
                             ),
                           ));
-                    }, // Image tapped
+                    },
                     child: Image.asset(
                       'assets/images/search128.png',
-                      fit: BoxFit.cover, // Fixes border issues
-                      // width: 110.0,
+                      fit: BoxFit.cover,
                       height: 40,
                     ),
                   )
@@ -109,9 +103,7 @@ class Discover extends State<DiscoverPage> {
     await firestoreInstance
         .collection('recipes')
         .where('is_public_recipe', isEqualTo: true)
-        .orderBy('timestamp',
-            descending:
-                true) // we have to choose ethier the most recent add recipes -> timestamp or random -> position if here we need to implement a simple method to reassign the position a new random number.
+        .orderBy('timestamp', descending: true)
         .get()
         .then((recipesSnapshot) async {
       if (recipesSnapshot.docs.isNotEmpty) {

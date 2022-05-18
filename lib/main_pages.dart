@@ -11,7 +11,6 @@ import 'package:instayum/widget/meal_plan/mealplan_service.dart';
 import 'package:instayum/widget/shopping_list/shopping_list_page.dart';
 import 'package:instayum/widget/pickers/recipe_image_picker.dart';
 import 'constant/app_globals.dart';
-import 'widget/meal_plan/meal_plans.dart';
 import 'widget/profile/profile.dart';
 
 //********************************************************************
@@ -120,7 +119,6 @@ class appPages extends State<MainPages> {
         onPressed: () {
           // we will first clear the form
 
-          // addRecipe.recipeTitle = '';
           AddNewMealPlanState.mealplanTitleTextFieldController.text = "";
 
           MealPlansService.chosenMealDay = 'SUN';
@@ -212,9 +210,9 @@ class appPages extends State<MainPages> {
   }
 
   Future updatePinConditionToTrue(String mealplanID) async {
-    final FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
-
     //and make all other mealplans the pin condition is false;
+
+    final FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
 
     await firebaseFirestore
         .collection("users")
@@ -253,7 +251,6 @@ class appPages extends State<MainPages> {
         ),
         child: Text("Yes"),
         onPressed: () {
-          // MealPlanCardState.isPinProcessLoading = true;
           indexOfPages = 4;
           appBarTitel = "Profile";
           Navigator.of(context).pop();
@@ -464,9 +461,6 @@ class appPages extends State<MainPages> {
       } else {
         //
 
-        print("*****************************");
-        print("movingOutOfAddRecipePage");
-        //  if (indexOfPreviousPage != 2 || movingOutOfAddRecipePage) {
         indexOfPages = index;
 
         if (index == 0)
@@ -514,8 +508,7 @@ class appPages extends State<MainPages> {
         AppGlobals().resetGlobals();
         FirebaseAuth.instance.signOut();
         Navigator.of(context).pop();
-        print('sign out^^^^^^^^^^^^^^^^^^^^^^^^^^');
-        print('Before moving the user to the sign up page ***********');
+
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
             builder: (context) => AuthScreen(),
@@ -560,10 +553,7 @@ class appPages extends State<MainPages> {
       _usersCollection.doc(AppGlobals.userId).snapshots().listen((snapshot) {
         if (snapshot.exists) {
           Map<String, dynamic>? data = snapshot.data() as Map<String, dynamic>?;
-          print("data is $data");
-          // if (data != null) {
-          print(data!["notificationsCount"]);
-          MainPages.notificationCounter = data["notificationsCount"];
+          MainPages.notificationCounter = data!["notificationsCount"];
           print("notificationCounter is ${MainPages.notificationCounter}");
           if (mounted)
             setState(() {
@@ -576,8 +566,6 @@ class appPages extends State<MainPages> {
   }
 
   Widget _notifictionsIcon({int? count}) {
-    print("count: $count");
-    print("notificationCounter: ${MainPages.notificationCounter}");
     return InkWell(
       child: Stack(
         alignment: Alignment.center,

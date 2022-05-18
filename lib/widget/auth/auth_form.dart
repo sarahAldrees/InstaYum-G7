@@ -68,9 +68,7 @@ class _AuthFormState extends State<AuthForm> {
     final validUsername = await _usernameCheck(_userName!); //!
     if (!validUsername && _userName!.isNotEmpty && _isSignUp) {
       //we use _isSignUp to avoid check the username in login case
-      // print("user name in authform ***********");
-      // print(validUsername);
-      // print(_userName);
+
       Scaffold.of(context).showSnackBar(
         SnackBar(
           content: Text("The username is already exist"),
@@ -79,8 +77,6 @@ class _AuthFormState extends State<AuthForm> {
       );
     }
     if (isValidFormt && validUsername || !_isSignUp) {
-      //print('in checking if ____________________');
-
       _formKey.currentState!.save();
       widget.submitFn(
         _userEmail!
@@ -127,7 +123,6 @@ class _AuthFormState extends State<AuthForm> {
     }
   }
 
-//to be deleted ########################################################
   Widget condtions() {
     TextStyle defaultStyle = TextStyle(color: Colors.grey, fontSize: 14.0);
     TextStyle linkStyle = TextStyle(
@@ -143,20 +138,11 @@ class _AuthFormState extends State<AuthForm> {
               style: linkStyle,
               recognizer: TapGestureRecognizer()
                 ..onTap = () {
-                  print('Terms of Service"');
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => TermsOfService()),
                   );
                 }),
-          // TextSpan(text: ' and that you have read our '),
-          // TextSpan(
-          //     text: 'Privacy Policy',
-          //     style: linkStyle,
-          //     recognizer: TapGestureRecognizer()
-          //       ..onTap = () {
-          //         print('Privacy Policy"');
-          //       }),
         ],
       ),
     );
@@ -186,8 +172,7 @@ class _AuthFormState extends State<AuthForm> {
                     ),
                     if (_isSignUp) UserImagePicker(_pickedImage),
                     TextFormField(
-                      key: ValueKey(
-                          "email"), // علشان اذا حولت من لوق ان الى ساين اب ما يتحول الوزرنيم الى باسوورد
+                      key: ValueKey("email"),
                       validator: (value) {
                         if (value!.isEmpty) {
                           return "Email should not be empty";
@@ -221,7 +206,6 @@ class _AuthFormState extends State<AuthForm> {
                         decoration: InputDecoration(labelText: "Username"),
                       ),
                     TextFormField(
-                      //key: ValueKey("password"),
                       controller: _pass,
                       validator: (value) {
                         if (value!.isEmpty) {
@@ -262,7 +246,6 @@ class _AuthFormState extends State<AuthForm> {
                     SizedBox(
                       height: 12,
                     ),
-                    //   if (_isSignUp) condtions(),
                     SizedBox(
                       height: 12,
                     ),
@@ -275,8 +258,7 @@ class _AuthFormState extends State<AuthForm> {
                     if (!widget.isLoeading)
                       if (!_isSignUp)
                         FlatButton(
-                            textColor: Color(
-                                0xFFeb6d44), //Theme.of(context).primaryColor,
+                            textColor: Color(0xFFeb6d44),
                             child: Text("Forgot password?"),
                             onPressed: () {
                               Navigator.of(context).push(MaterialPageRoute(
@@ -284,8 +266,7 @@ class _AuthFormState extends State<AuthForm> {
                             }),
                     if (!widget.isLoeading)
                       FlatButton(
-                          textColor: Color(
-                              0xFFeb6d44), //Theme.of(context).primaryColor,
+                          textColor: Color(0xFFeb6d44),
                           child: Text(_isSignUp
                               ? "Already have an account"
                               : "Create a new account"),

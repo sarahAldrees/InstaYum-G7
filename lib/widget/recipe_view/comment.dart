@@ -67,9 +67,6 @@ class CommentState extends State<Comments> {
         //int s = 1;
         bool enter = true;
         if (enter) {
-          print(doc["username"]);
-          print(doc["imageUrl"]);
-          print(doc["comment"]);
           comments.add(
             Container(
               child: Column(
@@ -101,7 +98,6 @@ class CommentState extends State<Comments> {
   getData() {
     final FirebaseAuth usId = FirebaseAuth.instance;
     final _currentUser = usId.currentUser!;
-    // final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
     FirebaseFirestore.instance
         .collection("users")
         .doc(_currentUser.uid)
@@ -148,7 +144,6 @@ class CommentState extends State<Comments> {
 
   void initState() {
     super.initState();
-    //0000
     getData();
     _commentController.addListener(() {
       setState(() {});
@@ -208,7 +203,6 @@ class CommentState extends State<Comments> {
                                   if (_commentController.text.trim() == '') {
                                   } else {
                                     addComment(_commentController.text);
-                                    // _addComment(controller.text);
                                     _commentController.clear();
                                   }
                                 },
@@ -255,10 +249,7 @@ class CommentListState extends State<CommentList> {
   }
 
   getData() {
-    // get data from database
     databaseRef = FirebaseFirestore.instance
-        // .collection("users")
-        // .doc(widget._authorId)
         .collection("recipes")
         .doc(widget._recipeID)
         .collection("comments");
@@ -266,14 +257,8 @@ class CommentListState extends State<CommentList> {
     databaseRef.orderBy('timestamp').snapshots().listen(
       (data) {
         comments.clear();
-        //setState(() {
-        // clear duplicate comments.
-        data.docs.forEach((doc) {
-          //int s = 1;
 
-          // print(doc["username"]);
-          // print(doc["imageUrl"]);
-          // print(doc["comment"]);
+        data.docs.forEach((doc) {
           // add each comment doc in database to the list to show them in the screen
           Map data = doc.data() as Map<dynamic, dynamic>;
 
@@ -291,9 +276,6 @@ class CommentListState extends State<CommentList> {
         if (this.mounted) {
           setState(() {});
         }
-        // print('###');
-        // print(comments[0].username);
-        //});
       },
     ).onError((err) {
       print(" error in comments");
@@ -308,8 +290,6 @@ class CommentListState extends State<CommentList> {
 //******************************************************* */
   //---------------------------Delete a comment from firestore ------------------------------------------------**
   _DeletFirestoreComment(var key) async {
-    print("-----------inside method_");
-    print(key);
     await FirebaseFirestore.instance
         .collection("recipes")
         .doc(widget._recipeID)
@@ -321,11 +301,6 @@ class CommentListState extends State<CommentList> {
   Widget reportOrDeleteIcon(CommentModel comment) {
     final FirebaseAuth usId = FirebaseAuth.instance;
     final _currentUser = usId.currentUser!.uid;
-    print("----------------------------------------aa-----");
-    print(comment.userId);
-    print(AppGlobals.userId);
-    print(_currentUser);
-    print("----------------------------------------aa-----");
 
     if (_currentUser == comment.userId) {
       return IconButton(
@@ -404,7 +379,6 @@ class CommentListState extends State<CommentList> {
               if (doc != null && doc.docs.length > 0) {
                 Map<String, dynamic>? data = doc.docs[0].data();
                 ReprtedComment reprtedComment = ReprtedComment.fromJson(data);
-                print("------------------------kk-----kk------mk--------");
                 if (!reprtedComment.user_already_reported!
                     .contains(_currentUser)) {
                   reprtedComment.user_already_reported!.add(_currentUser);
@@ -476,10 +450,7 @@ class CommentListState extends State<CommentList> {
                                           primary:
                                               Color.fromARGB(255, 82, 80, 80),
                                           backgroundColor: Colors.white,
-                                          //side: BorderSide(color: Colors.deepOrange, width: 1),
                                           elevation: 0,
-                                          //minimumSize: Size(100, 50),
-                                          //shadowColor: Colors.red,
                                           shape: RoundedRectangleBorder(
                                               borderRadius:
                                                   BorderRadius.circular(10)),
@@ -612,8 +583,6 @@ class CommentListState extends State<CommentList> {
 
                   //-----------------------------------------------
                 } else {
-                  print("you are reported ");
-
                   //-------show dailoge about reson----------
                   showDialog<void>(
                     context: context,
@@ -754,10 +723,7 @@ class CommentListState extends State<CommentList> {
                                         primary:
                                             Color.fromARGB(255, 82, 80, 80),
                                         backgroundColor: Colors.white,
-                                        //side: BorderSide(color: Colors.deepOrange, width: 1),
                                         elevation: 0,
-                                        //minimumSize: Size(100, 50),
-                                        //shadowColor: Colors.red,
                                         shape: RoundedRectangleBorder(
                                             borderRadius:
                                                 BorderRadius.circular(10)),

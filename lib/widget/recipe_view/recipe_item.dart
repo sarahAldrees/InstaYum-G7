@@ -4,7 +4,6 @@ import 'package:instayum/widget/recipe_view/recipe_view.dart';
 import 'package:flutter/material.dart';
 
 class RecipeItem extends StatelessWidget {
-  // final String autherName;
   final String? cookbookitme;
   final String? autherId;
   final String? RecipeId;
@@ -20,8 +19,6 @@ class RecipeItem extends StatelessWidget {
   String mealDay;
   String mealPlanTypeOfMeal;
   RecipeItem(
-      // Key key,
-      // this.autherName,
       this.cookbookitme,
       this.autherId,
       this.RecipeId,
@@ -51,15 +48,12 @@ class RecipeItem extends StatelessWidget {
     return Container(
       margin: EdgeInsets.only(bottom: 2),
       child: Column(children: [
-        //ClipOval(
         Container(
           width: double.infinity,
-          // height: 100,
           decoration: BoxDecoration(
             color: Colors
                 .white, // to make the background of the photo white (it is the corners)
           ),
-
           child: Container(
             height: 110,
             child: InkWell(
@@ -76,7 +70,7 @@ class RecipeItem extends StatelessWidget {
                               mealDay: mealDay,
                               mealPlanTypeOfMeal: mealPlanTypeOfMeal,
                             )));
-              }, //what happend after clicking image
+              },
 
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(15),
@@ -85,15 +79,11 @@ class RecipeItem extends StatelessWidget {
                     child: Ink.image(
                         image: image as ImageProvider<Object>,
                         height: 120,
-                        fit: BoxFit.cover)
-                    //************************************8 very importatnt to check which attribute is the best with boxfit ? # delete */
-
-                    ),
+                        fit: BoxFit.cover)),
               ),
             ),
           ),
         ),
-
         Expanded(
           child: Padding(
             padding: const EdgeInsets.only(top: 3.0),

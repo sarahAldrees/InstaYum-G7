@@ -8,7 +8,6 @@ import 'choose_meal_recipes.dart';
 class MealTile extends StatefulWidget {
   String? mealPlanTypeOfMeal;
   final String? title;
-  // final String typeOfMeal;
   final String? img;
   String? mealDay;
   bool isFromAddMealplan = false;
@@ -16,7 +15,7 @@ class MealTile extends StatefulWidget {
 
   MealTile(
       {this.title,
-      this.mealPlanTypeOfMeal, //this.typeOfMeal,
+      this.mealPlanTypeOfMeal,
       this.img,
       this.mealDay,
       required this.isFromAddMealplan,
@@ -46,13 +45,9 @@ class _MealTileState extends State<MealTile> {
       return Padding(
         padding: EdgeInsets.all(15.0),
         child: Column(
-          // Default value for crossAxisAlignment is CrossAxisAlignment.center.
-          // We want to align title and description of recipes left:
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(
-                // RECIPE TITLE when user choose a recipe !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                widget.title!),
+            Text(widget.title!),
             // Empty space:
             SizedBox(height: 10.0),
             Row(
@@ -61,11 +56,9 @@ class _MealTileState extends State<MealTile> {
                   Icons.restaurant_rounded,
                   size: 20.0,
                   color: Colors.grey[600],
-                ), // change
+                ),
                 SizedBox(width: 5.0),
-                Text(widget.mealPlanTypeOfMeal!
-                    // THE TYPE OF RECIPE!!!!!!!!!!!!!!!!!!!!!!!!!1
-                    ),
+                Text(widget.mealPlanTypeOfMeal!),
               ],
             ),
           ],
@@ -90,7 +83,6 @@ class _MealTileState extends State<MealTile> {
         } else {
           if (widget.img ==
               "https://firebasestorage.googleapis.com/v0/b/instayum-f7a34.appspot.com/o/cookbook_image%2FScreenshot%20(828).png?alt=media&token=b9f92769-47cd-4bb2-b88b-9ccbe5626a95") {
-            print("the photo is different!!!!!!!!");
           } else {
             Navigator.push(
               context,

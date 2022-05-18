@@ -57,7 +57,6 @@ class _SearchPageState extends State<SearchPage> {
     }
   }
 
-  // final Function(String)? onChangeFunction ;
   final TextEditingController? searchControllerOfCupertinoSearchTextField =
       new TextEditingController();
 
@@ -73,22 +72,17 @@ class _SearchPageState extends State<SearchPage> {
     if (widget.isFromMealPlan) {
       setState(() {
         searchText = 'Search for recipes';
-        print("**************___");
       });
     } else {
       setState(() {
         searchText = 'Search';
       });
-      print("________________________________");
     }
     return Scaffold(
       appBar: widget.isFromMealPlan ? null : searchAppBar(),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
-          // shrinkWrap: true,
-          // physics: ScrollPhysics(),
-          // mainAxisAlignment: MainAxisAlignment.start,
           children: [
             // show search bar with filter
             Row(
@@ -98,7 +92,6 @@ class _SearchPageState extends State<SearchPage> {
                 Expanded(
                   child: Container(
                     margin: const EdgeInsets.only(top: 10, left: 20, right: 5),
-                    // padding: EdgeInsets.symmetric(horizontal: AppGlobals.screenWidth * 0.1),
                     child: CupertinoSearchTextField(
                       placeholder: searchText,
                       controller: searchControllerOfCupertinoSearchTextField ??
@@ -114,7 +107,6 @@ class _SearchPageState extends State<SearchPage> {
                       padding: EdgeInsets.fromLTRB(20, 10, 12, 10),
                       onChanged: onSearchTextChanged,
                       onSubmitted: onSearchTextChanged,
-                      // suffixIcon: suffixIcon,
                     ),
                   ),
                 ),
@@ -151,7 +143,6 @@ class _SearchPageState extends State<SearchPage> {
                                 _switchRecipes(true);
                               },
                               child: Container(
-                                // margin: const EdgeInsets.only(left: 5, right: 5, top: 10),
                                 height: 45,
                                 width: AppGlobals.screenWidth * 0.4,
                                 decoration: BoxDecoration(
@@ -180,11 +171,9 @@ class _SearchPageState extends State<SearchPage> {
                             SizedBox(width: 10),
                             InkWell(
                               onTap: () {
-                                print("on tap working !!!!!!!!!!!!!");
                                 _switchRecipes(false);
                               },
                               child: Container(
-                                // margin: const EdgeInsets.only(left: 5, right: 5, top: 10),
                                 height: 45,
                                 width: AppGlobals.screenWidth * 0.4,
                                 decoration: BoxDecoration(
@@ -224,7 +213,6 @@ class _SearchPageState extends State<SearchPage> {
                               )
                             : SearchUsers(
                                 users: List<UserModel>.from(_searchResults),
-                                // _searchResults as List<UserModel>,
                               ),
                       ),
                     ],
@@ -260,14 +248,8 @@ class _SearchPageState extends State<SearchPage> {
 
   void _searchFromFirestore(String searchkey, String ingredientsList,
       {bool withFilter = false}) async {
-    print("0000000000000000000000000000000");
-    print(searchkey);
-    print(_selectedCategory);
-    print(_selectedTypeOfMeal);
-    print(_selectedCuisine);
-
     if (isRecipes) {
-      //// search from recipes
+      // search from recipes
 
       //hide filter if shown
       if (showFilter) {
@@ -284,20 +266,8 @@ class _SearchPageState extends State<SearchPage> {
 
         if (withFilter) {
           if (ingredientsList != "") {
-            print("YEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEES");
-            print(ingredientsList);
-            //لان كان في اللنقث دائما يطلع واحد حتى لو ما كتبت شيء واتوقع السبب هذا لاننا انشئنا اللست
-            //المهم خليته قبل ما ينشئ اللست يشيك اذا اليوزر كتب شيء او لا
-            //طيب وش جابني انا هنا اصلا؟ انا بقولك
-            // لما جيت بحل مشكلة السيرتش باستعمال الفلتر مع التايتل والله مدري وش صار بس اكتشفت هذا اللوجيك ايرور :)ا
-            // المهم فيه ايرور لما ابحث باستعمال المكونات للمره الثانية يطلع ايرور :(ا
-//-----------------------------------
-//تحديث جديد :) حليت الايرور بحيث اني شلت الكنترولر من انبوت المقادير وخليت الاسناد يكون ب اون تشانج
-//الحل له عيب واحد بس ماراح اقول انت اكتشفي والصدق العيب مو مره كبير
             List<String> _searchIngredients =
                 ingredientsList.toLowerCase().split(',');
-
-            //   if (_searchIngredients.isNotEmpty)
 
             print(_searchIngredients.length);
             var count = 0;
@@ -305,8 +275,6 @@ class _SearchPageState extends State<SearchPage> {
 
             outerLoop: //number of ingredients in recipe
             for (int si = 0; si < _searchIngredients.length; si++) {
-              //   String _ing = (data['ing$i'] ?? '').toString().toLowerCase();
-
               innerLopp: //number of ingredients in search
 
               for (int i = 1; i <= _ingLength!; i++) {
@@ -329,7 +297,6 @@ class _SearchPageState extends State<SearchPage> {
           } else {
             //search by without ingredients
             if (_title!.contains(searchkey) &&
-                //  _title.startsWith(searchkey) &&
                 _category!.contains(_selectedCategory!) &&
                 _cuisine!.contains(_selectedCuisine!) &&
                 _typeOfMeal!.contains(_selectedTypeOfMeal!)) {
@@ -348,7 +315,7 @@ class _SearchPageState extends State<SearchPage> {
           .collection('users')
           .orderBy('username')
           .startAt([searchkey])
-          .endAt([searchkey + '\uf8ff']) // need to be tested
+          .endAt([searchkey + '\uf8ff'])
           .get()
           .then((snapshot) {
             if (snapshot.docs.length > 0) {
@@ -407,7 +374,6 @@ class _SearchPageState extends State<SearchPage> {
                 onChanged: (value) {
                   _ingredientsController.text = value;
                 },
-                //controller: _ingredientsController,
                 decoration: InputDecoration(
                   hintText: "ingredients",
                   hintStyle: TextStyle(color: Colors.grey[800]),
@@ -447,9 +413,6 @@ class _SearchPageState extends State<SearchPage> {
             Center(
               child: ElevatedButton(
                 onPressed: () {
-                  print("111111111111111111111111111111");
-                  print(_ingredientsController.text);
-
                   _searchResults.clear();
                   _searchFromFirestore(
                       _searchController.text, _ingredientsController.text,
@@ -458,11 +421,9 @@ class _SearchPageState extends State<SearchPage> {
                 },
                 style: ElevatedButton.styleFrom(
                   primary: AppColors.primaryColor.withOpacity(0.8),
-                  // shadowColor: Colors.black12,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  // fixedSize: Size(width ?? 80, height ?? 35),
                 ),
                 child: Center(
                   child: Text(
@@ -473,7 +434,6 @@ class _SearchPageState extends State<SearchPage> {
                       fontSize: 13,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
-                      // color: isActive ? Colors.white : Colors.black87,
                     ),
                   ),
                 ),

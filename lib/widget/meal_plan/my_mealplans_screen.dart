@@ -46,7 +46,6 @@ class MyMealplanScreenState extends State<MyMealplanScreen> {
   bool isPrivateMealplanListEmpty = true;
 
   List<List<String>> initializationData = [
-    //the images need to be changed
     [
       "", //recipe title
       "Breakfast",
@@ -187,7 +186,7 @@ class MyMealplanScreenState extends State<MyMealplanScreen> {
   ];
 
   //-------------------------------------------------------------------------
-  //the 1 first part of sepreate operation
+  //the  first part of sepreate operation
   Future<void> getMealplans() async {
     String? userID =
         widget.isFromUserProfileView ? widget.userID : AppGlobals.userId;

@@ -12,7 +12,6 @@ import 'package:uuid/uuid.dart';
 import '../../main_pages.dart';
 import 'recipe_service.dart';
 
-//import 'dynamic_fields.dart';
 class AddRecipePage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => addRecipe();
@@ -27,32 +26,6 @@ class addRecipe extends State<AddRecipePage> {
   static String? recipeTitle;
   static TextEditingController recipeTitleController = TextEditingController();
 
-  //-----------------------dropdown list for classification-----------------
-  // final _recipeType = ['Breakfast', 'Lunch', 'Dinner'];
-
-  // final _recipeCategories = [
-  //   'Appetizers',
-  //   'Main course',
-  //   'Desserts',
-  //   'Drinks',
-  //   'Salads',
-  //   'Soups',
-  // ];
-
-  // final _cuisine = [
-  //   'American',
-  //   'Asian',
-  //   'Brazilian',
-  //   'Egyptian',
-  //   'French',
-  //   'Gulf',
-  //   'Indian',
-  //   'Italian',
-  //   'Lebanese',
-  //   'Mexican',
-  //   'Turkish',
-  //   'Other'
-  // ];
   String? _currentSelectedTypeOfMeal = "Breakfast";
   String? _currentSelectedCategory = "Appetizers";
   String? _currentSelectedCuisine = "American";
@@ -73,14 +46,6 @@ class addRecipe extends State<AddRecipePage> {
   //--------------------------------------------------------------------------
   // isNullFields() is used in mainpages.dart to check are the flied null ? if yes we will not show the user the confrimation message of lost data when moving out of add recipe page
   static bool isNullFields() {
-    print("####################################################");
-    print("#####################################################");
-    print("check the data if they are null");
-    print(recipeTitle);
-    print(userIngredients[0]);
-    print(userDirections[0]);
-    print(RecipeImagePickerState.uploadedFileURL);
-
     if ((recipeTitle == null || recipeTitle!.isEmpty || recipeTitle == "") &&
         (userIngredients[0] == null ||
             userIngredients[0]!.isEmpty ||
@@ -154,7 +119,6 @@ class addRecipe extends State<AddRecipePage> {
   //----------------------------------------------------------------------------
   void _addRecipeButton() {
     bool isContainMeasures = false;
-    // List<String> userIngredientsCopy = List.from(userIngredients);
 
     setState(() {}); //to refresh the page after delete any empty fields
     if (formKey.currentState!.validate()) {
@@ -165,7 +129,6 @@ class addRecipe extends State<AddRecipePage> {
 
       formKey.currentState!.save();
       for (int i = 0; i < userIngredients.length; i++) {
-        // if(userIngredients[i] != null)
         var string = userIngredients[i]!.toLowerCase();
         if (string.contains('cup') ||
             string.contains('spoon') ||
@@ -188,9 +151,6 @@ class addRecipe extends State<AddRecipePage> {
         });
       }
     } else {
-      // setState(() {
-      //   isloading = false;
-      // });
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
             content: Text("some fields missing check them please"),
@@ -200,10 +160,6 @@ class addRecipe extends State<AddRecipePage> {
   }
 
   void _addRecipeToDatabase() async {
-    // final FirebaseAuth _auth = FirebaseAuth.instance;
-    // final currentUser = await _auth.currentUser;
-    print('add recipe button pressed');
-
     await RecipeService.addRecipeToDatabase(
       recipeTitle: recipeTitle,
       currentSelectedTypeOfMeal: _currentSelectedTypeOfMeal,
@@ -213,106 +169,6 @@ class addRecipe extends State<AddRecipePage> {
       userDirections: userDirections,
       isPublic: _isPublic,
     );
-
-    // DateTime timestamp = DateTime.now();
-    // await FirebaseFirestore.instance
-    //     .collection("users")
-    //     .doc(currentUser.uid)
-    //     .collection(
-    //         "recipes") // create new collcetion of recipes inside user document to save all of the user's recipes
-    //     .doc(recipe_id)
-    //     .set({
-    //   "recipe_title": recipeTitle,
-    //   'length_of_ingredients': userIngredients.length,
-    //   'length_of_directions': userDirections.length,
-    //   'user_id': currentUser.uid,
-    //   "timestamp": timestamp,
-    // });
-// to save the ingredients
-    // int countItems = 0;
-    // for (var ing in userIngredients) {
-    //   countItems++;
-    //   await FirebaseFirestore.instance
-    //       .collection("users")
-    //       .doc(currentUser.uid)
-    //       .collection("recipes")
-    //       .doc(recipe_id)
-    //       .update({
-    //     'ing$countItems': ing,
-    //   });
-    // }
-// to save the directions
-    // countItems = 0;
-    // for (var dir in userDirections) {
-    //   countItems++;
-    //   await FirebaseFirestore.instance
-    //       .collection("users")
-    //       .doc(currentUser.uid)
-    //       .collection("recipes")
-    //       .doc(recipe_id)
-    //       .update({
-    //     'dir$countItems': '${countItems}- ' + dir,
-    //   });
-    // }
-// to save the classification
-    // String recipe_image_url = RecipeImagePickerState.uploadedFileURL;
-
-    //if (recipe_image_url == null) recipe_image_url = 'noImageUrl';
-
-    // if (RecipeImagePickerState.imagesURLs.isEmpty) {
-    //   await FirebaseFirestore.instance
-    //       .collection("users")
-    //       .doc(currentUser.uid)
-    //       .collection("recipes")
-    //       .doc(recipe_id)
-    //       .update({
-    //     'img1': "noImageUrl",
-    //     'image_count': 0,
-    //   });
-    // } else {
-    //   int countImage = 0;
-    //   for (var url in RecipeImagePickerState.imagesURLs) {
-    //     // print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-    //     print(url);
-    //     countImage++;
-    //     await FirebaseFirestore.instance
-    //         .collection("users")
-    //         .doc(currentUser.uid)
-    //         .collection("recipes")
-    //         .doc(recipe_id)
-    //         .update({
-    //       'img$countImage': url,
-    //       'image_count': countImage,
-    //     });
-    //   }
-    // }
-    // await FirebaseFirestore.instance
-    //     .collection("users")
-    //     .doc(currentUser.uid)
-    //     .collection("recipes")
-    //     .doc(recipe_id)
-    //     .update({
-    //   'type_of_meal': _currentSelectedTypeOfMeal,
-    //   'category': _currentSelectedCategory,
-    //   'cuisine': _currentSelectedCuisine,
-    //   //'recipe_image_url': recipe_image_url,
-    //   'is_public_recipe': _isPublic,
-    // });
-    //--------------------creat collection of reating with zeros----------
-    // await FirebaseFirestore.instance
-    //     .collection("users")
-    //     .doc(currentUser.uid)
-    //     .collection(
-    //         "recipes") // create new collcetion of recipes inside user document to save all of the user's recipes
-    //     .doc(recipe_id)
-    //     .collection("rating")
-    //     .doc("recipeRating")
-    //     .set({
-    //   "sum_of_all_rating": 0,
-    //   "num_of_reviews": 0,
-    //   "average_rating": 0.0,
-    //   "user_already_review": FieldValue.arrayUnion([]),
-    // });
 
     //-----------------Clear the form--------------------------------
     formKey.currentState!.reset();
@@ -416,11 +272,7 @@ class addRecipe extends State<AddRecipePage> {
   }
 
   Widget _addRemoveButtonInDirection(bool add, int index) {
-    //  print("Entered addRemoveButtonInDirection");
     if (add) {
-      //  print("enterd add ");
-      //print("indes in add is ");
-      //  print(index);
       userDirections.insert(index, null); // add a new textFormField
       setState(() {}); // to refresh the page
     }
@@ -807,10 +659,6 @@ class addRecipe extends State<AddRecipePage> {
                                 onChanged: (value) {
                                   setState(() {
                                     _isPublic = value;
-                                    // if (_isPublic)
-                                    //   isPublicText = "we will change ";
-                                    // else
-                                    //   isPublicText = "";
                                   });
                                 },
                                 activeTrackColor: Colors.orange[600],

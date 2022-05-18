@@ -23,7 +23,6 @@ class _FollowersNumbersState extends State<FollowersNumbers> {
   }
 
   void getData() async {
-    print('get user followers and following..');
     // get user followers list
     await FirebaseFirestore.instance
         .collection('users')

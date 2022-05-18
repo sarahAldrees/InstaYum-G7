@@ -44,7 +44,6 @@ class CookbookRecipesState extends State<CookbookRecipes> {
   String? autherId;
   String? recipeId;
   _getBookmarkedRecipes() {
-    // while (CookbookRecipes.isNeedUpdate) {
     FirebaseFirestore.instance
         .collection("users")
         .doc(FirebaseAuth.instance.currentUser!.uid)
@@ -181,7 +180,6 @@ class CookbookRecipesState extends State<CookbookRecipes> {
   }
 
   void deleteCookbook() {
-    print("inside delete method");
     FirebaseFirestore.instance
         .collection("users")
         .doc(AppGlobals.userId)
@@ -189,14 +187,11 @@ class CookbookRecipesState extends State<CookbookRecipes> {
         .doc(widget.cookbookID)
         .delete();
     Navigator.of(context).pop();
-    setState(() {
-      print("After navigitor");
-    });
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-    print(autherId);
     if (widget.isFromMealPlan) {
       return Scaffold(
         appBar: new AppBar(
@@ -278,13 +273,5 @@ class CookbookRecipesState extends State<CookbookRecipes> {
             ]),
       );
     }
-    // } else {
-    //widget.flag = true;
-    // return Scaffold(
-    //     body: Center(
-    //         child: CircularProgressIndicator(
-    //   color: Colors.orange,
-    // )));
-    // }
   }
 }

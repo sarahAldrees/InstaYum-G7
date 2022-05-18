@@ -8,8 +8,6 @@ import 'package:path/path.dart' as Path;
 import 'package:uuid/uuid.dart';
 
 class CookbookImagePicker extends StatefulWidget {
-  //const CookbookImagePicker({ Key? key }) : super(key: key);
-
   @override
   CookbookImagePickerState createState() => CookbookImagePickerState();
 }
@@ -44,16 +42,12 @@ class CookbookImagePickerState extends State<CookbookImagePicker> {
 
     UploadTask uploadTask = ref.putFile(file!);
     uploadTask.then((res) {
-      print('File Uploaded');
       res.ref.getDownloadURL().then((fileURL) {
         uploadedFileURL = fileURL;
-        print('here in image class ');
-        print(fileURL);
-        print('the id in image class is  ');
+
         // to add https://
         setState(() {
           uploadedFileURL = fileURL;
-          print("set state work now!");
         });
       }).then((nothing) async {
         // nothing mean null, but null cause an error
@@ -65,9 +59,7 @@ class CookbookImagePickerState extends State<CookbookImagePicker> {
   }
 
   Widget buildCookbookImage() {
-    final image = uploadedFileURL == "noImage" ||
-            // uploadedFileURL.isEmpty ||
-            uploadedFileURL == null
+    final image = uploadedFileURL == "noImage" || uploadedFileURL == null
         ? AssetImage("assets/images/defaultCookbookImage.png")
             as ImageProvider // NEW
         : NetworkImage(uploadedFileURL!);

@@ -30,7 +30,6 @@ class ConvertDate {
   static String? formatDate(DateTime? date, {String format = 'yMMMd'}) {
     if (date == null) return null;
 
-    // DateTime? _dateTime = date.toDate();
     DateFormat formatter = DateFormat(format);
     String formattedDate = formatter.format(date);
     return formattedDate;

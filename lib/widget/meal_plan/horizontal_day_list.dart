@@ -67,11 +67,8 @@ class _HorizontalDayListState extends State<HorizontalDayList> {
         date = DateTime.now();
         if (date.weekday == 7) {
           num = 0;
-          print("num = 0");
         } else {
           num = date.weekday;
-          print("nnuumm = ");
-          print(num);
         }
 
         widget.dayUpdateFunction(weekdays[num]);

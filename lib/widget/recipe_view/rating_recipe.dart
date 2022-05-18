@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:instayum/model/recipe_rating.dart';
 import 'package:instayum/widget/recipe_view/view_reicpe_flotingbutton.dart';
-// import 'package:recipe_view/view_reicpe_flotingbutton.dart';
 
 class RatingRecipe extends StatefulWidget {
   String? recipeId;
@@ -29,7 +28,6 @@ class Rating extends State<RatingRecipe> {
   var avg;
 
   late List<String?> _usersAlredyRate;
-  // final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
 //getData() to get the data of users like username, image_url from database
   getData() async {
@@ -37,19 +35,13 @@ class Rating extends State<RatingRecipe> {
     final _currentUser = usId.currentUser;
 
     await FirebaseFirestore.instance
-        // .collection("users")
-        // .doc(widget.autherId)
         .collection("recipes")
         .doc(widget.recipeId)
         .collection("rating")
         .doc("recipeRating")
-        // .snapshots()
-        // .listen((userData) {
         .get()
         .then((document) {
       if (document != null) {
-        // print('rating data: ${document.data()}');
-        //usersAlredyRate.clear();
         Map<String, dynamic>? data = document.data();
 
         if (data != null) {
@@ -61,8 +53,7 @@ class Rating extends State<RatingRecipe> {
           _usersAlredyRate = List.from(rating.userAlreadyReview!);
           _currentUserId = _currentUser!.uid;
         }
-        // print("numOfRevewis===============");
-        // print(numOfReviews);
+
         if (mounted) setState(() {});
       }
     });
@@ -77,7 +68,6 @@ class Rating extends State<RatingRecipe> {
   Widget _buildRatinBar() {
     return RatingBar.builder(
       direction: Axis.horizontal,
-      //allowHalfRating: true,
       itemCount: 5,
       itemSize: 30,
       itemBuilder: (context, _) => Icon(
@@ -138,7 +128,6 @@ class Rating extends State<RatingRecipe> {
       title: Row(
         children: [
           Container(
-            // margin: EdgeInsets.only(right: 20, left: 2),
             padding: EdgeInsets.only(right: 12),
             child: IconButton(
               onPressed: () => Navigator.pop(context),
@@ -182,22 +171,14 @@ class Rating extends State<RatingRecipe> {
                 Navigator.pop(context);
                 //calculate the data
                 numOfReviews++;
-                print(numOfReviews);
                 if (!(rating == null || rating == 0)) total = total + rating;
-                print('total $total');
                 avg = total / numOfReviews;
                 avg = doubleWithTwoDigits(avg, 2);
-                print('Avg $avg');
                 _usersAlredyRate.add(_currentUserId);
-                for (int i = 0; i < _usersAlredyRate.length; i++) {
-                  print("-------");
-                  print(_usersAlredyRate[i]);
-                }
+                for (int i = 0; i < _usersAlredyRate.length; i++) {}
 
                 //----------uppdating data --------
                 await FirebaseFirestore.instance
-                    // .collection("users")
-                    // .doc(widget._autherId)
                     .collection("recipes")
                     .doc(widget.recipeId)
                     .collection("rating")

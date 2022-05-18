@@ -74,11 +74,9 @@ class ViewMealplanState extends State<ViewMealplan> {
 
   List<String> weekdays = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
   List<String> typeOfMeals = ["Breakfast", "Lunch", "Dinner"];
-  //List<MealPlan> mealplansList = [];
   String mealplanId = "";
 
   List<List<String>> initializationData = [
-    //the images need to be changed
     [
       "", //recipe title
       "Breakfast",
@@ -265,21 +263,12 @@ class ViewMealplanState extends State<ViewMealplan> {
 
 //the 2 second part of sepreate operation
   getMealPlanRecipes() {
-    print("####################################");
-    print(widget.mealplanID);
-    print(widget.mealplanTitle);
-    print("####################################");
-
     String? userID = AppGlobals.userId;
 
     setState(() {
       userID = widget.isFromUserProfileView
           ? widget.anotherUserID
           : AppGlobals.userId;
-
-      print('0-0-0----0-0-0-0-0-0-0-0-');
-      print(userID);
-      print('0-0-0----0-0-0-0-0-0-0-0-');
     });
     String recipeID = "";
     List<String> oneDayMeal = [];
@@ -297,15 +286,8 @@ class ViewMealplanState extends State<ViewMealplan> {
           recipeID = "";
           if (snapshot.exists) {
             recipeID = snapshot.data()!["recipe_id"];
-            print("2222222222222222222222222222222222222");
-            print("recipe id is: ");
-            print(recipeID);
           }
-          // }).then((value) async {
           if (recipeID != "") {
-            // oneDayMeal = getOneDayMeals(recipeID, typeOfMeals[j]);
-            print("333333333333333333333333333333333333333");
-            print("recipe id is not null");
             FirebaseFirestore.instance
                 .collection("recipes")
                 .doc(recipeID)
@@ -609,10 +591,6 @@ class ViewMealplanState extends State<ViewMealplan> {
   }
 
   void deleteMealplan() {
-    print("inside delete method***************************");
-    print(AppGlobals.userId);
-    print(widget.mealplanID);
-    print("------------------------------------------------");
     FirebaseFirestore.instance
         .collection("users")
         .doc(AppGlobals.userId)
@@ -622,12 +600,6 @@ class ViewMealplanState extends State<ViewMealplan> {
     Navigator.pop(context);
     Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (context) => MainPages()));
-    // Navigator.push(
-    //   context,
-    //   MaterialPageRoute(
-    //     builder: (conetxt) => MyMealplanScreen(isFromUserProfileView: false),
-    //   ),
-    // );
   }
 
   @override
@@ -647,11 +619,6 @@ class ViewMealplanState extends State<ViewMealplan> {
                   ),
                   onPressed: () {
                     showAlertDialogDeleteMealplan(context);
-                    // setState(() {
-                    //   mealInformation;
-                    //   print(
-                    //       "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@****************************");
-                    // });
                   }),
             ],
           ),

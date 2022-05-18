@@ -10,8 +10,6 @@ import 'package:instayum/widget/profile/circular_loader.dart';
 
 import 'recipe_item.dart';
 
-// import '../bookmark/data.dart';
-
 class MyRecipesScreen extends StatefulWidget {
   bool isFromMealPlan = false;
   String? userId;
@@ -22,8 +20,6 @@ class MyRecipesScreen extends StatefulWidget {
       required this.isFromMealPlan,
       this.mealDay,
       this.mealPlanTypeOfMeal});
-
-  // my_recipes(this.autherName, this.autherImage, this.autherId);
 
   @override
   State<MyRecipesScreen> createState() => _MyRecipesScreenState();
@@ -50,8 +46,6 @@ class _MyRecipesScreenState extends State<MyRecipesScreen> {
   bool isLoading = true;
 
   void getRecipeObjects() {
-    // User user = firebaseAuth.currentUser!;
-
     if (widget.userId != null) {
       FirebaseFirestore.instance
           .collection("recipes")
@@ -72,7 +66,6 @@ class _MyRecipesScreenState extends State<MyRecipesScreen> {
             String? img1 = recipe.img1;
             autherId = recipe.userId;
             bool public = recipe.isPublicRecipe ?? false;
-            // recipe_image_url = data['recipe_image_url'],
 
             lengthOfIngredients = recipe.lengthOfIngredients;
             lengthOfDirections = recipe.lengthOfDirections;
@@ -94,7 +87,6 @@ class _MyRecipesScreenState extends State<MyRecipesScreen> {
                 recpiesList.add(
                   Recipe(
                     recipeId: doc.id,
-                    //imageURL: recipe_image_url,
                     recipeTitle: recipeName,
                     typeOfMeal: typeOfMeal,
                     category: category,
@@ -112,7 +104,6 @@ class _MyRecipesScreenState extends State<MyRecipesScreen> {
                 userPublicRecpiesList.add(
                   Recipe(
                     recipeId: doc.id,
-                    //imageURL: recipe_image_url,
                     recipeTitle: recipeName,
                     typeOfMeal: typeOfMeal,
                     category: category,
@@ -127,7 +118,6 @@ class _MyRecipesScreenState extends State<MyRecipesScreen> {
                 userPrivateRecpiesList.add(
                   Recipe(
                     recipeId: doc.id,
-                    //imageURL: recipe_image_url,
                     recipeTitle: recipeName,
                     typeOfMeal: typeOfMeal,
                     category: category,
@@ -172,9 +162,6 @@ class _MyRecipesScreenState extends State<MyRecipesScreen> {
                   .map(
                     (e) => RecipeItem(
                         "",
-                        //  e.key,
-                        // widget.autherName,
-                        // widget.autherImage,
                         e.userId,
                         e.recipeId,
                         e.recipeTitle,
@@ -187,20 +174,13 @@ class _MyRecipesScreenState extends State<MyRecipesScreen> {
                         e.imageUrls,
                         widget.isFromMealPlan,
                         widget.mealDay!,
-                        widget.mealPlanTypeOfMeal!
-                        // e.ingredients,
-                        // e.dirctions,
-                        // e.imageUrls,
-                        ),
+                        widget.mealPlanTypeOfMeal!),
                   )
                   .toList()
               : userPrivateRecpiesList
                   .map(
                     (e) => RecipeItem(
                         "",
-                        //  e.key,
-                        // widget.autherName,
-                        // widget.autherImage,
                         e.userId,
                         e.recipeId,
                         e.recipeTitle,
@@ -213,11 +193,7 @@ class _MyRecipesScreenState extends State<MyRecipesScreen> {
                         e.imageUrls,
                         widget.isFromMealPlan,
                         widget.mealDay!,
-                        widget.mealPlanTypeOfMeal!
-                        // e.ingredients,
-                        // e.dirctions,
-                        // e.imageUrls,
-                        ),
+                        widget.mealPlanTypeOfMeal!),
                   )
                   .toList()),
     );
@@ -225,7 +201,6 @@ class _MyRecipesScreenState extends State<MyRecipesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // WidgetsBinding.instance!.addPostFrameCallback((_) => getRecipeObjects());
     return isLoading
         ? CustomCircularLoader()
         : Column(children: [
@@ -250,9 +225,6 @@ class _MyRecipesScreenState extends State<MyRecipesScreen> {
                             children: recpiesList
                                 .map((e) => RecipeItem(
                                     "",
-                                    //  e.key,
-                                    // widget.autherName,
-                                    // widget.autherImage,
                                     e.userId,
                                     e.recipeId,
                                     e.recipeTitle,
@@ -265,11 +237,7 @@ class _MyRecipesScreenState extends State<MyRecipesScreen> {
                                     e.imageUrls,
                                     widget.isFromMealPlan,
                                     widget.mealDay!,
-                                    widget.mealPlanTypeOfMeal!
-                                    // e.ingredients,
-                                    // e.dirctions,
-                                    // e.imageUrls,
-                                    ))
+                                    widget.mealPlanTypeOfMeal!))
                                 .toList()),
                       )
                 : Row(
@@ -280,7 +248,6 @@ class _MyRecipesScreenState extends State<MyRecipesScreen> {
                           _switchbetweenPublicAndPrivateRecipes(true);
                         },
                         child: Container(
-                          // margin: const EdgeInsets.only(left: 5, right: 5, top: 10),
                           height: 40,
                           width: AppGlobals.screenWidth * 0.4,
                           decoration: BoxDecoration(
@@ -315,7 +282,6 @@ class _MyRecipesScreenState extends State<MyRecipesScreen> {
                                 _switchbetweenPublicAndPrivateRecipes(false);
                               },
                               child: Container(
-                                // margin: const EdgeInsets.only(left: 5, right: 5, top: 10),
                                 height: 40,
                                 width: AppGlobals.screenWidth * 0.4,
                                 decoration: BoxDecoration(

@@ -52,7 +52,6 @@ class ProfileState extends State<Profile> {
 
     DateTime timestamp = DateTime.now();
 
-    // print("The All bookmarked recipes is exist ^^^^^^^^^^^^^^^^");
     FirebaseFirestore.instance
         .collection("users")
         .doc(currentUser!.uid)
@@ -121,8 +120,6 @@ class ProfileState extends State<Profile> {
     );
   }
 
-  // Children with random heights - You can build your widgets of unknown heights here
-  // I'm just passing the context in case if any widgets built here needs  access to context based data like Theme or MediaQuery
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -146,40 +143,6 @@ class ProfileState extends State<Profile> {
                     ),
                   ),
                   //--------------------------------------
-
-                  // Container(
-                  //   margin:
-                  //       const EdgeInsets.only(bottom: 20, left: 100, right: 40),
-                  //   child: ElevatedButton(
-                  //       child: Center(
-                  //         child: Padding(
-                  //           padding: const EdgeInsets.only(left: 75),
-                  //           child: Row(
-                  //             children: [
-                  //               Center(
-                  //                 child: Padding(
-                  //                   padding: const EdgeInsets.symmetric(
-                  //                       vertical: 12, horizontal: 10),
-                  //                   child: Text(
-                  //                     "  Follow  ",
-                  //                     style: TextStyle(fontSize: 16),
-                  //                   ),
-                  //                 ),
-                  //               ),
-                  //             ],
-                  //           ),
-                  //         ),
-                  //       ),
-                  //       style: ButtonStyle(
-                  //         shape:
-                  //             MaterialStateProperty.all<RoundedRectangleBorder>(
-                  //                 RoundedRectangleBorder(
-                  //                     borderRadius: BorderRadius.circular(13))),
-                  //         backgroundColor:
-                  //             MaterialStateProperty.all(Color(0xFFeb6d44)),
-                  //       ),
-                  //       onPressed: () {}),
-                  // ),
 
                   Container(
                     margin: EdgeInsets.only(right: 270),
@@ -210,7 +173,7 @@ class ProfileState extends State<Profile> {
                     child: TabBarView(
                       children: [
                         //This list is the content of each tab.
-                        // ------------ list item 1 tab view bookmarks screen.
+                        // ------------ list item 1 tab
                         uId != null
                             ? MyRecipesScreen(
                                 userId: uId,
@@ -220,12 +183,12 @@ class ProfileState extends State<Profile> {
                               )
                             : CustomCircularLoader(),
 
-                        // ------------ list item 2 tab view bookmarks screen.
+                        // ------------ list item 2 tab
                         MyMealplanScreen(
                             day: "",
                             typeOfMeal: "",
                             isFromUserProfileView: false),
-                        // ------------ list item 3 tab view bookmarks screen.
+                        // ------------ list item 3 tab
 
                         BookmarkedRecipes(
                           isFromMealPlan: false,

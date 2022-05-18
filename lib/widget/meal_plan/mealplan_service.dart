@@ -11,7 +11,6 @@ class MealPlansService {
   static bool hasMealPlanCollection = false;
   static String chosenMealDay = 'SUN';
   static int countNumOfRecipes = 0;
-  // static String pinedMealPlanID = '';
 
   static deleteEmptyMealPlans() async {
     await firebaseFirestore
@@ -117,7 +116,6 @@ class MealPlansService {
 
   static Future updatePinConditionToTrue(String mealplanID) async {
     //and make all other mealplans the pin condition is false;
-    // pinedMealPlanID = mealplanID;
     await firebaseFirestore
         .collection("users")
         .doc(AppGlobals.userId)

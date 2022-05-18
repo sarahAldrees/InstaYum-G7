@@ -74,10 +74,6 @@ class RecipeImagePickerState extends State<RecipeImagePicker> {
       );
 // we make for loop to load many images
       for (Asset i in resultList) {
-        print("IMAGE");
-        print(i.name! + " " + i.getByteData().toString());
-        print("END OF NAME");
-
         setState(() {
           _isloading = true;
         });
@@ -100,19 +96,13 @@ class RecipeImagePickerState extends State<RecipeImagePicker> {
 
         UploadTask uploadTask = ref.putFile(imageFile);
         uploadTask.then((res) {
-          print('File Uploaded');
           res.ref.getDownloadURL().then((fileURL) {
-            // imagesURLs.add(fileURL);
-            print('here in image class ');
-            print(fileURL);
-            print('the id in image class is  ');
             // to add https://
             // to add the image
             imagesURLs.add(fileURL);
 // to remove the default image
             imagesURLs.remove(
                 "https://firebasestorage.googleapis.com/v0/b/instayum-f7a34.appspot.com/o/recpie_image%2FdefaultRecipeImage.png?alt=media&token=f12725db-646b-4692-9ccf-131a99667e43");
-            print("set state work now!");
           }).then((nothing) async {
             // nothing mean null, but null cause an error
             setState(() {
@@ -122,12 +112,8 @@ class RecipeImagePickerState extends State<RecipeImagePicker> {
         });
       }
     } on Exception catch (e) {
-      print("wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww");
       error = e.toString();
-      print(error);
-      print("wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww");
-
-      print('IMMMMAAAGGGGEEEEEE PIIIICCCKKKEERR IN RECIPE ERROR');
+      ;
     }
 
     // If the widget was removed from the tree while the asynchronous platform
@@ -147,7 +133,6 @@ class RecipeImagePickerState extends State<RecipeImagePicker> {
       body: Center(
         child: Column(
           children: <Widget>[
-            // Center(child: Text('Error: $_error')),
             Padding(padding: EdgeInsets.only(top: 15)),
             images.isNotEmpty
                 ? Container(
@@ -181,7 +166,6 @@ class RecipeImagePickerState extends State<RecipeImagePicker> {
                           ),
                           onTap: () {
                             var url = imagesURLs[i];
-                            print(url.toString());
                           },
                         );
                       },

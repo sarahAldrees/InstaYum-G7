@@ -38,7 +38,6 @@ class UserProfileViewState extends State<UserProfileView> {
 //getData() to get the data of users like username, image_url from database
   void getData() async {
     if (widget.userId != null) {
-      print('get User data ${widget.userId}');
       await FirebaseFirestore.instance
           .collection("users")
           .doc(widget.userId)
@@ -46,20 +45,17 @@ class UserProfileViewState extends State<UserProfileView> {
           .then((userData) {
         Map<String, dynamic> data = userData.data()!;
         user = UserModel.fromJson(data);
-        // isFollow = user.isFollowed!;
         userUsername = user.username;
         imageURL = user.imageUrl;
         uId = userData.id;
         if (AppGlobals.allFollowing.contains(userData.id)) {
           user.isFollowed = true;
         }
-        // print('userId: ' + AppGlobals.userId);
         return userData;
       });
     }
     isLoading = false;
     setState(() {});
-    print('get user followers and following..');
     // get user followers list
     await FirebaseFirestore.instance
         .collection('users')
@@ -89,8 +85,6 @@ class UserProfileViewState extends State<UserProfileView> {
     getData();
   }
 
-  // Children with random heights - You can build your widgets of unknown heights here
-  // I'm just passing the context in case if any widgets built here needs  access to context based data like Theme or MediaQuery
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -113,13 +107,12 @@ class UserProfileViewState extends State<UserProfileView> {
                     Map<String, dynamic>? data = doc.docs[0].data();
                     ReprtedAccount reprtedAccount =
                         ReprtedAccount.fromJson(data);
-                    print("------------------------kk-----kk------mk--------");
                     if (!reprtedAccount.user_already_reported!
                         .contains(AppGlobals.userId)) {
                       reprtedAccount.user_already_reported!
                           .add(AppGlobals.userId!);
 
-                      //       //-------show dailoge about reson----------------
+                      //-------show dailoge about reson----------------
                       showDialog<void>(
                         context: context,
                         barrierDismissible: false,
@@ -197,10 +190,7 @@ class UserProfileViewState extends State<UserProfileView> {
                                               primary: Color.fromARGB(
                                                   255, 82, 80, 80),
                                               backgroundColor: Colors.white,
-                                              //side: BorderSide(color: Colors.deepOrange, width: 1),
                                               elevation: 0,
-                                              //minimumSize: Size(100, 50),
-                                              //shadowColor: Colors.red,
                                               shape: RoundedRectangleBorder(
                                                   borderRadius:
                                                       BorderRadius.circular(
@@ -343,10 +333,7 @@ class UserProfileViewState extends State<UserProfileView> {
                       );
                       //-------------------1---------------------
 
-                      //-----------------------------------------------
                     } else {
-                      print("you are reported ");
-
                       //-------show dailoge about reson----------
                       showDialog<void>(
                         context: context,
@@ -694,20 +681,14 @@ class UserProfileViewState extends State<UserProfileView> {
                     ),
                     child: Center(
                       child: ElevatedButton(
-                          // child: Center(
                           child: Padding(
                             padding: const EdgeInsets.symmetric(vertical: 12),
-                            //     child: Row(
-                            //       children: [
                             child: Center(
                               child: Text(
                                 user.isFollowed == true ? 'Unfollow' : 'Follow',
                                 style: TextStyle(fontSize: 16),
                               ),
                             ),
-                            //       ],
-                            //     ),
-                            //   ),
                           ),
                           style: ButtonStyle(
                             shape: MaterialStateProperty.all<
@@ -758,9 +739,6 @@ class UserProfileViewState extends State<UserProfileView> {
                   DefaultTabController(
                     initialIndex: selectedTab,
                     length: 2,
-
-                    // allows you to build a list of elements that would be scrolled away till the body reached the top
-
                     child:
 
                         //------------------------------------------

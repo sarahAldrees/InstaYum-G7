@@ -15,22 +15,18 @@ class FollowUserService {
       String? imageUrl;
       String? pushToken;
 
-      print('followId: $followId');
       if (followId != null) {
         //------------get info of other user-------------
         DocumentSnapshot docSnapshot =
             await firebaseFirestore.collection('users').doc(followId).get();
 
         if (docSnapshot != null) {
-          print(' followUserData: ${docSnapshot.data()}');
           Map data = docSnapshot.data() as Map<String, dynamic>;
-          // email = data['email'];
           username = data['username'];
           imageUrl = data['image_url'];
           pushToken = data['pushToken'];
         }
         UserModel followUser = UserModel(
-          //email: email,
           userId: followId,
           username: username,
           imageUrl: imageUrl,
@@ -110,13 +106,6 @@ class FollowUserService {
           userId: currentUser.userId,
           imageUrl: currentUser.imageUrl,
         );
-
-        // ScaffoldMessenger.of(context).showSnackBar(
-        //   SnackBar(
-        //     content: Text('You are now following $username'),
-        //     backgroundColor: Colors.green,
-        //   ),
-        // );
       }
     } catch (e) {
       print('FollowUserService : $e');
@@ -175,12 +164,6 @@ class FollowUserService {
             .update({'isFollowed': false});
       }
 
-      // ScaffoldMessenger.of(context).showSnackBar(
-      //   SnackBar(
-      //     content: Text('Unfollowed successfully'),
-      //     backgroundColor: Colors.green,
-      //   ),
-      // );
 //----------------------------------------------------------------
       return true;
     } catch (e) {

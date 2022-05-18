@@ -39,10 +39,6 @@ class RecipeCardScreenState extends State<RecipeCardScreen> {
   static int numberOfRecipes = 0;
 
   void getRecipeObjects() {
-    print("ENTERD getRecipeObjects()");
-    print("99999999999999999999999999999999999999999");
-    // User user = firebaseAuth.currentUser;
-    // FirebaseFirestore.instance.collection("users").get()
     numberOfRecipes = 0;
 
     FirebaseFirestore.instance
@@ -50,8 +46,6 @@ class RecipeCardScreenState extends State<RecipeCardScreen> {
         .orderBy("position")
         .get()
         .then((snapshot) {
-      // snapshot.docs.shuffle();
-
       snapshot.docs.forEach((doc) {
         Map data = doc.data();
         Recipe recipe = Recipe.fromJson(data as Map<String, dynamic>);
@@ -62,9 +56,7 @@ class RecipeCardScreenState extends State<RecipeCardScreen> {
         String? img1 = recipe.img1;
         String? recipeID = recipe.recipeId;
 
-        // autherId = recipe.userId;
         bool public = recipe.isPublicRecipe ?? false;
-        // recipe_image_url = data['recipe_image_url'],
 
         if (public == true &&
             typeOfMeal == ChatBotState.userPreferredTypeOfMeal &&
@@ -99,7 +91,6 @@ class RecipeCardScreenState extends State<RecipeCardScreen> {
           recpiesList.add(
             Recipe(
               recipeId: doc.id,
-              //imageURL: recipe_image_url,
               recipeTitle: recipeName,
               typeOfMeal: typeOfMeal,
               category: category,
@@ -127,143 +118,10 @@ class RecipeCardScreenState extends State<RecipeCardScreen> {
     });
   }
 
-  //_____________________The down will be deleted soon_______________________________________________
-
-  // FirebaseFirestore.instance.collection("users").get().then((querySnapshot) {
-  //   querySnapshot.docs.shuffle();
-  //   querySnapshot.docs.forEach((result) {
-  //     FirebaseFirestore.instance
-  //         .collection("users")
-  //         .doc(result.id)
-  //         .collection("recipes")
-  //         .get()
-  //         .then((querySnapshot) {
-  //       querySnapshot.docs.forEach(
-  //         (doc) => {
-  //           ingredientsList = [],
-  //           dirctionsList = [],
-  //           imageUrlsList = [],
-  //           if (doc.data()['type_of_meal'] ==
-  //                   ChatBotState.userPreferredTypeOfMeal &&
-  //               doc.data()['category'] ==
-  //                   ChatBotState.userPreferredCategory &&
-  //               doc.data()['cuisine'] == ChatBotState.userPreferredCuisine &&
-  //               doc.data()['is_public_recipe'] &&
-  //               numberOfRecipes <= 2)
-  //             {
-  //               setState(() {
-  //                 print('the number of founded recipes');
-  //                 numberOfRecipes++;
-  //                 print(numberOfRecipes);
-  //               }),
-
-  //               lengthOfIngredients = doc.data()['length_of_ingredients'],
-  //               lengthOfDirections = doc.data()['length_of_directions'],
-  //               lengthOfImages = doc.data()['image_count'],
-
-  //               for (int i = 0; i < lengthOfIngredients; i++)
-  //                 {
-  //                   {
-  //                     ingredientsList.add(
-  //                       doc.data()['ing${i + 1}'],
-  //                     ),
-  //                   }
-  //                 },
-  //               for (int i = 0; i < lengthOfDirections; i++)
-  //                 {
-  //                   dirctionsList.add(
-  //                     doc.data()['dir${i + 1}'],
-  //                   ),
-  //                 },
-  //               for (int i = 0; i < lengthOfImages; i++)
-  //                 {
-  //                   imageUrlsList.add(
-  //                     doc.data()['img${i + 1}'],
-  //                   ),
-  //                 },
-  //               // recipe_image_url = doc.data()['recipe_image_url'],
-  //               widget.autherId = doc.data()['user_id'],
-  //               recpiesList.add(
-  //                 Recipe(
-  //                   autherId: doc.data()['user_id'],
-  //                   id: doc.id,
-  //                   //imageURL: recipe_image_url,
-  //                   recipeName: doc.data()['recipe_title'],
-  //                   typeOfMeal: doc.data()['type_of_meal'],
-  //                   category: doc.data()['category'],
-  //                   cuisine: doc.data()['cuisine'],
-  //                   mainImageURL: doc.data()["img1"],
-  //                   dirctions: dirctionsList,
-  //                   ingredients: ingredientsList,
-  //                   imageUrls: imageUrlsList,
-  //                 ),
-  //               ),
-  //             }
-  //           else
-  //             {
-  //               print(
-  //                   "11111111111111111111111111111111111111111111111111111111111111111"),
-  //               print(numberOfRecipes),
-  //               print(
-  //                   "In recipe card screen we did not find any suitable recipe"),
-  //             }
-  //         },
-  //       );
-  //       setState(() {
-  //         if (numberOfRecipes == 0)
-  //           setState(() {
-  //             finalText = "There are no suitable recipes";
-  //           });
-  //         else
-  //           setState(() {
-  //             finalText = "Suggested recipes are above";
-  //           });
-  //       });
-  //     });
-  //   });
-  // });
-  //}
-
   @override
   Widget build(BuildContext context) {
-    // return ListView(
-    //   scrollDirection: Axis.vertical,
-    //   shrinkWrap: true,
-    //   // crossAxisCount: 1, // 2 items in each row
-    //   //crossAxisSpacing: 20,
-    //   padding: EdgeInsets.all(20),
-    //   // mainAxisSpacing: 10,
-    //   // map all available cookbooks and list them in Gridviwe.
-    //   children: recpiesList
-    //       .map((e) => RecipeCard(
-    //           //key,
-    //           // widget.autherName,
-    //           // widget.autherImage,
-    //           widget.autherId,
-    //           e.id,
-    //           e.recipeName,
-    //           e.mainImageURL,
-    //           e.typeOfMeal,
-    //           e.category,
-    //           e.cuisine,
-    //           e.ingredients,
-    //           e.dirctions,
-    //           e.imageUrls))
-    //       .toList(),
-    // );
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-
-      //   //appBar: AppBar(
-      //   // title: Row(
-      //   //   mainAxisAlignment: MainAxisAlignment.center,
-      //   //   children: [
-      //   //     Icon(Icons.restaurant_menu),
-      //   //     SizedBox(width: 10),
-      //   //     Text('Food Recipes'),
-      //   //   ],
-      //   // ),
-      //   // ),
       children: [
         for (Recipe recipe in recpiesList)
           RecipeCard(
@@ -282,12 +140,7 @@ class RecipeCardScreenState extends State<RecipeCardScreen> {
             Container(
               margin: const EdgeInsets.only(right: 10.0),
               child: CircleAvatar(
-                child:
-                    // Padding(
-                    //   padding: const EdgeInsets.all(5),
-                    //child:
-                    Image.asset('assets/images/InstaYum_chatbot.png'),
-                // ),
+                child: Image.asset('assets/images/InstaYum_chatbot.png'),
                 backgroundColor: Colors.white,
                 radius: 30,
               ),
@@ -295,10 +148,7 @@ class RecipeCardScreenState extends State<RecipeCardScreen> {
             Container(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                // mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
-                  //            Text(this.name,
-                  //                style: TextStyle(fontWeight: FontWeight.bold)),
                   Card(
                     elevation: 3,
                     shape: RoundedRectangleBorder(

@@ -153,8 +153,7 @@ class _RestPasswordState extends State<RestPassword> {
                               color: Theme.of(context).accentColor),
                         ),
                         TextFormField(
-                          key: ValueKey(
-                              "email"), // علشان اذا حولت من لوق ان الى ساين اب ما يتحول الوزرنيم الى باسوورد
+                          key: ValueKey("email"),
                           validator: (value) {
                             if (value!.isEmpty) {
                               return "Email should not be empty";

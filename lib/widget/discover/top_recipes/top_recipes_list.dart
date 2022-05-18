@@ -27,7 +27,6 @@ class TopWeeklyRecipes extends StatelessWidget {
               ? SizedBox(
                   height: AppGlobals.screenHeight * 0.3,
                   child: ListView.builder(
-                    // reverse: true,
                     shrinkWrap: true,
                     scrollDirection: Axis.horizontal,
                     physics: const BouncingScrollPhysics(),
@@ -39,11 +38,6 @@ class TopWeeklyRecipes extends StatelessWidget {
                         recipeId: recipes[index].recipeId,
                         image: recipes[index].img1,
                         onTap: () {
-                          print("66666666666666666666666666666666666666666");
-                          print(recipes[index].recipeId);
-                          print(recipes[index].recipeTitle);
-                          print("66666666666666666666666666666666666666666");
-
                           Navigator.push(
                               context,
                               MaterialPageRoute(

@@ -249,10 +249,6 @@ class MealPlanCardState extends State<MealPlanCard> {
   }
 
   getMealPlanRecipes() {
-    print("####################################");
-    print(widget.mealplanID);
-    print(widget.mealplanTitle);
-    print("####################################");
     final FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
     String recipeID = "";
     List<String> oneDayMeal = [];
@@ -270,15 +266,8 @@ class MealPlanCardState extends State<MealPlanCard> {
           recipeID = "";
           if (snapshot.exists) {
             recipeID = snapshot.data()!["recipe_id"];
-            print("2222222222222222222222222222222222222");
-            print("recipe id is: ");
-            print(recipeID);
           }
-          // }).then((value) async {
           if (recipeID != "") {
-            // oneDayMeal = getOneDayMeals(recipeID, typeOfMeals[j]);
-            print("333333333333333333333333333333333333333");
-            print("recipe id is not null");
             FirebaseFirestore.instance
                 .collection("recipes")
                 .doc(recipeID)
@@ -298,16 +287,11 @@ class MealPlanCardState extends State<MealPlanCard> {
                       case "Breakfast":
                         {
                           sunMealPlan[0] = oneDayMeal;
-                          print("4444444444444444444444444444444");
-                          print("Sunday breakfast");
-                          print(oneDayMeal[3]);
                         }
                         break;
                       case "Lunch":
                         {
                           sunMealPlan[1] = oneDayMeal;
-                          print("4444444444444444444444444444444");
-                          print("Sunday Lunch");
                         }
                         break;
                       case "Dinner":
@@ -324,12 +308,6 @@ class MealPlanCardState extends State<MealPlanCard> {
                       case "Breakfast":
                         {
                           monMealPlan[0] = oneDayMeal;
-                          print("4444444444444444444444444444444");
-                          print("Monday Breakfast is ");
-                          print(monMealPlan[0]);
-
-                          print("onDayMeal in monday Breakfast is: ");
-                          print(oneDayMeal);
                         }
                         break;
                       case "Lunch":
@@ -900,7 +878,7 @@ class MealPlanCardState extends State<MealPlanCard> {
         Container(
       margin: EdgeInsets.symmetric(vertical: 0, horizontal: 4),
       child:
-          // build card of the meal plan name and the button .
+          // build card of the meal plan name and the button.
           GestureDetector(
         onTap: () {
           Navigator.push(
@@ -958,34 +936,9 @@ class MealPlanCardState extends State<MealPlanCard> {
                               color: Colors.white,
                               splashColor: Colors.white,
                               onPressed: () {
-                                print("######################################");
-                                print(widget.mealplanID);
-                                print("######################################");
-
                                 appPages()
                                     .showAlertDialogPinConfirmationMessage(
                                         context, widget.mealplanID);
-
-                                // MealPlansService.updatePinConditionToTrue(
-                                //     widget.mealplanID);
-
-                                //();
-                                // Future.delayed(const Duration(milliseconds: 500),
-                                //     () {
-                                //   // MealPlansService.updatePinCondition(
-                                //   //     widget.mealplanID, true);
-
-                                //   setState(() {});
-                                // });
-                                // setState(() {
-                                //   widget.isPinned = true;
-                                // });
-
-                                // Navigator.push(
-                                //     context,
-                                //     MaterialPageRoute(
-                                //         builder: (context) =>
-                                //             MyMealplanScreen("", "")));
                               },
                             )
                           : IconButton(
@@ -998,43 +951,10 @@ class MealPlanCardState extends State<MealPlanCard> {
                               onPressed: () {
                                 showAlertDialogUnpinConfirmationMessage(
                                     context);
-                                // MealPlansService.updatePinConditionToFalse(
-                                //     widget.mealplanID);
-                                // setState(() {
-                                //   widget.isPinned = false;
-                                // });
                               },
                             )
-                  // ElevatedButton(
-                  //    //child:
-                  //   // Text(
-                  //   //   "View Plan",
-                  //   //   style: TextStyle(color: Color(0xFFeb6d44)),
-                  //   // ),
-                  //   // style: ElevatedButton.styleFrom(
-                  //   //   primary: Colors.white,
-                  //   // ),
-                  //   onPressed: () {
-                  //     // Navigator.push(
-                  //     //   context,
-                  //     //   MaterialPageRoute(
-                  //     //       builder: (context) => ViewMealplan(
-                  //     //             mealplanTitle: mealplanTitle,
-                  //     //             mealplanID: mealplanID,
-                  //     //             sunMealPlan: sunMealPlan,
-                  //     //             monMealPlan: monMealPlan,
-                  //     //             tueMealPlan: tueMealPlan,
-                  //     //             wedMealPlan: wedMealPlan,
-                  //     //             thuMealPlan: thuMealPlan,
-                  //     //             friMealPlan: friMealPlan,
-                  //     //             satMealPlan: satMealPlan,
-                  //     //           )),
-                  //     // );
-                  //   },
-                  // ),
                 ]),
           ),
-          // change z-axis place of card
           elevation: 3,
           shadowColor: Colors.black,
           margin: EdgeInsets.all(20),
