@@ -6,7 +6,7 @@ import 'package:instayum/widget/auth/auth_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:instayum/main_pages.dart';
 import 'package:flutter/services.dart';
-// import 'package:instayum/widget/admin/admin_home_page.dart';
+
 import 'package:instayum/widget/follow_and_notification/notification_service.dart';
 import 'package:overlay_support/overlay_support.dart';
 
@@ -67,20 +67,6 @@ class _MainState extends State<Main> {
               // the onAuthStateChanged such as change when the user creat new account or login
               home:
                   firebaseAuth.currentUser != null ? MainPages() : AuthScreen(),
-
-              // StreamBuilder(
-              //     stream: FirebaseAuth.instance.authStateChanges(),
-              //     builder: (context, userSnapshot) {
-              //       if (userSnapshot.hasData) {
-              //         // it mean he is authintecated
-              //         if (AuthScreenState.isAdmin)
-              //           return AdminHomePage();
-              //         else
-              //           return MainPages();
-              //       } else {
-              //         return AuthScreen();
-              //       } //otherwise he does not have an accoun and return him to authScreen
-              //     }),
             );
           }),
     );

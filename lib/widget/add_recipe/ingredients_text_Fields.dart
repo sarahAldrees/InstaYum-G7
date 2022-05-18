@@ -88,23 +88,4 @@ class IngredientsTextFieldsState extends State<IngredientsTextFields> {
       });
     }
   }
-
-  //____________________________________________________________________________
-  //____________________________________________________________________________
-  //____________________________________________________________________________
-
-//The down code is old and will be deleted
-
-  // Future toggleRecording() {
-  //   if (this.mounted)
-  //     setState(() {
-  //       isListening1 = !isListening1;
-  //     });
-  //   SpeechApi.toggleRecording(
-  //       onResult: (text) =>
-  //           setState(() => this._ingredientController.text = text),
-  //       onListening: (isListening) {
-  //         setState(() => this.isListening = isListening);
-  //       });
-  // }
 }

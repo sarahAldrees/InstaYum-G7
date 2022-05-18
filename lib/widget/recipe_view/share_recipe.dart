@@ -6,7 +6,7 @@ import 'package:share_plus/share_plus.dart';
 class ShareRecipeService {
   static const String appName = 'InstaYum';
   static const String packageName = 'com.example.instayum';
-  //static const String appStoreId = '123456789';
+
   static const String deepLinkUrlPrefix =
       'https://instayum.page.link'; //domain name that uses the dynamic links.
 
@@ -23,16 +23,10 @@ class ShareRecipeService {
     final DynamicLinkParameters parameters = DynamicLinkParameters(
       uriPrefix: deepLinkUrlPrefix,
       link: Uri.parse('$deepLinkUrlPrefix/?recipeId=$recipeId&userId=$userId'),
-      // 'https://${ deepLinkName}/?recipeId=$userId&userId=$userId'),
       androidParameters: const AndroidParameters(
         packageName: packageName,
         minimumVersion: 1,
       ),
-      // iosParameters: const IOSParameters(
-      //   bundleId: packageName,
-      //   appStoreId: appStoreId,
-      //   minimumVersion: '1',
-      // ),
     );
 
     final ShortDynamicLink dynamicUrl =

@@ -267,19 +267,12 @@ class BookmarkedRecipesState extends State<BookmarkedRecipes> {
       crossAxisCount: 2, // 2 items in each row
       padding: EdgeInsets.all(25),
       // map all available cookbooks and list them in Gridviwe.
-      children: Cookbooks_List.map((c) =>
-              //if (CookbookItem.isBrowse) {
-              CookbookItem(
-                  // Key,
-                  c.id,
-                  c.imageURLCookbook,
-                  widget.isFromMealPlan,
-                  widget.mealDay,
-                  widget.mealPlanTypeOfMeal
-                  // c.colorOfCircule=Colors.grey.shade300,
-                  )
-          // }
-          ).toList(),
+      children: Cookbooks_List.map((c) => CookbookItem(
+          c.id,
+          c.imageURLCookbook,
+          widget.isFromMealPlan,
+          widget.mealDay,
+          widget.mealPlanTypeOfMeal)).toList(),
     );
   }
 
@@ -295,38 +288,9 @@ class BookmarkedRecipesState extends State<BookmarkedRecipes> {
               maxLines: 3,
             ),
           ),
-
           backgroundColor: Colors.white,
           elevation: 0,
-          // shape:
-          //     Border(bottom: BorderSide(color: Color(0xFFeb6d44), width: 4)),
-          // title: Text("hi"),
           actions: [
-            // TextButton(
-            //   child: Text(
-            //     "Cancel",
-            //     style: TextStyle(fontSize: 16),
-            //   ),
-            //   style: TextButton.styleFrom(
-            //     primary: Color(0xFFeb6d44),
-            //     backgroundColor: Colors.white,
-            //     //side: BorderSide(color: Colors.deepOrange, width: 1),
-            //     elevation: 0,
-            //     //minimumSize: Size(100, 50),
-            //     //shadowColor: Colors.red,
-            //     shape: RoundedRectangleBorder(
-            //         borderRadius: BorderRadius.circular(10)),
-            //   ),
-            //   onPressed: () {
-            //     setState(() {
-            //       cookbook_item.isBrowse = true;
-            //     });
-            //     Navigator.pop(context);
-            //   },
-            // ),
-            // SizedBox(
-            //   width: 10,
-            // ),
             TextButton(
               child: Text(
                 "Save",
@@ -335,10 +299,7 @@ class BookmarkedRecipesState extends State<BookmarkedRecipes> {
               style: TextButton.styleFrom(
                 primary: Color(0xFFeb6d44),
                 backgroundColor: Colors.white,
-                //side: BorderSide(color: Colors.deepOrange, width: 1),
                 elevation: 0,
-                //minimumSize: Size(100, 50),
-                //shadowColor: Colors.red,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10)),
               ),
@@ -361,8 +322,6 @@ class BookmarkedRecipesState extends State<BookmarkedRecipes> {
                       .then((document) {
                     b2.clear();
                     if (document != null) {
-                      // print('rating data: ${document.data()}');
-                      //usersAlredyRate.clear();
                       Map<String, dynamic>? data = document.data();
 
                       if (data != null) {
@@ -408,21 +367,8 @@ class BookmarkedRecipesState extends State<BookmarkedRecipes> {
                     .collection("cookbooks")
                     .doc("All bookmarked recipes")
                     .update({"bookmarkedList": FieldValue.arrayUnion(b2)});
-                // FirebaseFirestore.instance
-                //     .collection("users")
-                //     .doc(FirebaseAuth.instance.currentUser!.uid)
-                //     .collection("cookbooks")
-                //     .doc("All bookmarked recipes")
-                //     .collection("bookmarked_recipe")
-                //     .doc(widget.recipeId)
-                //     .set({
-                //   // "autherId": widget.autherId,
-                //   "recipeId": widget.recipeId,
-                // });
-                // TopRecipeService().addToWeeklyTopBookmarks(
-                //     userId: userId, recipeId: widget.recipeId);
+
                 CookbookItem.isBrowse = true;
-                //RecipeViewState.ishappen = false;
 
                 BookmarkedRecipes.Saved = false;
                 CookbookItem.selectedCookbooks.clear();

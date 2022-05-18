@@ -14,11 +14,6 @@ import 'constant/app_globals.dart';
 import 'widget/meal_plan/meal_plans.dart';
 import 'widget/profile/profile.dart';
 
-//*********************************************************************
-//********************************************************************
-//********************************************************************
-// change the name to Appbar
-//********************************************************************
 //********************************************************************
 class MainPages extends StatefulWidget {
   static int? notificationCounter = 0;
@@ -337,7 +332,6 @@ class appPages extends State<MainPages> {
           style: TextStyle(color: Colors.white),
         ),
         onPressed: () {
-          // print("Set state in ok button work");
           //to remove the progress bar
           addRecipe.isloading = false;
           indexOfPages = 4;
@@ -529,9 +523,8 @@ class appPages extends State<MainPages> {
         );
       },
     );
-    // set up the AlertDialog
+
     AlertDialog alert = AlertDialog(
-      //backgroundColor: Theme.of(context).backgroundColor,
       title: Center(
           child: Text(
         "Log out",

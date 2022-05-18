@@ -45,10 +45,9 @@ class _DirectionsTextFieldsState extends State<DirectionsTextFields> {
               color: Color(0xFFeb6d44),
             ),
           ),
-          hintText: 'Enter a direction'), // errorText: _errorText
+          hintText: 'Enter a direction'),
       onChanged: (value) {
         addRecipe.userDirections[widget.index] = _directionController!.text;
-        // setState(() {}); //used to refresh the screen //OLD
       },
       validator: (value) {
         if (value!.trim().isEmpty) return 'Please enter a direction';
@@ -75,7 +74,6 @@ class _DirectionsTextFieldsState extends State<DirectionsTextFields> {
                   _directionController!.text = value.recognizedWords;
                   addRecipe.userDirections[widget.index] =
                       value.recognizedWords;
-                  // onResult!(value.recognizedWords);
                 }));
       }
     } else {
@@ -85,23 +83,4 @@ class _DirectionsTextFieldsState extends State<DirectionsTextFields> {
       });
     }
   }
-
-  //____________________________________________________________________________
-  //____________________________________________________________________________
-  //____________________________________________________________________________
-
-//The down code is old and will be deleted
-
-  // Future toggleRecording() {
-  //   if (this.mounted)
-  //     setState(() {
-  //       isListening1 = !isListening1;
-  //     });
-  //   SpeechApi.toggleRecording(
-  //       onResult: (text) =>
-  //           setState(() => this._directionController.text = text),
-  //       onListening: (isListening) {
-  //         setState(() => this.isListening = isListening);
-  //       });
-  // }
 }

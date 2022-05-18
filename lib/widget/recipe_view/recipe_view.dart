@@ -624,21 +624,11 @@ class _RecipeViewState extends State<RecipeView> {
                                   recipeID: widget.recipeid)
                               .then((value) => {
                                     isAddRecipeToMealPlanLoading = false,
-
                                     AddNewMealPlanState.activeStepIndex = 1,
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) => MainPages())),
-                                    // Navigator.pushAndRemoveUntil(
-                                    //   context,
-                                    //   MaterialPageRoute(
-                                    //       builder: (context) =>
-                                    //           AddNewMealPlan("", "")),
-                                    //   (Route<dynamic> route) => false,
-                                    // ),
-                                    // Navigator.of(context)
-                                    //     .popUntil((_) => count++ >= 2)
                                   });
 
                           AddNewMealPlanState.getRecipeIDAfterAddRecipe(
@@ -752,7 +742,6 @@ class _RecipeViewState extends State<RecipeView> {
     //----titles of buttons that inside floting button-----
 
     return Scaffold(
-      // ignore: unnecessary_new
       appBar: new AppBar(
         title: Text(recipeName ?? ''),
         backgroundColor: Color(0xFFeb6d44),
@@ -764,7 +753,6 @@ class _RecipeViewState extends State<RecipeView> {
                 IconButton(
                     icon: Icon(
                       Icons.ios_share_outlined,
-                      //  Icons.ios_share,
                       size: 26,
                     ),
                     onPressed: () {
@@ -914,12 +902,7 @@ class _RecipeViewState extends State<RecipeView> {
                         ),
                       ),
                       //----------------------------user name and image--------------------
-                      // Positioned(
-                      //   left: 10,
-                      //   top: 10,
-                      // child:
 
-                      // ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
@@ -934,7 +917,7 @@ class _RecipeViewState extends State<RecipeView> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            //-------------type of meal )-----------
+                            //-------------type of meal -----------
                             Container(
                               child: Row(
                                 children: [
@@ -1010,14 +993,10 @@ class GetRatingState extends State<GetRating> {
   getData() async {
     //to get previous rating info from firestor
     await FirebaseFirestore.instance
-        // .collection("users")
-        // .doc(widget._autherId)
         .collection("recipes")
         .doc(widget._recipeId)
         .collection("rating")
         .doc("recipeRating")
-        // .snapshots()
-        // .listen((userData) {
         .get()
         .then((document) {
       Map data = document.data()!;

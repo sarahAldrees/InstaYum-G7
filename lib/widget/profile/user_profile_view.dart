@@ -491,10 +491,7 @@ class UserProfileViewState extends State<UserProfileView> {
                                             primary:
                                                 Color.fromARGB(255, 82, 80, 80),
                                             backgroundColor: Colors.white,
-                                            //side: BorderSide(color: Colors.deepOrange, width: 1),
                                             elevation: 0,
-                                            //minimumSize: Size(100, 50),
-                                            //shadowColor: Colors.red,
                                             shape: RoundedRectangleBorder(
                                                 borderRadius:
                                                     BorderRadius.circular(10)),
@@ -688,10 +685,7 @@ class UserProfileViewState extends State<UserProfileView> {
                       ),
                     ],
                   ),
-                  // Padding(
-                  //   padding: EdgeInsets.only(left: 11),
-                  //   child:
-                  // ),
+
                   //-------------- follow button-----------
                   Container(
                     margin: const EdgeInsets.only(
@@ -751,55 +745,14 @@ class UserProfileViewState extends State<UserProfileView> {
                                 );
                               }
                             }
-                          }
-                          //------
-// async {
-//                     // print('UserId: $_userid ${AppGlobals.userId}');
-//                     if (widget.isFollowing == false) {
-//                       //----------Add user in globals following list----------
-//                       bool exist = AppGlobals.allFollowing.contains(uid);
-//                       if (!exist) AppGlobals.allFollowing.add(uid);
-
-//                       setState(() {
-//                         // user.isFollowed = true;
-//                         widget.users[index].isFollowed = true;
-//                       });
-//                       //-------------to adding user to followers list----------------
-//                       await followUserService.followUser(
-//                         context,
-//                         followId: uid,
-//                       );
-//                     }
-//                   },
-
-                          //------
-
-                          ),
+                          }),
                     ),
                   ),
 //------------------------------------------
                   Padding(
                       padding: EdgeInsets.only(top: 6),
                       child: Divider(color: Colors.grey)),
-                  // User recipes heading
-                  // Row(
-                  //   children: [
-                  //     Padding(
-                  //       padding: const EdgeInsets.all(8.0),
-                  //       child: Icon(Icons.assignment_outlined),
-                  //     ),
-                  //     Text(
-                  //       "${userUsername ?? ''}\'s recipes",
-                  //     )
-                  //   ],
-                  // ),
 
-                  // //Showing user recipes
-                  // Expanded(
-                  //   child: uId != null
-                  //       ? MyRecipesScreen(userId: uId)
-                  //       : CustomCircularLoader(),
-                  // ),
 //=========================================NEW DESIGN=====================================
 
                   DefaultTabController(
@@ -808,28 +761,7 @@ class UserProfileViewState extends State<UserProfileView> {
 
                     // allows you to build a list of elements that would be scrolled away till the body reached the top
 
-                    // You tab view goes here and its bar view
-                    // child: Column(
-                    //   children: <Widget>[
                     child:
-
-                        //Container(
-                        //   child: Row(
-                        //     children: [
-                        //       buildImage(),
-                        //       if (uId != null) FollowersNumbers(userId: uId),
-                        //     ],
-                        //   ),
-                        // ),
-
-                        // Container(
-                        //   margin: EdgeInsets.only(right: 270),
-                        //   child: Text(
-                        //     "@${userUsername ?? ''}",
-                        //     style:
-                        //         TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-                        //   ),
-                        // ),
 
                         //------------------------------------------
 
