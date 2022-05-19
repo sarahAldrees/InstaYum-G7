@@ -149,6 +149,7 @@ class AuthScreenState extends State<AuthScreen> {
         SnackBar(
             content: Text(message), backgroundColor: Theme.of(ctx).errorColor),
       );
+      print(message);
     } on FirebaseAuthException catch (error) {
       setState(() {
         _isLoading = false;
@@ -186,6 +187,7 @@ class AuthScreenState extends State<AuthScreen> {
           );
       }
     } catch (error) {
+      print('catch #3');
       if (this.mounted) {
         // check whether the state object is in tree
         setState(() {
@@ -193,11 +195,9 @@ class AuthScreenState extends State<AuthScreen> {
         });
       }
       if (!(error is FirebaseAuthException)) {
-        print('message in catch3:');
         print(
             error.toString()); // this is the actual error that you are getting
       }
-      print('catch #3');
     }
   }
 
