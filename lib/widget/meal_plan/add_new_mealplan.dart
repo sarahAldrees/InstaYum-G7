@@ -761,8 +761,6 @@ class AddNewMealPlanState extends State<AddNewMealPlan> {
                               }
 
                               MealPlansService.makePinnedMealplanAlwaysUp();
-
-                              print(MealPlansService.countNumOfRecipes);
                             } else {
                               Flushbar(
                                 backgroundColor: Theme.of(context).errorColor,

@@ -510,7 +510,7 @@ class addRecipe extends State<AddRecipePage> {
                 children: <Widget>[
                   Container(
                     width: double.infinity,
-                    height: _isPublic ? 340 : 300,
+                    height: _isPublic ? 365 : 300,
                     margin: EdgeInsets.fromLTRB(10, 15, 30, 10),
                     padding: EdgeInsets.only(bottom: 10, top: 30),
                     decoration: BoxDecoration(
@@ -674,7 +674,7 @@ class addRecipe extends State<AddRecipePage> {
                                     const EdgeInsets.only(left: 15, right: 8),
                                 child: Center(
                                   child: Text(
-                                      "Anyone who saves your public recipe will be able to keep it even if you delete it.",
+                                      "Anyone who saves your public recipe will be able to keep it even if you delete it.\nHowever, your information and recipe images will no longer be associated with the recipe.",
                                       style: TextStyle(
                                           color: Colors.red,
                                           fontWeight: FontWeight.bold)),

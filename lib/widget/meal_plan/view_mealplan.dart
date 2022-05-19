@@ -537,7 +537,6 @@ class ViewMealplanState extends State<ViewMealplan> {
   }
 //-----------------------------------------------------Delete the meal plan-------------------------
 
-  //----------------------------------DELETE COOKBOOK-----------------------------
   showAlertDialogDeleteMealplan(BuildContext context) {
     // set up the button
     Widget yesButton = RaisedButton(

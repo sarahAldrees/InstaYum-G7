@@ -3,7 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:instayum/widget/auth/reset_password.dart';
-import 'package:instayum/widget/auth/terms_of_services.dart';
+
 import 'package:instayum/widget/pickers/user_image_picker.dart';
 
 class AuthForm extends StatefulWidget {
@@ -121,31 +121,6 @@ class _AuthFormState extends State<AuthForm> {
       // return true when in login page
       return true;
     }
-  }
-
-  Widget condtions() {
-    TextStyle defaultStyle = TextStyle(color: Colors.grey, fontSize: 14.0);
-    TextStyle linkStyle = TextStyle(
-      color: Color(0xFFeb6d44),
-    );
-    return RichText(
-      text: TextSpan(
-        style: defaultStyle,
-        children: <TextSpan>[
-          TextSpan(text: 'By clicking Sign Up, you agree to our '),
-          TextSpan(
-              text: 'Terms of Service',
-              style: linkStyle,
-              recognizer: TapGestureRecognizer()
-                ..onTap = () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => TermsOfService()),
-                  );
-                }),
-        ],
-      ),
-    );
   }
 
   @override

@@ -269,7 +269,6 @@ class _SearchPageState extends State<SearchPage> {
             List<String> _searchIngredients =
                 ingredientsList.toLowerCase().split(',');
 
-            print(_searchIngredients.length);
             var count = 0;
             //search by each ingredient
 
