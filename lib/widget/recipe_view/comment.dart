@@ -409,9 +409,11 @@ class CommentListState extends State<CommentList> {
                                   child: Column(
                                     children: [
                                       TextButton(
-                                        child: Text(
-                                          "Hurting others or bullying",
-                                          style: TextStyle(fontSize: 16),
+                                        child: Center(
+                                          child: Text(
+                                            "Hurting others or bullying",
+                                            style: TextStyle(fontSize: 16),
+                                          ),
                                         ),
                                         style: TextButton.styleFrom(
                                           primary:
@@ -673,9 +675,11 @@ class CommentListState extends State<CommentList> {
                                 child: Column(
                                   children: [
                                     TextButton(
-                                      child: Text(
-                                        "Hurting others or bullying",
-                                        style: TextStyle(fontSize: 16),
+                                      child: Center(
+                                        child: Text(
+                                          "Hurting others or bullying",
+                                          style: TextStyle(fontSize: 16),
+                                        ),
                                       ),
                                       style: TextButton.styleFrom(
                                         primary:

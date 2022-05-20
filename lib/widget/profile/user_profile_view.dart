@@ -146,9 +146,11 @@ class UserProfileViewState extends State<UserProfileView> {
                                       child: Column(
                                         children: [
                                           TextButton(
-                                            child: Text(
-                                              "Hurting others or bullying",
-                                              style: TextStyle(fontSize: 16),
+                                            child: Center(
+                                              child: Text(
+                                                "Hurting others or bullying",
+                                                style: TextStyle(fontSize: 16),
+                                              ),
                                             ),
                                             style: TextButton.styleFrom(
                                               primary: Color.fromARGB(
@@ -430,9 +432,11 @@ class UserProfileViewState extends State<UserProfileView> {
                                     child: Column(
                                       children: [
                                         TextButton(
-                                          child: Text(
-                                            "Hurting others or bullying",
-                                            style: TextStyle(fontSize: 16),
+                                          child: Center(
+                                            child: Text(
+                                              "Hurting others or bullying",
+                                              style: TextStyle(fontSize: 16),
+                                            ),
                                           ),
                                           style: TextButton.styleFrom(
                                             primary:
