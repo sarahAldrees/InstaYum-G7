@@ -267,8 +267,80 @@ class _RecipeViewState extends State<RecipeView> {
                         ),
                       ),
                       onPressed: () {
-                        deletFromAllCookbooks();
                         Navigator.pop(context);
+                        //---------------------------------------------------
+                        //deletFromAllCookbooks();
+                        showDialog<void>(
+                          context: context,
+                          barrierDismissible: false,
+                          builder: (context) {
+                            return AlertDialog(
+                              shape: RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(8)),
+                              ),
+                              title: Center(
+                                child: Text(
+                                  'Remove bookmarked recipe',
+                                  style: TextStyle(
+                                      fontSize: 19,
+                                      color: Theme.of(context).accentColor),
+                                ),
+                              ),
+                              content: Text(
+                                'Are you sure to remove the recipe from all cookbooks?',
+                                style: TextStyle(fontSize: 16),
+                              ),
+                              actions: [
+                                Center(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      RaisedButton(
+                                        color: Colors.white,
+                                        shape: RoundedRectangleBorder(
+                                          side: BorderSide(
+                                              color:
+                                                  Theme.of(context).accentColor,
+                                              width: 2),
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                        ),
+                                        child: Text(
+                                          "No",
+                                          style: TextStyle(
+                                            color:
+                                                Theme.of(context).accentColor,
+                                          ),
+                                        ),
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                      ),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      RaisedButton(
+                                        color: Color(0xFFeb6d44),
+                                        child: Text(
+                                          "Yes",
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        onPressed: () {
+                                          deletFromAllCookbooks();
+                                          Navigator.pop(context);
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                        //------------------------------------------------------
                       },
                     ),
                     RaisedButton(
@@ -285,8 +357,79 @@ class _RecipeViewState extends State<RecipeView> {
                         ),
                       ),
                       onPressed: () {
-                        deletFromThisCookbook();
                         Navigator.pop(context);
+                        //----------------------------------------------
+                        showDialog<void>(
+                          context: context,
+                          barrierDismissible: false,
+                          builder: (context) {
+                            return AlertDialog(
+                              shape: RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(8)),
+                              ),
+                              title: Center(
+                                child: Text(
+                                  'Remove bookmarked recipe',
+                                  style: TextStyle(
+                                      fontSize: 19,
+                                      color: Theme.of(context).accentColor),
+                                ),
+                              ),
+                              content: Text(
+                                'Are you sure to remove the recipe from ${widget.cookbook}',
+                                style: TextStyle(fontSize: 16),
+                              ),
+                              actions: [
+                                Center(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      RaisedButton(
+                                        color: Colors.white,
+                                        shape: RoundedRectangleBorder(
+                                          side: BorderSide(
+                                              color:
+                                                  Theme.of(context).accentColor,
+                                              width: 2),
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                        ),
+                                        child: Text(
+                                          "No",
+                                          style: TextStyle(
+                                            color:
+                                                Theme.of(context).accentColor,
+                                          ),
+                                        ),
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                      ),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      RaisedButton(
+                                        color: Color(0xFFeb6d44),
+                                        child: Text(
+                                          "Yes",
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        onPressed: () {
+                                          deletFromThisCookbook();
+                                          Navigator.pop(context);
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                        //-----------------------------------------------------
                       },
                     ),
                     RaisedButton(
