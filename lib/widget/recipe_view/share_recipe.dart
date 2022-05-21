@@ -35,7 +35,7 @@ class ShareRecipeService {
 
     Future.delayed(Duration.zero, () {
       Share.share(
-          "Check out this recipe.👇\n$_link \n\n------------------------------------------------\nRecipe name:  $title. \n\nIngredients: \n$ingredients \n\n Dirctions: \n$dirctions \n ");
+          " Visit the recipe in instaYum application :👇\n$_link \n\n------------------------------------------------\nRecipe name:  $title. \n\nIngredients: \n$ingredients \n\n Dirctions: \n$dirctions \n ");
     });
     return _link;
   }
