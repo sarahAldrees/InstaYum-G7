@@ -411,7 +411,7 @@ class CommentListState extends State<CommentList> {
                                       TextButton(
                                         child: Center(
                                           child: Text(
-                                            "Hurting others or bullying",
+                                            "Hurting others ",
                                             style: TextStyle(fontSize: 16),
                                           ),
                                         ),
@@ -677,7 +677,7 @@ class CommentListState extends State<CommentList> {
                                     TextButton(
                                       child: Center(
                                         child: Text(
-                                          "Hurting others or bullying",
+                                          "Hurting others ",
                                           style: TextStyle(fontSize: 16),
                                         ),
                                       ),

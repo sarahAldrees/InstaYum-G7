@@ -148,7 +148,7 @@ class UserProfileViewState extends State<UserProfileView> {
                                           TextButton(
                                             child: Center(
                                               child: Text(
-                                                "Hurting others or bullying",
+                                                "Hurting others",
                                                 style: TextStyle(fontSize: 16),
                                               ),
                                             ),
@@ -434,7 +434,7 @@ class UserProfileViewState extends State<UserProfileView> {
                                         TextButton(
                                           child: Center(
                                             child: Text(
-                                              "Hurting others or bullying",
+                                              "Hurting others ",
                                               style: TextStyle(fontSize: 16),
                                             ),
                                           ),
