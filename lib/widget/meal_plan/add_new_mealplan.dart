@@ -418,18 +418,6 @@ class AddNewMealPlanState extends State<AddNewMealPlan> {
     }
   }
 
-  Future<bool> _checkMealPlanName(String mealplanTitle) async {
-    final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-    User? user = firebaseAuth.currentUser;
-    final result = await FirebaseFirestore.instance
-        .collection("users")
-        .doc(AppGlobals.userId)
-        .collection("mealPlans")
-        .where('mealplan_title', isEqualTo: mealplanTitle)
-        .get();
-    return result.docs.isEmpty;
-  }
-
   static TextEditingController mealplanTitleTextFieldController =
       TextEditingController();
   bool validMealPlanName = true;

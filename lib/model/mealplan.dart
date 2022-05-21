@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 class MealPlan {
   String? mealplanTitle;
   String? mealplanID;
+  String? username;
   bool? isPinned;
   List<List<String>> sunMealPlan;
   List<List<String>>? monMealPlan;
@@ -18,6 +19,7 @@ class MealPlan {
       {this.mealplanTitle,
       this.mealplanID,
       this.isPinned,
+      this.username,
       required this.sunMealPlan,
       required this.monMealPlan,
       required this.tueMealPlan,

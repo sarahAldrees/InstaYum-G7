@@ -187,7 +187,8 @@ class ProfileState extends State<Profile> {
                         MyMealplanScreen(
                             day: "",
                             typeOfMeal: "",
-                            isFromUserProfileView: false),
+                            isFromUserProfileView: false,
+                            anotherUsername: userUsername),
                         // ------------ list item 3 tab
 
                         BookmarkedRecipes(

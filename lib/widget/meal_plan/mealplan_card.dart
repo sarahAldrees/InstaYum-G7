@@ -10,8 +10,10 @@ import 'package:instayum/widget/profile/circular_loader.dart';
 class MealPlanCard extends StatefulWidget {
   String? mealplanTitle;
   String? mealplanID;
+  String? currentUsername;
   bool isPinned;
   String? anotherUserID;
+  String? anotherUsername;
   bool? isFromUserProfileView = false;
   List<List<String>>? sunMealPlan;
   List<List<String>>? monMealPlan;
@@ -24,6 +26,8 @@ class MealPlanCard extends StatefulWidget {
   MealPlanCard(
       {this.mealplanTitle,
       this.mealplanID,
+      this.currentUsername,
+      this.anotherUsername,
       required this.isPinned,
       this.anotherUserID,
       this.isFromUserProfileView,
@@ -185,6 +189,8 @@ List<String> weekdays = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
 List<String> typeOfMeals = ["Breakfast", "Lunch", "Dinner"];
 
 class MealPlanCardState extends State<MealPlanCard> {
+  get doc => null;
+
   showAlertDialogUnpinConfirmationMessage(BuildContext context) {
     // set up the button
     Widget okButton = RaisedButton(
@@ -427,12 +433,26 @@ class MealPlanCardState extends State<MealPlanCard> {
   }
 
   showAlertDialogTransferMealplan(BuildContext context) {
+    final FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+
+    String usernameOfTheCopiedPlan = "time";
+    firebaseFirestore
+        .collection('users')
+        .doc(widget.anotherUserID)
+        .get()
+        .then((userData) {
+      print('---------Username of copied plan--------------------');
+
+      Map data = userData.data()!;
+      usernameOfTheCopiedPlan = data["username"];
+      print(usernameOfTheCopiedPlan);
+      print('-----------------------------');
+    });
     // set up the button
     Widget yesButton = RaisedButton(
       child: Text("Yes"),
       onPressed: () async {
         MealPlansService.makePinnedMealplanAlwaysUp();
-        final FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
 
         DateTime timestamp = DateTime.now();
 
@@ -447,7 +467,8 @@ class MealPlanCardState extends State<MealPlanCard> {
           "mealplan_title": widget.mealplanTitle,
           "is_public_mealplan": false,
           "is_pinned": false,
-          "timestamp": timestamp
+          "timestamp": timestamp,
+          "username": usernameOfTheCopiedPlan
         }).then((value) {
           newMealplanID = value.id;
 
@@ -909,11 +930,38 @@ class MealPlanCardState extends State<MealPlanCard> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(left: 2.0),
-                    child: Text(
-                      widget.mealplanTitle!,
-                      style: TextStyle(fontSize: 17, color: Colors.white),
-                    ),
+                    child: !widget.isFromUserProfileView! &&
+                            widget.anotherUsername != widget.currentUsername
+                        ? Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "${widget.mealplanTitle!}",
+                                style: TextStyle(
+                                    fontSize: 17, color: Colors.white),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Text(
+                                "Created by: ${widget.currentUsername!}",
+                                style: TextStyle(
+                                    fontSize: 11, color: Colors.white),
+                              ),
+                            ],
+                          )
+                        : Text(
+                            widget.mealplanTitle!,
+                            style: TextStyle(fontSize: 17, color: Colors.white),
+                          ),
                   ),
+                  // if (!widget.isFromUserProfileView! &&
+                  //     widget.anotherUsername != widget.currentUsername)
+                  //   Row(
+                  //     children: [Text("\nBy " + widget.currentUsername!)],
+                  //   )
+                  // else
+                  //   Text(""),
                   widget.isFromUserProfileView!
                       ? ElevatedButton(
                           child: Text(
@@ -952,7 +1000,7 @@ class MealPlanCardState extends State<MealPlanCard> {
                                 showAlertDialogUnpinConfirmationMessage(
                                     context);
                               },
-                            )
+                            ),
                 ]),
           ),
           elevation: 3,

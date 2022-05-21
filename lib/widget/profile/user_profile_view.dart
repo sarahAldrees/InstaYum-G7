@@ -786,6 +786,7 @@ class UserProfileViewState extends State<UserProfileView> {
                                   typeOfMeal: "",
                                   isFromUserProfileView: true,
                                   userID: uId,
+                                  anotherUsername: userUsername,
                                 ),
                               ],
                             ),

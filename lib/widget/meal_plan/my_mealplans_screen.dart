@@ -13,11 +13,13 @@ class MyMealplanScreen extends StatefulWidget {
   String? day = 'SUN';
   String? userID = '';
   bool isFromUserProfileView = false;
+  String? anotherUsername;
   MyMealplanScreen(
       {this.typeOfMeal,
       this.day,
       required this.isFromUserProfileView,
-      this.userID});
+      this.userID,
+      this.anotherUsername});
 
   @override
   State<StatefulWidget> createState() => MyMealplanScreenState();
@@ -192,6 +194,7 @@ class MyMealplanScreenState extends State<MyMealplanScreen> {
         widget.isFromUserProfileView ? widget.userID : AppGlobals.userId;
     String mealPlanID = "";
     String mealPlanTitle = "";
+    String username = "";
     bool isPublicMealplans = true;
     bool isPinned = false;
     await firebaseFirestore
@@ -206,12 +209,14 @@ class MyMealplanScreenState extends State<MyMealplanScreen> {
         mealPlanTitle = doc.data()['mealplan_title'];
         isPublicMealplans = doc.data()['is_public_mealplan'];
         isPinned = doc.data()['is_pinned'];
+        username = doc.data()['username'];
 
         if (isPublicMealplans) {
           userPublicMealplanList.add(MealPlan(
               mealplanID: mealPlanID,
               mealplanTitle: mealPlanTitle,
               isPinned: isPinned,
+              username: username,
               sunMealPlan: sunMealPlan,
               monMealPlan: monMealPlan,
               tueMealPlan: tueMealPlan,
@@ -225,6 +230,7 @@ class MyMealplanScreenState extends State<MyMealplanScreen> {
               mealplanID: mealPlanID,
               mealplanTitle: mealPlanTitle,
               isPinned: isPinned,
+              username: username,
               sunMealPlan: sunMealPlan,
               monMealPlan: monMealPlan,
               tueMealPlan: tueMealPlan,
@@ -293,6 +299,8 @@ class MyMealplanScreenState extends State<MyMealplanScreen> {
                   return MealPlanCard(
                     mealplanTitle: userPublicMealplanList[index].mealplanTitle,
                     anotherUserID: widget.userID,
+                    currentUsername: userPublicMealplanList[index].username,
+                    anotherUsername: widget.anotherUsername,
                     isFromUserProfileView: widget.isFromUserProfileView,
                     mealplanID: userPublicMealplanList[index].mealplanID,
                     isPinned: userPublicMealplanList[index].isPinned!,
@@ -313,6 +321,9 @@ class MyMealplanScreenState extends State<MyMealplanScreen> {
                     mealplanID: userPrivateMealplanList[index].mealplanID,
                     isFromUserProfileView: widget.isFromUserProfileView,
                     isPinned: userPrivateMealplanList[index].isPinned!,
+                    // username: userPrivateMealplanList[index].username,
+                    currentUsername: userPrivateMealplanList[index].username,
+                    anotherUsername: widget.anotherUsername,
                     sunMealPlan: userPrivateMealplanList[index].sunMealPlan,
                     monMealPlan: userPrivateMealplanList[index].monMealPlan,
                     tueMealPlan: userPrivateMealplanList[index].tueMealPlan,

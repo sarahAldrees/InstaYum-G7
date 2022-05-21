@@ -100,6 +100,16 @@ class MealPlansService {
   static Future addMealPlanTitleAndStatus(
       String? mealPlanTitle, bool isPublic) async {
     Timestamp? timestamp = Timestamp.now();
+    String username = "";
+    await firebaseFirestore
+        .collection("users")
+        .doc(AppGlobals.userId)
+        .get()
+        .then((snapshot) {
+      print('---------Username of copied plan--------------------');
+
+      username = snapshot.data()!["username"];
+    });
 
     await firebaseFirestore
         .collection("users")
@@ -110,7 +120,8 @@ class MealPlansService {
       'mealplan_title': mealPlanTitle,
       "is_public_mealplan": isPublic,
       "timestamp": timestamp,
-      "is_pinned": false
+      "is_pinned": false,
+      "username": username
     });
   }
 
