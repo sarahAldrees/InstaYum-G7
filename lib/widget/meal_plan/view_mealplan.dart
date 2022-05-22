@@ -608,19 +608,21 @@ class ViewMealplanState extends State<ViewMealplan> {
         backgroundColor: Color(0xFFeb6d44),
         title: Text(widget.mealplanTitle!),
         actions: [
-          Row(
-            children: [
-              IconButton(
-                  icon: Icon(
-                    Icons.delete_outline_outlined,
-                    //  Icons.ios_share,
-                    size: 30,
-                  ),
-                  onPressed: () {
-                    showAlertDialogDeleteMealplan(context);
-                  }),
-            ],
-          ),
+          !widget.isFromUserProfileView
+              ? Row(
+                  children: [
+                    IconButton(
+                        icon: Icon(
+                          Icons.delete_outline_outlined,
+                          //  Icons.ios_share,
+                          size: 30,
+                        ),
+                        onPressed: () {
+                          showAlertDialogDeleteMealplan(context);
+                        })
+                  ],
+                )
+              : Container()
         ],
       ),
       body: Column(
